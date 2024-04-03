@@ -22,19 +22,19 @@ const SidebarMenu = () => {
     { id: 2, name: "Visitor Reviews", route: "/my-review" },
   ];
   const manageAccount = [
-    {
-      id: 1,
-      name: "My Package",
-      route: "/my-package",
-      icon: "flaticon-box",
-    },
+    // {
+    //   id: 1,
+    //   name: "My Package",
+    //   route: "/my-package",
+    //   icon: "flaticon-box",
+    // },
     {
       id: 2,
-      name: "My Profile",
-      route: "/my-profile",
+      name: "Profil",
+      route: "/profil-partener",
       icon: "flaticon-user",
     },
-    { id: 3, name: "Logout", route: "/login", icon: "flaticon-logout" },
+    { id: 3, name: "Deconectare", route: "/login", icon: "flaticon-logout" },
   ];
 
   return (
@@ -42,13 +42,13 @@ const SidebarMenu = () => {
       <ul className="sidebar-menu">
         <li className="sidebar_header header">
           <Link href="/">
-            <Image
+            {/* <Image
               width={40}
               height={45}
               src="/assets/images/header-logo2.png"
               alt="header-logo2.png"
-            />
-            <span>FindHouse</span>
+            /> */}
+            <span>Portal</span>
           </Link>
         </li>
         {/* End header */}
@@ -75,12 +75,48 @@ const SidebarMenu = () => {
                   : ""
               }`}
             >
-              <Link href="/create-listing">
+              <Link href="/creaza-oferta">
                 <i className="flaticon-plus"></i>
-                <span> Create Listing</span>
+                <span>Creaza Oferta</span>
               </Link>
             </li>
             <li
+              className={`treeview ${
+                isSinglePageActive("/create-listing", pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/creaza-produs-serviciu">
+                <i className="flaticon-plus"></i>
+                <span>Creaza Produs/serviciu</span>
+              </Link>
+            </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/my-saved-search", pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/my-saved-search">
+                <i className="flaticon-layers"></i>
+                <span>Lista oferte</span>
+              </Link>
+            </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/my-saved-search", pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/my-saved-search">
+                <i className="flaticon-layers"></i>
+                <span>Lista produse/servicii</span>
+              </Link>
+            </li>
+            {/* <li
               className={`treeview ${
                 isSinglePageActive("/my-message", pathname)
                   ? "active"
@@ -91,12 +127,12 @@ const SidebarMenu = () => {
                 <i className="flaticon-envelope"></i>
                 <span> Message</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </li>
         {/* End Main */}
 
-        <li className="title">
+        {/* <li className="title">
           <span>Manage Listings</span>
           <ul>
             <li
@@ -118,7 +154,6 @@ const SidebarMenu = () => {
                 ))}
               </ul>
             </li>
-            {/* end properties */}
 
             <li
               className={`treeview ${
@@ -140,7 +175,6 @@ const SidebarMenu = () => {
                 ))}
               </ul>
             </li>
-            {/* End Review */}
 
             <li
               className={`treeview ${
@@ -167,11 +201,10 @@ const SidebarMenu = () => {
               </Link>
             </li>
           </ul>
-        </li>
-        {/* End manage listing */}
+        </li> */}
 
         <li className="title">
-          <span>Manage Account</span>
+          <span>Cont</span>
           <ul>
             {manageAccount.map((item) => (
               <li

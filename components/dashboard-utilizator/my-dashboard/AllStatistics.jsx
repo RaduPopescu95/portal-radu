@@ -3,31 +3,31 @@ const AllStatistics = () => {
     {
       id: 1,
       blockStyle: "",
-      icon: "flaticon-home",
-      timer: "37",
-      name: "All Properties",
+      icon: "flaticon-user-1",
+      timer: "SILVER",
+      name: "Grad fidelitate",
     },
     {
       id: 2,
       blockStyle: "style2",
-      icon: "flaticon-view",
-      timer: "24",
-      name: "Total Views",
+      icon: "flaticon-money-bag",
+      timer: "9.987",
+      name: "RON",
     },
-    {
-      id: 3,
-      blockStyle: "style3",
-      icon: "flaticon-chat",
-      timer: "12",
-      name: "Total Visitor Reviews",
-    },
-    {
-      id: 4,
-      blockStyle: "style4",
-      icon: "flaticon-heart",
-      timer: "18",
-      name: "Total Favorites",
-    },
+    // {
+    //   id: 3,
+    //   blockStyle: "style3",
+    //   icon: "flaticon-chat",
+    //   timer: "12",
+    //   name: "Total Visitor Reviews",
+    // },
+    // {
+    //   id: 4,
+    //   blockStyle: "style4",
+    //   icon: "flaticon-heart",
+    //   timer: "18",
+    //   name: "Total Favorites",
+    // },
   ];
 
   return (

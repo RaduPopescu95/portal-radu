@@ -2,11 +2,11 @@ module.exports = [
   {
     id: 1,
     img: "/assets/clinicaexample.png",
-    price: "13000",
-    type: "Boli infectioase",
-    title: "Clinica RBC Medical",
+    price: "3 oferte",
+    type: "Categorie",
+    title: "Denumire Partener",
     location: `Bucurest, strada Mihai Viteazu, nr.1A`,
-    saleTag: ["Promovata"],
+    saleTag: ["3 oferte"],
     garages: "yes",
     itemDetails: [
       {
@@ -47,11 +47,11 @@ module.exports = [
   {
     id: 2,
     img: "/assets/clinicaexample.png",
-    price: "13000",
-    type: "Boli infectioase",
-    title: "Clinica RBC Medical",
+    price: "3 oferte",
+    type: "Categorie",
+    title: "Denumire Partener",
     location: `Bucurest, strada Mihai Viteazu, nr.1A`,
-    saleTag: ["Promovata"],
+    saleTag: ["3 oferte"],
     garages: "yes",
     itemDetails: [
       {
@@ -92,11 +92,11 @@ module.exports = [
   {
     id: 3,
     img: "/assets/clinicaexample.png",
-    price: "13000",
-    type: "Boli infectioase",
-    title: "Clinica RBC Medical",
+    price: "3 oferte",
+    type: "Categorie",
+    title: "Denumire Partener",
     location: `Bucurest, strada Mihai Viteazu, nr.1A`,
-    saleTag: ["Promovata"],
+    saleTag: ["3 oferte"],
     garages: "yes",
     itemDetails: [
       {
@@ -137,11 +137,11 @@ module.exports = [
   {
     id: 4,
     img: "/assets/clinicaexample.png",
-    price: "13000",
-    type: "Boli infectioase",
-    title: "Clinica RBC Medical",
+    price: "3 oferte",
+    type: "Categorie",
+    title: "Denumire Partener",
     location: `Bucurest, strada Mihai Viteazu, nr.1A`,
-    saleTag: ["Promovata"],
+    saleTag: ["3 oferte"],
     garages: "yes",
     itemDetails: [
       {
@@ -182,11 +182,11 @@ module.exports = [
   {
     id: 5,
     img: "/assets/clinicaexample.png",
-    price: "13000",
-    type: "Boli infectioase",
-    title: "Clinica RBC Medical",
+    price: "3 oferte",
+    type: "Categorie",
+    title: "Denumire Partener",
     location: `Bucurest, strada Mihai Viteazu, nr.1A`,
-    saleTag: ["Promovata"],
+    saleTag: ["3 oferte"],
     garages: "yes",
     itemDetails: [
       {
@@ -227,11 +227,11 @@ module.exports = [
   {
     id: 6,
     img: "/assets/clinicaexample.png",
-    price: "13000",
-    type: "Boli infectioase",
-    title: "Clinica RBC Medical",
+    price: "3 oferte",
+    type: "Categorie",
+    title: "Denumire Partener",
     location: `Bucurest, strada Mihai Viteazu, nr.1A`,
-    saleTag: ["Promovata"],
+    saleTag: ["3 oferte"],
     garages: "yes",
     itemDetails: [
       {

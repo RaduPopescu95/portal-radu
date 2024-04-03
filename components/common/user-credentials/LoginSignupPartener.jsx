@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const LoginSignup = () => {
+const LoginSignupPartener = () => {
   return (
     <div className="modal-content">
       <div className="modal-header">
@@ -18,17 +18,17 @@ const LoginSignup = () => {
         <div className="row">
           <div className="col-lg-12">
             <ul className="sign_up_tab nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item">
+              <li className="nav-item active">
                 <a
-                  className="nav-link active"
-                  id="home-tab"
+                  className="nav-link"
+                  id="authpartener-tab"
                   data-bs-toggle="tab"
-                  href="#home"
+                  href="#authpartener"
                   role="tab"
-                  aria-controls="home"
+                  aria-controls="authpartener"
                   aria-selected="true"
                 >
-                  Login
+                  Autentificare
                 </a>
               </li>
               {/* End login tab */}
@@ -36,14 +36,14 @@ const LoginSignup = () => {
               <li className="nav-item">
                 <a
                   className="nav-link"
-                  id="profile-tab"
+                  id="partener-tab"
                   data-bs-toggle="tab"
-                  href="#profile"
+                  href="#partener"
                   role="tab"
-                  aria-controls="profile"
+                  aria-controls="partener"
                   aria-selected="false"
                 >
-                  Register
+                  Înregistrare
                 </a>
               </li>
               {/* End Register tab */}
@@ -56,9 +56,9 @@ const LoginSignup = () => {
         <div className="tab-content container" id="myTabContent">
           <div
             className="row mt25 tab-pane fade show active"
-            id="home"
+            id="authpartener"
             role="tabpanel"
-            aria-labelledby="home-tab"
+            aria-labelledby="authpartener-tab"
           >
             <div className="col-lg-6 col-xl-6">
               <div className="login_thumb">
@@ -77,11 +77,11 @@ const LoginSignup = () => {
               <div className="login_form">
                 <form action="#">
                   <div className="heading">
-                    <h4>Login</h4>
+                    <h4>Autentificare partener</h4>
                   </div>
                   {/* End heading */}
 
-                  <div className="row mt25">
+                  {/* <div className="row mt25">
                     <div className="col-lg-12">
                       <button type="submit" className="btn btn-fb w-100">
                         <i className="fa fa-facebook float-start mt5"></i> Login
@@ -94,7 +94,7 @@ const LoginSignup = () => {
                         with Google
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                   {/* End .row */}
 
                   <hr />
@@ -104,7 +104,7 @@ const LoginSignup = () => {
                       type="text"
                       className="form-control"
                       id="inlineFormInputGroupUsername2"
-                      placeholder="User Name Or Email"
+                      placeholder="CUI"
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -119,7 +119,7 @@ const LoginSignup = () => {
                       type="password"
                       className="form-control"
                       id="exampleInputPassword1"
-                      placeholder="Password"
+                      placeholder="Parola"
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -140,24 +140,24 @@ const LoginSignup = () => {
                       className="form-check-label form-check-label"
                       htmlFor="remeberMe"
                     >
-                      Remember me
+                      Rămâi conectat
                     </label>
 
                     <a className="btn-fpswd float-end" href="#">
-                      Lost your password?
+                      Ai uitat parola?
                     </a>
                   </div>
                   {/* End remember me checkbox */}
 
                   <button type="submit" className="btn btn-log w-100 btn-thm">
-                    Log In
+                    Autentificare
                   </button>
                   {/* End submit button */}
 
                   <p className="text-center">
-                    Dont have an account?{" "}
+                    Nu ai cont?{" "}
                     <a className="text-thm" href="#">
-                      Register
+                      Înregistrează-te
                     </a>
                   </p>
                 </form>
@@ -169,32 +169,21 @@ const LoginSignup = () => {
 
           <div
             className="row mt25 tab-pane fade"
-            id="profile"
+            id="partener"
             role="tabpanel"
-            aria-labelledby="profile-tab"
+            aria-labelledby="partener-tab"
           >
-            <div className="col-lg-6 col-xl-6">
-              <div className="regstr_thumb">
-                <Image
-                  width={357}
-                  height={659}
-                  className="img-fluid w100 h-100 cover"
-                  src="/assets/images/resource/regstr.jpg"
-                  alt="regstr.jpg"
-                />
-              </div>
-            </div>
-            {/* End . left side image for register */}
+               <form action="#" className="row">
 
-            <div className="col-lg-6 col-xl-6">
+               <div className="col-lg-6 col-xl-6">
               <div className="sign_up_form">
                 <div className="heading">
-                  <h4>Register</h4>
+                  <h4>Înregistrare Partener</h4>
                 </div>
                 {/* End .heading */}
 
-                <form action="#">
-                  <div className="row ">
+             
+                  {/* <div className="row ">
                     <div className="col-lg-12">
                       <button type="submit" className="btn btn-fb w-100">
                         <i className="fa fa-facebook float-start mt5"></i> Login
@@ -207,7 +196,7 @@ const LoginSignup = () => {
                         with Google
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                   {/* End .row */}
 
                   <hr />
@@ -217,7 +206,7 @@ const LoginSignup = () => {
                       type="text"
                       className="form-control"
                       id="exampleInputName"
-                      placeholder="User Name"
+                      placeholder="Denumire brand"
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -247,7 +236,7 @@ const LoginSignup = () => {
                       type="password"
                       className="form-control"
                       id="exampleInputPassword2"
-                      placeholder="Password"
+                      placeholder="Parola"
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -262,7 +251,7 @@ const LoginSignup = () => {
                       type="password"
                       className="form-control"
                       id="exampleInputPassword3"
-                      placeholder="Re-enter password"
+                      placeholder="Confirma Parola"
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -272,20 +261,111 @@ const LoginSignup = () => {
                   </div>
                   {/* End .row */}
 
+                                  
+              <div className="form-group input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleInputName"
+                      placeholder="Nume si prenume persoana de contact"
+                    />
+                    <div className="input-group-prepend">
+                      <div className="input-group-text">
+                        <i className="flaticon-user"></i>
+                      </div>
+                    </div>
+                  </div>
+                  {/* End .row */}
+
+                {/* End .form */}
+              </div>
+            </div>
+            {/* End . left side image for register */}
+
+            <div className="col-lg-6 col-xl-6">
+              <div className="sign_up_form">
+
+
+
+                                    
+                  <div className="form-group input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleInputName"
+                      placeholder="Număr de telefon persoana de contact"
+                    />
+                    <div className="input-group-prepend">
+                      <div className="input-group-text">
+                        <i className="flaticon-user"></i>
+                      </div>
+                    </div>
+                  </div>
+                  {/* End .row */}
+               
+
+                  
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
                     >
-                      <option data-tokens="SelectRole">Single User</option>
-                      <option data-tokens="Agent/Agency">Agent</option>
-                      <option data-tokens="SingleUser">Multi User</option>
+                      <option data-tokens="SelectRole">Judet</option>
+                      <option data-tokens="Agent/Agency">Operator economic</option>
+                      <option data-tokens="SingleUser">Doctor</option>
                     </select>
                   </div>
                   {/* End from-group */}
 
-                  <div className="form-group form-check custom-checkbox mb-3">
+                  
+                  <div className="form-group ui_kit_select_search mb-3">
+                    <select
+                      className="form-select"
+                      data-live-search="true"
+                      data-width="100%"
+                    >
+                      <option data-tokens="SelectRole">Localitate</option>
+                      <option data-tokens="Agent/Agency">Operator economic</option>
+                      <option data-tokens="SingleUser">Doctor</option>
+                    </select>
+                  </div>
+                  {/* End from-group */}
+
+
+                  <div className="form-group ui_kit_select_search mb-3">
+                    <select
+                      className="form-select"
+                      data-live-search="true"
+                      data-width="100%"
+                    >
+                      <option data-tokens="SelectRole">Categorie</option>
+                      <option data-tokens="Agent/Agency">Categorie 1</option>
+                      <option data-tokens="SingleUser">Categorie 2</option>
+                    </select>
+                  </div>
+                  {/* End from-group */}
+
+                  <div className="form-group input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleInputName"
+                      placeholder="CUI"
+                    />
+                    <div className="input-group-prepend">
+                      <div className="input-group-text">
+                        <i className="flaticon-user"></i>
+                      </div>
+                    </div>
+                  </div>
+                  {/* End .row */}
+
+               
+                {/* End .form */}
+              </div>
+            </div>
+            <div className="form-group form-check custom-checkbox mb-3">
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -296,27 +376,24 @@ const LoginSignup = () => {
                       className="form-check-label form-check-label"
                       htmlFor="terms"
                     >
-                      I have accept the Terms and Privacy Policy.
+                     Accept termenii si conditiile.
                     </label>
                   </div>
                   {/* End from-group */}
 
                   <button type="submit" className="btn btn-log w-100 btn-thm">
-                    Sign Up
+                    înregistrare
                   </button>
                   {/* End btn */}
 
                   <p className="text-center">
-                    Already have an account?{" "}
+                    Aveti cont?{" "}
                     <a className="text-thm" href="#">
-                      Log In
+                      Autentificati-va
                     </a>
                   </p>
-                </form>
-                {/* End .form */}
-              </div>
-            </div>
             {/* End register content */}
+            </form>
           </div>
           {/* End .tab-pane */}
         </div>
@@ -325,4 +402,4 @@ const LoginSignup = () => {
   );
 };
 
-export default LoginSignup;
+export default LoginSignupPartener;

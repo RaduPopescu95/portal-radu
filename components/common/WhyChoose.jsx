@@ -3,8 +3,8 @@ const WhyChoose = ({ style = "" }) => {
     {
       id: 1,
       icon: "flaticon-high-five",
-      title: "Încrederea a Mii de Pacienți",
-      descriptions: `Platforma noastră este locul unde mii de pacienți găsesc clinicile potrivite pentru nevoile lor medicale, grație unei selecții riguroase a partenerilor noștri. Prioritizăm încrederea și satisfacția pacienților, asigurându-ne că fiecare clinică înregistrată îndeplinește standarde înalte de calitate și profesionalism.`,
+      title: "Încrederea a Mii de Clienti",
+      descriptions: `Platforma noastră este locul unde mii de doctori găsesc clinicile potrivite pentru nevoile lor medicale, grație unei selecții riguroase a partenerilor noștri. Prioritizăm încrederea și satisfacția pacienților, asigurându-ne că fiecare clinică înregistrată îndeplinește standarde înalte de calitate și profesionalism.`,
     },
     {
       id: 2,

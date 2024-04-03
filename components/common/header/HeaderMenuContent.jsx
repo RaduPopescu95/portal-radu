@@ -48,7 +48,7 @@ const HeaderMenuContent = ({ float = "" }) => {
     { id: 1, name: "Despre noi", routerPath: "/about-us" },
     { id: 2, name: "Faq", routerPath: "/faq" },
     { id: 3, name: "Termeni & Conditii", routerPath: "/terms" },
-    { id: 3, name: "Cum functioneaza", routerPath: "/cum-functioneaza" },
+    // { id: 3, name: "Cum functioneaza", routerPath: "/cum-functioneaza" },
   ];
 
   return (
@@ -72,7 +72,7 @@ const HeaderMenuContent = ({ float = "" }) => {
           href="/listing-grid-v1"
           className={pathname === "/contact" ? "ui-active" : undefined}
         >
-          Clinici
+          Parteneri
         </Link>
       </li>
       {/* End .simpleitem */}
@@ -106,14 +106,14 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End .dropitem */}
 
-      <li className="last">
+      {/* <li className="last">
         <Link
           href="/blog-list-1"
           className={pathname === "/blog-list-1" ? "ui-active" : undefined}
         >
           Blog
         </Link>
-      </li>
+      </li> */}
       {/* End .simpleitem */}
 
       <li className="last">
@@ -131,17 +131,28 @@ const HeaderMenuContent = ({ float = "" }) => {
           href="#"
           className="btn flaticon-user"
           data-bs-toggle="modal"
-          data-bs-target=".bd-example-modal-lg"
+          data-bs-target=".bd-utilizator-modal-lg"
         >
-          <span className="dn-lg">Login/Register</span>
+          <span className="dn-lg">Utilizator</span>
+        </a>
+      </li>
+      {/* End .dropitem */}
+      <li className={`list-inline-item list_s ${float}`}>
+        <a
+          href="#"
+          className="btn flaticon-user"
+          data-bs-toggle="modal"
+          data-bs-target=".bd-partener-modal-lg"
+        >
+          <span className="dn-lg">Partener</span>
         </a>
       </li>
       {/* End .dropitem */}
 
       <li className={`list-inline-item add_listing ${float}`}>
         <Link href="/create-listing">
-          <span className="flaticon-plus"></span>
-          <span className="dn-lg"> Create Listing</span>
+          {/* <span className="flaticon-plus"></span> */}
+          <span className="dn-lg">CONT</span>
         </Link>
       </li>
       {/* End .dropitem */}

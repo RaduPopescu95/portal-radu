@@ -44,7 +44,7 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
+                        <i className="fa fa-bars pr10"></i> Navigatie cont
                       </button>
                     </div>
                   </div>
@@ -53,8 +53,8 @@ const index = () => {
 
                 <div className="col-lg-12 mb10">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Add New Property</h2>
-                    <p>We are glad to see you again!</p>
+                    <h2 className="breadcrumb_title">Creaza produs/serviciu</h2>
+                    {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
                 {/* End .col */}
@@ -63,13 +63,13 @@ const index = () => {
                   <div className="my_dashboard_review">
                     <div className="row">
                       <div className="col-lg-12">
-                        <h3 className="mb30">Create Listing</h3>
+                        <h3 className="mb30">Creaza produs/serviciu</h3>
                       </div>
 
                       <CreateList />
                     </div>
                   </div>
-                  <div className="my_dashboard_review mt30">
+                  {/* <div className="my_dashboard_review mt30">
                     <div className="row">
                       <div className="col-lg-12">
                         <h3 className="mb30">Location</h3>
@@ -96,7 +96,7 @@ const index = () => {
                       <button className="btn admore_btn mb30">Add More</button>
                     </div>
                     <FloorPlans />
-                  </div>
+                  </div> */}
                 </div>
                 {/* End .col */}
               </div>

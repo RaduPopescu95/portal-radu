@@ -2833,6 +2833,7 @@
 	}
 	.single_line .para {
 		float: none;
+		width: 70%;
 	}
 	.single_line .review {
 		float: none;
@@ -3186,7 +3187,7 @@
 	}
 	.tes-nav .slick-list .slick-track li.slick-slide.slick-current.slick-active.slick-center {
 		margin-top: 10px;
-		width: 75px !important;
+		width: auto !important;
 	}
 	.tes-nav img {
 		width: 50px;

@@ -4,7 +4,7 @@ const TermsCondions = () => {
   const termsContent = [
     {
       id: 1,
-      title: "Privacy Policy",
+      title: "Politica Confidentialitate",
       text1: `Curabitur massa magna, tempor in blandit id, porta in ligula.
       Aliquam laoreet nisl massa, at interdum mauris sollicitudin et.
       Mauris risus lectus, tristique at nisl at, pharetra tristique
@@ -39,8 +39,8 @@ const TermsCondions = () => {
   ];
 
   const navigationList = [
-    { id: 1, routeLink: "#", name: "Welcome Text" },
-    { id: 2, routeLink: "#", name: "Our Terms" },
+    { id: 1, routeLink: "#Politica Confidentialitate", name: "Welcome Text" },
+    { id: 2, routeLink: "#Our Terms", name: "Our Terms" },
     { id: 3, routeLink: "#", name: "Conditions" },
     { id: 4, routeLink: "#", name: "Your Privacy" },
     { id: 5, routeLink: "#", name: "Informations We Collect" },
@@ -52,7 +52,7 @@ const TermsCondions = () => {
         <div className="terms_condition_grid">
           {termsContent.map((item) => (
             <div className="grids mb30" key={item.id}>
-              <h4>{item.title}</h4>
+              <h4 id={item.title}>{item.title}</h4>
               <p className="mb20">{item.text1}</p>
               <p>{item.text2}</p>
             </div>

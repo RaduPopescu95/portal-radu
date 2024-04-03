@@ -1,117 +1,41 @@
 const Activities = () => {
+  const activities = [
+    {
+      id: 1,
+      numePartener:"Nume partener",
+      message: "Primiti 20% discount la produsul xyz.",
+    },
+    {
+      id: 2,
+      numePartener:"Nume partener",
+      message: " Meniu special de seară la doar 50€ pentru doi.",
+    },
+    {
+      id: 3,
+      numePartener:"Nume partener",
+      message: "Pachet weekend la munte pentru doi la prețul fix de 200€",
+    },
+  ];
+
   return (
     <>
-      <div className="grid">
-        <ul>
+      {activities.map((activity, index) => (
+        <div key={activity.id} className={`grid ${index === activities.length - 1 ? 'mb0' : ''} d-flex justify-content-between`}>
+        <ul className={`list-unstyled ${index === activities.length - 1 ? 'pb0 mb0 bb_none' : ''}`}>
           <li className="list-inline-item">
             <div className="icon">
-              <span className="flaticon-home"></span>
+              <span className="flaticon-profit"></span>
             </div>
           </li>
-          {/* End li */}
-
           <li className="list-inline-item">
-            <p>
-              Your listing <strong>Luxury Family Home</strong> has been
-              approved!.
-            </p>
+            <h3>{activity.numePartener}</h3>
+            <p>{activity.message}</p>
           </li>
         </ul>
+        {/* Butonul adăugat aici */}
+        <button type="button" className="btn btn-primary btn-smaller-height d-flex align-items-center justify-content-center">Adauga bon/factura</button>
       </div>
-      {/* End .grid */}
-
-      <div className="grid">
-        <ul>
-          <li className="list-inline-item">
-            <div className="icon">
-              <span className="flaticon-chat"></span>
-            </div>
-          </li>
-          {/* End li */}
-
-          <li className="list-inline-item">
-            <p>
-              Kathy Brown left a review on <strong>Renovated Apartment</strong>
-            </p>
-          </li>
-        </ul>
-      </div>
-      {/* End .grid */}
-
-      <div className="grid">
-        <ul>
-          <li className="list-inline-item">
-            <div className="icon">
-              <span className="flaticon-heart"></span>
-            </div>
-          </li>
-          {/* End li */}
-
-          <li className="list-inline-item">
-            <p>
-              Someone favorites your <strong>Gorgeous Villa Bay View</strong>{" "}
-              listing!
-            </p>
-          </li>
-        </ul>
-      </div>
-      {/* End .grid */}
-
-      <div className="grid">
-        <ul>
-          <li className="list-inline-item">
-            <div className="icon">
-              <span className="flaticon-home"></span>
-            </div>
-          </li>
-          {/* End li */}
-
-          <li className="list-inline-item">
-            <p>
-              Your listing <strong>Luxury Family Home</strong> has been
-              approved!
-            </p>
-          </li>
-        </ul>
-      </div>
-      {/* End .grid */}
-
-      <div className="grid">
-        <ul>
-          <li className="list-inline-item">
-            <div className="icon">
-              <span className="flaticon-chat"></span>
-            </div>
-          </li>
-          {/* End li */}
-
-          <li className="list-inline-item">
-            <p>
-              Kathy Brown left a review on <strong>Renovated Apartment</strong>
-            </p>
-          </li>
-        </ul>
-      </div>
-      {/* End .grid */}
-
-      <div className="grid mb0">
-        <ul className="pb0 mb0 bb_none">
-          <li className="list-inline-item">
-            <div className="icon">
-              <span className="flaticon-heart"></span>
-            </div>
-          </li>
-          {/* End li */}
-
-          <li className="list-inline-item">
-            <p>
-              Someone favorites your <strong>Gorgeous Villa Bay</strong> View
-              listing!
-            </p>
-          </li>
-        </ul>
-      </div>
-      {/* End .grid */}
+      ))}
     </>
   );
 };

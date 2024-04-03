@@ -1,0 +1,44 @@
+/* styles/HorizontalGradientSelector.module.css */
+.gradient-selector {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px;
+}
+
+.card {
+  flex: 0 0 auto;
+  width: 150px;
+  height: 100px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  background-size: cover;
+  border: 2px solid transparent;
+}
+
+.card.selected {
+  border-color: white;
+}
+
+.btn-smaller-height {
+  height: 30px; /* Sau orice altă înălțime dorită */
+}
+
+.grey-out {
+  filter: grayscale(100%); /* Transformă imaginea în alb-negru */
+  opacity: 0.5; /* Face elementul semi-transparent pentru a indica indisponibilitatea */
+  pointer-events: none; /* Dezactivează orice interacțiune cu elementul */
+  user-select: none; /* Previne selecția textului din elementul respectiv */
+}
+
+.unavailability-reason {
+  color: #FFD700;
+  background-color: #333;
+  padding: 5px;
+  border-radius: 5px;
+  max-width: 300px;
+}

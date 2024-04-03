@@ -4,6 +4,7 @@ import Link from "next/link";
 import Slider from "react-slick";
 import properties from "../../data/properties";
 import Image from "next/image";
+import { generateRandomGradient } from "@/utils/commonUtils";
 
 const FeaturedProperties = () => {
   const settings = {
@@ -44,7 +45,7 @@ const FeaturedProperties = () => {
         {properties.slice(0, 12).map((item) => (
           <div className="item" key={item.id}>
             <div className="feat_property home3">
-              <div className="thumb">
+            <div className="thumb" style={{ backgroundImage: generateRandomGradient()}}>
                 <Image
                   width={343}
                   height={220}
@@ -53,15 +54,19 @@ const FeaturedProperties = () => {
                   alt="fp1.jpg"
                 />
                 <div className="thmb_cntnt">
-                  <ul className="tag mb0">
-                    {item.saleTag.map((val, i) => (
-                      <li className="list-inline-item" key={i}>
-                        <a href="#">{val}</a>
-                      </li>
-                    ))}
-                  </ul>
+            
+                <div style={{ position: 'absolute', top: '1px', left: '10px', zIndex: 10 }}>
+                    <Image
+                      src="/assets/user-profile.png" // Asigură-te că calea este corectă
+                      alt="Logo"
+                      width={50}
+                      height={50}
+                      className="logo"
+                      
+                    />
+                  </div>
 
-                  <ul className="icon mb0">
+                  {/* <ul className="icon mb0">
                     <li className="list-inline-item">
                       <a href="#">
                         <span className="flaticon-transfer-1"></span>
@@ -72,23 +77,22 @@ const FeaturedProperties = () => {
                         <span className="flaticon-heart"></span>
                       </a>
                     </li>
-                  </ul>
+                  </ul> */}
 
                   <Link
                     href={`/listing-details-v1/${item.id}`}
                     className="fp_price"
                   >
-                    ${item.price}
-                    <small>/mo</small>
+                     {item.title}
                   </Link>
                 </div>
               </div>
               <div className="details">
                 <div className="tc_content">
-                  <p className="text-thm">{item.type}</p>
+                  {/* <p className="text-thm">{item.type}</p> */}
                   <h4>
                     <Link href={`/listing-details-v1/${item.id}`}>
-                      {item.title}
+                      {item.price}
                     </Link>
                   </h4>
                   <p>

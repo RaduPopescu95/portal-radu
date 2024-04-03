@@ -1,16 +1,16 @@
 import dynamic from "next/dynamic";
-import MyProfile from "@/components/dashboard/my-profile";
+import CreateListing from "@/components/dashboard/creaza-oferta";
 
 export const metadata = {
-  title: 'My Profile || FindHouse - Real Estate React Template',
+  title: 'Creaza discount || nume portal',
   description:
-    'FindHouse - Real Estate React Template',
+    'nume portal',
 }
 
 const index = () => {
   return (
     <>
-      <MyProfile />
+      <CreateListing />
     </>
   );
 };

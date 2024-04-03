@@ -155,9 +155,9 @@ const FeaturedItem = () => {
             />
             <div className="thmb_cntnt">
               <ul className="tag mb0">
-                <li className="list-inline-item">
+                {/* <li className="list-inline-item">
                   <a href="#">Promovat</a>
-                </li>
+                </li> */}
                 {/* <li className="list-inline-item">
                   <a href="#" className="text-capitalize">
                     {item.featured}

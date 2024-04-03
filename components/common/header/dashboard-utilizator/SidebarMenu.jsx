@@ -12,29 +12,29 @@ import { usePathname } from "next/navigation";
 const SidebarMenu = () => {
   const pathname = usePathname()
 
-  const myProperties = [
-    { id: 1, name: "General Elements", route: "/cardurile-mele" },
-    { id: 2, name: "Advanced Elements", route: "/my-properties" },
-    { id: 3, name: "Editors", route: "/my-properties" },
-  ];
-  const reviews = [
-    { id: 1, name: "My Reviews", route: "/my-review" },
-    { id: 2, name: "Visitor Reviews", route: "/my-review" },
-  ];
+  // const myProperties = [
+  //   { id: 1, name: "General Elements", route: "/cardurile-mele" },
+  //   { id: 2, name: "Advanced Elements", route: "/my-properties" },
+  //   { id: 3, name: "Editors", route: "/my-properties" },
+  // ];
+  // const reviews = [
+  //   { id: 1, name: "My Reviews", route: "/my-review" },
+  //   { id: 2, name: "Visitor Reviews", route: "/my-review" },
+  // ];
   const manageAccount = [
-    {
-      id: 1,
-      name: "My Package",
-      route: "/my-package",
-      icon: "flaticon-box",
-    },
+    // {
+    //   id: 1,
+    //   name: "My Package",
+    //   route: "/my-package",
+    //   icon: "flaticon-box",
+    // },
     {
       id: 2,
-      name: "My Profile",
-      route: "/my-profile",
+      name: "Profil",
+      route: "/profil",
       icon: "flaticon-user",
     },
-    { id: 3, name: "Logout", route: "/login", icon: "flaticon-logout" },
+    { id: 3, name: "Deconectare", route: "/login", icon: "flaticon-logout" },
   ];
 
   return (
@@ -68,7 +68,7 @@ const SidebarMenu = () => {
                 <span> Dashboard</span>
               </Link>
             </li>
-            <li
+            {/* <li
               className={`treeview ${
                 isSinglePageActive("/create-listing", pathname)
                   ? "active"
@@ -91,12 +91,12 @@ const SidebarMenu = () => {
                 <i className="flaticon-envelope"></i>
                 <span> Message</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </li>
         {/* End Main */}
 
-        <li className="title">
+        {/* <li className="title">
           <span>Manage Listings</span>
           <ul>
             <li
@@ -117,10 +117,10 @@ const SidebarMenu = () => {
                   </li>
                 ))}
               </ul>
-            </li>
+            </li> */}
             {/* end properties */}
 
-            <li
+            {/* <li
               className={`treeview ${
                 isParentPageActive(reviews, pathname) ? "active" : ""
               }`}
@@ -139,10 +139,10 @@ const SidebarMenu = () => {
                   </li>
                 ))}
               </ul>
-            </li>
+            </li> */}
             {/* End Review */}
 
-            <li
+            {/* <li
               className={`treeview ${
                 isSinglePageActive("/my-favourites", pathname)
                   ? "active"
@@ -167,11 +167,11 @@ const SidebarMenu = () => {
               </Link>
             </li>
           </ul>
-        </li>
+        </li> */}
         {/* End manage listing */}
 
         <li className="title">
-          <span>Manage Account</span>
+          <span>Cont</span>
           <ul>
             {manageAccount.map((item) => (
               <li

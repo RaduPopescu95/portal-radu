@@ -4076,7 +4076,7 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
 }
 
 .home3_home_content .popup_video_btn {
-  background: rgb(255, 90, 95);
+  background: var(--color-primary);
   border-radius: 50%;
   color: #ffffff;
   font-size: 30px;
@@ -5223,14 +5223,20 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  margin: 10px 9px 0 10px;
+  /* margin: 10px 9px 0 10px; */
+  margin: 10px;
   position: relative;
 }
 
-.feat_property .thumb img {
-  opacity: 0.6;
+.feat_property .thumb .img-whp {
+  opacity: 0.1;
   object-fit: fill;
   min-height: 220px;
+}
+
+.feat_property .thumb .logo {
+  object-fit: fill;
+  border-radius: 50px;
 }
 
 .feat_property .thumb .blog_tag {
@@ -5283,7 +5289,9 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
   height: 25px;
   line-height: 25px;
   text-align: center;
-  width: 75px;
+  width: auto;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .feat_property.home8 ul.tag {
@@ -5465,7 +5473,7 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
 
 .status_tag.badge {
   border-radius: 3px;
-  background-color: rgb(255, 90, 95);
+  background-color: var(--color-primary);
   font-size: 14px;
   font-family: "Nunito";
   color: rgb(254, 254, 254);
@@ -6505,7 +6513,7 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
 }
 
 .property_video .thumb .overlay_icon .video_popup_btn {
-  background-color: rgb(255, 90, 95);
+  background-color: var(--color-primary);
   border-radius: 50%;
   color: #ffffff;
   font-size: 22px;
@@ -6794,6 +6802,7 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
   float: left;
   line-height: 2.143;
   margin-bottom: 0;
+  width: 70%;
 }
 
 .single_line .para span {
@@ -7726,7 +7735,7 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
 
 .my_profile_setting_input .btn1 {
   background-color: rgba(255, 90, 95, 0);
-  border: 2px solid rgb(255, 90, 95);
+  border: 2px solid var(--color-primary);
   border-radius: 8px;
   -webkit-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
   -moz-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
@@ -7734,7 +7743,7 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
   box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
   font-size: 16px;
   font-family: "Nunito";
-  color: rgb(255, 90, 95);
+  color: var(--color-primary);
   font-weight: bold;
   line-height: 1.2;
   height: 50px;
@@ -7743,13 +7752,13 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
 }
 
 .my_profile_setting_input .btn1:hover {
-  background-color: rgb(255, 90, 95);
+  background-color: var(--color-primary);
   color: #ffffff;
 }
 
 .my_profile_setting_input .btn2 {
-  background-color: rgb(255, 90, 95);
-  border: 2px solid rgb(255, 90, 95);
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-primary);
   border-radius: 8px;
   -webkit-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
   -moz-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
@@ -7765,9 +7774,9 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
 }
 
 .my_profile_setting_input .btn2:hover {
-  color: rgb(255, 90, 95);
+  color: var(--color-primary);
   background-color: #ffffff;
-  border: 2px solid rgb(255, 90, 95);
+  border: 2px solid var(--color-primary);
 }
 
 .my_profile_setting_input .btn3 {
@@ -9267,10 +9276,10 @@ ul.ab_counting li:last-child {
 }
 
 .team_member.home4:hover .thumb .overylay {
-  background-image: -moz-linear-gradient(-36deg, rgb(62, 62, 165) 0%, rgb(255, 90, 95) 100%);
-  background-image: -webkit-linear-gradient(-36deg, rgb(62, 62, 165) 0%, rgb(255, 90, 95) 100%);
-  background-image: -ms-linear-gradient(-36deg, rgb(62, 62, 165) 0%, rgb(255, 90, 95) 100%);
-  background-image: linear-gradient(-36deg, rgb(62, 62, 165) 0%, rgb(255, 90, 95) 100%);
+  background-image: -moz-linear-gradient(-36deg, rgb(62, 62, 165) 0%, var(--color-primary) 100%);
+  background-image: -webkit-linear-gradient(-36deg, rgb(62, 62, 165) 0%, var(--color-primary) 100%);
+  background-image: -ms-linear-gradient(-36deg, rgb(62, 62, 165) 0%, var(--color-primary) 100%);
+  background-image: linear-gradient(-36deg, rgb(62, 62, 165) 0%, var(--color-primary) 100%);
   opacity: 0.902;
 }
 
@@ -12059,14 +12068,14 @@ legend span {
 
 .sidebar_recent_product .media .media-body .post_title a:hover,
 .sidebar_feature_listing .media .media-body .post_title a:hover {
-  color: rgb(255, 90, 95);
+  color: var(--color-primary);
 }
 
 .sidebar_recent_product .media .media-body a,
 .sidebar_feature_listing .media .media-body a {
   font-size: 16px;
   font-family: "Nunito";
-  color: rgb(255, 90, 95);
+  color: var(--color-primary);
   font-weight: bold;
   line-height: 1.2;
 }
@@ -12687,7 +12696,7 @@ legend span {
 .mbp_pagination_comments a.write_review {
   font-size: 14px;
   font-family: "Nunito";
-  color: rgb(255, 90, 95);
+  color: var(--color-primary);
   position: absolute;
   right: 30px;
 }
@@ -12957,7 +12966,7 @@ legend span {
 
 .pck_chng_btn .btn {
   border-radius: 8px;
-  background-color: rgb(255, 90, 95);
+  background-color: var(--color-primary);
   -webkit-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
   -moz-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
   -o-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
@@ -14873,7 +14882,7 @@ legend span {
 
 .portfolio_item .edu_stats_list {
   border-radius: 8px;
-  background-color: rgb(255, 90, 95);
+  background-color: var(--color-primary);
   cursor: pointer;
   height: 35px;
   line-height: 35px;

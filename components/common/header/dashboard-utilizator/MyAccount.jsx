@@ -8,11 +8,12 @@ import { usePathname } from "next/navigation";
 const MyAccount = () => {
   const pathname = usePathname()
   const profileMenuItems = [
-    { id: 1, name: "My Profile", ruterPath: "/my-profile" },
-    { id: 2, name: " My Message", ruterPath: "/my-message" },
-    { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 4, name: " My Package", ruterPath: "/my-package" },
-    { id: 5, name: " Log out", ruterPath: "/login" },
+    { id: 1, name: "Profil", ruterPath: "/profil" },
+    { id: 2, name: "Dashboard", ruterPath: "/my-dashboard" },
+    // { id: 2, name: " My Message", ruterPath: "/my-message" },
+    // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
+    // { id: 4, name: " My Package", ruterPath: "/my-package" },
+    { id: 5, name: "Deconectare", ruterPath: "/login" },
   ];
 
   return (
@@ -26,8 +27,8 @@ const MyAccount = () => {
           alt="e1.png"
         />
         <p>
-          Ali Tufan <br />
-          <span className="address">alitufan@gmail.com</span>
+          Popescu Adrian<br />
+          <span className="address">adrian@gmail.com</span>
         </p>
       </div>
       {/* End user_set_header */}

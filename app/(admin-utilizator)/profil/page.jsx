@@ -1,17 +1,16 @@
 import dynamic from "next/dynamic";
-import MyDashboard from "@/components/dashboard/my-dashboard";
+import MyProfile from "@/components/dashboard-utilizator/my-profile";
 
 export const metadata = {
-  title: 'Dashboard || Nume Portal',
+  title: 'My Profile || Profil',
   description:
-    'Nume Portal',
+    'Profil',
 }
-
 
 const index = () => {
   return (
     <>
-      <MyDashboard />
+      <MyProfile />
     </>
   );
 };

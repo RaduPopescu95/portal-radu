@@ -82,24 +82,24 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End .simpleitem */}
 
-      <li className="last">
+      {/* <li className="last">
         <Link
           href="/my-dashboard"
           className={pathname === "/my-dashboard" ? "ui-active" : undefined}
         >
           Cont Clinica
         </Link>
-      </li>
+      </li> */}
       {/* End .simpleitem */}
 
-      <li className="last">
+      {/* <li className="last">
         <Link
           href="/my-dashboard"
           className={pathname === "/my-dashboard" ? "ui-active" : undefined}
         >
           Cont Utilizator
         </Link>
-      </li>
+      </li> */}
       {/* End .simpleitem */}
 
       <li className="dropitem">
@@ -131,14 +131,14 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End .dropitem */}
 
-      <li className="last">
+      {/* <li className="last">
         <Link
           href="/blog-list-1"
           className={pathname === "/blog-list-1" ? "ui-active" : undefined}
         >
           Blog
         </Link>
-      </li>
+      </li> */}
       {/* End .simpleitem */}
 
       <li className="last">
@@ -161,7 +161,7 @@ const HeaderMenuContent = ({ float = "" }) => {
               src="/assets/images/team/e1.png"
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1">Ali Tufan</span>
+            <span className="dn-1199 ms-1">Popescu Adrian</span>
           </a>
           <div className="dropdown-menu">
             <MyAccount />
@@ -170,12 +170,12 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End ."user_setting */}
 
-      <li className={`list-inline-item add_listing ${float}`}>
-        <Link href="/create-listing">
+      {/* <li className={`list-inline-item add_listing ${float}`}>
+        <Link href="/creaza-discount">
           <span className="flaticon-plus"></span>
-          <span className="dn-lg"> Create Listing</span>
+          <span className="dn-lg"> Creaza discount</span>
         </Link>
-      </li>
+      </li> */}
       {/* End .dropitem */}
     </ul>
   );

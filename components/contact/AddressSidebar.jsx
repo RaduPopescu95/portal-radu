@@ -9,25 +9,21 @@ const AddressSidebar = () => {
         libero eleifend ornare. habitasse platea dictumst.
       </p>
       <div className="content_list">
-        <h5>Address</h5>
+        <h5>Adresa</h5>
         <p>
-          2301 Ravenswood Rd Madison, <br />
-          WI 53711
+          Bucurest, str. Cernauti, <br />
+          nr.1B
         </p>
       </div>
       <div className="content_list">
-        <h5>Phone</h5>
-        <p>(315) 905-2321</p>
+        <h5>Numar de telefon</h5>
+        <p>0787813831</p>
       </div>
       <div className="content_list">
         <h5>Mail</h5>
-        <p>info@findhouse.com</p>
+        <p>info@gmail.com</p>
       </div>
-      <div className="content_list">
-        <h5>Skype</h5>
-        <p>findhouse.com</p>
-      </div>
-      <h5>Follow Us</h5>
+      <h5>Urmărește-ne</h5>
       <ul className="contact_form_social_area">
         <Social />
       </ul>

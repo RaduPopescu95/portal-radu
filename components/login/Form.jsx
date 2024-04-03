@@ -19,7 +19,7 @@ const Form = () => {
           type="text"
           className="form-control"
           required
-          placeholder="User Name Or Email"
+          placeholder="Email"
         />
         <div className="input-group-prepend">
           <div className="input-group-text">

@@ -40,9 +40,9 @@ const index = () => {
             <div className="col-lg-12">
               <div className="home_content home4">
                 <div className="home-text text-center">
-                  <h2 className="fz55">Medicul potrivit pentru nevoile tale</h2>
+                  <h2 className="fz55">Portalul potrivit pentru nevoile tale</h2>
                   <p className="fz18 color-white">
-                    Gaseste usor clinica cea mai apropiata de tine
+                    Gaseste usor operatorul economic cel mai apropiata de tine
                   </p>
                 </div>
                 <GlobalHeroFilter className="home4" />
@@ -68,7 +68,7 @@ const index = () => {
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center mb40">
-                <h2>Clinici apropiate de tine</h2>
+                <h2>Operatori economici apropiati de tine</h2>
                 {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
               </div>
             </div>
@@ -89,7 +89,7 @@ const index = () => {
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
-                <h2>Gaseste clinic in aceste orase</h2>
+                <h2>Gaseste operatori economici in aceste orase</h2>
                 {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
               </div>
             </div>
@@ -101,13 +101,12 @@ const index = () => {
       </section>
 
       {/* <!-- Our Blog --> */}
-      <section className="our-blog bgc-f7 pb30">
+      {/* <section className="our-blog bgc-f7 pb30">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
                 <h2>Articole</h2>
-                {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
               </div>
             </div>
           </div>
@@ -115,7 +114,7 @@ const index = () => {
             <Blogs />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Our Team --> */}
       {/* <section className="our-team">
@@ -148,11 +147,11 @@ const index = () => {
       </section>
 
       {/* <!-- Our Footer Bottom Area --> */}
-      <section className="footer_middle_area pt40 pb40">
+      {/* <section className="footer_middle_area pt40 pb40">
         <div className="container">
           <CopyrightFooter />
         </div>
-      </section>
+      </section> */}
     </>
   );
 };

@@ -12,7 +12,7 @@ const ProfileInfo = () => {
 
     return (
         <div className="row">
-            <div className="col-lg-12">
+            {/* <div className="col-lg-12">
                 <div className="wrap-custom-file">
                     <input
                         type="file"
@@ -38,17 +38,17 @@ const ProfileInfo = () => {
                     </label>
                 </div>
                 <p>*minimum 260px x 260px</p>
-            </div>
+            </div> */}
             {/* End .col */}
 
             <div className="col-lg-6 col-xl-6">
                 <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput1">Username</label>
+                    <label htmlFor="formGroupExampleInput1">Nume utilizator</label>
                     <input
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput1"
-                        placeholder="alitfn"
+                        placeholder="Popescu Adrian"
                     />
                 </div>
             </div>
@@ -61,7 +61,7 @@ const ProfileInfo = () => {
                         type="email"
                         className="form-control"
                         id="formGroupExampleEmail"
-                        placeholder="creativelayers@gmail.com"
+                        placeholder="test@email.com"
                     />
                 </div>
             </div>
@@ -69,127 +69,96 @@ const ProfileInfo = () => {
 
             <div className="col-lg-6 col-xl-6">
                 <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput3">First Name</label>
+                    <label htmlFor="formGroupExampleInput3">Nume</label>
                     <input
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput3"
-                    />
+                        placeholder="Popescu Adrian"
+                        />
                 </div>
             </div>
             {/* End .col */}
 
             <div className="col-lg-6 col-xl-6">
                 <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput4">Last Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput4"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput5">Position</label>
+                    <label htmlFor="formGroupExampleInput5">Titulatura</label>
                     <input
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput5"
-                    />
+                        placeholder="Titulatura..."
+                        />
                 </div>
             </div>
             {/* End .col */}
 
             <div className="col-lg-6 col-xl-6">
                 <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput6">License</label>
+                    <label htmlFor="formGroupExampleInput5">județ de reședință</label>
                     <input
                         type="text"
                         className="form-control"
-                        id="formGroupExampleInput6"
-                    />
+                        id="formGroupExampleInput5"
+                        placeholder="Dambovita"
+                        />
                 </div>
             </div>
             {/* End .col */}
 
             <div className="col-lg-6 col-xl-6">
                 <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput7">Tax Number</label>
+                    <label htmlFor="formGroupExampleInput7">Localitate</label>
                     <input
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput7"
-                    />
+                        placeholder="Targoviste"
+                        />
                 </div>
             </div>
             {/* End .col */}
 
             <div className="col-lg-6 col-xl-6">
                 <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput8">Phone</label>
+                    <label htmlFor="formGroupExampleInput7">Data nașterii</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput7"
+                        placeholder="02/03/1995"
+                        />
+                </div>
+            </div>
+            {/* End .col */}
+
+            <div className="col-lg-6 col-xl-6">
+                <div className="my_profile_setting_input form-group">
+                    <label htmlFor="formGroupExampleInput8">Specializare</label>
                     <input
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput8"
-                    />
+                        placeholder="Chirurgie"
+                        />
                 </div>
             </div>
             {/* End .col */}
 
             <div className="col-lg-6 col-xl-6">
                 <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput9">Fax Number</label>
+                    <label htmlFor="formGroupExampleInput9">CUIM</label>
                     <input
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput9"
+                        placeholder="CUIM"
                     />
                 </div>
             </div>
             {/* End .col */}
 
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput10">Mobile</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput10"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput11">Language</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput11"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput12">
-                        Company Name
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput12"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-xl-12">
+            {/* <div className="col-xl-12">
                 <div className="my_profile_setting_input form-group">
                     <label htmlFor="formGroupExampleInput13">Address</label>
                     <input
@@ -198,10 +167,10 @@ const ProfileInfo = () => {
                         id="formGroupExampleInput13"
                     />
                 </div>
-            </div>
+            </div> */}
             {/* End .col */}
 
-            <div className="col-xl-12">
+            {/* <div className="col-xl-12">
                 <div className="my_profile_setting_textarea">
                     <label htmlFor="exampleFormControlTextarea1">
                         About me
@@ -212,15 +181,15 @@ const ProfileInfo = () => {
                         rows="7"
                     ></textarea>
                 </div>
-            </div>
+            </div> */}
             {/* End .col */}
 
-            <div className="col-xl-12 text-right">
+            {/* <div className="col-xl-12 text-right">
                 <div className="my_profile_setting_input">
                     <button className="btn btn1">View Public Profile</button>
                     <button className="btn btn2">Update Profile</button>
                 </div>
-            </div>
+            </div> */}
             {/* End .col */}
         </div>
     );

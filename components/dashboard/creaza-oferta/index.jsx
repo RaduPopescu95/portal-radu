@@ -1,9 +1,11 @@
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
-import ChangePassword from "./ChangePassword";
-import ProfileInfo from "./ProfileInfo";
-import SocialMedia from "./SocialMedia";
+import CreateList from "./CreateList";
+import DetailedInfo from "./DetailedInfo";
+import FloorPlans from "./FloorPlans";
+import LocationField from "./LocationField";
+import PropertyMediaUploader from "./PropertyMediaUploader";
 
 const index = () => {
   return (
@@ -42,7 +44,7 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
+                        <i className="fa fa-bars pr10"></i> Navigatie cont
                       </button>
                     </div>
                   </div>
@@ -51,7 +53,7 @@ const index = () => {
 
                 <div className="col-lg-12 mb10">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Profil Partener</h2>
+                    <h2 className="breadcrumb_title">Creaza oferta</h2>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
@@ -60,36 +62,43 @@ const index = () => {
                 <div className="col-lg-12">
                   <div className="my_dashboard_review">
                     <div className="row">
-                      <div className="col-xl-12">
-                        <ProfileInfo />
+                      <div className="col-lg-12">
+                        <h3 className="mb30">Creaza oferta</h3>
                       </div>
+
+                      <CreateList />
                     </div>
                   </div>
-                  {/* End prifle info wrapper end */}
-
                   {/* <div className="my_dashboard_review mt30">
                     <div className="row">
-                      <div className="col-xl-2">
-                        <h4>Social Media</h4>
+                      <div className="col-lg-12">
+                        <h3 className="mb30">Location</h3>
                       </div>
-                      <div className="col-xl-10">
-                        <SocialMedia />
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* End .SocialMedia */}
 
-                  <div className="my_dashboard_review mt30">
-                    <div className="row">
-                      <div className="col-xl-2">
-                        <h4>Schimba parola</h4>
-                      </div>
-                      <div className="col-xl-10">
-                        <ChangePassword />
-                      </div>
+                      <LocationField />
                     </div>
                   </div>
+                  <div className="my_dashboard_review mt30">
+                    <div className="col-lg-12">
+                      <h3 className="mb30">Detailed Information</h3>
+                    </div>
+                    <DetailedInfo />
+                  </div>
+                  <div className="my_dashboard_review mt30">
+                    <div className="col-lg-12">
+                      <h3 className="mb30">Property media</h3>
+                    </div>
+                    <PropertyMediaUploader />
+                  </div>
+                  <div className="my_dashboard_review mt30">
+                    <div className="col-lg-12">
+                      <h3 className="mb30">Floor Plans</h3>
+                      <button className="btn admore_btn mb30">Add More</button>
+                    </div>
+                    <FloorPlans />
+                  </div> */}
                 </div>
+                {/* End .col */}
               </div>
               {/* End .row */}
 

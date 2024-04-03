@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
-import MyDashboard from "@/components/dashboard/my-dashboard";
+import MyDashboard from "@/components/dashboard-utilizator/my-dashboard";
 
 export const metadata = {
-  title: 'Dashboard || FindHouse - Real Estate React Template',
+  title: 'Dashboard || Dashboard',
   description:
-    'FindHouse - Real Estate React Template',
+    'Dashboard',
 }
 
 

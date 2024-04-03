@@ -4,12 +4,11 @@ const ChangePassword = () => {
       <div className="row">
         <div className="col-xl-6">
           <div className="my_profile_setting_input form-group">
-            <label htmlFor="formGroupExampleOldPass">Old Password</label>
+            <label htmlFor="formGroupExampleOldPass">Parola actuala</label>
             <input
               type="text"
               className="form-control"
               id="formGroupExampleOldPass"
-              placeholder="alitfn"
             />
           </div>
         </div>
@@ -19,7 +18,7 @@ const ChangePassword = () => {
       <div className="row">
         <div className="col-lg-6 col-xl-6">
           <div className="my_profile_setting_input form-group">
-            <label htmlFor="formGroupExampleNewPass">New Password</label>
+            <label htmlFor="formGroupExampleNewPass">Parola noua</label>
             <input
               type="text"
               className="form-control"
@@ -32,7 +31,7 @@ const ChangePassword = () => {
         <div className="col-lg-6 col-xl-6">
           <div className="my_profile_setting_input form-group">
             <label htmlFor="formGroupExampleConfPass">
-              Confirm New Password
+              Confirma Parola noua
             </label>
             <input
               type="text"

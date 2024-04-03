@@ -35,13 +35,13 @@ const GlobalFilter = ({ className = "" }) => {
           <div className="search_option_two">
             <div className="candidate_revew_select">
               <select className="selectpicker w100 form-select show-tick">
-                <option value="">Anatomie patologica</option>
-                <option>Boli infectioase</option>
-                <option>Chirurgie generala</option>
-                <option>Neurologie</option>
-                <option>Psihiatrie</option>
-                <option>Boli infectioase</option>
-                <option>Boli infectioase</option>
+                <option value="">Categorie</option>
+                <option>Categorie</option>
+                <option>Categorie</option>
+                <option>Categorie</option>
+                <option>Categorie</option>
+                <option>Categorie</option>
+                <option>Categorie</option>
               </select>
             </div>
           </div>

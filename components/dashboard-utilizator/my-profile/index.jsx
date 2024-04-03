@@ -1,5 +1,5 @@
-import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
+import Header from "../../common/header/dashboard-utilizator/Header";
+import SidebarMenu from "../../common/header/dashboard-utilizator/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import ChangePassword from "./ChangePassword";
 import ProfileInfo from "./ProfileInfo";
@@ -51,8 +51,8 @@ const index = () => {
 
                 <div className="col-lg-12 mb10">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">My Profile</h2>
-                    <p>We are glad to see you again!</p>
+                    <h2 className="breadcrumb_title">Profil</h2>
+                    {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
                 {/* End .col */}
@@ -61,7 +61,7 @@ const index = () => {
                   <div className="my_dashboard_review">
                     <div className="row">
                       <div className="col-xl-2">
-                        <h4>Profile Information</h4>
+                        <h4>Informatii</h4>
                       </div>
                       <div className="col-xl-10">
                         <ProfileInfo />
@@ -70,7 +70,7 @@ const index = () => {
                   </div>
                   {/* End prifle info wrapper end */}
 
-                  <div className="my_dashboard_review mt30">
+                  {/* <div className="my_dashboard_review mt30">
                     <div className="row">
                       <div className="col-xl-2">
                         <h4>Social Media</h4>
@@ -79,13 +79,13 @@ const index = () => {
                         <SocialMedia />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   {/* End .SocialMedia */}
 
                   <div className="my_dashboard_review mt30">
                     <div className="row">
                       <div className="col-xl-2">
-                        <h4>Change password</h4>
+                        <h4>Schimba parola</h4>
                       </div>
                       <div className="col-xl-10">
                         <ChangePassword />
