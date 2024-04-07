@@ -11,7 +11,7 @@ const WhatsNearby = () => {
     {
       id: 1,
       styleClass: "grey-out", // Adăugăm o clasă pentru stilizarea înnegrită
-      title: "Primiti 20% discount la produsul xyz",
+      title: "Primiti 20% discount la toate produsele noastre",
       icon: "flaticon-money-bag",
       isAvailable: false, // Indicăm că oferta nu este disponibilă
       singleItem: [
@@ -20,7 +20,6 @@ const WhatsNearby = () => {
           name: "Beneficiază de un discount de 20% la toate serviciile de înfrumusețare, exclusiv pentru deținătorii cardului nostru de fidelitate!",
           miles: "3.13",
           totalReview: "8895",
-
           unavailabilityReason: "Nu este disponibil pentru gradul tău de fidelitate.", // Motivul pentru indisponibilitate
           ratings: <Ratings />,
         },
@@ -67,7 +66,7 @@ const WhatsNearby = () => {
 
     // Funcția care va fi apelată când utilizatorul selectează o ofertă
     const handleOfferSelect = (offerId) => {
-      const verificationLink = `https://webappdyanmicx.ro`;
+      const verificationLink = `http://localhost:3000/verificare-tranzactie`;
       setSelectedOffer(verificationLink);
       setIsModalVisible(true); // Afișează modalul
     };
@@ -129,6 +128,7 @@ const WhatsNearby = () => {
         zIndex: 1000,
         border: '1px solid #ccc',
         boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        width:"24%"
       }}>
         <QRCode value={selectedOffer} size={256} level={"H"} />
         <p className='mt10'>Scanează pentru a verifica oferta</p>

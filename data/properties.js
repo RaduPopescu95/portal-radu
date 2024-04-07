@@ -1,5 +1,6 @@
 module.exports = [
   {
+    initialState: Math.random() > 0.5 ? 'tick' : 'close', // Adaugă acest rând
     id: 1,
     img: "/assets/clinicaexample.png",
     price: "3 oferte",
@@ -45,6 +46,7 @@ module.exports = [
     created_at: 1667181268893,
   },
   {
+    initialState: Math.random() > 0.5 ? 'tick' : 'close', // Adaugă acest rând
     id: 2,
     img: "/assets/clinicaexample.png",
     price: "3 oferte",
@@ -90,6 +92,7 @@ module.exports = [
     created_at: 1667181268893,
   },
   {
+    initialState: Math.random() > 0.5 ? 'tick' : 'close', // Adaugă acest rând
     id: 3,
     img: "/assets/clinicaexample.png",
     price: "3 oferte",
@@ -135,6 +138,7 @@ module.exports = [
     created_at: 1667181268893,
   },
   {
+    initialState: Math.random() > 0.5 ? 'tick' : 'close', // Adaugă acest rând
     id: 4,
     img: "/assets/clinicaexample.png",
     price: "3 oferte",
@@ -180,6 +184,7 @@ module.exports = [
     created_at: 1667181268893,
   },
   {
+    initialState: Math.random() > 0.5 ? 'tick' : 'close', // Adaugă acest rând
     id: 5,
     img: "/assets/clinicaexample.png",
     price: "3 oferte",
@@ -225,6 +230,7 @@ module.exports = [
     created_at: 1667181268893,
   },
   {
+    initialState: Math.random() > 0.5 ? 'tick' : 'close', // Adaugă acest rând
     id: 6,
     img: "/assets/clinicaexample.png",
     price: "3 oferte",

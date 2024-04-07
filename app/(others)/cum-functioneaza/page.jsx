@@ -2,9 +2,9 @@ import dynamic from "next/dynamic";
 import Terms from "@/components/terms-conditions";
 
 export const metadata = {
-  title: 'Terms & Conditions || FindHouse - Real Estate React Template',
+  title: 'Terms & Conditions || Portal',
   description:
-    'FindHouse - Real Estate React Template',
+    'Portal',
 }
 
 const index = () => {

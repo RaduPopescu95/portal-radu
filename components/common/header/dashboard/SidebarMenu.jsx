@@ -65,7 +65,7 @@ const SidebarMenu = () => {
             >
               <Link href="/my-dashboard">
                 <i className="flaticon-layers"></i>
-                <span> Dashboard</span>
+                <span>Dashboard</span>
               </Link>
             </li>
             <li
@@ -82,6 +82,18 @@ const SidebarMenu = () => {
             </li>
             <li
               className={`treeview ${
+                isSinglePageActive("/my-saved-search", pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/my-properties">
+                <i className="flaticon-layers"></i>
+                <span>Lista oferte</span>
+              </Link>
+            </li>
+            <li
+              className={`treeview ${
                 isSinglePageActive("/create-listing", pathname)
                   ? "active"
                   : ""
@@ -92,18 +104,7 @@ const SidebarMenu = () => {
                 <span>Creaza Produs/serviciu</span>
               </Link>
             </li>
-            <li
-              className={`treeview ${
-                isSinglePageActive("/my-saved-search", pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/my-saved-search">
-                <i className="flaticon-layers"></i>
-                <span>Lista oferte</span>
-              </Link>
-            </li>
+
             <li
               className={`treeview ${
                 isSinglePageActive("/my-saved-search", pathname)

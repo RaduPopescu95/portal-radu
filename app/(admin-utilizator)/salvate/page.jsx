@@ -2,9 +2,9 @@ import dynamic from "next/dynamic";
 import MySavedSearch from "@/components/dashboard/my-saved-search";
 
 export const metadata = {
-  title: 'My Saved Search || FindHouse - Real Estate React Template',
+  title: 'My Saved Search || Portal',
   description:
-    'FindHouse - Real Estate React Template',
+    'Portal',
 }
 
 const index = () => {

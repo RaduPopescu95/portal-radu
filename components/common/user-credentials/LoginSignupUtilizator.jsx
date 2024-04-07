@@ -1,7 +1,11 @@
+"use client"
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 const LoginSignupUtilizator = () => {
+  const [titulaturaSelectata, setTitulaturaSelectata] = useState('');
   return (
     <div className="modal-content">
       <div className="modal-header">
@@ -334,6 +338,7 @@ const LoginSignupUtilizator = () => {
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
+                      onChange={(e) => setTitulaturaSelectata(e.target.value)}
                     >
                       <option data-tokens="SelectRole">Titulatura</option>
                       <option data-tokens="Agent/Agency">Medic Rezident</option>
@@ -347,7 +352,8 @@ const LoginSignupUtilizator = () => {
                     </select>
                   </div>
                   {/* End .row */}
-
+                  {titulaturaSelectata !== 'Asistent Medical' && (
+                    <>
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
@@ -418,7 +424,7 @@ const LoginSignupUtilizator = () => {
                       <option data-tokens="SingleUser">Altele</option>
                     </select>
                   </div>
-                  {/* End from-group */}
+           
 
                   <div className="form-group input-group mb-3">
                     <input
@@ -433,8 +439,9 @@ const LoginSignupUtilizator = () => {
                       </div>
                     </div>
                   </div>
-                  {/* End .row */}
-
+                  </>
+          
+                  )}
                
                 {/* End .form */}
               </div>

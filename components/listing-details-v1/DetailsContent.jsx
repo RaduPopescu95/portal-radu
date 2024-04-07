@@ -98,7 +98,7 @@ const DetailsContent = () => {
       </div> */}
       {/* End walkscore_area */}
 
-      <div className="whats_nearby mt30">
+      <div className="whats_nearby mt30 row">
      
         <WhatsNearby />
       </div>

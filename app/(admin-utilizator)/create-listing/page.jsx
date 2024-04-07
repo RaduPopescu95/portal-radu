@@ -2,9 +2,9 @@ import dynamic from "next/dynamic";
 import CreateListing from "@/components/dashboard/creaza-oferta";
 
 export const metadata = {
-  title: 'Create Listing || FindHouse - Real Estate React Template',
+  title: 'Create Listing || Portal',
   description:
-    'FindHouse - Real Estate React Template',
+    'Portal',
 }
 
 const index = () => {

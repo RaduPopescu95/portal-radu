@@ -17,9 +17,9 @@ import blogs from "@/data/blogs";
 import Image from "next/image";
 
 export const metadata = {
-  title: 'Blog Details || FindHouse - Real Estate React Template',
+  title: 'Blog Details || Portal',
   description:
-    'FindHouse - Real Estate React Template',
+    'Portal',
 }
 
 const BlogDetailsDynamic = ({params}) => {

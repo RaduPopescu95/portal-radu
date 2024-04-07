@@ -41,7 +41,7 @@ const Footer = () => {
           <h4>Contactează-ne</h4>
           <ul className="list-unstyled">
             <li>
-              <a href="mailto:info@findhouse.com">info@numeportal.com</a>
+              <a href="mailto:info@email.com">info@numeportal.com</a>
             </li>
             <li>
               <a href="#">Collins Street West, Victoria</a>
