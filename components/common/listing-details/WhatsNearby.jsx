@@ -78,7 +78,7 @@ const WhatsNearby = () => {
 
     // Funcția care va fi apelată când utilizatorul selectează o ofertă
     const handleOfferSelect = (offerId) => {
-      const verificationLink = `http://localhost:3000/verificare-tranzactie`;
+      const verificationLink = `https://portal-adrian-beta.vercel.app/verificare-tranzactie`;
       setSelectedOffer(verificationLink);
       setIsModalVisible(true); // Afișează modalul
     };
