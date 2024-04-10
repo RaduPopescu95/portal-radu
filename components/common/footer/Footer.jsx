@@ -23,7 +23,7 @@ const Footer = () => {
               <Link href="/despre-noi">Despre noi</Link>
             </li>
             <li>
-              <Link href="/terms">Termeni si conditii</Link>
+              <Link href="/termeni-confidentialitate">Termeni si conditii</Link>
             </li>
             {/* <li>
               <Link href="/faq">User’s Guide</Link>

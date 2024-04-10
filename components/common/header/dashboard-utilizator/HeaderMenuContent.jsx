@@ -52,7 +52,7 @@ const HeaderMenuContent = ({ float = "" }) => {
   const pages = [
     { id: 1, name: "Despre noi", routerPath: "/despre-noi" },
     // { id: 2, name: "Faq", routerPath: "/faq" },
-    { id: 3, name: "Termeni & Conditii", routerPath: "/terms" },
+    { id: 3, name: "Termeni & Conditii", routerPath: "/termeni-confidentialitate" },
     // { id: 3, name: "Cum functioneaza", routerPath: "/cum-functioneaza" },
   ];
 
