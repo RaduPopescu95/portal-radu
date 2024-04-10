@@ -1,13 +1,36 @@
 import React from 'react';
 
 const SearchData = () => {
-  const rowsData = [
-    { title: 'List London', date: 'December 30, 2019' },
-    { title: 'Property List New York', date: 'December 30, 2019' },
-    { title: 'London 3 beds', date: 'December 30, 2019', active: true },
-    { title: 'Paris $100-$100', date: 'December 30, 2019' },
-    { title: 'Free', date: 'December 30, 2019' },
-    { title: '$300-$900', date: 'December 30, 2019' },
+
+
+  const activities = [
+    {
+      id: 1,
+      numePartener:"Nume partener",
+      numeUtilizator:"Popescu Adrian",
+      message: "Primiti 20% discount la produsul xyz.",
+      tipOferta:"Oferta specifică",
+      date:"30-12-2023",
+      status:"confirmata"
+    },
+    {
+      id: 2,
+      numePartener:"Nume partener",
+      numeUtilizator:"Popescu Adrian",
+      message: " Meniu special de seară la doar 50€ pentru doi.",
+      tipOferta:"Oferta specifică",
+      date:"30-12-2023",
+      status:"confirmata"
+    },
+    {
+      id: 3,
+      numePartener:"Nume partener",
+      numeUtilizator:"Popescu Adrian",
+      message: "Pachet weekend la munte pentru doi la prețul fix de 200€",
+      tipOferta:"Oferta cu discount procentual general",
+      date:"30-12-2023",
+      status:"confirmata"
+    },
   ];
 
   return (
@@ -15,33 +38,28 @@ const SearchData = () => {
       <thead className="thead-light">
         <tr>
           <th scope="col">Titlu oferta</th>
-          <th className="dn-lg" scope="col">Tip oferta</th>
-          <th scope="col"></th>
-          <th className="dn-lg" scope="col">status</th>
-          <th scope="col"></th>
+          <th scope="col">Tip oferta</th>
+          <th scope="col">Nume partener</th>
+          <th scope="col">Nume utilizator</th>
+          <th scope="col">status</th>
           <th scope="col">Data</th>
           <th scope="col">Actiune</th>
         </tr>
       </thead>
       <tbody>
-        {rowsData.map((row, index) => (
+        {activities.map((row, index) => (
           <tr key={index} className={row.active ? 'title active' : 'title'}>
-            <th scope="row">{row.title}</th>
-            <td className="dn-lg"></td>
-            <td className="dn-lg"></td>
-            <td></td>
-            <td></td>
+            <td className="para">{row.message}</td>
+            <td className="para">{row.tipOferta}</td>
+            <td className="para">{row.numePartener}</td>
+            <td className="para">{row.numeUtilizator}</td>
+            <td className="para">{row.status}</td>
             <td className="para">{row.date}</td>
             <td>
               <ul className="view_edit_delete_list mb0">
                 <li className="list-inline-item" data-toggle="tooltip" data-placement="top" title="View">
-                  <a href="#">
+                  <a href="/confirma-tranzactie">
                     <span className="flaticon-view"></span>
-                  </a>
-                </li>
-                <li className="list-inline-item" data-toggle="tooltip" data-placement="top" title="Edit">
-                  <a href="#">
-                    <span className="flaticon-edit"></span>
                   </a>
                 </li>
                 <li className="list-inline-item" data-toggle="tooltip" data-placement="top" title="Delete">

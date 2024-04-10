@@ -34,7 +34,7 @@ const SidebarMenu = () => {
       route: "/profil-partener",
       icon: "flaticon-user",
     },
-    { id: 3, name: "Deconectare", route: "/login", icon: "flaticon-logout" },
+    { id: 3, name: "Deconectare", route: "/", icon: "flaticon-logout" },
   ];
 
   return (

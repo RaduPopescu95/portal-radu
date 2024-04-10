@@ -39,11 +39,11 @@ const TermsCondions = () => {
   ];
 
   const navigationList = [
-    { id: 1, routeLink: "#Politica Confidentialitate", name: "Welcome Text" },
-    { id: 2, routeLink: "#Our Terms", name: "Our Terms" },
-    { id: 3, routeLink: "#", name: "Conditions" },
-    { id: 4, routeLink: "#", name: "Your Privacy" },
-    { id: 5, routeLink: "#", name: "Informations We Collect" },
+    { id: 1, routeLink: "#Politica Confidentialitate", name: "Politica Confidentialitate" },
+    { id: 2, routeLink: "#Our Terms", name: "Termenii nostri" },
+    // { id: 3, routeLink: "#", name: "Conditions" },
+    // { id: 4, routeLink: "#", name: "Your Privacy" },
+    // { id: 5, routeLink: "#", name: "Informations We Collect" },
   ];
 
   return (

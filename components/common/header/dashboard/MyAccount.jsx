@@ -12,7 +12,7 @@ const MyAccount = () => {
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
     { id: 3, name: " Lista oferte", ruterPath: "/lista-oferte" },
-    { id: 4, name: " Lista produse", ruterPath: "/lista-produse-servicii" },
+    // { id: 4, name: " Lista produse", ruterPath: "/lista-produse-servicii" },
     { id: 5, name: " Deconectare", ruterPath: "/" },
   ];
 

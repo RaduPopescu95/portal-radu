@@ -34,7 +34,7 @@ const SidebarMenu = () => {
       route: "/profil",
       icon: "flaticon-user",
     },
-    { id: 3, name: "Deconectare", route: "/login", icon: "flaticon-logout" },
+    { id: 3, name: "Deconectare", route: "/", icon: "flaticon-logout" },
   ];
 
   return (
@@ -58,12 +58,12 @@ const SidebarMenu = () => {
           <ul>
             <li
               className={`treeview ${
-                isSinglePageActive("/my-dashboard", pathname)
+                isSinglePageActive("/utilizator", pathname)
                   ? "active"
                   : ""
               }`}
             >
-              <Link href="/my-dashboard">
+              <Link href="/utilizator">
                 <i className="flaticon-layers"></i>
                 <span> Dashboard</span>
               </Link>

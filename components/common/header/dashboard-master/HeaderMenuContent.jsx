@@ -51,9 +51,9 @@ const HeaderMenuContent = ({ float = "" }) => {
 
   const pages = [
     { id: 1, name: "Despre noi", routerPath: "/despre-noi" },
-    { id: 2, name: "Faq", routerPath: "/faq" },
+    // { id: 2, name: "Faq", routerPath: "/faq" },
     { id: 3, name: "Termeni & Conditii", routerPath: "/terms" },
-    { id: 3, name: "Cum functioneaza", routerPath: "/cum-functioneaza" },
+    // { id: 3, name: "Cum functioneaza", routerPath: "/cum-functioneaza" },
   ];
 
   return (
@@ -77,7 +77,7 @@ const HeaderMenuContent = ({ float = "" }) => {
           href="/parteneri"
           className={pathname === "/contact" ? "ui-active" : undefined}
         >
-          Clinici
+          Parteneri
         </Link>
       </li>
       {/* End .simpleitem */}
@@ -151,7 +151,7 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End .simpleitem */}
 
-      <li className="user_setting">
+      {/* <li className="user_setting">
         <div className="dropdown">
           <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
             <Image
@@ -167,7 +167,7 @@ const HeaderMenuContent = ({ float = "" }) => {
             <MyAccount />
           </div>
         </div>
-      </li>
+      </li> */}
       {/* End ."user_setting */}
 
       {/* <li className={`list-inline-item add_listing ${float}`}>

@@ -21,7 +21,7 @@ const ErrorPageContent = () => {
       {/* End form */}
 
       <Link href="/" className="btn btn_error btn-thm">
-        Back To Home
+        Acasa
       </Link>
     </div>
   );

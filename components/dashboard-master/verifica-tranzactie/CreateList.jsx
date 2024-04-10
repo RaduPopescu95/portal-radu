@@ -25,6 +25,14 @@ const CreateList = () => {
     <>
   <div className="col-lg-12">
   <div className="my_profile_setting_input form-group">
+    <label htmlFor="propertyTitle">Nume Partener</label>
+    <input type="text" className="form-control" id="propertyTitle" readOnly value="Nume Partener"/>
+  </div>
+</div>
+
+      {/* End .col */}
+  <div className="col-lg-12">
+  <div className="my_profile_setting_input form-group">
     <label htmlFor="propertyTitle">Nume utilizator</label>
     <input type="text" className="form-control" id="propertyTitle" readOnly value="Popescu Radu"/>
   </div>
@@ -144,21 +152,6 @@ const CreateList = () => {
         </div>
       </div>
 
-<div className="col-lg-6 col-xl-6">
-  <div className="my_profile_setting_input form-group">
-    <label htmlFor="activationDate">Data de activare</label>
-    <input type="date" className="form-control" id="activationDate"/>
-  </div>
-</div>
-{/* End .col */}
-
-<div className="col-lg-6 col-xl-6">
-  <div className="my_profile_setting_input form-group">
-    <label htmlFor="deactivationDate">Data de dezactivare</label>
-    <input type="date" className="form-control" id="deactivationDate"/>
-  </div>
-</div>
-{/* End .col */}
 
       {/* End .col */}
       {/* <div className="col-lg-4 col-xl-4">

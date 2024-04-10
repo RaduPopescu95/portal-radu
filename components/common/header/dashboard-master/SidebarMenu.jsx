@@ -28,13 +28,13 @@ const SidebarMenu = () => {
     //   route: "/my-package",
     //   icon: "flaticon-box",
     // },
-    {
-      id: 2,
-      name: "Profil",
-      route: "/profil-partener",
-      icon: "flaticon-user",
-    },
-    { id: 3, name: "Deconectare", route: "/login", icon: "flaticon-logout" },
+    // {
+    //   id: 2,
+    //   name: "Profil",
+    //   route: "/profil-partener",
+    //   icon: "flaticon-user",
+    // },
+    { id: 3, name: "Deconectare", route: "/", icon: "flaticon-logout" },
   ];
 
   return (
@@ -63,7 +63,7 @@ const SidebarMenu = () => {
                   : ""
               }`}
             >
-              <Link href="/master-dashboard">
+              <Link href="/admin">
                 <i className="flaticon-layers"></i>
                 <span>Dashboard</span>
               </Link>

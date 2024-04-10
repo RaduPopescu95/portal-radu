@@ -1,5 +1,5 @@
-import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
+import Header from "../../common/header/dashboard-master/Header";
+import SidebarMenu from "../../common/header/dashboard-master/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import CreateList from "./CreateList";
 import DetailedInfo from "./DetailedInfo";

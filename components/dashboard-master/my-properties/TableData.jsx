@@ -98,7 +98,7 @@ const TableData = () => {
             data-placement="top"
             title="Edit"
           >
-            <a href="#">
+            <a href="/verificare-utilizator">
               <span className="flaticon-view"></span>
             </a>
           </li>
