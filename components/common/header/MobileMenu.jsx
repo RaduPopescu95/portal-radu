@@ -8,16 +8,16 @@ const MobileMenu = () => {
     <div className="stylehome1 h0 mega-menu-wrapper">
       <div className="mobile-menu">
         <div className="header stylehome1">
-          <div className="main_logo_home2 text-center">
-            {/* <Image
+          {/* <div className="main_logo_home2 text-center">
+            <Image
               width={40}
               height={45}
               className="nav_logo_img contain mt20"
               src="/assets/images/header-logo2.png"
               alt="header-logo2.png"
-            /> */}
+            />
             <span className="mt20">Portal</span>
-          </div>
+          </div> */}
           {/* main_logo_home2 */}
 
           <ul className="menu_bar_home2">
