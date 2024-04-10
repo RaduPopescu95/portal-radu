@@ -9,21 +9,22 @@ const MobileMenu = () => {
       <div className="mobile-menu">
         <div className="header stylehome1">
           <div className="main_logo_home2 text-center">
-            <Image
+            {/* <Image
               width={40}
               height={45}
               className="nav_logo_img contain mt20"
               src="/assets/images/header-logo2.png"
               alt="header-logo2.png"
-            />
+            /> */}
             <span className="mt20">Portal</span>
           </div>
           {/* main_logo_home2 */}
 
           <ul className="menu_bar_home2">
             <li className="list-inline-item list_s">
-              <Link href="/login">
-                <span className="flaticon-user"></span>
+              <Link href="/">
+                {/* <span className="flaticon-user"></span> */}
+                
               </Link>
             </li>
             <li

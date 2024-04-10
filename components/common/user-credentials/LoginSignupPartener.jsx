@@ -62,11 +62,11 @@ const LoginSignupPartener = () => {
           >
             <div className="col-lg-6 col-xl-6">
               <div className="login_thumb">
-                <Image
+              <Image
                   width={357}
                   height={494}
                   className="img-fluid w100 h-100 cover"
-                  src="/assets/images/resource/login.jpg"
+                  src="/assets/images/resource/login.png"
                   alt="login.jpg"
                 />
               </div>

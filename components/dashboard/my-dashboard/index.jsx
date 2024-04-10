@@ -1,5 +1,5 @@
-import Header from "../../common/header/dashboard-master/Header";
-import SidebarMenu from "../../common/header/dashboard-master/SidebarMenu";
+import Header from "../../common/header/dashboard/Header";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import Activities from "./Activities";
 import AllStatistics from "./AllStatistics";
@@ -42,7 +42,7 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
+                        <i className="fa fa-bars pr10"></i> Navigatie panou administrare
                       </button>
                     </div>
                   </div>
@@ -71,23 +71,15 @@ const index = () => {
                 </div> */}
                 {/* End statistics chart */}
 
-                {/* <div className="col-xl-12">
+                <div className="col-xl-12">
                   <div className="recent_job_activity">
                     <h4 className="title mb-4">Oferte accesate recent</h4>
                     <Activities />
                   </div>
-                </div> */}
+                </div>
               </div>
               {/* End .row  */}
 
-              {/* <div className="row mt50">
-                <div className="col-lg-12">
-                  <div className="copyright-widget text-center">
-                    <p>© 2020 Find House. Made with love.</p>
-                  </div>
-                </div>
-              </div> */}
-              {/* End .row */}
             </div>
             {/* End .col */}
           </div>

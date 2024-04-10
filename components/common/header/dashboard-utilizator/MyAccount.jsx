@@ -9,11 +9,11 @@ const MyAccount = () => {
   const pathname = usePathname()
   const profileMenuItems = [
     { id: 1, name: "Profil", ruterPath: "/profil" },
-    { id: 2, name: "Dashboard", ruterPath: "/my-dashboard" },
+    { id: 2, name: "Dashboard", ruterPath: "/utilizator" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
     // { id: 4, name: " My Package", ruterPath: "/my-package" },
-    { id: 5, name: "Deconectare", ruterPath: "/login" },
+    { id: 5, name: "Deconectare", ruterPath: "/" },
   ];
 
   return (
@@ -41,7 +41,7 @@ const MyAccount = () => {
             className="dropdown-item"
             style={
               isSinglePageActive(`${item.ruterPath}`, pathname)
-                ? { color: "#ff5a5f" }
+                ? { color: "#0000FF" }
                 : undefined
             }
           >

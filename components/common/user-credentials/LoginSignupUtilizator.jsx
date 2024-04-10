@@ -70,7 +70,7 @@ const LoginSignupUtilizator = () => {
                   width={357}
                   height={494}
                   className="img-fluid w100 h-100 cover"
-                  src="/assets/images/resource/login.jpg"
+                  src="/assets/images/resource/login.png"
                   alt="login.jpg"
                 />
               </div>
@@ -313,8 +313,9 @@ const LoginSignupUtilizator = () => {
                       data-width="100%"
                     >
                       <option data-tokens="SelectRole">Judet</option>
-                      <option data-tokens="Agent/Agency">Operator economic</option>
-                      <option data-tokens="SingleUser">Doctor</option>
+                      <option data-tokens="Agent/Agency">Dambovita</option>
+                      <option data-tokens="SingleUser">Prahova</option>
+                      <option data-tokens="SingleUser">Timisoara</option>
                     </select>
                   </div>
                   {/* End from-group */}
@@ -327,8 +328,8 @@ const LoginSignupUtilizator = () => {
                       data-width="100%"
                     >
                       <option data-tokens="SelectRole">Localitate</option>
-                      <option data-tokens="Agent/Agency">Operator economic</option>
-                      <option data-tokens="SingleUser">Doctor</option>
+                      <option data-tokens="Agent/Agency">Targoviste</option>
+                      <option data-tokens="SingleUser">Brasov</option>
                     </select>
                   </div>
                   {/* End from-group */}

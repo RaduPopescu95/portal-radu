@@ -13,7 +13,7 @@ const GlobalFilter = ({ className = "" }) => {
   const router = useRouter()
   // submit handler
   const submitHandler = () => {
-    router.push("/listing-grid-v1");
+    router.push("/parteneri");
   };
 
   return (

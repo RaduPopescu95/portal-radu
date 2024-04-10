@@ -22,7 +22,7 @@ const DetailsContent = () => {
         </div> */}
         {/* End .lsd_list */}
 
-        <h4 className="mb30">Description</h4>
+        <h4 className="mb30">Desriere</h4>
         <PropertyDescriptions />
       </div>
       {/* End .listing_single_description */}
@@ -69,9 +69,9 @@ const DetailsContent = () => {
 
       <div className="application_statics mt30">
         <h4 className="mb30">
-          Location{" "}
+          Locatie{" "}
           <small className="float-end">
-            1421 San Pedro St, Los Angeles, CA 90015
+            Bucuresti, Str. Cernauti, nr.1A
           </small>
         </h4>
         <div className="property_video p0">

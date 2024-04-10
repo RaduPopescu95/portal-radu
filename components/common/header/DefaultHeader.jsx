@@ -29,7 +29,7 @@ const Header = () => {
       <div className="container-fluid p0">
         {/* <!-- Menu Toggle btn--> */}
         <Link href="/" className="navbar_brand float-start dn-smd">
-          <Image
+          {/* <Image
             width={40}
             height={45}
             className="logo1 img-fluid"
@@ -42,7 +42,7 @@ const Header = () => {
             className="logo2 img-fluid"
             src="/assets/images/header-logo2.png"
             alt="header-logo2.png"
-          />
+          /> */}
           <span>Portal</span>
         </Link>
         {/* site logo brand */}

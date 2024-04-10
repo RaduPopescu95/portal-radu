@@ -3,17 +3,17 @@ const AllStatistics = () => {
     {
       id: 1,
       blockStyle: "",
-      icon: "flaticon-user-1",
+      icon: "flaticon-profit",
       timer: "121",
-      name: "Utilizatori",
+      name: "Oferte",
     },
-    {
-      id: 2,
-      blockStyle: "style2",
-      icon: "flaticon-high-five",
-      timer: "24",
-      name: "Parteneri",
-    },
+    // {
+    //   id: 2,
+    //   blockStyle: "style2",
+    //   icon: "flaticon-high-five",
+    //   timer: "24",
+    //   name: "Parteneri",
+    // },
     // {
     //   id: 3,
     //   blockStyle: "style3",

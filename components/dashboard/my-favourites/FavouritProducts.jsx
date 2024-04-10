@@ -27,7 +27,7 @@ const FavouritProducts = () => {
       <div className="details">
         <div className="tc_content">
           <h4>
-            <Link href={`/listing-details-v1/${item.id}`}>{item.title}</Link>
+            <Link href={`/partener/${item.id}`}>{item.title}</Link>
           </h4>
           <p>
             <span className="flaticon-placeholder"></span> {item.location}

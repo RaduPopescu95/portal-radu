@@ -33,7 +33,7 @@ const Activities = () => {
           </li>
         </ul>
         {/* Butonul adăugat aici */}
-        <button type="button" className="btn btn-primary btn-smaller-height d-flex align-items-center justify-content-center">Adauga bon/factura</button>
+        <button type="button" className="btn btn-primary btn-smaller-height d-flex align-items-center justify-content-center py-4">Adauga bon/factura</button>
       </div>
       ))}
     </>

@@ -80,7 +80,7 @@ const FeaturedProperties = () => {
                   </ul> */}
 
                   <Link
-                    href={`/listing-details-v1/${item.id}`}
+                    href={`/partener/${item.id}`}
                     className="fp_price"
                   >
                      {item.title}
@@ -91,7 +91,7 @@ const FeaturedProperties = () => {
                 <div className="tc_content">
                   {/* <p className="text-thm">{item.type}</p> */}
                   <h4>
-                    <Link href={`/listing-details-v1/${item.id}`}>
+                    <Link href={`/partener/${item.id}`}>
                       {item.price}
                     </Link>
                   </h4>

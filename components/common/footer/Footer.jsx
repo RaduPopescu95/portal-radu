@@ -20,17 +20,17 @@ const Footer = () => {
           <h4>Companie</h4>
           <ul className="list-unstyled">
             <li>
-              <Link href="/about-us">About Us</Link>
+              <Link href="/despre-noi">Despre noi</Link>
             </li>
             <li>
               <Link href="/terms">Termeni si conditii</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/faq">User’s Guide</Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link href="/cum-functioneaza">Cum functioneaza</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
@@ -44,7 +44,7 @@ const Footer = () => {
               <a href="mailto:info@email.com">info@numeportal.com</a>
             </li>
             <li>
-              <a href="#">Collins Street West, Victoria</a>
+              <a href="#">Bucurest, str. Cernauti, nr.1A</a>
             </li>
             <li>
               <a href="tel:+079999999">079999999</a>

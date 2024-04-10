@@ -9,8 +9,7 @@ const PropertyLocation = () => {
             <iframe
               title="map"
               className="gmap_iframe"
-              src="https://www.google.com/maps/d/embed?mid=1tJl0-uRax4AKBfbh1eLPLX5WzOk&hl=en&ehbc=2E312F"
-            ></iframe>
+              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d22595.777846929217!2d25.447559!3d44.930490!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sro!4v[timestamp-ul-tau-aici]!5m2!1sen!2sro"            ></iframe>
           </div>
         </div>
         <div className="overlay_icon">

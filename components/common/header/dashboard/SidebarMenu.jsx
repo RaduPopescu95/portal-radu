@@ -63,14 +63,14 @@ const SidebarMenu = () => {
                   : ""
               }`}
             >
-              <Link href="/my-dashboard">
+              <Link href="/panou-partener">
                 <i className="flaticon-layers"></i>
                 <span>Dashboard</span>
               </Link>
             </li>
             <li
               className={`treeview ${
-                isSinglePageActive("/create-listing", pathname)
+                isSinglePageActive("/creaza-oferta", pathname)
                   ? "active"
                   : ""
               }`}
@@ -82,19 +82,19 @@ const SidebarMenu = () => {
             </li>
             <li
               className={`treeview ${
-                isSinglePageActive("/my-saved-search", pathname)
+                isSinglePageActive("/lista-oferte", pathname)
                   ? "active"
                   : ""
               }`}
             >
-              <Link href="/my-properties">
+              <Link href="/lista-oferte">
                 <i className="flaticon-layers"></i>
                 <span>Lista oferte</span>
               </Link>
             </li>
-            <li
+            {/* <li
               className={`treeview ${
-                isSinglePageActive("/create-listing", pathname)
+                isSinglePageActive("/creaza-produs-serviciu", pathname)
                   ? "active"
                   : ""
               }`}
@@ -103,20 +103,20 @@ const SidebarMenu = () => {
                 <i className="flaticon-plus"></i>
                 <span>Creaza Produs/serviciu</span>
               </Link>
-            </li>
+            </li> */}
 
-            <li
+            {/* <li
               className={`treeview ${
-                isSinglePageActive("/my-saved-search", pathname)
+                isSinglePageActive("/lista-produse-servicii", pathname)
                   ? "active"
                   : ""
               }`}
             >
-              <Link href="/my-saved-search">
+              <Link href="/lista-produse-servicii">
                 <i className="flaticon-layers"></i>
                 <span>Lista produse/servicii</span>
               </Link>
-            </li>
+            </li> */}
             {/* <li
               className={`treeview ${
                 isSinglePageActive("/my-message", pathname)

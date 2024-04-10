@@ -8,7 +8,7 @@ const FindProperties = () => {
       {findProperties.map((item) => (
         <div className="col-sm-6 col-lg-4 col-xl-4" key={item.id}>
           <Link
-            href="/listing-grid-v4"
+            href="/parteneri"
             className="properti_city style2 d-block"
           >
             <div className="thumb">
@@ -22,7 +22,7 @@ const FindProperties = () => {
             </div>
             <div className="details">
               <h4>{item.name}</h4>
-              <p>{item.number} Properties</p>
+              <p>{item.number} Parteneri</p>
             </div>
           </Link>
         </div>

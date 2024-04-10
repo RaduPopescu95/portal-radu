@@ -1,16 +1,17 @@
 import dynamic from "next/dynamic";
-import CreateListing from "@/components/dashboard/creaza-oferta";
+import MyDashboard from "@/components/dashboard-master/my-dashboard";
 
 export const metadata = {
-  title: 'Creaza discount || nume portal',
+  title: 'Dashboard || Nume Portal',
   description:
-    'nume portal',
+    'Nume Portal',
 }
+
 
 const index = () => {
   return (
     <>
-      <CreateListing />
+      <MyDashboard />
     </>
   );
 };

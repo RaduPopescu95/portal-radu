@@ -5474,6 +5474,18 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
   text-align: center;
 }
 
+.status_tag.redbadge {
+  border-radius: 3px;
+  background-color: #ff0000;
+  font-size: 14px;
+  font-family: "Nunito";
+  color: rgb(254, 254, 254);
+  height: 25px;
+  line-height: 1.2;
+  padding: 5px 8px;
+  text-align: center;
+}
+
 .status_tag.badge2 {
   border-radius: 3px;
   background-color: rgb(57, 218, 138);

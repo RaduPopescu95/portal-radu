@@ -42,12 +42,12 @@ const SidebarMenu = () => {
       <ul className="sidebar-menu">
         <li className="sidebar_header header">
           <Link href="/">
-            <Image
+            {/* <Image
               width={40}
               height={45}
               src="/assets/images/header-logo2.png"
               alt="header-logo2.png"
-            />
+            /> */}
             <span>Portal</span>
           </Link>
         </li>

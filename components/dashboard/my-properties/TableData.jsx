@@ -85,7 +85,13 @@ const TableData = () => {
       {/* End td */}
 
       <td>
-        <span className="status_tag badge">Activa</span>
+    
+        {toggled[item.id] === 'tick' ? (
+          <span className="status_tag redbadge">Inactiva</span>
+        ) : toggled[item.id] === 'close' ? (
+          <span className="status_tag badge">Activa</span>
+        ) : null
+    }
       </td>
       {/* End td */}
 

@@ -26,7 +26,7 @@ const HeaderMenuContent = ({ float = "" }) => {
       items: [
         {
           name: "Grid v1",
-          routerPath: "/listing-grid-v1",
+          routerPath: "/parteneri",
         },
       ],
     },
@@ -50,10 +50,10 @@ const HeaderMenuContent = ({ float = "" }) => {
   ];
 
   const pages = [
-    { id: 1, name: "Despre noi", routerPath: "/about-us" },
-    { id: 2, name: "Faq", routerPath: "/faq" },
-    { id: 3, name: "Termeni & Conditii", routerPath: "/terms" },
-    { id: 3, name: "Cum functioneaza", routerPath: "/cum-functioneaza" },
+    { id: 1, name: "Despre noi", routerPath: "/despre-noi" },
+    // { id: 2, name: "Faq", routerPath: "/faq" },
+    { id: 3, name: "Termeni & Conditii", routerPath: "/termeni-conditii" },
+    // { id: 3, name: "Cum functioneaza", routerPath: "/cum-functioneaza" },
   ];
 
   return (
@@ -65,21 +65,21 @@ const HeaderMenuContent = ({ float = "" }) => {
       <li className="last">
         <Link
           href="/"
-          className={pathname === "/contact" ? "ui-active" : undefined}
+          className={pathname === "/" ? "ui-active" : undefined}
         >
           Acasă
         </Link>
       </li>
       {/* End .simpleitem */}
 
-      <li className="last">
+      {/* <li className="last">
         <Link
-          href="/listing-grid-v1"
-          className={pathname === "/contact" ? "ui-active" : undefined}
+          href="/parteneri"
+          className={pathname === "/parteneri" ? "ui-active" : undefined}
         >
-          Clinici
+          Parteneri
         </Link>
-      </li>
+      </li> */}
       {/* End .simpleitem */}
 
       {/* <li className="last">
@@ -161,7 +161,7 @@ const HeaderMenuContent = ({ float = "" }) => {
               src="/assets/images/team/e1.png"
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1">Popescu Adrian</span>
+            <span className="dn-1199 ms-1">Nume Partener</span>
           </a>
           <div className="dropdown-menu">
             <MyAccount />

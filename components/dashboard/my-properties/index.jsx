@@ -1,5 +1,5 @@
-import Header from "../../common/header/dashboard-master/Header";
-import SidebarMenu from "../../common/header/dashboard-master/SidebarMenu";
+import Header from "../../common/header/dashboard/Header";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
@@ -43,7 +43,7 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
+                        <i className="fa fa-bars pr10"></i> Navigatie panou de administrare
                       </button>
                     </div>
                   </div>
@@ -52,7 +52,7 @@ const index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">Lista utilizatori / Parteneri</h2>
+                    <h2 className="breadcrumb_title">Lista oferte</h2>
                   </div>
                 </div>
                 {/* End .col */}

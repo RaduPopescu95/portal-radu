@@ -160,7 +160,7 @@ const FeaturedItem = () => {
           <div className="overlay">
             <div className="details">
               <Link
-                href={`/listing-details-v1/${item.id}`}
+                href={`/partener/${item.id}`}
                 className="fp_price"
               >
                 ${item.price}

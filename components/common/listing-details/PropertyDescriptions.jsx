@@ -8,58 +8,19 @@ const PropertyDescriptions = () => {
 
   return (
     <>
-      <p className="mb25">
-        Evans Tower very high demand corner junior one bedroom plus a large
-        balcony boasting full open NYC views. You need to see the views to
-        believe them. Mint condition with new hardwood floors. Lots of closets
-        plus washer and dryer.
+      <p className="mt10 mb10">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
-      <p className={click ? "gpara second_para white_goverlay mt10 mb10" : ""}>
-        Fully furnished. Elegantly appointed condominium unit situated on
-        premier location. PS6. The wide entry hall leads to a large living room
-        with dining area. This expansive 2 bedroom and 2 renovated marble
-        bathroom apartment has great windows. Despite the interior views, the
-        apartments Southern and Eastern exposures allow for lovely natural light
-        to fill every room. The master suite is surrounded by handcrafted
-        milkwork and features incredible walk-in closet and storage space.
+      <p className="mt10 mb10">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </p>
-      <div className="collapse" id="collapseExample">
-        <div className="card card-body">
-          <p className="mt10 mb10">
-            Fully furnished. Elegantly appointed condominium unit situated on
-            premier location. PS6. The wide entry hall leads to a large living
-            room with dining area. This expansive 2 bedroom and 2 renovated
-            marble bathroom apartment has great windows. Despite the interior
-            views, the apartments Southern and Eastern exposures allow for
-            lovely natural light to fill every room. The master suite is
-            surrounded by handcrafted milkwork and features incredible walk-in
-            closet and storage space.
+      <p className="mt10 mb10">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
           </p>
           <p className="mt10 mb10">
-            Fully furnished. Elegantly appointed condominium unit situated on
-            premier location. PS6. The wide entry hall leads to a large living
-            room with dining area. This expansive 2 bedroom and 2 renovated
-            marble bathroom apartment has great windows. Despite the interior
-            views, the apartments Southern and Eastern exposures allow for
-            lovely natural light to fill every room. The master suite is
-            surrounded by handcrafted milkwork and features incredible walk-in
-            closet and storage space.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
           </p>
-        </div>
-      </div>
-      <p className="overlay_close">
-        <a
-          className="text-thm fz14"
-          data-bs-toggle="collapse"
-          href="#collapseExample"
-          role="button"
-          aria-expanded="false"
-          aria-controls="collapseExample"
-          onClick={handleClick}
-        >
-          Show More <span className="flaticon-download-1 fz12"></span>
-        </a>
-      </p>
+
     </>
   );
 };

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addLength } from "../../../features/properties/propertiesSlice";
 import properties from "../../../data/properties";
 import Image from "next/image";
+import { generateRandomGradient } from "@/utils/commonUtils";
 
 const FeaturedItem = () => {
   const {
@@ -145,7 +146,7 @@ const FeaturedItem = () => {
             isGridOrList ? "d-flex align-items-center" : undefined
           }`}
         >
-          <div className="thumb">
+          <div className="thumb" style={{ backgroundImage: generateRandomGradient()}}>
             <Image
               width={342}
               height={220}
@@ -154,16 +155,16 @@ const FeaturedItem = () => {
               alt="fp1.jpg"
             />
             <div className="thmb_cntnt">
-              <ul className="tag mb0">
-                {/* <li className="list-inline-item">
-                  <a href="#">Promovat</a>
-                </li> */}
-                {/* <li className="list-inline-item">
-                  <a href="#" className="text-capitalize">
-                    {item.featured}
-                  </a>
-                </li> */}
-              </ul>
+            <div style={{ position: 'absolute', top: '1px', left: '10px', zIndex: 10 }}>
+                    <Image
+                      src="/assets/user-profile.png" // Asigură-te că calea este corectă
+                      alt="Logo"
+                      width={50}
+                      height={50}
+                      className="logo"
+                      
+                    />
+                  </div>
               {/* <ul className="icon mb0">
                 <li className="list-inline-item">
                   <a href="#">
@@ -177,20 +178,19 @@ const FeaturedItem = () => {
                 </li>
               </ul> */}
 
-              {/* <Link
-                href={`/listing-details-v1/${item.id}`}
-                className="fp_price"
-              >
-                ${item.price}
-                <small>/mo</small>
-              </Link> */}
+<Link
+                    href={`/partener/${item.id}`}
+                    className="fp_price"
+                  >
+                     {item.title}
+                  </Link>
             </div>
           </div>
           <div className="details">
             <div className="tc_content">
               <p className="text-thm">{item.type}</p>
               <h4>
-                <Link href={`/listing-details-v1/${item.id}`}>
+                <Link href={`/partener/${item.id}`}>
                   {item.title}
                 </Link>
               </h4>
@@ -211,8 +211,8 @@ const FeaturedItem = () => {
             </div>
             {/* End .tc_content */}
 
-            <div className="fp_footer">
-              {/* <ul className="fp_meta float-start mb0">
+            {/* <div className="fp_footer">
+              <ul className="fp_meta float-start mb0">
                 <li className="list-inline-item">
                   <Link href="/agent-v2">
                     <Image
@@ -226,9 +226,9 @@ const FeaturedItem = () => {
                 <li className="list-inline-item">
                   <Link href="/agent-v2">{item.posterName}</Link>
                 </li>
-              </ul> */}
+              </ul>
               <div className="fp_pdate float-end">{item.postedYear}</div>
-            </div>
+            </div> */}
             {/* End .fp_footer */}
           </div>
         </div>

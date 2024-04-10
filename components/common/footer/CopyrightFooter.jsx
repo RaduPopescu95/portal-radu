@@ -5,7 +5,7 @@ const CopyrightFooter = () => {
     { id: 1, name: "Home", routeLink: "/" },
     { id: 2, name: "Listing", routeLink: "/listing-grid-v3" },
     { id: 3, name: "Property", routeLink: "/listing-grid-v4" },
-    { id: 4, name: "About Us", routeLink: "/about-us" },
+    { id: 4, name: "About Us", routeLink: "/despre-noi" },
     { id: 5, name: "Blog", routeLink: "/blog-list-3" },
     { id: 6, name: "Contact", routeLink: "/contact" },
   ];
@@ -30,13 +30,13 @@ const CopyrightFooter = () => {
           <p>
             &copy; {new Date().getFullYear()} by{" "}
             <a
-              href="https://themeforest.net/user/ib-themes"
+              href="#"
               target="_blank"
               rel="noreferrer"
             >
-              ib-themes
+              Portal
             </a>
-            . All rights reserved.
+            . Toate drepturile rezervate.
           </p>
         </div>
       </div>

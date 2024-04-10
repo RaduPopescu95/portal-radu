@@ -8,11 +8,12 @@ import { usePathname } from "next/navigation";
 const MyAccount = () => {
   const pathname = usePathname()
   const profileMenuItems = [
-    { id: 1, name: "My Profile", ruterPath: "/my-profile" },
-    { id: 2, name: " My Message", ruterPath: "/my-message" },
-    { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 4, name: " My Package", ruterPath: "/my-package" },
-    { id: 5, name: " Log out", ruterPath: "/login" },
+    { id: 1, name: "Profil", ruterPath: "/profil-partener" },
+    // { id: 2, name: " My Message", ruterPath: "/my-message" },
+    // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
+    { id: 3, name: " Lista oferte", ruterPath: "/lista-oferte" },
+    { id: 4, name: " Lista produse", ruterPath: "/lista-produse-servicii" },
+    { id: 5, name: " Deconectare", ruterPath: "/" },
   ];
 
   return (
@@ -26,8 +27,8 @@ const MyAccount = () => {
           alt="e1.png"
         />
         <p>
-          Ali Tufan <br />
-          <span className="address">alitufan@gmail.com</span>
+          Nume partener <br />
+          <span className="address">partener@gmail.com</span>
         </p>
       </div>
       {/* End user_set_header */}
@@ -40,7 +41,7 @@ const MyAccount = () => {
             className="dropdown-item"
             style={
               isSinglePageActive(`${item.ruterPath}`, pathname)
-                ? { color: "#ff5a5f" }
+                ? { color: "#0000FF" }
                 : undefined
             }
           >

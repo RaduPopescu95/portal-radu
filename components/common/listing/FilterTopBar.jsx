@@ -41,9 +41,9 @@ const FilterTopBar = () => {
               {length}{" "}
             </span>
             {length !== 0 ? (
-              "Search results"
+              "Rezultate"
             ) : (
-              <span className="text-danger">Not found results</span>
+              <span className="text-danger">Nu au fost gasite rezultate</span>
             )}
           </p>
         </div>

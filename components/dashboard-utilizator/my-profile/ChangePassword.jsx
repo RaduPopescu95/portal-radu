@@ -43,11 +43,11 @@ const ChangePassword = () => {
         {/* End .col */}
 
         <div className="col-xl-12">
-          <div className="my_profile_setting_input float-start fn-520">
+          {/* <div className="my_profile_setting_input float-start fn-520">
             <button className="btn btn3 btn-dark">Update Profile</button>
-          </div>
+          </div> */}
           <div className="my_profile_setting_input float-end fn-520">
-            <button className="btn btn2">Update Profile</button>
+            <button className="btn btn2">Actualizeaza profil</button>
           </div>
         </div>
         {/* End .col */}

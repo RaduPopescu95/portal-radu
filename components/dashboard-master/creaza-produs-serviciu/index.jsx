@@ -102,14 +102,6 @@ const index = () => {
               </div>
               {/* End .row */}
 
-              <div className="row mt50">
-                <div className="col-lg-12">
-                  <div className="copyright-widget text-center">
-                    <p>© 2020 Find House. Made with love.</p>
-                  </div>
-                </div>
-              </div>
-              {/* End .row */}
             </div>
             {/* End .col */}
           </div>
