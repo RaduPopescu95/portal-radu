@@ -1,12 +1,24 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Ratings from "../../blog-details/Ratings";
 import QRCode from 'react-qr-code';
 
 const WhatsNearby = () => {
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
   const nearbyContent = [
     {
       id: 1,
@@ -114,33 +126,39 @@ const WhatsNearby = () => {
     setIsModalVisible(false);
   };
 
+
+
+  const modalStyle = {
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'white',
+    padding: '20px',
+    zIndex: 1000,
+    border: '1px solid #ccc',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+    width: windowWidth < 768 ? '80%' : '24%', // Ajustare pentru mobil
+  };
+
+  const closeModalButtonStyle = {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    cursor: 'pointer',
+  };
   const renderModal = () => {
     if (!isModalVisible) return null;
 
     return (
-      <div style={{
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        backgroundColor: 'white',
-        padding: '50px',
-        zIndex: 1000,
-        border: '1px solid #ccc',
-        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-        width:"24%"
-      }}>
-        <QRCode value={selectedOffer} size={256} level={"H"} />
+      <div style={modalStyle}>
+        <QRCode value={selectedOffer} size={windowWidth < 768 ? 200 : 256} level={"H"} />
         <p className='mt10'>Scanează pentru a verifica oferta</p>
-        <button onClick={closeModal} className="btn btn-primary btn-md" style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          cursor: 'pointer',
-        }}>X</button>
+        <button onClick={closeModal} className="btn btn-primary btn-md" style={closeModalButtonStyle}>X</button>
       </div>
     );
   };
+
 
   return (
     <>
