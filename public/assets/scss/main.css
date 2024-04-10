@@ -2658,7 +2658,7 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu > li.last {
 }
 
 .home1_adsrchfrm:before {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: "transparent";
   border-radius: 8px;
   bottom: -10px;
   content: "";
