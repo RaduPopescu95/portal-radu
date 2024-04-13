@@ -1,11 +1,106 @@
-"use client"
+"use client";
 
+import { useAuth } from "@/context/AuthContext";
+import { authentication } from "@/firebase";
+import { handleFirebaseAuthError } from "@/utils/authUtils";
+import { handleUploadFirestore } from "@/utils/firestoreUtils";
+import { emailWithoutSpace } from "@/utils/strintText";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 const LoginSignupUtilizator = () => {
-  const [titulaturaSelectata, setTitulaturaSelectata] = useState('');
+  const { userData, currentUser, setCurrentUser } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [numeUtilizator, setNumeUtilizator] = useState("");
+  const [telefon, setTelefon] = useState("");
+  const [dataNasterii, setDataNasterii] = useState("");
+  const [judet, setJudet] = useState("");
+  const [localitate, setLocalitate] = useState("");
+  const [titulatura, setTitulatura] = useState("");
+  const [specializare, setSpecializare] = useState("");
+  const [cuim, setCuim] = useState("");
+  const [titulaturaSelectata, setTitulaturaSelectata] = useState("");
+
+  const handleReset = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setNumeUtilizator("");
+    setTelefon("");
+    setDataNasterii("");
+    setJudet("");
+    setLocalitate("");
+    setTitulatura("");
+    setSpecializare("");
+    setCuim("");
+  };
+
+  const handleLogIn = async (event) => {
+    console.log(userData);
+    event.preventDefault();
+
+    signInWithEmailAndPassword(authentication, email, password)
+      .then(async (userCredentials) => {
+        setCurrentUser(userCredentials);
+        console.log("success login");
+      })
+      .catch((error) => {
+        const errorMessage = handleFirebaseAuthError(error);
+        // Aici puteți folosi errorMessage pentru a afișa un snackbar sau un alert
+        // setShowSnackback(true);
+        // setMessage(errorMessage);
+
+        console.log("error on sign in user...", error.message);
+        console.log("error on sign in user...", error.code);
+      });
+  };
+
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+    const emailNew = emailWithoutSpace(email);
+    // Verifică dacă parola este confirmată corect și apoi creează utilizatorul
+    if (password !== confirmPassword) {
+      console.error("Passwords do not match!");
+      return;
+    }
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        authentication,
+        emailNew,
+        password
+      );
+      let user_uid = userCredential.user.uid;
+      console.log(
+        "User created successfully with email: ",
+        userCredential.user
+      );
+      let data = {
+        cuim,
+        specializare,
+        titulatura,
+        localitate,
+        judet,
+        dataNasterii,
+        telefon,
+        numeUtilizator,
+        email,
+        user_uid,
+        userType: "Doctor",
+      };
+      await handleUploadFirestore(data, "Users");
+      handleReset();
+    } catch (error) {
+      console.error("Error signing up: ", error);
+    }
+  };
+
   return (
     <div className="modal-content">
       <div className="modal-header">
@@ -14,6 +109,7 @@ const LoginSignupUtilizator = () => {
           data-bs-dismiss="modal"
           aria-label="Close"
           className="btn-close"
+          onClick={handleReset}
         ></button>
       </div>
       {/* End .modal-header */}
@@ -79,7 +175,7 @@ const LoginSignupUtilizator = () => {
 
             <div className="col-lg-6 col-xl-6">
               <div className="login_form">
-                <form action="#">
+                <form onSubmit={handleLogIn} action="#">
                   <div className="heading">
                     <h4>Autentificare utilizator</h4>
                   </div>
@@ -109,6 +205,8 @@ const LoginSignupUtilizator = () => {
                       className="form-control"
                       id="inlineFormInputGroupUsername2"
                       placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -124,6 +222,8 @@ const LoginSignupUtilizator = () => {
                       className="form-control"
                       id="exampleInputPassword1"
                       placeholder="Parola"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -177,16 +277,14 @@ const LoginSignupUtilizator = () => {
             role="tabpanel"
             aria-labelledby="profile-tab"
           >
-               <form action="#" className="row">
+            <form onSubmit={handleSignUp} action="#" className="row">
+              <div className="col-lg-6 col-xl-6">
+                <div className="sign_up_form">
+                  <div className="heading">
+                    <h4>Înregistrare Utilizator</h4>
+                  </div>
+                  {/* End .heading */}
 
-               <div className="col-lg-6 col-xl-6">
-              <div className="sign_up_form">
-                <div className="heading">
-                  <h4>Înregistrare Utilizator</h4>
-                </div>
-                {/* End .heading */}
-
-             
                   {/* <div className="row ">
                     <div className="col-lg-12">
                       <button type="submit" className="btn btn-fb w-100">
@@ -211,6 +309,8 @@ const LoginSignupUtilizator = () => {
                       className="form-control"
                       id="exampleInputName"
                       placeholder="Nume utilizator"
+                      value={numeUtilizator}
+                      onChange={(e) => setNumeUtilizator(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -226,6 +326,8 @@ const LoginSignupUtilizator = () => {
                       className="form-control"
                       id="exampleInputEmail2"
                       placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -241,6 +343,8 @@ const LoginSignupUtilizator = () => {
                       className="form-control"
                       id="exampleInputPassword2"
                       placeholder="Parola"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -256,6 +360,8 @@ const LoginSignupUtilizator = () => {
                       className="form-control"
                       id="exampleInputPassword3"
                       placeholder="Confirma Parola"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -265,13 +371,14 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End .row */}
 
-                  
                   <div className="form-group input-group mb-3">
                     <input
                       type="text"
                       className="form-control"
                       id="exampleInputName"
                       placeholder="Număr de telefon"
+                      value={telefon}
+                      onChange={(e) => setTelefon(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -280,22 +387,22 @@ const LoginSignupUtilizator = () => {
                     </div>
                   </div>
                   {/* End .row */}
-               
-                {/* End .form */}
+
+                  {/* End .form */}
+                </div>
               </div>
-            </div>
-            {/* End . left side image for register */}
+              {/* End . left side image for register */}
 
-            <div className="col-lg-6 col-xl-6">
-              <div className="sign_up_form">
-
-
+              <div className="col-lg-6 col-xl-6">
+                <div className="sign_up_form">
                   <div className="form-group input-group mb-3">
                     <input
                       type="text"
                       className="form-control"
                       id="exampleInputName"
                       placeholder="Data nașterii"
+                      value={dataNasterii}
+                      onChange={(e) => setDataNasterii(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -305,12 +412,13 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End .row */}
 
-                  
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
+                      value={judet}
+                      onChange={(e) => setJudet(e.target.value)}
                     >
                       <option data-tokens="SelectRole">Judet</option>
                       <option data-tokens="Agent/Agency">Dambovita</option>
@@ -320,12 +428,13 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End from-group */}
 
-                  
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
+                      value={localitate}
+                      onChange={(e) => setLocalitate(e.target.value)}
                     >
                       <option data-tokens="SelectRole">Localitate</option>
                       <option data-tokens="Agent/Agency">Targoviste</option>
@@ -339,142 +448,243 @@ const LoginSignupUtilizator = () => {
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
-                      onChange={(e) => setTitulaturaSelectata(e.target.value)}
+                      value={titulatura}
+                      onChange={(e) => setTitulatura(e.target.value)}
                     >
                       <option data-tokens="SelectRole">Titulatura</option>
                       <option data-tokens="Agent/Agency">Medic Rezident</option>
-                      <option data-tokens="Agent/Agency">Medic Generalist</option>
+                      <option data-tokens="Agent/Agency">
+                        Medic Generalist
+                      </option>
                       <option data-tokens="Agent/Agency">Medic</option>
-                      <option data-tokens="Agent/Agency">Medic Specialist</option>
+                      <option data-tokens="Agent/Agency">
+                        Medic Specialist
+                      </option>
                       <option data-tokens="Agent/Agency">Medic Primar</option>
                       <option data-tokens="Agent/Agency">Farmacist</option>
-                      <option data-tokens="Agent/Agency">Asistent Medical</option>
+                      <option data-tokens="Agent/Agency">
+                        Asistent Medical
+                      </option>
                       <option data-tokens="SingleUser">Altele</option>
                     </select>
                   </div>
                   {/* End .row */}
-                  {titulaturaSelectata !== 'Asistent Medical' && (
+                  {titulatura !== "Asistent Medical" && (
                     <>
-                  <div className="form-group ui_kit_select_search mb-3">
-                    <select
-                      className="form-select"
-                      data-live-search="true"
-                      data-width="100%"
-                    >
-                      <option data-tokens="SelectRole">Specializare</option>
-                      <option data-tokens="Agent/Agency">Alergologie si imunologie</option>
-                      <option data-tokens="SingleUser">Anatomie Patologica</option>
-                      <option data-tokens="SingleUser">Anestezie si terapie intensiva (ATI)</option>
-                      <option data-tokens="SingleUser">Boli Infectioase</option>
-                      <option data-tokens="SingleUser">Cardiologie</option>
-                      <option data-tokens="SingleUser">Cardiologie pediatrica</option>
-                      <option data-tokens="SingleUser">Chirurgie cardiovasculara</option>
-                      <option data-tokens="SingleUser">Chirurgie generala</option>
-                      <option data-tokens="SingleUser">Chirurgie orala si maxilofaciala</option>
-                      <option data-tokens="SingleUser">Chirurgie pediatrica</option>
-                      <option data-tokens="SingleUser">Chirurgie plastica, reconstructiva si microchirurgie</option>
-                      <option data-tokens="SingleUser">Chirurgie toracica</option>
-                      <option data-tokens="SingleUser">Chirurgie vasculara</option>
-                      <option data-tokens="SingleUser">Dermatovenerologie</option>
-                      <option data-tokens="SingleUser">Diabet zaharat, nutritie si boli metabolice</option>
-                      <option data-tokens="SingleUser">Endocrinologie</option>
-                      <option data-tokens="SingleUser">Epidemiologie</option>
-                      <option data-tokens="SingleUser">Expertiza medicala</option>
-                      <option data-tokens="SingleUser">Farmacist</option>
-                      <option data-tokens="SingleUser">Farmacologie clinica</option>
-                      <option data-tokens="SingleUser">Gastroenterologie</option>
-                      <option data-tokens="SingleUser">Gastroenterologie Pediatrica</option>
-                      <option data-tokens="SingleUser">Genetica medicala</option>
-                      <option data-tokens="SingleUser">Geriatrie si gerontologie</option>
-                      <option data-tokens="SingleUser">Hematologie</option>
-                      <option data-tokens="SingleUser">Igiena</option>
-                      <option data-tokens="SingleUser">Medicina muncii</option>
-                      <option data-tokens="SingleUser">Medicina de familie</option>
-                      <option data-tokens="SingleUser">Medicina de laborator</option>
-                      <option data-tokens="SingleUser">Medicina de urgenta</option>
-                      <option data-tokens="SingleUser">Medicina fizica si balneologie</option>
-                      <option data-tokens="SingleUser">Medicina interna</option>
-                      <option data-tokens="SingleUser">Medicina legala</option>
-                      <option data-tokens="SingleUser">Medicina nucleara</option>
-                      <option data-tokens="SingleUser">Medicina sportiva</option>
-                      <option data-tokens="SingleUser">Microbiologie medicala</option>
-                      <option data-tokens="SingleUser">Nefrologie</option>
-                      <option data-tokens="SingleUser">Nefrologie pediatrica</option>
-                      <option data-tokens="SingleUser">Neonatologie</option>
-                      <option data-tokens="SingleUser">Neurochirurgie</option>
-                      <option data-tokens="SingleUser">Neurologie</option>
-                      <option data-tokens="SingleUser">Neurologie pediatrica</option>
-                      <option data-tokens="SingleUser">Obstetrica ginecologie</option>
-                      <option data-tokens="SingleUser">Oftalmologie</option>
-                      <option data-tokens="SingleUser">Oncologie medicala</option>
-                      <option data-tokens="SingleUser">Oncologie si hematologie</option>
-                      <option data-tokens="SingleUser">Oncologie pediatrica</option>
-                      <option data-tokens="SingleUser">Oncologie si traumatologie</option>
-                      <option data-tokens="SingleUser">Otorinolaringologie ORL</option>
-                      <option data-tokens="SingleUser">Pediatrie</option>
-                      <option data-tokens="SingleUser">Pneumologie</option>
-                      <option data-tokens="SingleUser">Pneumologie pediatrica</option>
-                      <option data-tokens="SingleUser">Psihiatrie</option>
-                      <option data-tokens="SingleUser">Psihiatrie pediatrica</option>
-                      <option data-tokens="SingleUser">Radiologie si Imagistica medicala</option>
-                      <option data-tokens="SingleUser">Radioterapie</option>
-                      <option data-tokens="SingleUser">Reumatologie</option>
-                      <option data-tokens="SingleUser">Sanatate publica si management</option>
-                      <option data-tokens="SingleUser">Urologie</option>
-                      <option data-tokens="SingleUser">Medicina generala</option>
-                      <option data-tokens="SingleUser">Altele</option>
-                    </select>
-                  </div>
-           
-
-                  <div className="form-group input-group mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="exampleInputName"
-                      placeholder="CUIM"
-                    />
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-user"></i>
+                      <div className="form-group ui_kit_select_search mb-3">
+                        <select
+                          className="form-select"
+                          data-live-search="true"
+                          data-width="100%"
+                          value={specializare}
+                          onChange={(e) => setSpecializare(e.target.value)}
+                        >
+                          <option data-tokens="SelectRole">Specializare</option>
+                          <option data-tokens="Agent/Agency">
+                            Alergologie si imunologie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Anatomie Patologica
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Anestezie si terapie intensiva (ATI)
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Boli Infectioase
+                          </option>
+                          <option data-tokens="SingleUser">Cardiologie</option>
+                          <option data-tokens="SingleUser">
+                            Cardiologie pediatrica
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Chirurgie cardiovasculara
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Chirurgie generala
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Chirurgie orala si maxilofaciala
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Chirurgie pediatrica
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Chirurgie plastica, reconstructiva si microchirurgie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Chirurgie toracica
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Chirurgie vasculara
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Dermatovenerologie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Diabet zaharat, nutritie si boli metabolice
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Endocrinologie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Epidemiologie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Expertiza medicala
+                          </option>
+                          <option data-tokens="SingleUser">Farmacist</option>
+                          <option data-tokens="SingleUser">
+                            Farmacologie clinica
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Gastroenterologie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Gastroenterologie Pediatrica
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Genetica medicala
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Geriatrie si gerontologie
+                          </option>
+                          <option data-tokens="SingleUser">Hematologie</option>
+                          <option data-tokens="SingleUser">Igiena</option>
+                          <option data-tokens="SingleUser">
+                            Medicina muncii
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Medicina de familie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Medicina de laborator
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Medicina de urgenta
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Medicina fizica si balneologie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Medicina interna
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Medicina legala
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Medicina nucleara
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Medicina sportiva
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Microbiologie medicala
+                          </option>
+                          <option data-tokens="SingleUser">Nefrologie</option>
+                          <option data-tokens="SingleUser">
+                            Nefrologie pediatrica
+                          </option>
+                          <option data-tokens="SingleUser">Neonatologie</option>
+                          <option data-tokens="SingleUser">
+                            Neurochirurgie
+                          </option>
+                          <option data-tokens="SingleUser">Neurologie</option>
+                          <option data-tokens="SingleUser">
+                            Neurologie pediatrica
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Obstetrica ginecologie
+                          </option>
+                          <option data-tokens="SingleUser">Oftalmologie</option>
+                          <option data-tokens="SingleUser">
+                            Oncologie medicala
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Oncologie si hematologie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Oncologie pediatrica
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Oncologie si traumatologie
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Otorinolaringologie ORL
+                          </option>
+                          <option data-tokens="SingleUser">Pediatrie</option>
+                          <option data-tokens="SingleUser">Pneumologie</option>
+                          <option data-tokens="SingleUser">
+                            Pneumologie pediatrica
+                          </option>
+                          <option data-tokens="SingleUser">Psihiatrie</option>
+                          <option data-tokens="SingleUser">
+                            Psihiatrie pediatrica
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Radiologie si Imagistica medicala
+                          </option>
+                          <option data-tokens="SingleUser">Radioterapie</option>
+                          <option data-tokens="SingleUser">Reumatologie</option>
+                          <option data-tokens="SingleUser">
+                            Sanatate publica si management
+                          </option>
+                          <option data-tokens="SingleUser">Urologie</option>
+                          <option data-tokens="SingleUser">
+                            Medicina generala
+                          </option>
+                          <option data-tokens="SingleUser">Altele</option>
+                        </select>
                       </div>
-                    </div>
-                  </div>
-                  </>
-          
+
+                      <div className="form-group input-group mb-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="exampleInputName"
+                          placeholder="CUIM"
+                          value={cuim}
+                          onChange={(e) => setCuim(e.target.value)}
+                        />
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="flaticon-user"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </>
                   )}
-               
-                {/* End .form */}
+
+                  {/* End .form */}
+                </div>
               </div>
-            </div>
-            <div className="form-group form-check custom-checkbox mb-3">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="terms"
-                    />
-                    <label
-                      className="form-check-label form-check-label"
-                      htmlFor="terms"
-                    >
-                     Accept termenii si conditiile.
-                    </label>
-                  </div>
-                  {/* End from-group */}
+              <div className="form-group form-check custom-checkbox mb-3">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="terms"
+                />
+                <label
+                  className="form-check-label form-check-label"
+                  htmlFor="terms"
+                >
+                  Accept termenii si conditiile.
+                </label>
+              </div>
+              {/* End from-group */}
 
-                  <button type="submit" className="btn btn-log w-100 btn-thm">
-                    înregistrare
-                  </button>
-                  {/* End btn */}
+              <button type="submit" className="btn btn-log w-100 btn-thm">
+                înregistrare
+              </button>
+              {/* End btn */}
 
-                  <p className="text-center">
-                    Aveti cont?{" "}
-                    <a className="text-thm" href="#">
-                      Autentificati-va
-                    </a>
-                  </p>
-            {/* End register content */}
+              <p className="text-center">
+                Aveti cont?{" "}
+                <a className="text-thm" href="#">
+                  Autentificati-va
+                </a>
+              </p>
+              {/* End register content */}
             </form>
           </div>
           {/* End .tab-pane */}

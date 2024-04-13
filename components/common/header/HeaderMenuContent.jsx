@@ -1,10 +1,11 @@
-'use client'
+"use client";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-
 const HeaderMenuContent = ({ float = "" }) => {
   const pathname = usePathname();
+  const { userData, currentUser } = useAuth();
 
   const home = [
     {
@@ -40,14 +41,16 @@ const HeaderMenuContent = ({ float = "" }) => {
     },
   ];
 
-  const blog = [
-    { id: 1, name: "Blog List 1", routerPath: "/blog-list-1" },
-  ];
+  const blog = [{ id: 1, name: "Blog List 1", routerPath: "/blog-list-1" }];
 
   const pages = [
     { id: 1, name: "Despre noi", routerPath: "/despre-noi" },
     // { id: 2, name: "Faq", routerPath: "/faq" },
-    { id: 3, name: "Termeni & Conditii", routerPath: "/termeni-confidentialitate" },
+    {
+      id: 3,
+      name: "Termeni & Conditii",
+      routerPath: "/termeni-confidentialitate",
+    },
     // { id: 3, name: "Cum functioneaza", routerPath: "/cum-functioneaza" },
   ];
 
@@ -81,7 +84,10 @@ const HeaderMenuContent = ({ float = "" }) => {
         <a
           href="#"
           className={
-            pages.some((page) => page.routerPath?.split('/')[1] === pathname?.split('/')[1])
+            pages.some(
+              (page) =>
+                page.routerPath?.split("/")[1] === pathname?.split("/")[1]
+            )
               ? "ui-active"
               : undefined
           }
@@ -95,7 +101,9 @@ const HeaderMenuContent = ({ float = "" }) => {
               <Link
                 href={item.routerPath}
                 className={
-                  pathname?.split('/')[1] === item.routerPath?.split('/')[1] ? "ui-active" : undefined
+                  pathname?.split("/")[1] === item.routerPath?.split("/")[1]
+                    ? "ui-active"
+                    : undefined
                 }
               >
                 {item.name}
@@ -126,43 +134,46 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End .simpleitem */}
 
-      <li className={`list-inline-item list_s ${float}`}>
-        <a
-          href="#"
-          className="btn flaticon-user"
-          data-bs-toggle="modal"
-          data-bs-target=".bd-utilizator-modal-lg"
-        >
-          <span className="dn-lg">Utilizator</span>
-        </a>
-      </li>
-      {/* End .dropitem */}
-      <li className={`list-inline-item list_s ${float}`}>
-        <a
-          href="#"
-          className="btn flaticon-user"
-          data-bs-toggle="modal"
-          data-bs-target=".bd-partener-modal-lg"
-        >
-          <span className="dn-lg">Partener</span>
-        </a>
-      </li>
-      {/* End .dropitem */}
+      {currentUser && userData?.userType ? null : (
+        <>
+          <li className={`list-inline-item list_s ${float}`}>
+            <a
+              href="#"
+              className="btn flaticon-user"
+              data-bs-toggle="modal"
+              data-bs-target=".bd-utilizator-modal-lg"
+            >
+              <span className="dn-lg">Utilizator</span>
+            </a>
+          </li>
+          {/* End .dropitem */}
+          <li className={`list-inline-item list_s ${float}`}>
+            <a
+              href="#"
+              className="btn flaticon-user"
+              data-bs-toggle="modal"
+              data-bs-target=".bd-partener-modal-lg"
+            >
+              <span className="dn-lg">Partener</span>
+            </a>
+          </li>
+          {/* End .dropitem */}
+        </>
+      )}
 
-      <li className={`list-inline-item add_listing ${float}`}>
-        <Link href="/utilizator">
-          {/* <span className="flaticon-plus"></span> */}
-          <span className="dn-lg">CONT UTILIZATOR</span>
-        </Link>
-      </li>
-      {/* End .dropitem */}
-      <li className={`list-inline-item add_listing ${float}`}>
-        <Link href="/panou-partener">
-          {/* <span className="flaticon-plus"></span> */}
-          <span className="dn-lg">CONT PARTENER</span>
-        </Link>
-      </li>
-      {/* End .dropitem */}
+      {userData?.userType === "Partener" && currentUser ? (
+        <li className={`list-inline-item add_listing ${float}`}>
+          <Link href="/panou-partener">
+            <span className="dn-lg">CONT PARTENER</span>
+          </Link>
+        </li>
+      ) : userData?.userType === "Doctor" && currentUser ? (
+        <li className={`list-inline-item add_listing ${float}`}>
+          <Link href="/utilizator">
+            <span className="dn-lg">CONT UTILIZATOR</span>
+          </Link>
+        </li>
+      ) : null}
     </ul>
   );
 };

@@ -42,7 +42,8 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Navigatie panou administrare
+                        <i className="fa fa-bars pr10"></i> Navigatie panou
+                        administrare
                       </button>
                     </div>
                   </div>
@@ -79,7 +80,6 @@ const index = () => {
                 </div>
               </div>
               {/* End .row  */}
-
             </div>
             {/* End .col */}
           </div>

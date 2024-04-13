@@ -1,7 +1,109 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { authentication } from "@/firebase";
+import {
+  handleQueryFirestoreSubcollection,
+  handleUploadFirestore,
+} from "@/utils/firestoreUtils";
+import { emailWithoutSpace } from "@/utils/strintText";
+import { useAuth } from "@/context/AuthContext";
+import { handleFirebaseAuthError, handleSignIn } from "@/utils/authUtils";
 
 const LoginSignupPartener = () => {
+  const { userData, currentUser, setCurrentUser, setUserData } = useAuth();
+  const [denumireBrand, setDenumireBrand] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [numeContact, setNumeContact] = useState("");
+  const [telefonContact, setTelefonContact] = useState("");
+  const [judet, setJudet] = useState("");
+  const [localitate, setLocalitate] = useState("");
+  const [categorie, setCategorie] = useState("");
+  const [cui, setCui] = useState("");
+
+  const handleReset = () => {
+    setDenumireBrand("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setNumeContact("");
+    setTelefonContact("");
+    setJudet("");
+    setLocalitate("");
+    setCategorie("");
+    setCui("");
+  };
+
+  const handleLogIn = async (event) => {
+    event.preventDefault();
+    console.log(userData);
+    console.log(currentUser);
+
+    let utilizator = await handleQueryFirestoreSubcollection(
+      "Users",
+      "cui",
+      cui
+    );
+    setUserData(utilizator[0]);
+    handleSignIn(utilizator[0].email, password)
+      .then((userCredentials) => {
+        console.log("user credentials...", userCredentials);
+        setCurrentUser(userCredentials); // Aici trebuie să asiguri că userCredentials este gestionat corect
+        // router.push("/dashboard");
+      })
+      .catch((error) => {
+        console.error("Error during sign in:", error.message);
+        console.error("Error during sign in:", error.code);
+        // setError("Failed to log in. Error message: " + error.message); // Utilizează error.message pentru a oferi feedback utilizatorului
+      });
+  };
+
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+    const emailNew = emailWithoutSpace(email);
+    // Verifică dacă parola este confirmată corect și apoi creează utilizatorul
+    if (password !== confirmPassword) {
+      console.error("Passwords do not match!");
+      return;
+    }
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        authentication,
+        emailNew,
+        password
+      );
+      let user_uid = userCredential.user.uid;
+      console.log(
+        "User created successfully with email: ",
+        userCredential.user
+      );
+      let data = {
+        cui,
+        categorie,
+        localitate,
+        judet,
+        telefonContact,
+        numeContact,
+        email: emailNew,
+        denumireBrand,
+        user_uid,
+        userType: "Partener",
+      };
+      await handleUploadFirestore(data, "Users");
+      handleReset();
+    } catch (error) {
+      console.error("Error signing up: ", error);
+    }
+  };
+
   return (
     <div className="modal-content">
       <div className="modal-header">
@@ -10,6 +112,7 @@ const LoginSignupPartener = () => {
           data-bs-dismiss="modal"
           aria-label="Close"
           className="btn-close"
+          onClick={handleReset}
         ></button>
       </div>
       {/* End .modal-header */}
@@ -62,7 +165,7 @@ const LoginSignupPartener = () => {
           >
             <div className="col-lg-6 col-xl-6">
               <div className="login_thumb">
-              <Image
+                <Image
                   width={357}
                   height={494}
                   className="img-fluid w100 h-100 cover"
@@ -75,7 +178,7 @@ const LoginSignupPartener = () => {
 
             <div className="col-lg-6 col-xl-6">
               <div className="login_form">
-                <form action="#">
+                <form onSubmit={handleLogIn} action="#">
                   <div className="heading">
                     <h4>Autentificare partener</h4>
                   </div>
@@ -105,6 +208,8 @@ const LoginSignupPartener = () => {
                       className="form-control"
                       id="inlineFormInputGroupUsername2"
                       placeholder="CUI"
+                      value={cui}
+                      onChange={(e) => setCui(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -120,6 +225,8 @@ const LoginSignupPartener = () => {
                       className="form-control"
                       id="exampleInputPassword1"
                       placeholder="Parola"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -173,16 +280,14 @@ const LoginSignupPartener = () => {
             role="tabpanel"
             aria-labelledby="partener-tab"
           >
-               <form action="#" className="row">
+            <form onSubmit={handleSignUp} action="#" className="row">
+              <div className="col-lg-6 col-xl-6">
+                <div className="sign_up_form">
+                  <div className="heading">
+                    <h4>Înregistrare Partener</h4>
+                  </div>
+                  {/* End .heading */}
 
-               <div className="col-lg-6 col-xl-6">
-              <div className="sign_up_form">
-                <div className="heading">
-                  <h4>Înregistrare Partener</h4>
-                </div>
-                {/* End .heading */}
-
-             
                   {/* <div className="row ">
                     <div className="col-lg-12">
                       <button type="submit" className="btn btn-fb w-100">
@@ -207,6 +312,8 @@ const LoginSignupPartener = () => {
                       className="form-control"
                       id="exampleInputName"
                       placeholder="Denumire brand"
+                      value={denumireBrand}
+                      onChange={(e) => setDenumireBrand(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -222,6 +329,8 @@ const LoginSignupPartener = () => {
                       className="form-control"
                       id="exampleInputEmail2"
                       placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -237,6 +346,8 @@ const LoginSignupPartener = () => {
                       className="form-control"
                       id="exampleInputPassword2"
                       placeholder="Parola"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -252,6 +363,8 @@ const LoginSignupPartener = () => {
                       className="form-control"
                       id="exampleInputPassword3"
                       placeholder="Confirma Parola"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -261,13 +374,14 @@ const LoginSignupPartener = () => {
                   </div>
                   {/* End .row */}
 
-                                  
-              <div className="form-group input-group mb-3">
+                  <div className="form-group input-group mb-3">
                     <input
                       type="text"
                       className="form-control"
                       id="exampleInputName"
                       placeholder="Nume si prenume persoana de contact"
+                      value={numeContact}
+                      onChange={(e) => setNumeContact(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -277,23 +391,21 @@ const LoginSignupPartener = () => {
                   </div>
                   {/* End .row */}
 
-                {/* End .form */}
+                  {/* End .form */}
+                </div>
               </div>
-            </div>
-            {/* End . left side image for register */}
+              {/* End . left side image for register */}
 
-            <div className="col-lg-6 col-xl-6">
-              <div className="sign_up_form">
-
-
-
-                                    
+              <div className="col-lg-6 col-xl-6">
+                <div className="sign_up_form">
                   <div className="form-group input-group mb-3">
                     <input
                       type="text"
                       className="form-control"
                       id="exampleInputName"
                       placeholder="Număr de telefon persoana de contact"
+                      value={telefonContact}
+                      onChange={(e) => setTelefonContact(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -302,42 +414,48 @@ const LoginSignupPartener = () => {
                     </div>
                   </div>
                   {/* End .row */}
-               
 
-                  
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
+                      value={judet}
+                      onChange={(e) => setJudet(e.target.value)}
                     >
-                      <option data-tokens="SelectRole">Judet</option>
-                      <option data-tokens="Agent/Agency">Operator economic</option>
-                      <option data-tokens="SingleUser">Doctor</option>
+                      <option value="">Selectează județ</option>
+                      <option value="Operator economic">
+                        Operator economic
+                      </option>
+                      <option value="Doctor">Doctor</option>
                     </select>
                   </div>
                   {/* End from-group */}
 
-                  
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
+                      value={localitate}
+                      onChange={(e) => setLocalitate(e.target.value)}
                     >
                       <option data-tokens="SelectRole">Localitate</option>
-                      <option data-tokens="Agent/Agency">Operator economic</option>
+                      <option data-tokens="Agent/Agency">
+                        Operator economic
+                      </option>
                       <option data-tokens="SingleUser">Doctor</option>
                     </select>
                   </div>
                   {/* End from-group */}
-
 
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
+                      value={categorie}
+                      onChange={(e) => setCategorie(e.target.value)}
                     >
                       <option data-tokens="SelectRole">Categorie</option>
                       <option data-tokens="Agent/Agency">Categorie 1</option>
@@ -352,6 +470,8 @@ const LoginSignupPartener = () => {
                       className="form-control"
                       id="exampleInputName"
                       placeholder="CUI"
+                      value={cui}
+                      onChange={(e) => setCui(e.target.value)}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -361,38 +481,37 @@ const LoginSignupPartener = () => {
                   </div>
                   {/* End .row */}
 
-               
-                {/* End .form */}
+                  {/* End .form */}
+                </div>
               </div>
-            </div>
-            <div className="form-group form-check custom-checkbox mb-3">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="terms"
-                    />
-                    <label
-                      className="form-check-label form-check-label"
-                      htmlFor="terms"
-                    >
-                     Accept termenii si conditiile.
-                    </label>
-                  </div>
-                  {/* End from-group */}
+              <div className="form-group form-check custom-checkbox mb-3">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="terms"
+                />
+                <label
+                  className="form-check-label form-check-label"
+                  htmlFor="terms"
+                >
+                  Accept termenii si conditiile.
+                </label>
+              </div>
+              {/* End from-group */}
 
-                  <button type="submit" className="btn btn-log w-100 btn-thm">
-                    înregistrare
-                  </button>
-                  {/* End btn */}
+              <button type="submit" className="btn btn-log w-100 btn-thm">
+                înregistrare
+              </button>
+              {/* End btn */}
 
-                  <p className="text-center">
-                    Aveti cont?{" "}
-                    <a className="text-thm" href="#">
-                      Autentificati-va
-                    </a>
-                  </p>
-            {/* End register content */}
+              <p className="text-center">
+                Aveti cont?{" "}
+                <a className="text-thm" href="#">
+                  Autentificati-va
+                </a>
+              </p>
+              {/* End register content */}
             </form>
           </div>
           {/* End .tab-pane */}

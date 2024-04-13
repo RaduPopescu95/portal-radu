@@ -1,3 +1,4 @@
+import TabDetailsContent from "../agency-details/TabDetailsContent";
 import Comments from "../blog-details/Comments";
 import Ratings from "../blog-details/Ratings";
 import ReviewBox from "../blog-details/ReviewBox";
@@ -99,6 +100,7 @@ const DetailsContent = () => {
       <div className="whats_nearby mt30 row">
         <WhatsNearby />
       </div>
+
       {/* End what's nearby area */}
 
       {/* <div className="product_single_content">

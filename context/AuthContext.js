@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { authentication } from "../firebase";
 import { handleGetUserInfo } from "../utils/handleFirebaseQuery";
@@ -25,6 +27,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    console.log("start use effect from auth context");
     const unsubscribe = authentication.onAuthStateChanged(async (user) => {
       if (user) {
         try {
@@ -62,9 +65,5 @@ export const AuthProvider = ({ children }) => {
     setCurrentUser,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

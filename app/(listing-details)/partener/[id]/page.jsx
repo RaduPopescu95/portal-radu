@@ -8,6 +8,7 @@ import properties from "@/data/properties";
 import DetailsContent from "@/components/listing-details-v1/DetailsContent";
 import Sidebar from "@/components/listing-details-v1/Sidebar";
 import ListingOne from "@/components/listing-single/ListingOne";
+import TabDetailsContent from "@/components/agency-details/TabDetailsContent";
 
 const ListingDynamicDetailsV1 = ({ params }) => {
   const id = params.id;
@@ -34,6 +35,7 @@ const ListingDynamicDetailsV1 = ({ params }) => {
             <div className="col-md-12 col-lg-12">
               <DetailsContent />
             </div>
+
             {/* End details content .col-lg-8 */}
 
             {/* <div className="col-lg-4 col-xl-4">
