@@ -1,5 +1,4 @@
-
-'use client'
+"use client";
 
 import Link from "next/link";
 import { useEffect } from "react";
@@ -141,31 +140,41 @@ const FeaturedItem = () => {
         } `}
         key={item.id}
       >
-        <div
-          className={`feat_property home7 style4 ${
-            isGridOrList ? "d-flex align-items-center" : undefined
-          }`}
-        >
-          <div className="thumb" style={{ backgroundImage: generateRandomGradient()}}>
-            <Image
-              width={342}
-              height={220}
-              className="img-whp w-100 h-100 cover"
-              src={item.img}
-              alt="fp1.jpg"
-            />
-            <div className="thmb_cntnt">
-            <div style={{ position: 'absolute', top: '1px', left: '10px', zIndex: 10 }}>
-                    <Image
-                      src="/assets/user-profile.png" // Asigură-te că calea este corectă
-                      alt="Logo"
-                      width={50}
-                      height={50}
-                      className="logo"
-                      
-                    />
-                  </div>
-              {/* <ul className="icon mb0">
+        <Link href={`/partener/${item.id}`} key={item.id} passHref>
+          <div
+            className={`feat_property home7 style4 ${
+              isGridOrList ? "d-flex align-items-center" : undefined
+            }`}
+          >
+            <div
+              className="thumb"
+              style={{ backgroundImage: generateRandomGradient() }}
+            >
+              <Image
+                width={342}
+                height={220}
+                className="img-whp w-100 h-100 cover"
+                src={item.img}
+                alt="fp1.jpg"
+              />
+              <div className="thmb_cntnt">
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "1px",
+                    left: "10px",
+                    zIndex: 10,
+                  }}
+                >
+                  <Image
+                    src="/assets/user-profile.png" // Asigură-te că calea este corectă
+                    alt="Logo"
+                    width={50}
+                    height={50}
+                    className="logo"
+                  />
+                </div>
+                {/* <ul className="icon mb0">
                 <li className="list-inline-item">
                   <a href="#">
                     <span className="flaticon-transfer-1"></span>
@@ -178,28 +187,23 @@ const FeaturedItem = () => {
                 </li>
               </ul> */}
 
-<Link
-                    href={`/partener/${item.id}`}
-                    className="fp_price"
-                  >
-                     {item.title}
-                  </Link>
-            </div>
-          </div>
-          <div className="details">
-            <div className="tc_content">
-              <p className="text-thm">{item.type}</p>
-              <h4>
-                <Link href={`/partener/${item.id}`}>
+                <Link href={`/partener/${item.id}`} className="fp_price">
                   {item.title}
                 </Link>
-              </h4>
-              <p>
-                <span className="flaticon-placeholder"></span>
-                {item.location}
-              </p>
+              </div>
+            </div>
+            <div className="details">
+              <div className="tc_content">
+                <p className="text-thm">{item.type}</p>
+                <h4>
+                  <Link href={`/partener/${item.id}`}>{item.title}</Link>
+                </h4>
+                <p>
+                  <span className="flaticon-placeholder"></span>
+                  {item.location}
+                </p>
 
-              {/* <ul className="prop_details mb0">
+                {/* <ul className="prop_details mb0">
                 {item.itemDetails.map((val, i) => (
                   <li className="list-inline-item" key={i}>
                     <a href="#">
@@ -208,10 +212,10 @@ const FeaturedItem = () => {
                   </li>
                 ))}
               </ul> */}
-            </div>
-            {/* End .tc_content */}
+              </div>
+              {/* End .tc_content */}
 
-            {/* <div className="fp_footer">
+              {/* <div className="fp_footer">
               <ul className="fp_meta float-start mb0">
                 <li className="list-inline-item">
                   <Link href="/agent-v2">
@@ -229,9 +233,10 @@ const FeaturedItem = () => {
               </ul>
               <div className="fp_pdate float-end">{item.postedYear}</div>
             </div> */}
-            {/* End .fp_footer */}
+              {/* End .fp_footer */}
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
     ));
 

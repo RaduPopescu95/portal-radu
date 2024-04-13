@@ -70,9 +70,7 @@ const DetailsContent = () => {
       <div className="application_statics mt30">
         <h4 className="mb30">
           Locatie{" "}
-          <small className="float-end">
-            Bucuresti, Str. Cernauti, nr.1A
-          </small>
+          <small className="float-end">Bucuresti, Str. Cernauti, nr.1A</small>
         </h4>
         <div className="property_video p0">
           <PropertyLocation />
@@ -99,7 +97,6 @@ const DetailsContent = () => {
       {/* End walkscore_area */}
 
       <div className="whats_nearby mt30 row">
-     
         <WhatsNearby />
       </div>
       {/* End what's nearby area */}

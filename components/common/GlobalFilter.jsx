@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   addKeyword,
@@ -10,7 +10,7 @@ import GlobalSelectBox from "./GlobalSelectBox";
 import { useRouter } from "next/navigation";
 
 const GlobalFilter = ({ className = "" }) => {
-  const router = useRouter()
+  const router = useRouter();
   // submit handler
   const submitHandler = () => {
     router.push("/parteneri");
@@ -48,7 +48,7 @@ const GlobalFilter = ({ className = "" }) => {
         </li>
         {/* End li */}
 
-        <li className="list-inline-item">
+        {/* <li className="list-inline-item">
           <div className="search_option_two">
             <div className="candidate_revew_select">
               <select className="selectpicker w100 form-select show-tick">
@@ -62,7 +62,7 @@ const GlobalFilter = ({ className = "" }) => {
               </select>
             </div>
           </div>
-        </li>
+        </li> */}
         {/* End li */}
 
         <li className="list-inline-item">

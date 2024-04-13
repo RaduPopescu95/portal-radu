@@ -40,7 +40,9 @@ const index = () => {
             <div className="col-lg-12">
               <div className="home_content home4">
                 <div className="home-text text-center">
-                  <h2 className="fz55">Portalul potrivit pentru nevoile tale</h2>
+                  <h2 className="fz55">
+                    Portalul potrivit pentru nevoile tale
+                  </h2>
                   <p className="fz18 color-white">
                     Gaseste usor operatorul economic cel mai apropiata de tine
                   </p>
