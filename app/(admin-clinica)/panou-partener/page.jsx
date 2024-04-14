@@ -2,11 +2,9 @@ import dynamic from "next/dynamic";
 import MyDashboard from "@/components/dashboard/my-dashboard";
 
 export const metadata = {
-  title: 'Dashboard || Nume Portal',
-  description:
-    'Nume Portal',
-}
-
+  title: "Dashboard || Nume Portal",
+  description: "Nume Portal",
+};
 
 const index = () => {
   return (

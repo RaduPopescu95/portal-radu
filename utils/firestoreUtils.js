@@ -95,7 +95,7 @@ export const handleUploadFirestoreSubcollection = async (
   collectionId,
   subcollectionLocation
 ) => {
-  console.log("create subcollection history...", data);
+  console.log("create subcollection...", data);
   try {
     const localitati = await handleGetSubcollections(subcollectionLocation); // Presupunem că returnează un array de obiecte
 

@@ -1,15 +1,16 @@
-
-'use client'
+"use client";
 
 import Link from "next/link";
 
 import MyAccount from "./MyAccount";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const HeaderMenuContent = ({ float = "" }) => {
+  const { userData, currentUser } = useAuth();
 
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const home = [
     {
@@ -45,9 +46,7 @@ const HeaderMenuContent = ({ float = "" }) => {
     },
   ];
 
-  const blog = [
-    { id: 1, name: "Blog List 1", routerPath: "/blog-list-1" },
-  ];
+  const blog = [{ id: 1, name: "Blog List 1", routerPath: "/blog-list-1" }];
 
   const pages = [
     { id: 1, name: "Despre noi", routerPath: "/despre-noi" },
@@ -63,10 +62,7 @@ const HeaderMenuContent = ({ float = "" }) => {
       data-menu-style="horizontal"
     >
       <li className="last">
-        <Link
-          href="/"
-          className={pathname === "/" ? "ui-active" : undefined}
-        >
+        <Link href="/" className={pathname === "/" ? "ui-active" : undefined}>
           Acasă
         </Link>
       </li>
@@ -106,7 +102,10 @@ const HeaderMenuContent = ({ float = "" }) => {
         <a
           href="#"
           className={
-            pages.some((page) => page.routerPath?.split('/')[1] === pathname?.split('/')[1])
+            pages.some(
+              (page) =>
+                page.routerPath?.split("/")[1] === pathname?.split("/")[1]
+            )
               ? "ui-active"
               : undefined
           }
@@ -120,7 +119,9 @@ const HeaderMenuContent = ({ float = "" }) => {
               <Link
                 href={item.routerPath}
                 className={
-                  pathname?.split('/')[1] === item.routerPath?.split('/')[1] ? "ui-active" : undefined
+                  pathname?.split("/")[1] === item.routerPath?.split("/")[1]
+                    ? "ui-active"
+                    : undefined
                 }
               >
                 {item.name}
@@ -161,7 +162,7 @@ const HeaderMenuContent = ({ float = "" }) => {
               src="/assets/images/team/e1.png"
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1">Nume Partener</span>
+            <span className="dn-1199 ms-1">{userData?.denumireBrand}</span>
           </a>
           <div className="dropdown-menu">
             <MyAccount />

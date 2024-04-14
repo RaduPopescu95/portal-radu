@@ -1,9 +1,14 @@
 "use client";
 
-import { handleUploadFirestore } from "@/utils/firestoreUtils";
+import { useAuth } from "@/context/AuthContext";
+import {
+  handleUploadFirestore,
+  handleUploadFirestoreSubcollection,
+} from "@/utils/firestoreUtils";
 import { useEffect, useState } from "react";
 
 const CreateList = () => {
+  const { currentUser, userData } = useAuth();
   const [image, setImage] = useState(null);
   const [pretIntreg, setPretIntreg] = useState("");
   const [pretRedus, setPretRedus] = useState("");
@@ -11,20 +16,32 @@ const CreateList = () => {
   const [titluOferta, setTitluOferta] = useState("");
   const [descriereOferta, setDescriereOferta] = useState("");
   const [gradeFidelitate, setGradeFidelitate] = useState([]);
+  const [fidelitySilver, setFidelitySilver] = useState(false);
+  const [fidelityGold, setFidelityGold] = useState(false);
+  const [fidelityPlatinum, setFidelityPlatinum] = useState(false);
+
   const [tipOferta, setTipOferta] = useState("");
   const [dataActivare, setDataActivare] = useState("");
   const [dataDezactivare, setDataDezactivare] = useState("");
 
   const handleFidelityChange = (event) => {
-    const grade = event.target.value;
-    const isChecked = event.target.checked;
+    const { id, checked } = event.target;
+    switch (id) {
+      case "Silver":
+        setFidelitySilver(checked);
+        break;
+      case "Gold":
+        setFidelityGold(checked);
+        break;
+      case "Platinum":
+        setFidelityPlatinum(checked);
+        break;
+    }
     setGradeFidelitate((prev) => {
-      if (isChecked) {
-        // Adaugă gradul în lista de grade de fidelitate
-        return [...prev, grade];
+      if (checked) {
+        return [...prev, id];
       } else {
-        // Elimină gradul din lista de grade de fidelitate
-        return prev.filter((g) => g !== grade);
+        return prev.filter((gradeId) => gradeId !== id);
       }
     });
   };
@@ -52,9 +69,14 @@ const CreateList = () => {
     setTipOferta("");
     setDataActivare("");
     setDataDezactivare("");
+    setFidelitySilver(false);
+    setFidelityGold(false);
+    setFidelityPlatinum(false);
   };
 
   const handleAddOffer = async () => {
+    console.log("currentUser...", currentUser.uid);
+    console.log("userData...", userData);
     let data = {
       dataDezactivare,
       dataActivare,
@@ -65,8 +87,14 @@ const CreateList = () => {
       procentReducere,
       pretRedus,
       pretIntreg,
+      status: "Inactiva",
     };
-    handleUploadFirestore(data, "Oferte");
+    await handleUploadFirestoreSubcollection(
+      data,
+      `Users/${currentUser.uid}/Oferte`,
+      currentUser.uid,
+      "Oferte"
+    );
     resetState();
   };
 
@@ -154,7 +182,8 @@ const CreateList = () => {
                   className="form-check-input"
                   type="checkbox"
                   value="Silver"
-                  id="fidelityGradeSilver"
+                  id="Silver"
+                  checked={fidelitySilver}
                   onChange={handleFidelityChange}
                 />
                 <label className="form-check-label" for="fidelityGradeSilver">
@@ -168,7 +197,9 @@ const CreateList = () => {
                   className="form-check-input"
                   type="checkbox"
                   value="Gold"
-                  id="fidelityGradeGold"
+                  id="Gold"
+                  checked={fidelityGold}
+                  onChange={handleFidelityChange}
                 />
                 <label className="form-check-label" for="fidelityGradeGold">
                   Gold
@@ -181,7 +212,9 @@ const CreateList = () => {
                   className="form-check-input"
                   type="checkbox"
                   value="Platinum"
-                  id="fidelityGradePlatinum"
+                  id="Platinum"
+                  checked={fidelityPlatinum}
+                  onChange={handleFidelityChange}
                 />
                 <label className="form-check-label" for="fidelityGradePlatinum">
                   Platinum
@@ -204,10 +237,11 @@ const CreateList = () => {
             value={tipOferta}
             onChange={(e) => setTipOferta(e.target.value)}
           >
-            <option data-tokens="Status1">
+            <option data-tokens="Status1">Selecteaza tip oferta</option>
+            <option data-tokens="Status2">
               Oferta cu discount procentual general
             </option>
-            <option data-tokens="Status2">Oferta specifică</option>
+            <option data-tokens="Status3">Oferta specifică</option>
           </select>
         </div>
       </div>

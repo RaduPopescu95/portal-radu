@@ -3,6 +3,7 @@ import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import Activities from "./Activities";
 import AllStatistics from "./AllStatistics";
+import HelloUser from "./HelloUser";
 import StatisticsChart from "./StatisticsChart";
 
 const index = () => {
@@ -50,11 +51,7 @@ const index = () => {
                 </div>
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-12 mb10">
-                  <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Salut, Popescu</h2>
-                  </div>
-                </div>
+                <HelloUser />
               </div>
               {/* End .row */}
 

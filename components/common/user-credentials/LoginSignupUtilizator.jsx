@@ -253,7 +253,12 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End remember me checkbox */}
 
-                  <button type="submit" className="btn btn-log w-100 btn-thm">
+                  <button
+                    type="submit"
+                    className="btn btn-log w-100 btn-thm"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
                     Autentificare
                   </button>
                   {/* End submit button */}
@@ -673,7 +678,12 @@ const LoginSignupUtilizator = () => {
               </div>
               {/* End from-group */}
 
-              <button type="submit" className="btn btn-log w-100 btn-thm">
+              <button
+                type="submit"
+                className="btn btn-log w-100 btn-thm"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
                 înregistrare
               </button>
               {/* End btn */}

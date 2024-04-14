@@ -3,13 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import HeaderMenuContent from "./HeaderMenuContent";
-import Image from "next/image";
-import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
-  const [navbar, setNavbar] = useState(false);
   const { userData, currentUser } = useAuth();
+  const [navbar, setNavbar] = useState(false);
   const router = useRouter();
 
   const changeBackground = () => {
@@ -22,9 +21,9 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);
-    // if (userData.userType !== "Partener") {
-    //   router.push("/");
-    // }
+    if (userData?.userType !== "Partener") {
+      router.push("/");
+    }
   }, []);
 
   return (

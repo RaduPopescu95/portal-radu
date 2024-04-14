@@ -7,7 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { authentication } from "@/firebase";
+import { authentication, db } from "@/firebase";
 import {
   handleQueryFirestoreSubcollection,
   handleUploadFirestore,
@@ -15,6 +15,7 @@ import {
 import { emailWithoutSpace } from "@/utils/strintText";
 import { useAuth } from "@/context/AuthContext";
 import { handleFirebaseAuthError, handleSignIn } from "@/utils/authUtils";
+import { doc, setDoc } from "firebase/firestore";
 
 const LoginSignupPartener = () => {
   const { userData, currentUser, setCurrentUser, setUserData } = useAuth();
@@ -44,15 +45,15 @@ const LoginSignupPartener = () => {
 
   const handleLogIn = async (event) => {
     event.preventDefault();
-    console.log(userData);
-    console.log(currentUser);
+    // console.log(userData);
+    // console.log(currentUser);
 
     let utilizator = await handleQueryFirestoreSubcollection(
       "Users",
       "cui",
       cui
     );
-    setUserData(utilizator[0]);
+    // setUserData(utilizator[0]);
     handleSignIn(utilizator[0].email, password)
       .then((userCredentials) => {
         console.log("user credentials...", userCredentials);
@@ -98,6 +99,9 @@ const LoginSignupPartener = () => {
         userType: "Partener",
       };
       await handleUploadFirestore(data, "Users");
+      const collectionId = "Users";
+      const documentId = user_uid;
+      setDoc(doc(db, collectionId, documentId), data);
       handleReset();
     } catch (error) {
       console.error("Error signing up: ", error);
@@ -256,7 +260,12 @@ const LoginSignupPartener = () => {
                   </div>
                   {/* End remember me checkbox */}
 
-                  <button type="submit" className="btn btn-log w-100 btn-thm">
+                  <button
+                    type="submit"
+                    className="btn btn-log w-100 btn-thm"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
                     Autentificare
                   </button>
                   {/* End submit button */}
@@ -500,7 +509,12 @@ const LoginSignupPartener = () => {
               </div>
               {/* End from-group */}
 
-              <button type="submit" className="btn btn-log w-100 btn-thm">
+              <button
+                type="submit"
+                className="btn btn-log w-100 btn-thm"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
                 înregistrare
               </button>
               {/* End btn */}

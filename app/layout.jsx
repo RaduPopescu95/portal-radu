@@ -22,7 +22,10 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <AuthProvider>
-          <Provider store={store}>{children}</Provider>
+          {/* <Provider store={store}> */}
+          {children}
+
+          {/* </Provider> */}
         </AuthProvider>
         <ScrollToTop />
       </body>

@@ -77,8 +77,9 @@ export const handleChangePassword = async (currentPassword, newPassword) => {
 };
 
 export const handleLogout = async () => {
+  console.log("Start....");
   try {
-    await signOut(auth);
+    await signOut(authentication);
   } catch (error) {
     console.error(error);
     Alert.alert("Error", "Failed to log out.");

@@ -1,11 +1,13 @@
-const AllStatistics = () => {
+import { getFirestoreCollectionLength } from "@/utils/firestoreUtils";
+
+const AllStatistics = async () => {
+  const numarOferte = await getFirestoreCollectionLength("Oferte");
   const allStatistics = [
     {
       id: 1,
       blockStyle: "",
       icon: "flaticon-profit",
       timer: "121",
-      name: "Oferte",
     },
     // {
     //   id: 2,
@@ -36,8 +38,8 @@ const AllStatistics = () => {
         <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3" key={item.id}>
           <div className={`ff_one ${item.blockStyle}`}>
             <div className="detais">
-              <div className="timer">{item.timer}</div>
-              <p>{item.name}</p>
+              <div className="timer">{numarOferte}</div>
+              <p>{numarOferte === 1 ? "Oferta" : "Oferte"}</p>
             </div>
             <div className="icon">
               <span className={item.icon}></span>

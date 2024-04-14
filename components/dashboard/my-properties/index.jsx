@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -5,8 +7,12 @@ import TableData from "./TableData";
 import Filtering from "./Filtering";
 import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
+import { handleGetFirestore } from "@/utils/firestoreUtils";
+import { useAuth } from "@/context/AuthContext";
 
-const index = () => {
+const index = async () => {
+  const { currentUser } = useAuth();
+  let oferte = await handleGetFirestore(`Users/${currentUser.uid}/Oferte`);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -43,7 +49,8 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Navigatie panou de administrare
+                        <i className="fa fa-bars pr10"></i> Navigatie panou de
+                        administrare
                       </button>
                     </div>
                   </div>
@@ -80,7 +87,7 @@ const index = () => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        <TableData />
+                        <TableData oferte={oferte} />
                       </div>
                       {/* End .table-responsive */}
 

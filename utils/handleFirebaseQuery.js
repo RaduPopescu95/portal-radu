@@ -7,7 +7,7 @@ export const handleGetUserInfo = async () => {
   try {
     const q = query(
       collection(db, "Users"),
-      where("owner_uid", "==", auth.currentUser.uid)
+      where("user_uid", "==", auth.currentUser.uid)
     );
 
     const querySnapshot = await getDocs(q);

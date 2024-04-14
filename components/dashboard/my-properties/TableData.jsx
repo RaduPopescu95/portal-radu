@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import properties from "../../../data/properties";
 import { useState } from "react";
 import oferte from "@/data/oferte";
+import GradeFidelitate from "./GradeFidelitate";
 
 // CSS in JS pentru simbolurile tick și close
 const styles = {
@@ -15,7 +16,7 @@ const styles = {
   },
 };
 
-const TableData = () => {
+const TableData = ({ oferte }) => {
   const initialState = oferte.reduce((acc, item) => {
     acc[item.id] = item.initialState;
     return acc;
@@ -24,27 +25,21 @@ const TableData = () => {
   const [toggled, setToggled] = useState(initialState);
   const handleToggle = (id) => {
     setToggled((prev) => {
-      const currentToggleState = prev[id] || 'none'; // Presupunem 'none' ca stare inițială
+      const currentToggleState = prev[id] || "none"; // Presupunem 'none' ca stare inițială
       let nextToggleState;
-  
-      if (currentToggleState === 'none' || currentToggleState === 'close') {
-        nextToggleState = 'tick'; // Dacă este 'none' sau 'close', schimbăm la 'tick'
+
+      if (currentToggleState === "none" || currentToggleState === "close") {
+        nextToggleState = "tick"; // Dacă este 'none' sau 'close', schimbăm la 'tick'
       } else {
-        nextToggleState = 'close'; // Dacă este 'tick', schimbăm la 'close'
+        nextToggleState = "close"; // Dacă este 'tick', schimbăm la 'close'
       }
-  
+
       return { ...prev, [id]: nextToggleState };
     });
   };
-  
-  let theadConent = [
-    "Oferta",
-    "Data",
-    "Status",
-    "Fidelitate",
-    "Actiune",
-  ];  
-  let tbodyContent = oferte?.slice(0, 4)?.map((item) => (
+
+  let theadConent = ["Oferta", "Data", "Status", "Fidelitate", "Actiune"];
+  let tbodyContent = oferte?.map((item) => (
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">
@@ -66,11 +61,11 @@ const TableData = () => {
           </div>
           <div className="details">
             <div className="tc_content">
-              <h4>{item.title}</h4>
-              <p>
+              <h4>{item.titluOferta}</h4>
+              {/* <p>
                 <span className="flaticon-placeholder"></span>
                 {item.location}
-              </p>
+              </p> */}
               {/* <a className="fp_price text-thm" href="#">
                 ${item.price}
                 <small>/mo</small>
@@ -81,21 +76,20 @@ const TableData = () => {
       </td>
       {/* End td */}
 
-      <td>30/01/2024</td>
+      <td>{item.firstUploadDate}</td>
       {/* End td */}
 
       <td>
-    
-        {toggled[item.id] === 'tick' ? (
+        {item.status === "Inactiva" ? (
           <span className="status_tag redbadge">Inactiva</span>
-        ) : toggled[item.id] === 'close' ? (
+        ) : item.status === "Activa" ? (
           <span className="status_tag badge">Activa</span>
-        ) : null
-    }
+        ) : null}
       </td>
       {/* End td */}
 
-      <td>Silver</td>
+      <GradeFidelitate grades={item.gradeFidelitate} />
+
       {/* End td */}
 
       <td>
@@ -117,28 +111,39 @@ const TableData = () => {
             data-toggle="tooltip"
             data-placement="top"
             title="Delete"
-            >
+          >
             <a href="#">
               <span className="flaticon-garbage"></span>
             </a>
           </li>
-            {/* End li */}
-            <li className="list-inline-item" data-toggle="tooltip" data-placement="top" title="Toggle">
-  <a href="#" onClick={(e) => { e.preventDefault(); handleToggle(item.id); }}>
-    {toggled[item.id] === 'tick' ? (
-      <span className="flaticon-tick" style={styles.tick}></span>
-    ) : toggled[item.id] === 'close' ? (
-      <span className="flaticon-close" style={styles.close}></span>
-    ) : (
-      // Afișează ambele opțiuni când nu este niciuna selectată inițial
-      <>
-        <span className="flaticon-tick" style={styles.tick}></span>
-        <span className="flaticon-close" style={styles.close}></span>
-      </>
-    )}
-  </a>
-</li>
-            {/* End li */}
+          {/* End li */}
+          <li
+            className="list-inline-item"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Toggle"
+          >
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                handleToggle(item.id);
+              }}
+            >
+              {item.status === "Activa" ? (
+                <span className="flaticon-tick" style={styles.tick}></span>
+              ) : item.status === "Inactiva" ? (
+                <span className="flaticon-close" style={styles.close}></span>
+              ) : (
+                // Afișează ambele opțiuni când nu este niciuna selectată inițial
+                <>
+                  <span className="flaticon-tick" style={styles.tick}></span>
+                  <span className="flaticon-close" style={styles.close}></span>
+                </>
+              )}
+            </a>
+          </li>
+          {/* End li */}
         </ul>
       </td>
       {/* End td */}

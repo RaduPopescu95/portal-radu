@@ -1,12 +1,15 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { handleLogout } from "@/utils/authUtils";
 
 const MyAccount = () => {
-  const pathname = usePathname()
+  const { userData, currentUser } = useAuth();
+  const pathname = usePathname();
   const profileMenuItems = [
     { id: 1, name: "Profil", ruterPath: "/profil-partener" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -27,8 +30,8 @@ const MyAccount = () => {
           alt="e1.png"
         />
         <p>
-          Nume partener <br />
-          <span className="address">partener@gmail.com</span>
+          {userData?.denumireBrand} <br />
+          <span className="address">{userData?.email}</span>
         </p>
       </div>
       {/* End user_set_header */}
@@ -44,6 +47,16 @@ const MyAccount = () => {
                 ? { color: "#0000FF" }
                 : undefined
             }
+            onClick={(e) => {
+              // Prevenim comportamentul default al link-ului dacă este necesar
+              if (item.name === "Deconectare") {
+                e.preventDefault();
+                handleLogout();
+                router.push("/");
+              } else {
+                console.log("other...");
+              }
+            }}
           >
             {item.name}
           </Link>
