@@ -201,6 +201,7 @@ const ProfileInfo = () => {
           >
             <option data-tokens="Status1">Alege Localitate</option>
             <option data-tokens="Status2">Targoviste</option>
+            <option data-tokens="Status2">Bucuresti</option>
             <option data-tokens="Status3">Timisoara</option>
           </select>
         </div>
