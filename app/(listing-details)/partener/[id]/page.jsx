@@ -9,10 +9,20 @@ import DetailsContent from "@/components/listing-details-v1/DetailsContent";
 import Sidebar from "@/components/listing-details-v1/Sidebar";
 import ListingOne from "@/components/listing-single/ListingOne";
 import TabDetailsContent from "@/components/agency-details/TabDetailsContent";
+import {
+  handleGetFirestore,
+  handleQueryFirestore,
+  handleQueryFirestoreSubcollection,
+} from "@/utils/firestoreUtils";
 
-const ListingDynamicDetailsV1 = ({ params }) => {
+const ListingDynamicDetailsV1 = async ({ params }) => {
   const id = params.id;
-  const property = properties?.find((item) => item.id == id) || properties[0];
+  const parts = id.split("-");
+  const number = parseFloat(parts[0]);
+
+  let partenerId = number;
+  let partener = await handleQueryFirestore("Users", "id", partenerId);
+  let oferte = await handleGetFirestore(`Users/${partener[0].user_uid}/Oferte`);
 
   return (
     <>
@@ -26,14 +36,14 @@ const ListingDynamicDetailsV1 = ({ params }) => {
       <PopupSignInUp />
 
       {/* <!-- Listing Single Property --> */}
-      <ListingOne property={property} />
+      <ListingOne partener={partener[0]} />
 
       {/* <!-- Agent Single Grid View --> */}
       <section className="our-agent-single bgc-f7 pb30-991">
         <div className="container">
           <div className="row">
             <div className="col-md-12 col-lg-12">
-              <DetailsContent />
+              <DetailsContent partener={partener[0]} oferte={oferte} />
             </div>
 
             {/* End details content .col-lg-8 */}

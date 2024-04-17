@@ -2,27 +2,55 @@
 
 import { useAuth } from "@/context/AuthContext";
 import {
+  handleUpdateFirestoreSubcollection,
   handleUploadFirestore,
   handleUploadFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const CreateList = () => {
+const CreateList = ({ oferta }) => {
   const { currentUser, userData } = useAuth();
+  const router = useRouter();
   const [image, setImage] = useState(null);
-  const [pretIntreg, setPretIntreg] = useState("");
-  const [pretRedus, setPretRedus] = useState("");
-  const [procentReducere, setProcentReducere] = useState("");
-  const [titluOferta, setTitluOferta] = useState("");
-  const [descriereOferta, setDescriereOferta] = useState("");
-  const [gradeFidelitate, setGradeFidelitate] = useState([]);
-  const [fidelitySilver, setFidelitySilver] = useState(false);
-  const [fidelityGold, setFidelityGold] = useState(false);
-  const [fidelityPlatinum, setFidelityPlatinum] = useState(false);
+  const [pretIntreg, setPretIntreg] = useState(oferta?.pretIntreg || "");
+  const [pretRedus, setPretRedus] = useState(oferta?.pretRedus || "");
+  const [procentReducere, setProcentReducere] = useState(
+    oferta?.procentReducere || ""
+  );
+  const [titluOferta, setTitluOferta] = useState(oferta?.titluOferta || "");
+  const [descriereOferta, setDescriereOferta] = useState(
+    oferta?.descriereOferta || ""
+  );
+  const [gradeFidelitate, setGradeFidelitate] = useState(
+    oferta?.gradeFidelitate || []
+  );
+  const [fidelitySilver, setFidelitySilver] = useState(
+    oferta?.gradeFidelitate?.includes("Silver") ? true : false
+  );
+  const [fidelityGold, setFidelityGold] = useState(
+    oferta?.gradeFidelitate?.includes("Gold") ? true : false
+  );
+  const [fidelityPlatinum, setFidelityPlatinum] = useState(
+    oferta?.gradeFidelitate?.includes("Platinum") ? true : false
+  );
 
-  const [tipOferta, setTipOferta] = useState("");
-  const [dataActivare, setDataActivare] = useState("");
-  const [dataDezactivare, setDataDezactivare] = useState("");
+  const [tipOferta, setTipOferta] = useState(oferta?.tipOferta || "");
+  const [dataActivare, setDataActivare] = useState(oferta?.dataActivare || "");
+  const [dataDezactivare, setDataDezactivare] = useState(
+    oferta?.dataDezactivare || ""
+  );
+
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+
+  // Funcție pentru a afișa alerta
+  const showAlert = (message, type) => {
+    setAlert({ show: true, message, type });
+    setTimeout(() => {
+      setAlert({ show: false, message: "", type: "" });
+      router.push("/lista-oferte");
+    }, 3000); // Alerta va dispărea după 3 secunde
+  };
 
   const handleFidelityChange = (event) => {
     const { id, checked } = event.target;
@@ -74,6 +102,33 @@ const CreateList = () => {
     setFidelityPlatinum(false);
   };
 
+  const handleUpdateOffer = async () => {
+    console.log("currentUser...", currentUser.uid);
+    console.log("userData...", userData);
+    let data = {
+      dataDezactivare,
+      dataActivare,
+      tipOferta,
+      gradeFidelitate,
+      descriereOferta,
+      titluOferta,
+      procentReducere,
+      pretRedus,
+      pretIntreg,
+      status: "Inactiva",
+    };
+    try {
+      await handleUpdateFirestoreSubcollection(
+        data,
+        `Users/${currentUser.uid}/Oferte/${oferta.documentId}`
+      );
+      showAlert("Oferta actualizata cu succes!", "success");
+    } catch (error) {
+      console.error("Eroare la actualizarea ofertei: ", error);
+      showAlert("Eroare la actualizarea ofertei.", "danger");
+    }
+  };
+
   const handleAddOffer = async () => {
     console.log("currentUser...", currentUser.uid);
     console.log("userData...", userData);
@@ -89,13 +144,21 @@ const CreateList = () => {
       pretIntreg,
       status: "Inactiva",
     };
-    await handleUploadFirestoreSubcollection(
-      data,
-      `Users/${currentUser.uid}/Oferte`,
-      currentUser.uid,
-      "Oferte"
-    );
-    resetState();
+
+    try {
+      await handleUploadFirestoreSubcollection(
+        data,
+        `Users/${currentUser.uid}/Oferte`,
+        currentUser.uid,
+        "Oferte"
+      );
+      resetState();
+
+      showAlert("Oferta adaugata cu succes!", "success");
+    } catch (error) {
+      console.error("Eroare la adaugarea ofertei: ", error);
+      showAlert("Eroare la adaugarea ofertei.", "danger");
+    }
   };
 
   return (
@@ -238,10 +301,10 @@ const CreateList = () => {
             onChange={(e) => setTipOferta(e.target.value)}
           >
             <option data-tokens="Status1">Selecteaza tip oferta</option>
-            <option data-tokens="Status2">
+            <option data-tokens="Oferta cu discount procentual general">
               Oferta cu discount procentual general
             </option>
-            <option data-tokens="Status3">Oferta specifică</option>
+            <option data-tokens="Oferta specifică">Oferta specifică</option>
           </select>
         </div>
       </div>
@@ -362,10 +425,20 @@ const CreateList = () => {
 
       <div className="col-xl-12">
         <div className="my_profile_setting_input">
-          {/* <button className="btn btn1 float-start">Back</button> */}
-          <button onClick={handleAddOffer} className="btn btn2 float-end">
-            Adauga
-          </button>
+          {alert.show && (
+            <div className={`alert alert-${alert.type} mb-0`}>
+              {alert.message}
+            </div>
+          )}
+          {oferta?.title?.length > 0 ? (
+            <button onClick={handleUpdateOffer} className="btn btn2 float-end">
+              Actualizare
+            </button>
+          ) : (
+            <button onClick={handleAddOffer} className="btn btn2 float-end">
+              Adauga
+            </button>
+          )}
         </div>
       </div>
     </>

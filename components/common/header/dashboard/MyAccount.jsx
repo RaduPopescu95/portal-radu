@@ -16,7 +16,7 @@ const MyAccount = () => {
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
     { id: 3, name: " Lista oferte", ruterPath: "/lista-oferte" },
     // { id: 4, name: " Lista produse", ruterPath: "/lista-produse-servicii" },
-    { id: 5, name: " Deconectare", ruterPath: "/" },
+    { id: 5, name: "Deconectare", ruterPath: "/" },
   ];
 
   return (

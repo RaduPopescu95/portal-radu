@@ -1,12 +1,14 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const MyAccount = () => {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const { userData } = useAuth();
   const profileMenuItems = [
     { id: 1, name: "Profil", ruterPath: "/profil" },
     { id: 2, name: "Dashboard", ruterPath: "/utilizator" },
@@ -27,8 +29,9 @@ const MyAccount = () => {
           alt="e1.png"
         />
         <p>
-          Popescu Adrian<br />
-          <span className="address">adrian@gmail.com</span>
+          {userData.numeUtilizator}
+          <br />
+          <span className="address">{userData.email}</span>
         </p>
       </div>
       {/* End user_set_header */}

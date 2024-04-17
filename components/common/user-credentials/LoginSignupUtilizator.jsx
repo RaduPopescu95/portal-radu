@@ -100,6 +100,7 @@ const LoginSignupUtilizator = () => {
         email,
         user_uid,
         userType: "Doctor",
+        gradFidelitate: "Silver",
       };
       // await handleUploadFirestore(data, "Users");
       const collectionId = "Users";

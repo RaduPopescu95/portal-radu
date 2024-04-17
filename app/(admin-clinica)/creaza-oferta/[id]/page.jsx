@@ -2,16 +2,19 @@ import {
   handleGetSubcollections,
   handleQueryFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
-import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
-import MobileMenu from "../../common/header/MobileMenu";
-import CreateList from "./CreateList";
-import DetailedInfo from "./DetailedInfo";
-import FloorPlans from "./FloorPlans";
-import LocationField from "./LocationField";
-import PropertyMediaUploader from "./PropertyMediaUploader";
+import Header from "@/components/common/header/dashboard/Header";
+import SidebarMenu from "@/components/common/header/dashboard/SidebarMenu";
+import MobileMenu from "@/components/common/header/MobileMenu";
+import CreateList from "@/components/dashboard/creaza-oferta/CreateList";
+import DetailedInfo from "@/components/dashboard/creaza-oferta/DetailedInfo";
+import FloorPlans from "@/components/dashboard/creaza-oferta/FloorPlans";
+import LocationField from "@/components/dashboard/creaza-oferta/LocationField";
+import PropertyMediaUploader from "@/components/dashboard/creaza-oferta/PropertyMediaUploader";
 
-const index = () => {
+const index = async ({ params }) => {
+  const id = Number(params.id);
+  const oferta = await handleQueryFirestoreSubcollection("Oferte", "id", id);
+  console.log("test here...", oferta);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -70,37 +73,37 @@ const index = () => {
                         <h3 className="mb30">Creaza oferta</h3>
                       </div>
 
-                      <CreateList />
+                      <CreateList oferta={oferta[0]} />
                     </div>
                   </div>
                   {/* <div className="my_dashboard_review mt30">
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <h3 className="mb30">Location</h3>
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <h3 className="mb30">Location</h3>
+                        </div>
+  
+                        <LocationField />
                       </div>
-
-                      <LocationField />
                     </div>
-                  </div>
-                  <div className="my_dashboard_review mt30">
-                    <div className="col-lg-12">
-                      <h3 className="mb30">Detailed Information</h3>
+                    <div className="my_dashboard_review mt30">
+                      <div className="col-lg-12">
+                        <h3 className="mb30">Detailed Information</h3>
+                      </div>
+                      <DetailedInfo />
                     </div>
-                    <DetailedInfo />
-                  </div>
-                  <div className="my_dashboard_review mt30">
-                    <div className="col-lg-12">
-                      <h3 className="mb30">Property media</h3>
+                    <div className="my_dashboard_review mt30">
+                      <div className="col-lg-12">
+                        <h3 className="mb30">Property media</h3>
+                      </div>
+                      <PropertyMediaUploader />
                     </div>
-                    <PropertyMediaUploader />
-                  </div>
-                  <div className="my_dashboard_review mt30">
-                    <div className="col-lg-12">
-                      <h3 className="mb30">Floor Plans</h3>
-                      <button className="btn admore_btn mb30">Add More</button>
-                    </div>
-                    <FloorPlans />
-                  </div> */}
+                    <div className="my_dashboard_review mt30">
+                      <div className="col-lg-12">
+                        <h3 className="mb30">Floor Plans</h3>
+                        <button className="btn admore_btn mb30">Add More</button>
+                      </div>
+                      <FloorPlans />
+                    </div> */}
                 </div>
                 {/* End .col */}
               </div>

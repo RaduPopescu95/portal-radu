@@ -4,7 +4,7 @@ import { Gallery, Item } from "react-photoswipe-gallery";
 import Image from "next/image";
 import Slider from "react-slick";
 
-export default function ListingOne({ property }) {
+export default function ListingOne({ partener }) {
   const settings = {
     dots: true,
     arrows: false,
@@ -43,8 +43,8 @@ export default function ListingOne({ property }) {
         <div className="row mb30">
           <div className="col-lg-7 col-xl-8">
             <div className="single_property_title mt30-767">
-              <h2>{property?.title}</h2>
-              <p>{property?.location}</p>
+              <h2>{partener?.denumireBrand}</h2>
+              <p>{partener?.adresaSediu}</p>
             </div>
           </div>
           <div className="col-lg-5 col-xl-4">
@@ -88,7 +88,7 @@ export default function ListingOne({ property }) {
 
         <div className="row">
           <div className="col-lg-12">
-            <Slider {...settings}>
+            {/* <Slider {...settings}>
               {property?.imgList?.map((val, i) => (
                 <div key={i} className="slick-slide-padding">
                   <Image
@@ -100,7 +100,7 @@ export default function ListingOne({ property }) {
                   />
                 </div>
               ))}
-            </Slider>
+            </Slider> */}
           </div>
         </div>
         {/* End .row */}

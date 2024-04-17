@@ -3,119 +3,26 @@
 import React, { useState, useEffect } from "react";
 import QRCode from "react-qr-code";
 import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
 
-const WhatsNearby = () => {
+const WhatsNearby = ({ oferte }) => {
   const [activeTab, setActiveTab] = useState("Silver"); // Default tab
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { userData } = useAuth();
+
+  const fidelityLevels = {
+    Silver: ["Silver"],
+    Gold: ["Silver", "Gold"],
+    Platinum: ["Silver", "Gold", "Platinum"],
+  };
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const nearbyContent = [
-    {
-      id: 1,
-      level: "Silver",
-      title: "Primiti 20% discount la toate produsele noastre",
-      icon: "flaticon-money-bag",
-      isAvailable: true,
-      singleItem: [
-        {
-          id: 1,
-          name: "Beneficiază de un discount de 20% la toate serviciile de înfrumusețare, exclusiv pentru deținătorii cardului nostru de fidelitate!",
-          miles: "3.13",
-          totalReview: "8895",
-          unavailabilityReason:
-            "Nu este disponibil pentru gradul tău de fidelitate.",
-        },
-      ],
-    },
-    {
-      id: 2,
-      level: "Silver",
-      title: "Primiti 20% discount la toate produsele noastre",
-      icon: "flaticon-money-bag",
-      isAvailable: true,
-      singleItem: [
-        {
-          id: 1,
-          name: "Beneficiază de un discount de 20% la toate serviciile de înfrumusețare, exclusiv pentru deținătorii cardului nostru de fidelitate!",
-          miles: "3.13",
-          totalReview: "8895",
-          unavailabilityReason:
-            "Nu este disponibil pentru gradul tău de fidelitate.",
-        },
-      ],
-    },
-    {
-      id: 3,
-      level: "Gold",
-      title: "Meniu special de seară la doar 50€ pentru doi",
-      icon: "flaticon-money-bag",
-      isAvailable: false,
-      singleItem: [
-        {
-          id: 1,
-          name: "Meniu special de seară la doar 50€ pentru doi! Include aperitiv, fel principal și desert. Exclusiv pentru posesorii cardului de fidelitate.",
-          miles: "3.13",
-          totalReview: "8895",
-          unavailabilityReason: "Oferta exclusiva pentru utilizatori Gold.",
-        },
-      ],
-    },
-    {
-      id: 4,
-      level: "Gold",
-      title: "Meniu special de seară la doar 50€ pentru doi",
-      icon: "flaticon-money-bag",
-      isAvailable: false,
-      singleItem: [
-        {
-          id: 1,
-          name: "Meniu special de seară la doar 50€ pentru doi! Include aperitiv, fel principal și desert. Exclusiv pentru posesorii cardului de fidelitate.",
-          miles: "3.13",
-          totalReview: "8895",
-          unavailabilityReason: "Oferta exclusiva pentru utilizatori Gold.",
-        },
-      ],
-    },
-    {
-      id: 5,
-      level: "Platinum",
-      title: "Acces gratuit la VIP Lounge",
-      icon: "flaticon-money-bag",
-      isAvailable: false,
-      singleItem: [
-        {
-          id: 1,
-          name: "Acces gratuit la VIP Lounge, exclusiv pentru posesorii cardului de fidelitate Platinum.",
-          miles: "3.13",
-          totalReview: "8895",
-          unavailabilityReason: "Oferta exclusiva pentru utilizatori Platinum.",
-        },
-      ],
-    },
-    {
-      id: 6,
-      level: "Platinum",
-      title: "Acces gratuit la VIP Lounge",
-      icon: "flaticon-money-bag",
-      isAvailable: false,
-      singleItem: [
-        {
-          id: 1,
-          name: "Acces gratuit la VIP Lounge, exclusiv pentru posesorii cardului de fidelitate Platinum.",
-          miles: "3.13",
-          totalReview: "8895",
-          unavailabilityReason: "Oferta exclusiva pentru utilizatori Platinum.",
-        },
-      ],
-    },
-  ];
 
   const handleOfferSelect = (offer) => {
     setSelectedOffer(
@@ -129,35 +36,39 @@ const WhatsNearby = () => {
   const renderContent = (level) => {
     return (
       <>
-        {nearbyContent
-          .filter((item) => item.level === level)
-          .map((offer, index) => (
-            <div key={index} className={`offer ${index > 0 ? "mt10" : ""}`}>
-              <h5>
-                <span className={offer.icon}></span> {offer.title}
-              </h5>
-              {offer.singleItem.map((detail, idx) => (
+        {oferte
+          .filter((offer) => offer.gradeFidelitate.includes(level))
+          .map((offer, index) => {
+            const isAvailable =
+              fidelityLevels[userData.gradFidelitate].includes(level);
+            return (
+              <div key={index} className={`offer ${index > 0 ? "mt10" : ""}`}>
+                <h5>
+                  <span className={"flaticon-money-bag"}></span>{" "}
+                  {offer.titluOferta}
+                </h5>
                 <div
-                  key={idx}
                   className={`single_line ${
-                    !offer.isAvailable ? "grey-out" : ""
+                    !isAvailable || offer.status !== "Activa" ? "grey-out" : ""
                   }`}
                 >
-                  <p>{detail.name}</p>
-                  {!offer.isAvailable ? (
-                    <p className="text-muted">{detail.unavailabilityReason}</p>
-                  ) : (
+                  <p>{offer.descriereOferta}</p>
+                  {isAvailable && offer.status === "Activa" ? (
                     <button
                       onClick={() => handleOfferSelect(offer)}
                       className="btn btn-primary"
                     >
                       Obține Oferta
                     </button>
+                  ) : (
+                    <p className="text-muted">{`Oferta valabilă pentru: ${offer.gradeFidelitate.join(
+                      ", "
+                    )}`}</p>
                   )}
                 </div>
-              ))}
-            </div>
-          ))}
+              </div>
+            );
+          })}
       </>
     );
   };
@@ -166,57 +77,30 @@ const WhatsNearby = () => {
     <>
       <div className="container">
         <ul className="nav nav-tabs">
-          <li className="nav-item">
-            <a
-              className={`nav-link ${activeTab === "Silver" ? "active" : ""}`}
-              onClick={() => setActiveTab("Silver")}
-              style={{ cursor: "pointer" }}
-            >
-              Silver
-            </a>
-          </li>
-          <li className="nav-item">
-            <a
-              className={`nav-link ${activeTab === "Gold" ? "active" : ""}`}
-              onClick={() => setActiveTab("Gold")}
-              style={{ cursor: "pointer" }}
-            >
-              Gold
-            </a>
-          </li>
-          <li className="nav-item">
-            <a
-              className={`nav-link ${activeTab === "Platinum" ? "active" : ""}`}
-              onClick={() => setActiveTab("Platinum")}
-              style={{ cursor: "pointer" }}
-            >
-              Platinum
-            </a>
-          </li>
+          {["Silver", "Gold", "Platinum"].map((level) => (
+            <li className="nav-item" key={level}>
+              <a
+                className={`nav-link ${activeTab === level ? "active" : ""}`}
+                onClick={() => setActiveTab(level)}
+                style={{ cursor: "pointer" }}
+              >
+                {level}
+              </a>
+            </li>
+          ))}
         </ul>
 
         <div className="tab-content mt-3">
-          <div
-            className={`tab-pane fade ${
-              activeTab === "Silver" ? "show active" : ""
-            }`}
-          >
-            {activeTab === "Silver" && renderContent("Silver")}
-          </div>
-          <div
-            className={`tab-pane fade ${
-              activeTab === "Gold" ? "show active" : ""
-            }`}
-          >
-            {activeTab === "Gold" && renderContent("Gold")}
-          </div>
-          <div
-            className={`tab-pane fade ${
-              activeTab === "Platinum" ? "show active" : ""
-            }`}
-          >
-            {activeTab === "Platinum" && renderContent("Platinum")}
-          </div>
+          {["Silver", "Gold", "Platinum"].map((level) => (
+            <div
+              key={level}
+              className={`tab-pane fade ${
+                activeTab === level ? "show active" : ""
+              }`}
+            >
+              {activeTab === level && renderContent(level)}
+            </div>
+          ))}
         </div>
       </div>
 

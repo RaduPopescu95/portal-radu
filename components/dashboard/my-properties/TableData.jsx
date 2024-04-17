@@ -5,6 +5,9 @@ import properties from "../../../data/properties";
 import { useState } from "react";
 import oferte from "@/data/oferte";
 import GradeFidelitate from "./GradeFidelitate";
+import Link from "next/link";
+import { handleUpdateFirestoreSubcollection } from "@/utils/firestoreUtils";
+import { useAuth } from "@/context/AuthContext";
 
 // CSS in JS pentru simbolurile tick și close
 const styles = {
@@ -17,29 +20,35 @@ const styles = {
 };
 
 const TableData = ({ oferte }) => {
-  const initialState = oferte.reduce((acc, item) => {
-    acc[item.id] = item.initialState;
-    return acc;
-  }, {});
+  const [offers, setOffers] = useState([...oferte]);
+  const { currentUser } = useAuth();
 
-  const [toggled, setToggled] = useState(initialState);
-  const handleToggle = (id) => {
-    setToggled((prev) => {
-      const currentToggleState = prev[id] || "none"; // Presupunem 'none' ca stare inițială
-      let nextToggleState;
+  const handleToggle = async (oferta) => {
+    // Mapați și transformați fiecare item asincron
+    const updatedOffers = await Promise.all(
+      offers.map(async (item) => {
+        if (item.id === oferta.id) {
+          // Verifică statusul curent și îl schimbă
+          const newStatus = item.status === "Activa" ? "Inactiva" : "Activa";
+          let data = {
+            status: newStatus,
+          };
+          await handleUpdateFirestoreSubcollection(
+            data,
+            `Users/${currentUser.uid}/Oferte/${oferta.documentId}`
+          );
+          return { ...item, status: newStatus }; // Returnează obiectul actualizat
+        }
+        return item; // Returnează obiectul neschimbat
+      })
+    );
 
-      if (currentToggleState === "none" || currentToggleState === "close") {
-        nextToggleState = "tick"; // Dacă este 'none' sau 'close', schimbăm la 'tick'
-      } else {
-        nextToggleState = "close"; // Dacă este 'tick', schimbăm la 'close'
-      }
-
-      return { ...prev, [id]: nextToggleState };
-    });
+    // Actualizează starea offers cu noul array modificat
+    setOffers(updatedOffers);
   };
 
   let theadConent = ["Oferta", "Data", "Status", "Fidelitate", "Actiune"];
-  let tbodyContent = oferte?.map((item) => (
+  let tbodyContent = offers?.map((item) => (
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">
@@ -59,8 +68,8 @@ const TableData = ({ oferte }) => {
               </ul>
             </div> */}
           </div>
-          <div className="details">
-            <div className="tc_content">
+          <div className="details d-flex justify-content-center">
+            <div className="tc_content d-flex align-items-center justify-content-center">
               <h4>{item.titluOferta}</h4>
               {/* <p>
                 <span className="flaticon-placeholder"></span>
@@ -100,9 +109,9 @@ const TableData = ({ oferte }) => {
             data-placement="top"
             title="Edit"
           >
-            <a href="#">
+            <Link href={`creaza-oferta/${item.id}`}>
               <span className="flaticon-edit"></span>
-            </a>
+            </Link>
           </li>
           {/* End li */}
 
@@ -127,7 +136,7 @@ const TableData = ({ oferte }) => {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                handleToggle(item.id);
+                handleToggle(item);
               }}
             >
               {item.status === "Activa" ? (

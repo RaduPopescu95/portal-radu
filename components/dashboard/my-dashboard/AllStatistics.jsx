@@ -1,7 +1,13 @@
+"use client";
+
+import { useAuth } from "@/context/AuthContext";
 import { getFirestoreCollectionLength } from "@/utils/firestoreUtils";
 
 const AllStatistics = async () => {
-  const numarOferte = await getFirestoreCollectionLength("Oferte");
+  const { userData } = useAuth();
+  const numarOferte = await getFirestoreCollectionLength(
+    `Users/${userData.user_uid}/Oferte`
+  );
   const allStatistics = [
     {
       id: 1,

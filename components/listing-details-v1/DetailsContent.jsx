@@ -14,7 +14,7 @@ import PropertyVideo from "../common/listing-details/PropertyVideo";
 import WalkScore from "../common/listing-details/WalkScore";
 import WhatsNearby from "../common/listing-details/WhatsNearby";
 
-const DetailsContent = () => {
+const DetailsContent = ({ partener, oferte }) => {
   return (
     <>
       <div className="listing_single_description">
@@ -70,11 +70,10 @@ const DetailsContent = () => {
 
       <div className="application_statics mt30">
         <h4 className="mb30">
-          Locatie{" "}
-          <small className="float-end">Bucuresti, Str. Cernauti, nr.1A</small>
+          Locatie <small className="float-end">{partener.adresaSediu}</small>
         </h4>
         <div className="property_video p0">
-          <PropertyLocation />
+          <PropertyLocation coordonate={partener.coordonate} />
         </div>
       </div>
       {/* End .location_area */}
@@ -98,7 +97,7 @@ const DetailsContent = () => {
       {/* End walkscore_area */}
 
       <div className="whats_nearby mt30 row">
-        <WhatsNearby />
+        <WhatsNearby oferte={oferte} />
       </div>
 
       {/* End what's nearby area */}
