@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { authentication, db } from "@/firebase";
 import {
+  getFirestoreCollectionLength,
   handleQueryFirestoreSubcollection,
   handleUploadFirestore,
 } from "@/utils/firestoreUtils";
@@ -16,6 +17,7 @@ import { emailWithoutSpace } from "@/utils/strintText";
 import { useAuth } from "@/context/AuthContext";
 import { handleFirebaseAuthError, handleSignIn } from "@/utils/authUtils";
 import { doc, setDoc } from "firebase/firestore";
+import AutocompleteInput from "../AutocompleteInput";
 
 const LoginSignupPartener = () => {
   const { userData, currentUser, setCurrentUser, setUserData } = useAuth();
@@ -29,6 +31,17 @@ const LoginSignupPartener = () => {
   const [localitate, setLocalitate] = useState("");
   const [categorie, setCategorie] = useState("");
   const [cui, setCui] = useState("");
+  const [adresaSediu, setAdresaSediu] = useState("");
+  const [googleMapsLink, setGoogleMapsLink] = useState("");
+  const [coordonate, setCoordonate] = useState({});
+
+  const handleLocationSelect = (lat, lng, adresa, urlMaps) => {
+    console.log(`Selected location - Lat: ${lat}, Lng: ${lng}`);
+    setAdresaSediu(adresa);
+    setGoogleMapsLink(urlMaps);
+    setCoordonate({ lat, lng });
+    // Aici poți actualiza starea sau trimite aceste date către backend
+  };
 
   const handleReset = () => {
     setDenumireBrand("");
@@ -41,6 +54,9 @@ const LoginSignupPartener = () => {
     setLocalitate("");
     setCategorie("");
     setCui("");
+    setAdresaSediu("");
+    setGoogleMapsLink("");
+    setCoordonate({});
   };
 
   const handleLogIn = async (event) => {
@@ -86,7 +102,10 @@ const LoginSignupPartener = () => {
         "User created successfully with email: ",
         userCredential.user
       );
+      const collectionLength = await getFirestoreCollectionLength("Users");
+      let id = collectionLength + 1;
       let data = {
+        id,
         cui,
         categorie,
         localitate,
@@ -97,8 +116,11 @@ const LoginSignupPartener = () => {
         denumireBrand,
         user_uid,
         userType: "Partener",
+        adresaSediu,
+        googleMapsLink,
+        coordonate,
       };
-      await handleUploadFirestore(data, "Users");
+      // await handleUploadFirestore(data, "Users");
       const collectionId = "Users";
       const documentId = user_uid;
       setDoc(doc(db, collectionId, documentId), data);
@@ -433,10 +455,8 @@ const LoginSignupPartener = () => {
                       onChange={(e) => setJudet(e.target.value)}
                     >
                       <option value="">Selectează județ</option>
-                      <option value="Operator economic">
-                        Operator economic
-                      </option>
-                      <option value="Doctor">Doctor</option>
+                      <option value="Operator economic">Dambovita</option>
+                      <option value="Doctor">Timisoara</option>
                     </select>
                   </div>
                   {/* End from-group */}
@@ -450,10 +470,8 @@ const LoginSignupPartener = () => {
                       onChange={(e) => setLocalitate(e.target.value)}
                     >
                       <option data-tokens="SelectRole">Localitate</option>
-                      <option data-tokens="Agent/Agency">
-                        Operator economic
-                      </option>
-                      <option data-tokens="SingleUser">Doctor</option>
+                      <option data-tokens="Agent/Agency">Targoviste</option>
+                      <option data-tokens="SingleUser">Timisoara</option>
                     </select>
                   </div>
                   {/* End from-group */}
@@ -489,6 +507,25 @@ const LoginSignupPartener = () => {
                     </div>
                   </div>
                   {/* End .row */}
+
+                  {/* <div className="form-group input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleInputName"
+                      placeholder="Adresa sediu"
+                      value={adresaSediu}
+                      onChange={(e) => setAdresaSediu(e.target.value)}
+                    />
+                    <div className="input-group-prepend">
+                      <div className="input-group-text">
+                        <i className="flaticon-user"></i>
+                      </div>
+                    </div>
+                  </div> */}
+                  {/* End .row */}
+
+                  <AutocompleteInput onPlaceChanged={handleLocationSelect} />
 
                   {/* End .form */}
                 </div>

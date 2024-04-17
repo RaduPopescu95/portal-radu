@@ -6,6 +6,7 @@ import GradientSelect from "./GradientSelect";
 import { useAuth } from "@/context/AuthContext";
 import { handleUpdateFirestore } from "@/utils/firestoreUtils";
 import { emailWithoutSpace } from "@/utils/strintText";
+import AutocompleteInput from "@/components/common/AutocompleteInput";
 
 const ProfileInfo = () => {
   const { userData, currentUser, setCurrentUser, setUserData } = useAuth();
@@ -25,18 +26,31 @@ const ProfileInfo = () => {
   const [cui, setCui] = useState(userData?.cui || "");
   const [adresaSediu, setAdresaSediu] = useState(userData?.adresaSediu || "");
 
+  const [googleMapsLink, setGoogleMapsLink] = useState(
+    userData?.googleMapsLink || ""
+  );
+  const [coordonate, setCoordonate] = useState(userData?.coordonate || {});
+
   const [selectedId, setSelectedId] = useState(
     userData?.gradient?.selectedId || null
   ); // Acum stocăm un singur ID
   const [gradientSelected, setGradientSelected] = useState(
     userData?.gradient?.gradientSelected || ""
-  ); // Acum stocăm un singur ID
+  );
 
   const [profile, setProfile] = useState(null);
   const options = ["Opțiunea 1", "Opțiunea 2", "Opțiunea 3"];
   // upload profile
   const uploadProfile = (e) => {
     setProfile(e.target.files[0]);
+  };
+
+  const handleLocationSelect = (lat, lng, adresa, urlMaps) => {
+    console.log(`Selected location - Lat: ${lat}, Lng: ${lng}`);
+    setAdresaSediu(adresa);
+    setGoogleMapsLink(urlMaps);
+    setCoordonate({ lat, lng });
+    // Aici poți actualiza starea sau trimite aceste date către backend
   };
 
   const handleUpdateProfile = async (event) => {
@@ -58,6 +72,8 @@ const ProfileInfo = () => {
         userType: "Partener",
         adresaSediu,
         gradient: { selectedId, gradientSelected },
+        googleMapsLink,
+        coordonate,
       };
       setUserData(data);
       await handleUpdateFirestore(`Users/${user_uid}`, data);
@@ -262,18 +278,10 @@ const ProfileInfo = () => {
             </div> */}
       {/* End .col */}
 
-      <div className="col-xl-12">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput13">Adresa sediu</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleInput13"
-            value={adresaSediu}
-            onChange={(e) => setAdresaSediu(e.target.value)}
-          />
-        </div>
-      </div>
+      <AutocompleteInput
+        onPlaceChanged={handleLocationSelect}
+        adresa={adresaSediu}
+      />
       {/* End .col */}
 
       {/* <div className="col-xl-12">
@@ -290,7 +298,7 @@ const ProfileInfo = () => {
             </div> */}
       {/* End .col */}
 
-      <div className="col-xl-12 text-right">
+      <div className="col-xl-12 text-right mt-4">
         <div className="my_profile_setting_input">
           {/* <button className="btn btn1">Actualizeaza Profil</button> */}
           <button className="btn btn2" onClick={handleUpdateProfile}>

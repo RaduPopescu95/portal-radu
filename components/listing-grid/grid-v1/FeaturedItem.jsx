@@ -1,12 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addLength } from "../../../features/properties/propertiesSlice";
 import properties from "../../../data/properties";
 import Image from "next/image";
-import { generateRandomGradient } from "@/utils/commonUtils";
+import {
+  calculateDistance,
+  generateRandomGradient,
+  toUrlSlug,
+} from "@/utils/commonUtils";
+import { fetchLocation } from "@/app/services/geocoding";
+import { handleDiacrtice } from "@/utils/strintText";
+import { handleQueryDoubleParam } from "@/utils/firestoreUtils";
 
 const FeaturedItem = () => {
   const {
@@ -26,7 +33,56 @@ const FeaturedItem = () => {
     (state) => state.filter
   );
 
+  const [parteneri, setParteneri] = useState([]);
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      async function (position) {
+        const { latitude, longitude } = position.coords;
+
+        try {
+          let res = await fetchLocation(latitude, longitude);
+          let localitate = handleDiacrtice(res.results[0].locality);
+
+          let parteneri = await handleQueryDoubleParam(
+            "Users",
+            "localitate",
+            localitate,
+            "userType",
+            "Partener"
+          );
+
+          // Adaugă distanța ca o proprietate pentru fiecare partener
+          const parteneriCuDistanta = parteneri.map((partener) => {
+            const distanta = calculateDistance(
+              latitude,
+              longitude,
+              partener.coordonate.lat,
+              partener.coordonate.lng
+            );
+
+            return { ...partener, distanta: Math.floor(distanta) };
+          });
+
+          // Sortează partenerii după distanță
+          const parteneriOrdonati = parteneriCuDistanta.sort(
+            (a, b) => a.distanta - b.distanta
+          );
+
+          console.log("parteneri cu distanta...", parteneriOrdonati);
+
+          setParteneri([...parteneriOrdonati]);
+        } catch (error) {
+          console.error("Error fetching location data: ", error);
+        }
+      },
+      function (error) {
+        console.error("Geolocation error: ", error);
+      }
+    );
+  }, []);
 
   // keyword filter
   const keywordHandler = (item) =>
@@ -118,7 +174,7 @@ const FeaturedItem = () => {
   };
 
   // status handler
-  let content = properties
+  let content = parteneri
     // ?.slice(0, 10)
     // ?.filter(keywordHandler)
     // ?.filter(locationHandler)
@@ -140,7 +196,11 @@ const FeaturedItem = () => {
         } `}
         key={item.id}
       >
-        <Link href={`/partener/${item.id}`} key={item.id} passHref>
+        <Link
+          href={`/partener/${item.id}-${toUrlSlug(item.denumireBrand)}`}
+          key={item.id}
+          passHref
+        >
           <div
             className={`feat_property home7 style4 ${
               isGridOrList ? "d-flex align-items-center" : undefined
@@ -148,13 +208,13 @@ const FeaturedItem = () => {
           >
             <div
               className="thumb"
-              style={{ backgroundImage: generateRandomGradient() }}
+              style={{ backgroundImage: item.gradient.gradientSelected }}
             >
               <Image
                 width={342}
                 height={220}
                 className="img-whp w-100 h-100 cover"
-                src={item.img}
+                src={"/assets/clinicaexample.png"}
                 alt="fp1.jpg"
               />
               <div className="thmb_cntnt">
@@ -187,21 +247,25 @@ const FeaturedItem = () => {
                 </li>
               </ul> */}
 
-                <Link href={`/partener/${item.id}`} className="fp_price">
-                  {item.title}
+                <Link
+                  href={`/partener/${item.id}-${toUrlSlug(item.denumireBrand)}`}
+                  className="fp_price"
+                >
+                  {item.denumireBrand}
                 </Link>
               </div>
             </div>
             <div className="details">
               <div className="tc_content">
                 <p className="text-thm">{item.type}</p>
-                <h4>
-                  <Link href={`/partener/${item.id}`}>{item.title}</Link>
-                </h4>
+                {/* <h4>
+                  <Link href={`/partener/${item.id}`}>3 oferte</Link>
+                </h4> */}
                 <p>
                   <span className="flaticon-placeholder"></span>
-                  {item.location}
+                  {item.adresaSediu}
                 </p>
+                <p>{item.distanta} metri</p>
 
                 {/* <ul className="prop_details mb0">
                 {item.itemDetails.map((val, i) => (

@@ -5,12 +5,14 @@ import { store } from "../store/store";
 import ScrollToTop from "@/components/common/ScrollTop";
 import "../public/assets/scss/index.scss";
 import { AuthProvider } from "@/context/AuthContext";
+import { LoadScript } from "@react-google-maps/api";
 
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap");
 }
 
 export default function RootLayout({ children }) {
+  const libraries = ["places"];
   return (
     <html lang="en">
       <head>
@@ -21,12 +23,14 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="./favicon.ico" />
       </head>
       <body>
-        <AuthProvider>
-          {/* <Provider store={store}> */}
-          {children}
-
-          {/* </Provider> */}
-        </AuthProvider>
+        <LoadScript
+          googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+          libraries={libraries}
+        >
+          <AuthProvider>
+            <Provider store={store}>{children}</Provider>
+          </AuthProvider>
+        </LoadScript>
         <ScrollToTop />
       </body>
     </html>

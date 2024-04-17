@@ -50,3 +50,16 @@
 .slick-list {
   margin: 0 -15px; /* This counteracts the padding on the slides, ensuring the edges align properly */
 }
+
+.modal-content {
+  z-index: 1050; /* Exemplu de valoare tipică pentru modaluri */
+}
+
+.autocomplete-dropdown {
+  position: relative;
+  z-index: 1100; /* Mai mare decât z-index-ul modalului */
+}
+
+.pac-container {
+  z-index: 1500 !important; /* Folosește o valoare mare pentru a depăși z-index-ul modalului */
+}

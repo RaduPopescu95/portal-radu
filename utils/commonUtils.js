@@ -1,5 +1,3 @@
-
-
 export const toUrlSlug = (string) => {
   return string
     .toLowerCase()
@@ -14,26 +12,25 @@ export function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-
 export function generateRandomGradient() {
   // Alege un unghi aleator pentru direcția gradientului
   const angle = Math.floor(Math.random() * 360);
-  
+
   // Generează o culoare de bază aleatorie
   const baseHue = Math.floor(Math.random() * 360);
-  
+
   // Utilizează o culoare complementară sau o culoare apropiată pe roata culorilor pentru un efect armonios
   const complementaryHue = (baseHue + 30) % 360; // Ajustează acest număr pentru a schimba variația de culori
-  
+
   // Ajustează saturația și luminozitatea pentru a obține un aspect mai sofisticat și mai puțin saturat
   const saturation = 70; // Procent de saturație (mai mic pentru culori mai subtile)
   const lightness1 = 65; // Luminozitate mai mare pentru prima culoare
   const lightness2 = 50; // Luminozitate mai mică pentru a doua culoare, pentru contrast
-  
+
   // Creează șirurile de culoare HSL pentru ambele culori ale gradientului
   const color1 = `hsl(${baseHue}, ${saturation}%, ${lightness1}%)`;
   const color2 = `hsl(${complementaryHue}, ${saturation}%, ${lightness2}%)`;
-  
+
   // Construiește și returnează șirul de gradient liniar
   return `linear-gradient(${angle}deg, ${color1}, ${color2})`;
 }
@@ -42,3 +39,22 @@ export function updateSelectBackground(selectElement) {
   const selectedOption = selectElement.options[selectElement.selectedIndex];
   selectElement.style.backgroundImage = selectedOption.style.backgroundImage;
 }
+
+export const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  console.log(lat1);
+  console.log(lon1);
+  console.log(lat2);
+  console.log(lon2);
+  const R = 6371e3; // Raza Pământului în metri
+  const φ1 = (lat1 * Math.PI) / 180; // φ, λ în radiani
+  const φ2 = (lat2 * Math.PI) / 180;
+  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c; // Distanța în metri
+};

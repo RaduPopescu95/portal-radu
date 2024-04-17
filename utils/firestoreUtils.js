@@ -410,6 +410,30 @@ export const handleQueryRandom = async (location, id) => {
   return obj;
 };
 
+export const handleQueryDoubleParam = async (
+  location,
+  paramOne,
+  elementOne,
+  paramTwo,
+  elementTwo
+) => {
+  let arr = []; // Specificați tipul de obiecte pe care îl conține matricea
+  const q = query(
+    collection(db, location),
+    where(paramOne, "==", elementOne),
+    where(paramTwo, "==", elementTwo)
+  );
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data());
+    // arr.push(doc.data().data);
+    arr.push(doc.data());
+  });
+  return arr;
+};
+
 export const handlePaginateFirestore = (location) => {
   const auth = authentication;
   const citiesRef = collection(db, "Users", auth.currentUser.uid, location);

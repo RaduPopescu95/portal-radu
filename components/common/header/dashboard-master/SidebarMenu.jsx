@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 
@@ -7,10 +7,12 @@ import {
   isSinglePageActive,
 } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { handleLogout } from "@/utils/authUtils";
 
 const SidebarMenu = () => {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const router = useRouter();
 
   const myProperties = [
     { id: 1, name: "General Elements", route: "/my-properties" },
@@ -58,9 +60,7 @@ const SidebarMenu = () => {
           <ul>
             <li
               className={`treeview ${
-                isSinglePageActive("/my-dashboard", pathname)
-                  ? "active"
-                  : ""
+                isSinglePageActive("/my-dashboard", pathname) ? "active" : ""
               }`}
             >
               <Link href="/admin">
@@ -82,9 +82,7 @@ const SidebarMenu = () => {
             </li> */}
             <li
               className={`treeview ${
-                isSinglePageActive("/my-saved-search", pathname)
-                  ? "active"
-                  : ""
+                isSinglePageActive("/my-saved-search", pathname) ? "active" : ""
               }`}
             >
               <Link href="/lista-utilizatori">
@@ -107,9 +105,7 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
-                isSinglePageActive("/my-saved-search", pathname)
-                  ? "active"
-                  : ""
+                isSinglePageActive("/my-saved-search", pathname) ? "active" : ""
               }`}
             >
               <Link href="/lista-tranzactii">
@@ -214,7 +210,19 @@ const SidebarMenu = () => {
                 }
                 key={item.id}
               >
-                <Link href={item.route}>
+                <Link
+                  href={item.route}
+                  onClick={(e) => {
+                    // Prevenim comportamentul default al link-ului dacă este necesar
+                    if (item.name === "Deconectare") {
+                      e.preventDefault();
+                      handleLogout();
+                      router.push("/");
+                    } else {
+                      console.log("profile...");
+                    }
+                  }}
+                >
                   <i className={item.icon}></i> <span>{item.name}</span>
                 </Link>
               </li>

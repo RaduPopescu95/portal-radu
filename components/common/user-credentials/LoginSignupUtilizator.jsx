@@ -1,14 +1,18 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { authentication } from "@/firebase";
+import { authentication, db } from "@/firebase";
 import { handleFirebaseAuthError } from "@/utils/authUtils";
-import { handleUploadFirestore } from "@/utils/firestoreUtils";
+import {
+  getFirestoreCollectionLength,
+  handleUploadFirestore,
+} from "@/utils/firestoreUtils";
 import { emailWithoutSpace } from "@/utils/strintText";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -81,7 +85,10 @@ const LoginSignupUtilizator = () => {
         "User created successfully with email: ",
         userCredential.user
       );
+      const collectionLength = await getFirestoreCollectionLength("Users");
+      let id = collectionLength + 1;
       let data = {
+        id,
         cuim,
         specializare,
         titulatura,
@@ -94,7 +101,10 @@ const LoginSignupUtilizator = () => {
         user_uid,
         userType: "Doctor",
       };
-      await handleUploadFirestore(data, "Users");
+      // await handleUploadFirestore(data, "Users");
+      const collectionId = "Users";
+      const documentId = user_uid;
+      setDoc(doc(db, collectionId, documentId), data);
       handleReset();
     } catch (error) {
       console.error("Error signing up: ", error);
