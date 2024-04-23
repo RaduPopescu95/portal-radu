@@ -146,6 +146,27 @@ const CreateList = ({ oferta, utilizator }) => {
       </div>
       {/* End .col */}
 
+      <div className="col-lg-12 col-xl-12">
+        <div className="my_profile_setting_input ui_kit_select_search form-group">
+          <label>Tip oferta</label>
+          <select
+            className="selectpicker form-select"
+            data-live-search="true"
+            data-width="100%"
+            value={tipOferta}
+            onChange={(e) => setTipOferta(e.target.value)}
+            disabled
+          >
+            <option data-tokens="Status1">Selecteaza tip oferta</option>
+            <option data-tokens="Oferta cu discount procentual general">
+              Oferta cu discount procentual general
+            </option>
+            <option data-tokens="Oferta specifică">Oferta specifică</option>
+          </select>
+        </div>
+      </div>
+      {/* End .col */}
+
       {/* <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Type</label>
@@ -222,27 +243,6 @@ const CreateList = ({ oferta, utilizator }) => {
 
       {/* End .col */}
 
-      <div className="col-lg-12 col-xl-12">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Tip oferta</label>
-          <select
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-            value={tipOferta}
-            onChange={(e) => setTipOferta(e.target.value)}
-            disabled
-          >
-            <option data-tokens="Status1">Selecteaza tip oferta</option>
-            <option data-tokens="Oferta cu discount procentual general">
-              Oferta cu discount procentual general
-            </option>
-            <option data-tokens="Oferta specifică">Oferta specifică</option>
-          </select>
-        </div>
-      </div>
-      {/* End .col */}
-
       {/* <div className="col-lg-4 col-xl-4">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExamplePrice">Procent</label>
@@ -253,81 +253,100 @@ const CreateList = ({ oferta, utilizator }) => {
           />
         </div>
       </div> */}
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="pretIntreg">Preț întreg</label>
-          <input
-            type="number"
-            className="form-control"
-            id="pretIntreg"
-            value={pretIntreg}
-            onChange={(e) => setPretIntreg(e.target.value)}
-            placeholder="Introdu prețul întreg"
-            readOnly
-          />
-        </div>
-      </div>
-      {/* End .col */}
+      {tipOferta === "Oferta specifică" ? (
+        <>
+          <div className="col-lg-4 col-xl-4">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="pretIntreg">Preț întreg</label>
+              <input
+                type="number"
+                className="form-control"
+                id="pretIntreg"
+                value={pretIntreg}
+                onChange={(e) => setPretIntreg(e.target.value)}
+                placeholder="Introdu prețul întreg"
+                readOnly
+              />
+            </div>
+          </div>
+          {/* End .col */}
 
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="pretRedus">Preț redus</label>
-          <input
-            type="number"
-            className="form-control"
-            id="pretRedus"
-            value={pretRedus}
-            onChange={(e) => setPretRedus(e.target.value)}
-            placeholder="Introdu prețul redus"
-            readOnly
-          />
-        </div>
-      </div>
-      {/* End .col */}
+          <div className="col-lg-4 col-xl-4">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="pretRedus">Preț redus</label>
+              <input
+                type="number"
+                className="form-control"
+                id="pretRedus"
+                value={pretRedus}
+                onChange={(e) => setPretRedus(e.target.value)}
+                placeholder="Introdu prețul redus"
+                readOnly
+              />
+            </div>
+          </div>
+          {/* End .col */}
 
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="procentReducere">Procent reducere</label>
-          <input
-            type="text"
-            className="form-control"
-            id="procentReducere"
-            value={procentReducere + "%"}
-            readOnly
-          />
+          <div className="col-lg-4 col-xl-4">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="procentReducere">Procent reducere</label>
+              <input
+                type="text"
+                className="form-control"
+                id="procentReducere"
+                value={procentReducere + "%"}
+                readOnly
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="col-lg-4 col-xl-4">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="procentReducere">Procent reducere</label>
+            <input
+              type="text"
+              className="form-control"
+              id="procentReducere"
+              value={procentReducere + "%"}
+              readOnly
+            />
+          </div>
         </div>
-      </div>
+      )}
+      {tipOferta === "Oferta specifică" && (
+        <>
+          <div className="col-lg-6 col-xl-6">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="activationDate">Data de activare</label>
+              <input
+                type="date"
+                className="form-control"
+                id="activationDate"
+                value={dataActivare}
+                onChange={(e) => setDataActivare(e.target.value)}
+                readOnly
+              />
+            </div>
+          </div>
+          {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="activationDate">Data de activare</label>
-          <input
-            type="date"
-            className="form-control"
-            id="activationDate"
-            value={dataActivare}
-            onChange={(e) => setDataActivare(e.target.value)}
-            readOnly
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="deactivationDate">Data de dezactivare</label>
-          <input
-            type="date"
-            className="form-control"
-            id="deactivationDate"
-            value={dataDezactivare}
-            onChange={(e) => setDataDezactivare(e.target.value)}
-            readOnly
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
+          <div className="col-lg-6 col-xl-6">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="deactivationDate">Data de dezactivare</label>
+              <input
+                type="date"
+                className="form-control"
+                id="deactivationDate"
+                value={dataDezactivare}
+                onChange={(e) => setDataDezactivare(e.target.value)}
+                readOnly
+              />
+            </div>
+          </div>
+          {/* End .col */}
+        </>
+      )}
       {/* End .col */}
       {/* <div className="col-lg-4 col-xl-4">
         <div className="my_profile_setting_input form-group">

@@ -12,7 +12,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const index = async () => {
   const { currentUser } = useAuth();
-  let oferte = await handleGetFirestore(`Users/${currentUser.uid}/Oferte`);
+  let oferte = await handleGetFirestore(`Users/${currentUser?.uid}/Oferte`);
   return (
     <>
       {/* <!-- Main Header Nav --> */}

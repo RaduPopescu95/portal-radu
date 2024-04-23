@@ -23,6 +23,7 @@ const index = async ({ params }) => {
     "documentId",
     offerId
   );
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}

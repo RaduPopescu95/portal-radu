@@ -1,6 +1,6 @@
 import GlobalFilter from "./GlobalFilter";
 
-const GlobalHeroFilter = ({ className = "" }) => {
+const GlobalHeroFilter = ({ className = "", judete }) => {
   return (
     <div className={`home_adv_srch_opt ${className}`}>
       {/* <ul className="nav nav-pills" id="pills-tab" role="tablist">
@@ -41,7 +41,7 @@ const GlobalHeroFilter = ({ className = "" }) => {
           role="tabpanel"
           aria-labelledby="pills-home-tab"
         >
-          <GlobalFilter />
+          <GlobalFilter judete={judete} />
         </div>
         <div
           className="tab-pane fade"
@@ -49,7 +49,7 @@ const GlobalHeroFilter = ({ className = "" }) => {
           role="tabpanel"
           aria-labelledby="pills-profile-tab"
         >
-          <GlobalFilter />
+          {/* <GlobalFilter /> */}
         </div>
       </div>
     </div>

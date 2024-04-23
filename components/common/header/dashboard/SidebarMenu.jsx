@@ -10,9 +10,10 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { handleLogout } from "@/utils/authUtils";
 import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 const SidebarMenu = () => {
-  const { currentUser, userData } = useAuth();
+  const { currentUser, userData, loading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -40,6 +41,14 @@ const SidebarMenu = () => {
     },
     { id: 3, name: "Deconectare", route: "/", icon: "flaticon-logout" },
   ];
+
+  useEffect(() => {
+    console.log(currentUser);
+    console.log(userData);
+    if (!loading && userData?.userType != "Partener") {
+      router.push("/");
+    }
+  }, [loading]);
 
   return (
     <>

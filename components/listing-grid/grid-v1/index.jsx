@@ -11,7 +11,7 @@ import PopupSignInUp from "../../common/PopupSignInUp";
 import BreadCrumb2 from "./BreadCrumb2";
 import FeaturedItem from "./FeaturedItem";
 
-const index = () => {
+const index = ({ judete }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -48,7 +48,7 @@ const index = () => {
           {/* End Page Breadcrumb and Grid,List and filter Button */}
 
           <div className="row">
-          <div className="col-md-12 col-lg-8">
+            <div className="col-md-12 col-lg-8">
               <div className="grid_list_search_result ">
                 <div className="row align-items-center">
                   <FilterTopBar />
@@ -74,7 +74,7 @@ const index = () => {
             {/* End  page conent */}
             <div className="col-lg-4 col-xl-4">
               <div className="sidebar-listing-wrapper">
-                <SidebarListing />
+                <SidebarListing judete={judete} />
               </div>
               {/* End SidebarListing */}
 
@@ -101,8 +101,6 @@ const index = () => {
               {/* End mobile sidebar listing  */}
             </div>
             {/* End sidebar conent */}
-
-
           </div>
           {/* End .row */}
         </div>

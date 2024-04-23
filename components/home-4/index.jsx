@@ -11,7 +11,7 @@ import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import PopupSignInUp from "../common/PopupSignInUp";
 
-const index = () => {
+const index = ({ judete }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -47,7 +47,7 @@ const index = () => {
                     Gaseste usor operatorul economic cel mai apropiata de tine
                   </p>
                 </div>
-                <GlobalHeroFilter className="home4" />
+                <GlobalHeroFilter className="home4" judete={judete} />
               </div>
             </div>
           </div>

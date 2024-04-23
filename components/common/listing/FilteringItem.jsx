@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect } from "react";
 import { useState } from "react";
@@ -24,9 +24,68 @@ import {
 } from "../../../features/properties/propertiesSlice";
 import PricingRangeSlider from "../../common/PricingRangeSlider";
 import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
+import { handleQueryFirestoreSubcollection } from "@/utils/firestoreUtils";
 
+const FilteringItem = ({ judete }) => {
+  const router = useRouter();
+  const [selectedJudet, setSelectedJudet] = useState("");
+  const [selectedLocalitate, setSelectedLocalitate] = useState("");
+  const [localitati, setLocalitati] = useState([]);
+  const [isJudetSelected, setIsJudetSelected] = useState(true);
+  const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
 
-const FilteringItem = () => {
+  // Handler pentru schimbarea selectiei de judete
+  const handleJudetChange = async (e) => {
+    const judetSelectedName = e.target.value; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+    setSelectedJudet(judetSelectedName);
+    setIsJudetSelected(!!judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    if (judetSelected) {
+      try {
+        // Utilizăm judet pentru a interoga Firestore
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        // Presupunem că localitatiFromFirestore este array-ul corect al localităților
+        setLocalitati(localitatiFromFirestore);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        setLocalitati([]); // Resetează localitățile în caz de eroare
+      }
+    } else {
+      // Dacă nu găsim județul selectat, resetăm localitățile
+      setLocalitati([]);
+    }
+  };
+
+  const handleLocalitateChange = (e) => {
+    console.log("Localitate selected: ", e.target.value); // Acesta ar trebui să arate numele localității ca string
+    setSelectedLocalitate(e.target.value);
+    setIsLocalitateSelected(!!e.target.value);
+  };
+
+  // submit handler
+  const submitHandler = () => {
+    console.log("submit...", selectedJudet);
+    console.log("submit...", selectedLocalitate);
+    if (!selectedJudet) {
+      setIsJudetSelected(!!selectedJudet);
+    } else if (selectedJudet) {
+      router.push(`/parteneri/${selectedJudet}`);
+    } else if (selectedJudet && selectedLocalitate) {
+      router.push(`/parteneri/${selectedJudet}-${selectedLocalitate}`);
+    }
+  };
+
   const {
     keyword,
     location,
@@ -72,8 +131,6 @@ const FilteringItem = () => {
   ]);
 
   const dispath = useDispatch();
-
-
 
   // keyword
   useEffect(() => {
@@ -213,17 +270,19 @@ const FilteringItem = () => {
         <div className="search_option_two">
           <div className="candidate_revew_select">
             <select
-              onChange={(e) => setPropertiesType(e.target.value)}
-              className="selectpicker w100 show-tick form-select"
-              value={getPropertiesType}
+              className={`selectpicker w100 form-select show-tick ${
+                !isJudetSelected ? "border-danger" : ""
+              }`}
+              onChange={handleJudetChange}
+              value={selectedJudet}
             >
-              <option value="">Selecteaza Judet</option>
-              <option value="apartment">Dambovita</option>
-              <option value="bungalow">Cluj</option>
-              <option value="condo">Brasov</option>
-              <option value="house">Hunedoara</option>
-              <option value="land">Sibiu</option>
-              <option value="single family">Cluj</option>
+              <option value="">Judete</option>
+              {judete &&
+                judete.map((judet, index) => (
+                  <option key={index} value={judet.judet}>
+                    {judet.judet}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
@@ -234,17 +293,18 @@ const FilteringItem = () => {
         <div className="search_option_two">
           <div className="candidate_revew_select">
             <select
-              onChange={(e) => setStatus(e.target.value)}
-              className="selectpicker w100 show-tick form-select"
-              value={getStatus}
+              className={`selectpicker w100 form-select show-tick ${
+                !isLocalitateSelected ? "border-danger" : ""
+              }`}
+              onChange={handleLocalitateChange}
+              value={selectedLocalitate}
             >
-              <option value="">Selecteaza localitate</option>
-              <option value="apartment">Targoviste</option>
-              <option value="bungalow">Brasov</option>
-              <option value="condo">Moreni</option>
-              <option value="house">Bucuresti</option>
-              <option value="land">Timisoara</option>
-              <option value="single family">Cluj</option>
+              <option value="">Localitati</option>
+              {localitati.map((location, index) => (
+                <option key={index} value={location.localitate}>
+                  {location.localitate}
+                </option>
+              ))}
             </select>
           </div>
         </div>
