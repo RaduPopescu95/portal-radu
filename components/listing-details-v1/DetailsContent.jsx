@@ -24,7 +24,7 @@ const DetailsContent = ({ partener, oferte }) => {
         {/* End .lsd_list */}
 
         <h4 className="mb30">Desriere</h4>
-        <PropertyDescriptions />
+        <PropertyDescriptions partener={partener} />
       </div>
       {/* End .listing_single_description */}
 
