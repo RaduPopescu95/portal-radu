@@ -20,6 +20,7 @@ const ProfileInfo = () => {
   const [denumireBrand, setDenumireBrand] = useState(
     userData?.denumireBrand || ""
   );
+  const [descriere, setDescriere] = useState(userData?.descriere || "");
   const [email, setEmail] = useState(userData?.email || "");
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -169,6 +170,7 @@ const ProfileInfo = () => {
         coordonate,
         logo: lg,
         images,
+        descriere,
       };
       setUserData(data);
       await handleUpdateFirestore(`Users/${user_uid}`, data).then(() => {
@@ -290,6 +292,22 @@ const ProfileInfo = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+        </div>
+      </div>
+      {/* End .col */}
+
+      <div className="col-xl-12">
+        <div className="my_profile_setting_textarea">
+          <label htmlFor="exampleFormControlTextarea1">
+            Descriere partener
+          </label>
+          <textarea
+            className="form-control"
+            id="exampleFormControlTextarea1"
+            rows="7"
+            value={descriere}
+            onChange={(e) => setDescriere(e.target.value)}
+          ></textarea>
         </div>
       </div>
       {/* End .col */}
@@ -438,20 +456,6 @@ const ProfileInfo = () => {
         onPlaceChanged={handleLocationSelect}
         adresa={adresaSediu}
       />
-      {/* End .col */}
-
-      {/* <div className="col-xl-12">
-                <div className="my_profile_setting_textarea">
-                    <label htmlFor="exampleFormControlTextarea1">
-                        About me
-                    </label>
-                    <textarea
-                        className="form-control"
-                        id="exampleFormControlTextarea1"
-                        rows="7"
-                    ></textarea>
-                </div>
-            </div> */}
       {/* End .col */}
 
       <div className="col-xl-12 text-right mt-4">
