@@ -26,7 +26,7 @@ const WhatsNearby = ({ oferte }) => {
 
   const handleOfferSelect = (offer) => {
     setSelectedOffer(
-      `https://portal-adrian-beta.vercel.app/verificare-tranzactie?offerId=${offer?.documentId}`
+      `https://portal-adrian-beta.vercel.app/verificare-tranzactie/${userData?.id}-${offer?.documentId}`
     );
     setIsModalVisible(true);
   };
