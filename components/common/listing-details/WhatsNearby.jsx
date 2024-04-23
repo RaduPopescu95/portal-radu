@@ -26,7 +26,7 @@ const WhatsNearby = ({ oferte }) => {
 
   const handleOfferSelect = (offer) => {
     setSelectedOffer(
-      `https://portal-adrian-beta.vercel.app/verificare-tranzactie?offerId=${offer.id}`
+      `https://portal-adrian-beta.vercel.app/verificare-tranzactie?offerId=${offer?.documentId}`
     );
     setIsModalVisible(true);
   };
@@ -37,23 +37,28 @@ const WhatsNearby = ({ oferte }) => {
     return (
       <>
         {oferte
-          .filter((offer) => offer.gradeFidelitate.includes(level))
+          .filter(
+            (offer) =>
+              offer.gradeFidelitate.includes(level) && offer.status === "Activa"
+          )
           .map((offer, index) => {
             const isAvailable =
               fidelityLevels[userData.gradFidelitate].includes(level);
             return (
               <div key={index} className={`offer ${index > 0 ? "mt10" : ""}`}>
-                <h5>
-                  <span className={"flaticon-money-bag"}></span>{" "}
-                  {offer.titluOferta}
-                </h5>
-                <div
-                  className={`single_line ${
-                    !isAvailable || offer.status !== "Activa" ? "grey-out" : ""
-                  }`}
-                >
-                  <p>{offer.descriereOferta}</p>
-                  {isAvailable && offer.status === "Activa" ? (
+                <div className="single_line">
+                  <div
+                    className={`${
+                      !isAvailable ? "grey-out" : ""
+                    } text_container`}
+                  >
+                    <h5>
+                      <span className={"flaticon-money-bag"}></span>
+                      {offer.titluOferta}
+                    </h5>
+                    <p>{offer.descriereOferta}</p>
+                  </div>
+                  {isAvailable ? (
                     <button
                       onClick={() => handleOfferSelect(offer)}
                       className="btn btn-primary"
@@ -61,9 +66,7 @@ const WhatsNearby = ({ oferte }) => {
                       Obține Oferta
                     </button>
                   ) : (
-                    <p className="text-muted">{`Oferta valabilă pentru: ${offer.gradeFidelitate.join(
-                      ", "
-                    )}`}</p>
+                    <p className="text-muted">{`Oferta valabilă pentru utilizatori ${activeTab}`}</p>
                   )}
                 </div>
               </div>

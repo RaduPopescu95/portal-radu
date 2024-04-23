@@ -1,11 +1,10 @@
 import dynamic from "next/dynamic";
-import CreateListing from "@/components/dashboard-master/verifica-tranzactie";
+import CreateListing from "@/components/dashboard-master/confirma-tranzactie";
 
 export const metadata = {
-  title: 'Creaza discount || nume portal',
-  description:
-    'nume portal',
-}
+  title: "Creaza discount || nume portal",
+  description: "nume portal",
+};
 
 const index = () => {
   return (

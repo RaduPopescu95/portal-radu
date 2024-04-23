@@ -6,7 +6,7 @@ import Filtering from "./Filtering";
 import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
 
-const index = () => {
+const index = ({ parteneri }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -43,7 +43,8 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Navigatie Panou de Administrare
+                        <i className="fa fa-bars pr10"></i> Navigatie Panou de
+                        Administrare
                       </button>
                     </div>
                   </div>
@@ -52,7 +53,7 @@ const index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">Lista utilizatori / Parteneri</h2>
+                    <h2 className="breadcrumb_title">Lista parteneri</h2>
                   </div>
                 </div>
                 {/* End .col */}
@@ -67,9 +68,9 @@ const index = () => {
                       </li>
                       {/* End li */}
 
-                      <li className="list-inline-item">
+                      {/* <li className="list-inline-item">
                         <Filtering />
-                      </li>
+                      </li> */}
                       {/* End li */}
                     </ul>
                   </div>
@@ -80,7 +81,7 @@ const index = () => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        <TableData />
+                        <TableData parteneri={parteneri} />
                       </div>
                       {/* End .table-responsive */}
 

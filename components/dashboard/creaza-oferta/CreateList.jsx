@@ -6,8 +6,10 @@ import {
   handleUploadFirestore,
   handleUploadFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
+import { uploadImage } from "@/utils/storageUtils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import LogoUpload from "../my-profile/LogoUpload";
 
 const CreateList = ({ oferta }) => {
   const { currentUser, userData } = useAuth();
@@ -43,6 +45,14 @@ const CreateList = ({ oferta }) => {
 
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
 
+  const [logo, setLogo] = useState(
+    oferta?.imagineOferta ? [oferta?.imagineOferta] : []
+  );
+  const [deletedLogo, setDeletedLogo] = useState(null);
+  const [isNewLogo, setIsNewLogo] = useState(false);
+
+  let isEdit = oferta?.imagineOferta?.finalUri ? true : false;
+
   // Funcție pentru a afișa alerta
   const showAlert = (message, type) => {
     setAlert({ show: true, message, type });
@@ -74,11 +84,6 @@ const CreateList = ({ oferta }) => {
     });
   };
 
-  // upload image
-  const uploadProfile = (e) => {
-    setImage(e.target.files[0]);
-  };
-
   useEffect(() => {
     if (pretIntreg && pretRedus) {
       const discount = ((pretIntreg - pretRedus) / pretIntreg) * 100;
@@ -105,6 +110,12 @@ const CreateList = ({ oferta }) => {
   const handleUpdateOffer = async () => {
     console.log("currentUser...", currentUser.uid);
     console.log("userData...", userData);
+    let lg = {};
+    if (tipOferta === "Oferta specifică") {
+      if (isNewLogo) {
+        lg = await uploadImage(logo, true, "PozeOferte", deletedLogo);
+      }
+    }
     let data = {
       dataDezactivare,
       dataActivare,
@@ -116,6 +127,7 @@ const CreateList = ({ oferta }) => {
       pretRedus,
       pretIntreg,
       status: "Inactiva",
+      imagineOferta: lg,
     };
     try {
       await handleUpdateFirestoreSubcollection(
@@ -132,20 +144,30 @@ const CreateList = ({ oferta }) => {
   const handleAddOffer = async () => {
     console.log("currentUser...", currentUser.uid);
     console.log("userData...", userData);
-    let data = {
-      dataDezactivare,
-      dataActivare,
-      tipOferta,
-      gradeFidelitate,
-      descriereOferta,
-      titluOferta,
-      procentReducere,
-      pretRedus,
-      pretIntreg,
-      status: "Inactiva",
-    };
-
+    let lg = {};
     try {
+      if (tipOferta === "Oferta specifică") {
+        if (!logo[0].fileName) {
+          lg = await uploadImage(logo, false, "PozeOferte");
+        } else {
+          lg = logo[0];
+        }
+      }
+
+      let data = {
+        dataDezactivare,
+        dataActivare,
+        tipOferta,
+        gradeFidelitate,
+        descriereOferta,
+        titluOferta,
+        procentReducere,
+        pretRedus,
+        pretIntreg,
+        status: "Inactiva",
+        imagineOferta: lg,
+      };
+
       await handleUploadFirestoreSubcollection(
         data,
         `Users/${currentUser.uid}/Oferte`,
@@ -161,33 +183,66 @@ const CreateList = ({ oferta }) => {
     }
   };
 
+  // delete logo
+  const deleteLogo = (name) => {
+    if (logo[0].fileName) {
+      setLogo([]); // Clear the selection when deleting
+      setDeletedLogo(logo[0].fileName);
+    } else {
+      setLogo([]); // Clear the selection when deleting
+    }
+  };
+
+  // upload Logo
+  // Handle single image selection
+  const singleImage = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    console.log("test..here...", file.name);
+    if (file) {
+      // Check if the file is already selected
+      const isExist = logo.some(
+        (existingFile) => existingFile.name === file.name
+      );
+
+      if (!isExist) {
+        setLogo([file]); // Replace the current file
+        setIsNewLogo(true);
+      } else {
+        alert("This image is already selected!");
+      }
+    }
+  };
+
   return (
     <>
-      <div className="col-lg-12">
-        <div className="wrap-custom-file">
-          <input
-            type="file"
-            id="image1"
-            accept="image/png, image/gif, image/jpeg"
-            onChange={uploadProfile}
-          />
-          <label
-            style={
-              image !== null
-                ? {
-                    backgroundImage: `url(${URL.createObjectURL(image)})`,
-                  }
-                : undefined
-            }
-            htmlFor="image1"
+      <div className="col-lg-12 col-xl-12">
+        <div className="my_profile_setting_input ui_kit_select_search form-group">
+          <label>Tip oferta</label>
+          <select
+            className="selectpicker form-select"
+            data-live-search="true"
+            data-width="100%"
+            value={tipOferta}
+            onChange={(e) => setTipOferta(e.target.value)}
           >
-            <span>
-              <i className="flaticon-download"></i> încarcă Imagine{" "}
-            </span>
-          </label>
+            <option data-tokens="Status1">Selecteaza tip oferta</option>
+            <option data-tokens="Oferta cu discount procentual general">
+              Oferta cu discount procentual general
+            </option>
+            <option data-tokens="Oferta specifică">Oferta specifică</option>
+          </select>
         </div>
-        <p>*minimum 260px x 260px</p>
       </div>
+      {/* End .col */}
+      {tipOferta === "Oferta specifică" && (
+        <LogoUpload
+          singleImage={singleImage}
+          deleteLogo={deleteLogo}
+          logoImg={logo}
+          isEdit={isEdit}
+          isNewImage={isNewLogo}
+        />
+      )}
       {/* End .col */}
       <div className="col-lg-12">
         <div className="my_profile_setting_input form-group">
@@ -290,26 +345,6 @@ const CreateList = ({ oferta }) => {
 
       {/* End .col */}
 
-      <div className="col-lg-12 col-xl-12">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Tip oferta</label>
-          <select
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-            value={tipOferta}
-            onChange={(e) => setTipOferta(e.target.value)}
-          >
-            <option data-tokens="Status1">Selecteaza tip oferta</option>
-            <option data-tokens="Oferta cu discount procentual general">
-              Oferta cu discount procentual general
-            </option>
-            <option data-tokens="Oferta specifică">Oferta specifică</option>
-          </select>
-        </div>
-      </div>
-      {/* End .col */}
-
       {/* <div className="col-lg-4 col-xl-4">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExamplePrice">Procent</label>
@@ -320,76 +355,99 @@ const CreateList = ({ oferta }) => {
           />
         </div>
       </div> */}
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="pretIntreg">Preț întreg</label>
-          <input
-            type="number"
-            className="form-control"
-            id="pretIntreg"
-            value={pretIntreg}
-            onChange={(e) => setPretIntreg(e.target.value)}
-            placeholder="Introdu prețul întreg"
-          />
-        </div>
-      </div>
-      {/* End .col */}
+      {tipOferta === "Oferta specifică" ? (
+        <>
+          <div className="col-lg-4 col-xl-4">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="pretIntreg">Preț întreg</label>
+              <input
+                type="number"
+                className="form-control"
+                id="pretIntreg"
+                value={pretIntreg}
+                onChange={(e) => setPretIntreg(e.target.value)}
+                placeholder="Introdu prețul întreg"
+              />
+            </div>
+          </div>
+          {/* End .col */}
 
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="pretRedus">Preț redus</label>
-          <input
-            type="number"
-            className="form-control"
-            id="pretRedus"
-            value={pretRedus}
-            onChange={(e) => setPretRedus(e.target.value)}
-            placeholder="Introdu prețul redus"
-          />
-        </div>
-      </div>
-      {/* End .col */}
+          <div className="col-lg-4 col-xl-4">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="pretRedus">Preț redus</label>
+              <input
+                type="number"
+                className="form-control"
+                id="pretRedus"
+                value={pretRedus}
+                onChange={(e) => setPretRedus(e.target.value)}
+                placeholder="Introdu prețul redus"
+              />
+            </div>
+          </div>
+          {/* End .col */}
 
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="procentReducere">Procent reducere</label>
-          <input
-            type="text"
-            className="form-control"
-            id="procentReducere"
-            value={procentReducere + "%"}
-            readOnly
-          />
+          <div className="col-lg-4 col-xl-4">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="procentReducere">Procent reducere</label>
+              <input
+                type="text"
+                className="form-control"
+                id="procentReducere"
+                value={procentReducere + "%"}
+                readOnly
+              />
+            </div>
+          </div>
+          {/* End .col */}
+        </>
+      ) : (
+        <div className="col-lg-4 col-xl-4">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="procentReducere">Procent reducere %</label>
+            <input
+              type="text"
+              className="form-control"
+              id="procentReducere"
+              value={procentReducere}
+              onChange={(e) => setProcentReducere(e.target.value)}
+              placeholder="Introdu procentul de reducere"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="activationDate">Data de activare</label>
-          <input
-            type="date"
-            className="form-control"
-            id="activationDate"
-            value={dataActivare}
-            onChange={(e) => setDataActivare(e.target.value)}
-          />
-        </div>
-      </div>
-      {/* End .col */}
+      {tipOferta === "Oferta specifică" && (
+        <>
+          <div className="col-lg-6 col-xl-6">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="activationDate">Data de activare</label>
+              <input
+                type="date"
+                className="form-control"
+                id="activationDate"
+                value={dataActivare}
+                onChange={(e) => setDataActivare(e.target.value)}
+              />
+            </div>
+          </div>
+          {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="deactivationDate">Data de dezactivare</label>
-          <input
-            type="date"
-            className="form-control"
-            id="deactivationDate"
-            value={dataDezactivare}
-            onChange={(e) => setDataDezactivare(e.target.value)}
-          />
-        </div>
-      </div>
-      {/* End .col */}
+          <div className="col-lg-6 col-xl-6">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="deactivationDate">Data de dezactivare</label>
+              <input
+                type="date"
+                className="form-control"
+                id="deactivationDate"
+                value={dataDezactivare}
+                onChange={(e) => setDataDezactivare(e.target.value)}
+              />
+            </div>
+          </div>
+          {/* End .col */}
+        </>
+      )}
 
       {/* End .col */}
       {/* <div className="col-lg-4 col-xl-4">
@@ -430,7 +488,7 @@ const CreateList = ({ oferta }) => {
               {alert.message}
             </div>
           )}
-          {oferta?.title?.length > 0 ? (
+          {oferta?.titluOferta?.length > 0 ? (
             <button onClick={handleUpdateOffer} className="btn btn2 float-end">
               Actualizare
             </button>

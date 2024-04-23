@@ -18,13 +18,21 @@ import { useAuth } from "@/context/AuthContext";
 import { handleFirebaseAuthError, handleSignIn } from "@/utils/authUtils";
 import { doc, setDoc } from "firebase/firestore";
 import AutocompleteInput from "../AutocompleteInput";
+import { getCurrentDateTime } from "@/utils/timeUtils";
+import { closeSignupModal } from "@/utils/commonUtils";
+import { AlertModal } from "../AlertModal";
+import { useRouter } from "next/navigation";
 
 const LoginSignupPartener = () => {
   const { userData, currentUser, setCurrentUser, setUserData } = useAuth();
+  const router = useRouter();
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [denumireBrand, setDenumireBrand] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [numeContact, setNumeContact] = useState("");
   const [telefonContact, setTelefonContact] = useState("");
   const [judet, setJudet] = useState("");
@@ -34,6 +42,15 @@ const LoginSignupPartener = () => {
   const [adresaSediu, setAdresaSediu] = useState("");
   const [googleMapsLink, setGoogleMapsLink] = useState("");
   const [coordonate, setCoordonate] = useState({});
+  const [alert, setAlert] = useState({ message: "", type: "" });
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type });
+  };
+
+  const closeAlert = () => {
+    setAlert({ message: "", type: "" });
+  };
 
   const handleLocationSelect = (lat, lng, adresa, urlMaps) => {
     console.log(`Selected location - Lat: ${lat}, Lng: ${lng}`);
@@ -85,48 +102,71 @@ const LoginSignupPartener = () => {
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-    const emailNew = emailWithoutSpace(email);
-    // Verifică dacă parola este confirmată corect și apoi creează utilizatorul
+    let isValid = true;
+
+    setPasswordError("");
+    setConfirmPasswordError("");
+
+    if (password.length < 6) {
+      setPasswordError("Parola trebuie să fie de cel puțin 6 caractere.");
+      isValid = false;
+    }
+
     if (password !== confirmPassword) {
-      console.error("Passwords do not match!");
+      setConfirmPasswordError("Parolele nu corespund.");
+      isValid = false;
+    }
+
+    if (!isValid) {
       return;
     }
+
     try {
+      const emailFormatted = emailWithoutSpace(email);
       const userCredential = await createUserWithEmailAndPassword(
         authentication,
-        emailNew,
+        emailFormatted,
         password
       );
-      let user_uid = userCredential.user.uid;
       console.log(
         "User created successfully with email: ",
         userCredential.user
       );
       const collectionLength = await getFirestoreCollectionLength("Users");
       let id = collectionLength + 1;
-      let data = {
+      const dateTime = getCurrentDateTime();
+      const user_uid = userCredential.user.uid;
+      const userData = {
         id,
-        cui,
-        categorie,
-        localitate,
-        judet,
-        telefonContact,
-        numeContact,
-        email: emailNew,
+        email: emailFormatted,
         denumireBrand,
-        user_uid,
-        userType: "Partener",
+        numeContact,
+        telefonContact,
+        judet,
+        localitate,
+        categorie,
+        cui,
         adresaSediu,
         googleMapsLink,
         coordonate,
+        userType: "Partener",
+        statusCont: "Inactiv",
+        firstUploadDate: dateTime.date,
+        firstUploadTime: dateTime.time,
+        user_uid,
       };
-      // await handleUploadFirestore(data, "Users");
-      const collectionId = "Users";
-      const documentId = user_uid;
-      setDoc(doc(db, collectionId, documentId), data);
+
+      await setDoc(doc(db, "Users", user_uid), userData).then(() => {
+        showAlert("Înregistrare cu succes!", "success");
+      });
+      setUserData(userData);
       handleReset();
+      setTimeout(() => {
+        router.push("/profil-partener"); // Redirecționează după ce mesajul de succes este afișat și închis
+      }, 3000); // Așteaptă să dispară alerta
     } catch (error) {
-      console.error("Error signing up: ", error);
+      console.error("Eroare la crearea utilizatorului: ", error);
+      showAlert(`Eroare la înregistrare: ${error.message}`, "danger");
     }
   };
 
@@ -147,9 +187,9 @@ const LoginSignupPartener = () => {
         <div className="row">
           <div className="col-lg-12">
             <ul className="sign_up_tab nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item active">
+              <li className="nav-item">
                 <a
-                  className="nav-link"
+                  className="nav-link active"
                   id="authpartener-tab"
                   data-bs-toggle="tab"
                   href="#authpartener"
@@ -263,7 +303,7 @@ const LoginSignupPartener = () => {
                   {/* End input-group */}
 
                   <div className="form-group form-check custom-checkbox mb-3">
-                    <input
+                    {/* <input
                       className="form-check-input"
                       type="checkbox"
                       value=""
@@ -274,7 +314,7 @@ const LoginSignupPartener = () => {
                       htmlFor="remeberMe"
                     >
                       Rămâi conectat
-                    </label>
+                    </label> */}
 
                     <a className="btn-fpswd float-end" href="#">
                       Ai uitat parola?
@@ -285,19 +325,19 @@ const LoginSignupPartener = () => {
                   <button
                     type="submit"
                     className="btn btn-log w-100 btn-thm"
-                    data-bs-dismiss="modal"
                     aria-label="Close"
+                    data-bs-dismiss="modal"
                   >
                     Autentificare
                   </button>
                   {/* End submit button */}
 
-                  <p className="text-center">
+                  {/* <p className="text-center">
                     Nu ai cont?{" "}
                     <a className="text-thm" href="#">
                       Înregistrează-te
                     </a>
-                  </p>
+                  </p> */}
                 </form>
               </div>
               {/* End .col .login_form */}
@@ -388,6 +428,20 @@ const LoginSignupPartener = () => {
                   </div>
                   {/* End .row */}
 
+                  {passwordError && (
+                    <div
+                      style={{
+                        color: "red",
+                        marginTop: "5px",
+                        fontSize: "0.875rem",
+                        marginTop: "0px",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      {passwordError}
+                    </div>
+                  )}
+
                   <div className="form-group input-group  mb-3">
                     <input
                       type="password"
@@ -404,6 +458,20 @@ const LoginSignupPartener = () => {
                     </div>
                   </div>
                   {/* End .row */}
+
+                  {confirmPasswordError && (
+                    <div
+                      style={{
+                        color: "red",
+                        marginTop: "5px",
+                        fontSize: "0.875rem",
+                        marginTop: "0px",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      {confirmPasswordError}
+                    </div>
+                  )}
 
                   <div className="form-group input-group mb-3">
                     <input
@@ -536,12 +604,16 @@ const LoginSignupPartener = () => {
                   type="checkbox"
                   value=""
                   id="terms"
+                  onChange={(e) => setIsTermsAccepted(e.target.checked)}
                 />
                 <label
                   className="form-check-label form-check-label"
                   htmlFor="terms"
                 >
-                  Accept termenii si conditiile.
+                  Accept{" "}
+                  <Link href={"/termeni-confidentialitate"}>
+                    termenii si conditiile.
+                  </Link>
                 </label>
               </div>
               {/* End from-group */}
@@ -550,24 +622,30 @@ const LoginSignupPartener = () => {
                 type="submit"
                 className="btn btn-log w-100 btn-thm"
                 data-bs-dismiss="modal"
-                aria-label="Close"
+                disabled={!isTermsAccepted}
               >
                 înregistrare
               </button>
               {/* End btn */}
 
-              <p className="text-center">
+              {/* <p className="text-center">
                 Aveti cont?{" "}
                 <a className="text-thm" href="#">
                   Autentificati-va
                 </a>
-              </p>
+              </p> */}
               {/* End register content */}
             </form>
           </div>
           {/* End .tab-pane */}
         </div>
       </div>
+
+      <AlertModal
+        message={alert.message}
+        type={alert.type}
+        onClose={closeAlert}
+      />
     </div>
   );
 };

@@ -58,3 +58,10 @@ export const calculateDistance = (lat1, lon1, lat2, lon2) => {
 
   return R * c; // Distanța în metri
 };
+
+// Funcția pentru a închide modalul
+export const closeSignupModal = (modalId) => {
+  const modalElement = document.getElementById(modalId); // Înlocuiește cu ID-ul real al modalului tău
+  const modalInstance = bootstrap.Modal.getInstance(modalElement);
+  modalInstance.hide();
+};

@@ -88,19 +88,19 @@ export default function ListingOne({ partener }) {
 
         <div className="row">
           <div className="col-lg-12">
-            {/* <Slider {...settings}>
-              {property?.imgList?.map((val, i) => (
+            <Slider {...settings}>
+              {partener?.images?.imgs.map((val, i) => (
                 <div key={i} className="slick-slide-padding">
                   <Image
                     width={752}
                     height={450}
                     className="img-fluid w100"
-                    src={property.img}
+                    src={val?.finalUri}
                     alt={`Property Image ${i + 1}`}
                   />
                 </div>
               ))}
-            </Slider> */}
+            </Slider>
           </div>
         </div>
         {/* End .row */}

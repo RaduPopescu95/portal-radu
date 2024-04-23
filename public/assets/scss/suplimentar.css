@@ -63,3 +63,23 @@
 .pac-container {
   z-index: 1500 !important; /* Folosește o valoare mare pentru a depăși z-index-ul modalului */
 }
+
+.single_line {
+  display: flex;
+  align-items: center; /* Aligns items vertically in the center */
+  justify-content: space-between; /* Puts maximum space between text container and button/paragraph */
+}
+
+.text_container {
+  flex-grow: 1; /* Allows the text container to take up remaining space */
+}
+
+.offer {
+  margin-top: 10px; /* Gives top margin for all offers except the first */
+}
+
+.custom-alert {
+  width: 50%; /* Setează lățimea dorită, de exemplu 50% din lățimea viewport-ului */
+  left: 25%; /* Centrarea se face ajustând left la jumătate din diferența până la 100% */
+  right: 25%; /* Asigură-te că marginile dreapta și stânga sunt egale */
+}

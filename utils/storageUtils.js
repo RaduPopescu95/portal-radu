@@ -10,12 +10,12 @@ import { getBlobFromUri } from "./getBlobFromUri";
 // import { writeImg } from "./realtimeUtils";
 
 export const uploadImage = async (
-  images,
+  image,
   newImage,
   firstLocation,
-  deletedLogo 
+  deletedLogo
 ) => {
-  const imageUpload = images[0];
+  const imageUpload = image[0];
   const authInstance = authentication;
   const currentUser = authInstance.currentUser;
   let finalUri;
@@ -41,36 +41,36 @@ export const uploadImage = async (
         });
     }
 
-    if (!imageUpload ) {
+    if (!imageUpload) {
       console.log("Please select an image");
       return;
     }
 
-    if(imageUpload instanceof File){
+    if (imageUpload instanceof File) {
+      console.log("TEst....");
+      const imageRef = ref(storage, `images/${firstLocation}/${fileName}`);
 
-    
-    const imageRef = ref(storage, `images/${firstLocation}/${fileName}`);
+      // Set the content type to image/jpeg
+      const metadata = {
+        contentType: "image/jpeg",
+      };
 
-    // Set the content type to image/jpeg
-    const metadata = {
-      contentType: "image/jpeg",
-    };
+      // Upload the image with metadata
+      const snapshot = await uploadBytes(imageRef, imageUpload, metadata);
 
-    // Upload the image with metadata
-    const snapshot = await uploadBytes(imageRef, imageUpload, metadata);
+      // Get the download URL for the uploaded image
+      finalUri = await getDownloadURL(snapshot.ref);
 
-    // Get the download URL for the uploaded image
-    finalUri = await getDownloadURL(snapshot.ref);
-
-    console.log("Image uploaded successfully. Download URL:", finalUri);
-  }else {
-    return imageUpload;
-  }
+      console.log("Image uploaded successfully. Download URL:", finalUri);
+    } else {
+      return imageUpload;
+    }
   } catch (error) {
     console.log("Error uploading image to storage:", error.message);
   }
   return { finalUri, fileName };
 };
+
 export const deleteImage = async (
   firstLocation,
   secondLocation,
@@ -106,61 +106,59 @@ export const uploadMultipleImages = async (
 ) => {
   const authInstance = authentication;
   const currentUser = authInstance.currentUser;
-let imgs = []
+  let imgs = [];
 
   try {
-
     if (!images.length) {
       console.log("Please select an image");
       return;
     }
 
-
     if (newImage && deletedImages.length > 0) {
       console.log("is new image...started delete");
-     // Presupunem că `images.fileNames` este un array cu numele fișierelor pe care vrei să le ștergi
-// și că `firstLocation` este un string care reprezintă locația inițială a acestor fișiere în Firebase Storage
+      // Presupunem că `images.fileNames` este un array cu numele fișierelor pe care vrei să le ștergi
+      // și că `firstLocation` este un string care reprezintă locația inițială a acestor fișiere în Firebase Storage
 
-for (let i = 0; i < deletedImages.length; i++) {
-  const fileName = deletedImages[i].fileName; // Obținem fiecare nume de fișier din array
-  const deletedRef = ref(storage, `images/${firstLocation}/${fileName}`); // Creăm referința la fișier
+      for (let i = 0; i < deletedImages.length; i++) {
+        const fileName = deletedImages[i].fileName; // Obținem fiecare nume de fișier din array
+        const deletedRef = ref(storage, `images/${firstLocation}/${fileName}`); // Creăm referința la fișier
 
-  try {
-    await deleteObject(deletedRef); // Încercăm să ștergem fișierul
-    console.log(`${fileName} deleted successfully`); // Logăm succesul dacă fișierul a fost șters
-  } catch (error) {
-    console.error(`Error deleting ${fileName}:`, error); // Logăm eroarea în caz de eșec
-  }
-}
-
+        try {
+          await deleteObject(deletedRef); // Încercăm să ștergem fișierul
+          console.log(`${fileName} deleted successfully`); // Logăm succesul dacă fișierul a fost șters
+        } catch (error) {
+          console.error(`Error deleting ${fileName}:`, error); // Logăm eroarea în caz de eșec
+        }
+      }
     }
-
 
     for (const imageUpload of images) {
-      if(imageUpload instanceof File){
-        console.log("file...")
-      const fileName = new Date().getTime() + "_" + images.indexOf(imageUpload); // Asigură unicitate
-      const imageRef = ref(storage, `images/${firstLocation}/${fileName}`);
-      const metadata = {
-        contentType: "image/jpeg",
-      };
+      if (imageUpload instanceof File) {
+        console.log("file...");
+        const fileName =
+          new Date().getTime() + "_" + images.indexOf(imageUpload); // Asigură unicitate
+        const imageRef = ref(storage, `images/${firstLocation}/${fileName}`);
+        const metadata = {
+          contentType: "image/jpeg",
+        };
 
-      const snapshot = await uploadBytes(imageRef, imageUpload, metadata);
-      const finalUri = await getDownloadURL(snapshot.ref);
-      console.log("Image uploaded successfully. Download URL:", finalUri);
+        const snapshot = await uploadBytes(imageRef, imageUpload, metadata);
+        const finalUri = await getDownloadURL(snapshot.ref);
+        console.log("Image uploaded successfully. Download URL:", finalUri);
 
-      imgs.push( {finalUri, fileName});
-    }else{
-
-        imgs.push( {finalUri:imageUpload.finalUri, fileName:imageUpload.fileName});
-    
-    }
+        imgs.push({ finalUri, fileName });
+      } else {
+        imgs.push({
+          finalUri: imageUpload.finalUri,
+          fileName: imageUpload.fileName,
+        });
+      }
     }
   } catch (error) {
     console.log("Error uploading image to storage:", error.message);
   }
-  console.log("imgs...", imgs)
-  return {imgs}; // Returnează array-uri cu URI-urile și numele fișierelor
+  console.log("imgs...", imgs);
+  return { imgs }; // Returnează array-uri cu URI-urile și numele fișierelor
 };
 
 export const deleteMultipleImages = async (
@@ -179,8 +177,6 @@ export const deleteMultipleImages = async (
     console.log("Error delete image from storage:", error);
   }
 };
-
-
 
 // export async function getUrlImageApi() {
 //   const imageRef = ref(storage, `images/PozaApi/apiimage.jpeg`);

@@ -1,3 +1,7 @@
+import {
+  getFirestoreCollectionLength,
+  getFirestoreQueryLength,
+} from "@/utils/firestoreUtils";
 import Header from "../../common/header/dashboard-master/Header";
 import SidebarMenu from "../../common/header/dashboard-master/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -5,7 +9,18 @@ import Activities from "./Activities";
 import AllStatistics from "./AllStatistics";
 import StatisticsChart from "./StatisticsChart";
 
-const index = () => {
+const index = async () => {
+  // const { userData } = useAuth();
+  const numarParteneri = await getFirestoreQueryLength(
+    `Users`,
+    "userType",
+    "Partener"
+  );
+  const numarDoctori = await getFirestoreQueryLength(
+    `Users`,
+    "userType",
+    "Doctor"
+  );
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -42,7 +57,8 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Navigatie Panou de Administrare
+                        <i className="fa fa-bars pr10"></i> Navigatie Panou de
+                        Administrare
                       </button>
                     </div>
                   </div>
@@ -58,7 +74,10 @@ const index = () => {
               {/* End .row */}
 
               <div className="row">
-                <AllStatistics />
+                <AllStatistics
+                  numarDoctori={numarDoctori}
+                  numarParteneri={numarParteneri}
+                />
               </div>
               {/* End .row Dashboard top statistics */}
 
@@ -79,7 +98,6 @@ const index = () => {
                 </div> */}
               </div>
               {/* End .row  */}
-
             </div>
             {/* End .col */}
           </div>

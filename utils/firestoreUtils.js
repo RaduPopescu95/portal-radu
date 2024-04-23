@@ -34,6 +34,17 @@ export const getFirestoreCollectionLength = async (location) => {
   return snapshot.data().count;
 };
 
+export const getFirestoreQueryLength = async (
+  location,
+  queryParam,
+  element
+) => {
+  const coll = collection(db, location);
+  const q = query(coll, where(queryParam, "==", element));
+  const snapshot = await getCountFromServer(q);
+  return snapshot.data().count;
+};
+
 export const handleUpdateFirestore = async (location, updatedData) => {
   try {
     //current date
@@ -52,6 +63,7 @@ export const handleUpdateFirestore = async (location, updatedData) => {
     console.log("Error on...handleUpdateFirestore...", err);
   }
 };
+
 export const handleUploadFirestore = async (data, location) => {
   try {
     console.log("test.infor in handle upload firestore...");
@@ -372,19 +384,30 @@ export const handleQueryFirestore = async (
 
 export const handleQueryFirestoreSubcollection = async (
   location,
-  queryParam,
+  queryParamOne,
   elementOne = null,
+  queryParamTwo = null,
   elementTwo = null
 ) => {
   console.log("Strt....", location);
-  console.log("Strt....", queryParam);
+  console.log("Strt....", queryParamOne);
   console.log("Strt....", elementOne);
   let arr = [];
+  let localitatiRef;
   // Pasul 1: Interoghează subcolecția Localitati
-  const localitatiRef = query(
-    collectionGroup(db, location),
-    where(queryParam, "==", elementOne)
-  );
+  if (queryParamTwo) {
+    localitatiRef = query(
+      collectionGroup(db, location),
+      where(queryParamOne, "==", elementOne),
+      where(queryParamTwo, "==", elementTwo)
+    );
+  } else {
+    localitatiRef = query(
+      collectionGroup(db, location),
+      where(queryParamOne, "==", elementOne)
+    );
+  }
+
   console.log("test....");
   const querySnapshot = await getDocs(localitatiRef);
   querySnapshot.forEach((doc) => {
@@ -438,4 +461,28 @@ export const handlePaginateFirestore = (location) => {
   const auth = authentication;
   const citiesRef = collection(db, "Users", auth.currentUser.uid, location);
   const q = query(citiesRef, startAt(1000000));
+};
+
+export const uploadJudete = async (jd) => {
+  console.log("Start upload judete...");
+  for (let i = 0; i < jd.length; i++) {
+    const judetDoc = doc(collection(db, "Judete"));
+    const judetData = {
+      id: i + 1, // Numărul județului
+      judet: jd[i].judet,
+      documentId: judetDoc.id, // Adăugăm ID-ul documentului
+    };
+    await setDoc(judetDoc, judetData);
+
+    for (let j = 0; j < jd[i].localitati.length; j++) {
+      const localitateDoc = doc(collection(judetDoc, "Localitati"));
+      const localitateData = {
+        id: j + 1, // Numărul localității în cadrul județului
+        localitate: jd[i].localitati[j],
+        judet: jd[i].judet,
+        documentId: localitateDoc.id, // Adăugăm ID-ul documentului
+      };
+      await setDoc(localitateDoc, localitateData);
+    }
+  }
 };

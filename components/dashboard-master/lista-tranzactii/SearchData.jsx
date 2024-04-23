@@ -1,38 +1,49 @@
-import React from 'react';
+"use client";
 
-const SearchData = () => {
+import { useAuth } from "@/context/AuthContext";
+import { handleUpdateFirestoreSubcollection } from "@/utils/firestoreUtils";
+import Link from "next/link";
+import React, { useState } from "react";
 
+// CSS in JS pentru simbolurile tick și close
+const styles = {
+  tick: {
+    color: "green", // Verde pentru tick
+  },
+  close: {
+    color: "red", // Roșu pentru close
+  },
+};
 
-  const activities = [
-    {
-      id: 1,
-      numePartener:"Nume partener",
-      numeUtilizator:"Popescu Adrian",
-      message: "Primiti 20% discount la produsul xyz.",
-      tipOferta:"Oferta specifică",
-      date:"30-12-2023",
-      status:"confirmata"
-    },
-    {
-      id: 2,
-      numePartener:"Nume partener",
-      numeUtilizator:"Popescu Adrian",
-      message: " Meniu special de seară la doar 50€ pentru doi.",
-      tipOferta:"Oferta specifică",
-      date:"30-12-2023",
-      status:"confirmata"
-    },
-    {
-      id: 3,
-      numePartener:"Nume partener",
-      numeUtilizator:"Popescu Adrian",
-      message: "Pachet weekend la munte pentru doi la prețul fix de 200€",
-      tipOferta:"Oferta cu discount procentual general",
-      date:"30-12-2023",
-      status:"confirmata"
-    },
-  ];
+const SearchData = ({ oferteInregistrate }) => {
+  const [offers, setOffers] = useState([...oferteInregistrate]);
+  const { currentUser } = useAuth();
 
+  const handleToggle = async (oferta) => {
+    console.log(oferta);
+    // Mapați și transformați fiecare item asincron
+    const updatedOffers = await Promise.all(
+      offers.map(async (item) => {
+        if (item.id === oferta.id) {
+          // Verifică statusul curent și îl schimbă
+          const newStatus =
+            item.status === "Confirmata" ? "Neconfirmata" : "Confirmata";
+          let data = {
+            status: newStatus,
+          };
+          await handleUpdateFirestoreSubcollection(
+            data,
+            `Users/${currentUser.uid}/OferteÎnregistrate/${oferta.documentId}`
+          );
+          return { ...item, status: newStatus }; // Returnează obiectul actualizat
+        }
+        return item; // Returnează obiectul neschimbat
+      })
+    );
+
+    // Actualizează starea offers cu noul array modificat
+    setOffers(updatedOffers);
+  };
   return (
     <table className="table">
       <thead className="thead-light">
@@ -40,33 +51,76 @@ const SearchData = () => {
           <th scope="col">Titlu oferta</th>
           <th scope="col">Tip oferta</th>
           <th scope="col">Nume partener</th>
-          <th scope="col">Nume utilizator</th>
+          <th scope="col">Nume doctor</th>
           <th scope="col">status</th>
           <th scope="col">Data</th>
           <th scope="col">Actiune</th>
         </tr>
       </thead>
       <tbody>
-        {activities.map((row, index) => (
-          <tr key={index} className={row.active ? 'title active' : 'title'}>
-            <td className="para">{row.message}</td>
-            <td className="para">{row.tipOferta}</td>
+        {offers.map((row, index) => (
+          <tr key={index} className={row.active ? "title active" : "title"}>
+            <td className="para">{row.oferta?.titluOferta}</td>
+            <td className="para">{row.oferta?.tipOferta}</td>
             <td className="para">{row.numePartener}</td>
-            <td className="para">{row.numeUtilizator}</td>
-            <td className="para">{row.status}</td>
-            <td className="para">{row.date}</td>
+            <td className="para">{row.utilizator?.numeUtilizator}</td>
+            <td>
+              {row.status === "Neconfirmata" ? (
+                <span className="status_tag redbadge">Neconfirmata</span>
+              ) : row.status === "Confirmata" ? (
+                <span className="status_tag badge">Confirmata</span>
+              ) : null}
+            </td>
+            <td className="para">{row.firstUploadDate}</td>
             <td>
               <ul className="view_edit_delete_list mb0">
-                <li className="list-inline-item" data-toggle="tooltip" data-placement="top" title="View">
-                  <a href="/confirma-tranzactie">
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="View"
+                >
+                  <Link href={`/confirma-tranzactie/${row.id}`}>
                     <span className="flaticon-view"></span>
-                  </a>
+                  </Link>
                 </li>
-                <li className="list-inline-item" data-toggle="tooltip" data-placement="top" title="Delete">
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Delete"
+                >
                   <a href="#">
                     <span className="flaticon-garbage"></span>
                   </a>
                 </li>
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Toggle"
+                >
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleToggle(row);
+                    }}
+                  >
+                    {row.status === "Confirmata" ? (
+                      <span
+                        className="flaticon-tick"
+                        style={styles.tick}
+                      ></span>
+                    ) : (
+                      <span
+                        className="flaticon-close"
+                        style={styles.close}
+                      ></span>
+                    )}
+                  </a>
+                </li>
+                {/* End li */}
               </ul>
             </td>
           </tr>

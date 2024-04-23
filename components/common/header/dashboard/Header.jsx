@@ -23,7 +23,7 @@ const Header = () => {
     window.addEventListener("scroll", changeBackground);
     if (userData?.userType !== "Partener") {
       console.log("not partener...push to main page");
-      router.push("/");
+      // router.push("/");
     }
   }, []);
 

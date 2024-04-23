@@ -1,10 +1,16 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import properties from "../../../data/properties";
 import { useState } from "react";
 import oferte from "@/data/oferte";
 import listaUtilizatori from "@/data/listaUtilizatori";
+import Link from "next/link";
+import {
+  handleUpdateFirestore,
+  handleUpdateFirestoreSubcollection,
+} from "@/utils/firestoreUtils";
+import { update } from "firebase/database";
 
 // CSS in JS pentru simbolurile tick și close
 const styles = {
@@ -16,35 +22,39 @@ const styles = {
   },
 };
 
-const TableData = () => {
-  const initialState = oferte.reduce((acc, item) => {
-    acc[item.id] = item.initialState;
-    return acc;
-  }, {});
+const TableData = ({ parteneri: parts }) => {
+  const [parteneri, setParteneri] = useState([...parts]);
+  // const { currentUser } = useAuth();
 
-  const [toggled, setToggled] = useState(initialState);
-  const handleToggle = (id) => {
-    setToggled((prev) => {
-      const currentToggleState = prev[id] || 'none'; // Presupunem 'none' ca stare inițială
-      let nextToggleState;
-  
-      if (currentToggleState === 'none' || currentToggleState === 'close') {
-        nextToggleState = 'tick'; // Dacă este 'none' sau 'close', schimbăm la 'tick'
-      } else {
-        nextToggleState = 'close'; // Dacă este 'tick', schimbăm la 'close'
-      }
-  
-      return { ...prev, [id]: nextToggleState };
-    });
+  const handleToggle = async (doctor) => {
+    console.log(doctor);
+    // Mapați și transformați fiecare item asincron
+    const updateParteners = await Promise.all(
+      parteneri.map(async (item) => {
+        if (item.id === doctor.id) {
+          // Verifică statusul curent și îl schimbă
+          const newStatus = item.statusCont === "Activ" ? "Inactiv" : "Activ";
+          let data = {
+            statusCont: newStatus,
+          };
+          await handleUpdateFirestore(`Users/${doctor.user_uid}`, data);
+          return { ...item, statusCont: newStatus }; // Returnează obiectul actualizat
+        }
+        return item; // Returnează obiectul neschimbat
+      })
+    );
+    console.log(updateParteners);
+    // Actualizează starea offers cu noul array modificat
+    setParteneri(updateParteners);
   };
-  
+
   let theadConent = [
     "Utilizator/Partener",
     "Data Inregistrare",
     "Status Cont",
     "Actiune",
-  ];  
-  let tbodyContent = listaUtilizatori?.slice(0, 4)?.map((item) => (
+  ];
+  let tbodyContent = parteneri?.map((item) => (
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">
@@ -53,7 +63,7 @@ const TableData = () => {
               width={90}
               height={90}
               className="cover"
-              src={item.img}
+              src={"/assets/images/team/utilizator-test-lg.png"}
               alt="fp1.jpg"
             />
             {/* <div className="thmb_cntnt">
@@ -66,7 +76,7 @@ const TableData = () => {
           </div>
           <div className="details">
             <div className="tc_content">
-              <h4>{item.title}</h4>
+              <h4>{item.denumireBrand}</h4>
               {/* <p>
                 <span className="flaticon-placeholder"></span>
                 {item.location}
@@ -81,14 +91,18 @@ const TableData = () => {
       </td>
       {/* End td */}
 
-      <td>30/01/2024</td>
+      <td>{item?.firstUploadDate ? item?.firstUploadDate : item?.editDate}</td>
       {/* End td */}
 
       <td>
-        <span className="status_tag badge">Cont activ</span>
+        {item.statusCont === "Activ" ? (
+          <span className="status_tag badge">Cont activ</span>
+        ) : (
+          <span className="status_tag redbadge">Cont inactiv</span>
+        )}
       </td>
-      {/* End td */}
 
+      {/* End td */}
 
       <td>
         <ul className="view_edit_delete_list mb0">
@@ -98,9 +112,9 @@ const TableData = () => {
             data-placement="top"
             title="Edit"
           >
-            <a href="/verificare-utilizator">
+            <Link href={`/verificare-partener/${item.id}`}>
               <span className="flaticon-view"></span>
-            </a>
+            </Link>
           </li>
           {/* End li */}
 
@@ -109,28 +123,33 @@ const TableData = () => {
             data-toggle="tooltip"
             data-placement="top"
             title="Delete"
-            >
+          >
             <a href="#">
               <span className="flaticon-garbage"></span>
             </a>
           </li>
-            {/* End li */}
-            <li className="list-inline-item" data-toggle="tooltip" data-placement="top" title="Toggle">
-  <a href="#" onClick={(e) => { e.preventDefault(); handleToggle(item.id); }}>
-    {toggled[item.id] === 'tick' ? (
-      <span className="flaticon-tick" style={styles.tick}></span>
-    ) : toggled[item.id] === 'close' ? (
-      <span className="flaticon-close" style={styles.close}></span>
-    ) : (
-      // Afișează ambele opțiuni când nu este niciuna selectată inițial
-      <>
-        <span className="flaticon-tick" style={styles.tick}></span>
-        <span className="flaticon-close" style={styles.close}></span>
-      </>
-    )}
-  </a>
-</li>
-            {/* End li */}
+          {/* End li */}
+          <li
+            className="list-inline-item"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Toggle"
+          >
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                handleToggle(item);
+              }}
+            >
+              {item.statusCont === "Activ" ? (
+                <span className="flaticon-tick" style={styles.tick}></span>
+              ) : (
+                <span className="flaticon-close" style={styles.close}></span>
+              )}
+            </a>
+          </li>
+          {/* End li */}
         </ul>
       </td>
       {/* End td */}

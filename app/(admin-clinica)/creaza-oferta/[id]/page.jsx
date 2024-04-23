@@ -12,8 +12,16 @@ import LocationField from "@/components/dashboard/creaza-oferta/LocationField";
 import PropertyMediaUploader from "@/components/dashboard/creaza-oferta/PropertyMediaUploader";
 
 const index = async ({ params }) => {
-  const id = Number(params.id);
-  const oferta = await handleQueryFirestoreSubcollection("Oferte", "id", id);
+  const parts = params.id.split("-");
+  const id = parseFloat(parts[0]);
+  const partenerId = parts[1];
+  const oferta = await handleQueryFirestoreSubcollection(
+    "Oferte",
+    "id",
+    id,
+    "collectionId",
+    partenerId
+  );
   console.log("test here...", oferta);
   return (
     <>

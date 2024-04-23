@@ -1,18 +1,18 @@
-const AllStatistics = () => {
+const AllStatistics = ({ numarParteneri, numarDoctori }) => {
   const allStatistics = [
     {
       id: 1,
       blockStyle: "",
       icon: "flaticon-user-1",
-      timer: "121",
-      name: "Utilizatori",
+      timer: numarDoctori,
+      name: numarDoctori === 1 ? "Doctor" : "Doctori",
     },
     {
       id: 2,
       blockStyle: "style2",
       icon: "flaticon-high-five",
-      timer: "24",
-      name: "Parteneri",
+      timer: numarParteneri,
+      name: numarParteneri === 1 ? "Partener" : "Parteneri",
     },
     // {
     //   id: 3,

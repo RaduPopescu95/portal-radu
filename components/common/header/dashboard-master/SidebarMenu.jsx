@@ -85,9 +85,19 @@ const SidebarMenu = () => {
                 isSinglePageActive("/my-saved-search", pathname) ? "active" : ""
               }`}
             >
-              <Link href="/lista-utilizatori">
+              <Link href="/lista-doctori">
                 <i className="flaticon-layers"></i>
-                <span>Lista utilizatori</span>
+                <span>Lista Doctori</span>
+              </Link>
+            </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/my-saved-search", pathname) ? "active" : ""
+              }`}
+            >
+              <Link href="/lista-parteneri">
+                <i className="flaticon-layers"></i>
+                <span>Lista Parteneri</span>
               </Link>
             </li>
             {/* <li

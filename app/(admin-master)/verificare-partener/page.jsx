@@ -1,16 +1,16 @@
 import dynamic from "next/dynamic";
-import MyProperties from "@/components/dashboard-master/my-properties";
+import MyProfile from "@/components/dashboard-master/verifica-utilizator";
 
 export const metadata = {
-  title: 'Portal || Portal',
+  title: 'My Profile || Profil',
   description:
-    'Portal',
+    'Profil',
 }
 
 const index = () => {
   return (
     <>
-      <MyProperties />
+      <MyProfile />
     </>
   );
 };

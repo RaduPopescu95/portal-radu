@@ -70,10 +70,10 @@ const DetailsContent = ({ partener, oferte }) => {
 
       <div className="application_statics mt30">
         <h4 className="mb30">
-          Locatie <small className="float-end">{partener.adresaSediu}</small>
+          Locatie <small className="float-end">{partener?.adresaSediu}</small>
         </h4>
         <div className="property_video p0">
-          <PropertyLocation coordonate={partener.coordonate} />
+          <PropertyLocation coordonate={partener?.coordonate} />
         </div>
       </div>
       {/* End .location_area */}

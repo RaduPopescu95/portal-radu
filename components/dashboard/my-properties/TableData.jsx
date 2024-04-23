@@ -52,22 +52,24 @@ const TableData = ({ oferte }) => {
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">
-          <div className="thumb">
-            <Image
-              width={150}
-              height={220}
-              className="cover"
-              src={item.img}
-              alt="fp1.jpg"
-            />
-            {/* <div className="thmb_cntnt">
+          {item?.tipOferta === "Oferta specifică" && (
+            <div className="thumb">
+              <Image
+                width={150}
+                height={220}
+                className="cover"
+                src={item?.imagineOferta?.finalUri}
+                alt="fp1.jpg"
+              />
+              {/* <div className="thmb_cntnt">
               <ul className="tag mb0">
                 <li className="list-inline-item">
                   <a href="#">For Rent</a>
                 </li>
               </ul>
             </div> */}
-          </div>
+            </div>
+          )}
           <div className="details d-flex justify-content-center">
             <div className="tc_content d-flex align-items-center justify-content-center">
               <h4>{item.titluOferta}</h4>
@@ -109,7 +111,7 @@ const TableData = ({ oferte }) => {
             data-placement="top"
             title="Edit"
           >
-            <Link href={`creaza-oferta/${item.id}`}>
+            <Link href={`creaza-oferta/${item.id}-${item.collectionId}`}>
               <span className="flaticon-edit"></span>
             </Link>
           </li>

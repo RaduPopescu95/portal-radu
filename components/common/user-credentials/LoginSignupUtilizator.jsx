@@ -8,6 +8,7 @@ import {
   handleUploadFirestore,
 } from "@/utils/firestoreUtils";
 import { emailWithoutSpace } from "@/utils/strintText";
+import { getCurrentDateTime } from "@/utils/timeUtils";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -87,6 +88,7 @@ const LoginSignupUtilizator = () => {
       );
       const collectionLength = await getFirestoreCollectionLength("Users");
       let id = collectionLength + 1;
+      const dateTime = getCurrentDateTime();
       let data = {
         id,
         cuim,
@@ -101,6 +103,9 @@ const LoginSignupUtilizator = () => {
         user_uid,
         userType: "Doctor",
         gradFidelitate: "Silver",
+        statusCont: "Inactiv",
+        firstUploadDate: dateTime.date,
+        firstUploadTime: dateTime.time,
       };
       // await handleUploadFirestore(data, "Users");
       const collectionId = "Users";

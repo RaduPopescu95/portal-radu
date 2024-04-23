@@ -7,6 +7,13 @@ import { useAuth } from "@/context/AuthContext";
 import { handleUpdateFirestore } from "@/utils/firestoreUtils";
 import { emailWithoutSpace } from "@/utils/strintText";
 import AutocompleteInput from "@/components/common/AutocompleteInput";
+import { AlertModal } from "@/components/common/AlertModal";
+import GalerieFotoSection from "./GalerieFotoSection";
+import { useParams, useRouter } from "next/navigation";
+import selectedFiles from "@/utils/selectedFiles";
+import { uploadImage, uploadMultipleImages } from "@/utils/storageUtils";
+import CommonLoader from "@/components/common/CommonLoader";
+import LogoUpload from "./LogoUpload";
 
 const ProfileInfo = () => {
   const { userData, currentUser, setCurrentUser, setUserData } = useAuth();
@@ -25,6 +32,8 @@ const ProfileInfo = () => {
   const [categorie, setCategorie] = useState(userData?.categorie || "");
   const [cui, setCui] = useState(userData?.cui || "");
   const [adresaSediu, setAdresaSediu] = useState(userData?.adresaSediu || "");
+  const [deletedLogo, setDeletedLogo] = useState(null);
+  const [isNewLogo, setIsNewLogo] = useState(false);
 
   const [googleMapsLink, setGoogleMapsLink] = useState(
     userData?.googleMapsLink || ""
@@ -38,11 +47,50 @@ const ProfileInfo = () => {
     userData?.gradient?.gradientSelected || ""
   );
 
-  const [profile, setProfile] = useState(null);
+  const [logo, setLogo] = useState(userData?.logo ? [userData?.logo] : []);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [propertySelectedImgs, setPropertySelectedImgs] = useState(
+    userData?.images?.imgs || []
+  );
+  const [deletedImages, setDeletedImages] = useState([]);
+  const [isNewImage, setIsNewImage] = useState(false);
+
+  const params = useParams();
+  const router = useRouter();
+
+  let isEdit = userData?.logo?.finalUri ? true : false;
+
+  const [alert, setAlert] = useState({ message: "", type: "" });
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type });
+  };
+
+  const closeAlert = () => {
+    setAlert({ message: "", type: "" });
+  };
+
   const options = ["Opțiunea 1", "Opțiunea 2", "Opțiunea 3"];
-  // upload profile
-  const uploadProfile = (e) => {
-    setProfile(e.target.files[0]);
+
+  // upload Logo
+  // Handle single image selection
+  const singleImage = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    console.log("test..here...", file.name);
+    if (file) {
+      // Check if the file is already selected
+      const isExist = logo.some(
+        (existingFile) => existingFile.name === file.name
+      );
+
+      if (!isExist) {
+        setLogo([file]); // Replace the current file
+        setIsNewLogo(true);
+      } else {
+        alert("This image is already selected!");
+      }
+    }
   };
 
   const handleLocationSelect = (lat, lng, adresa, urlMaps) => {
@@ -54,11 +102,56 @@ const ProfileInfo = () => {
   };
 
   const handleUpdateProfile = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
     const emailNew = emailWithoutSpace(email);
+
     // Verifică dacă parola este confirmată corect și apoi creează utilizatorul
     try {
       let user_uid = currentUser.uid;
+      let lg = {};
+      let images = {};
+
+      if (propertySelectedImgs.length === 0) {
+        setIsLoading(false);
+        showAlert("Selelctati cel putin o imagine în galeria foto", "danger");
+        return;
+      }
+
+      if (logo.length === 0) {
+        setIsLoading(false);
+        showAlert("Selelctati logo", "danger");
+        return;
+      }
+      console.log("test....", isNewLogo);
+      console.log("test....", isNewImage);
+      if (isNewLogo) {
+        lg = await uploadImage(logo, true, "ProfileLogo", deletedLogo);
+      } else {
+        if (!logo[0].fileName) {
+          lg = await uploadImage(logo, false, "ProfileLogo");
+        } else {
+          lg = logo[0];
+        }
+      }
+
+      if (isNewImage) {
+        images = await uploadMultipleImages(
+          propertySelectedImgs,
+          true,
+          "ImaginiProfil",
+          deletedImages
+        );
+      } else {
+        if (!images?.img) {
+          images = await uploadMultipleImages(
+            propertySelectedImgs,
+            false,
+            "ImaginiProfil"
+          );
+        }
+      }
+
       let data = {
         cui,
         categorie,
@@ -74,41 +167,103 @@ const ProfileInfo = () => {
         gradient: { selectedId, gradientSelected },
         googleMapsLink,
         coordonate,
+        logo: lg,
+        images,
       };
       setUserData(data);
-      await handleUpdateFirestore(`Users/${user_uid}`, data);
+      await handleUpdateFirestore(`Users/${user_uid}`, data).then(() => {
+        setIsLoading(false);
+        showAlert("Actualizare cu succes!", "success");
+      });
     } catch (error) {
-      console.error("Error signing up: ", error);
+      setIsLoading(false);
+      showAlert(`Eroare la Actualizare: ${error.message}`, "danger");
+      console.error("Error actualizare profil partener: ", error);
+    }
+  };
+
+  //select multiple images
+  const multipleImage = (e) => {
+    // checking is same file matched with old stored array
+    const isExist = propertySelectedImgs?.some((file1) =>
+      selectedFiles(e)?.some((file2) => file1.name === file2.name)
+    );
+
+    if (!isExist) {
+      setPropertySelectedImgs((old) => [...old, ...selectedFiles(e)]);
+      setIsNewImage(true);
+    } else {
+      alert("You have selected one image already!");
+    }
+  };
+
+  // delete logo
+  const deleteLogo = (name) => {
+    if (logo[0].fileName) {
+      setLogo([]); // Clear the selection when deleting
+      setDeletedLogo(logo[0].fileName);
+    } else {
+      setLogo([]); // Clear the selection when deleting
+    }
+  };
+
+  // delete image
+  const deleteImage = (item) => {
+    console.log("itemmm....", item);
+    console.log(item);
+    // Filtrăm imaginile rămase
+    const deleted = propertySelectedImgs?.filter((file) =>
+      file instanceof File ? file.name !== item.name : file !== item
+    );
+
+    // Setăm imaginile rămase
+    setPropertySelectedImgs(deleted);
+
+    // Verificăm dacă elementul șters nu este o instanță a clasei File și, în caz afirmativ, îl adăugăm la setDeletedImages
+    const isDeletedNotFile = propertySelectedImgs?.find(
+      (file) =>
+        (file instanceof File ? file.name === item.name : file === item) &&
+        !(item instanceof File)
+    );
+
+    if (isDeletedNotFile) {
+      setDeletedImages((prevDeletedImages) => [...prevDeletedImages, item]);
+      setIsNewImage(true);
     }
   };
 
   return (
     <div className="row">
-      <div className="col-lg-12">
-        <div className="wrap-custom-file">
-          <input
-            type="file"
-            id="image1"
-            accept="image/png, image/gif, image/jpeg"
-            onChange={uploadProfile}
-          />
-          <label
-            style={
-              profile !== null
-                ? {
-                    backgroundImage: `url(${URL.createObjectURL(profile)})`,
-                  }
-                : undefined
-            }
-            htmlFor="image1"
-          >
-            <span>
-              <i className="flaticon-download"></i> încarcă Logo{" "}
-            </span>
-          </label>
+      <div className="row">
+        <div className="col-lg-12">
+          <h3 className="mb30">Galerie foto</h3>
         </div>
-        <p>*minimum 260px x 260px</p>
+        {/* End .col */}
+
+        <GalerieFotoSection
+          // handleInputChange={handleInputChange}
+          // formValues={formValues}
+          deleteImage={deleteImage}
+          multipleImage={multipleImage}
+          propertySelectedImgs={propertySelectedImgs}
+          isEdit={isEdit}
+          isNewImage={isNewImage}
+        />
+        {/* End .col */}
       </div>
+
+      <div className="col-lg-12">
+        <h3 className="mb30">Logo partener</h3>
+      </div>
+      {/* End .col */}
+
+      <LogoUpload
+        singleImage={singleImage}
+        deleteLogo={deleteLogo}
+        logoImg={logo}
+        isEdit={isEdit}
+        isNewImage={isNewLogo}
+      />
       {/* End .col */}
 
       <div className="col-lg-6 col-xl-6">
@@ -303,11 +458,17 @@ const ProfileInfo = () => {
         <div className="my_profile_setting_input">
           {/* <button className="btn btn1">Actualizeaza Profil</button> */}
           <button className="btn btn2" onClick={handleUpdateProfile}>
-            Actualizeaza Profil
+            {isLoading ? <CommonLoader /> : "Actualizeaza Profil"}
           </button>
         </div>
       </div>
       {/* End .col */}
+
+      <AlertModal
+        message={alert.message}
+        type={alert.type}
+        onClose={closeAlert}
+      />
     </div>
   );
 };

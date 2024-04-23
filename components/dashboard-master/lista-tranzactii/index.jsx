@@ -4,7 +4,7 @@ import MobileMenu from "../../common/header/MobileMenu";
 import SearchData from "../lista-tranzactii/SearchData";
 import SearchBox from "./SearchBox";
 
-const index = () => {
+const index = ({ oferteInregistrate }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -41,7 +41,8 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Navigatie Panou de administrare
+                        <i className="fa fa-bars pr10"></i> Navigatie Panou de
+                        administrare
                       </button>
                     </div>
                   </div>
@@ -75,7 +76,7 @@ const index = () => {
                     <div className="col-lg-12">
                       <div className="savesearched_table">
                         <div className="table-responsive mt0">
-                          <SearchData />
+                          <SearchData oferteInregistrate={oferteInregistrate} />
                         </div>
                       </div>
                       {/* End .packages_table */}
@@ -84,7 +85,6 @@ const index = () => {
                 </div>
               </div>
               {/* End .row */}
-
             </div>
             {/* End .col */}
           </div>
