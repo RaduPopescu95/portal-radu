@@ -1,14 +1,15 @@
+"use client";
 import Categorie from "./Categorie";
 import FeaturedListings from "./FeaturedListings";
 import FeatureProperties from "./FeatureProperties";
 import FilteringItem from "./FilteringItem";
 
-const SidebarListing = ({ judete }) => {
+const SidebarListing = ({ params }) => {
   return (
     <div className="sidebar_listing_grid1">
       <div className="sidebar_listing_list">
         <div className="sidebar_advanced_search_widget">
-          <FilteringItem judete={judete} />
+          <FilteringItem />
         </div>
       </div>
       {/* End .sidebar_listing_list */}

@@ -1,7 +1,12 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { handleUpdateFirestoreSubcollection } from "@/utils/firestoreUtils";
+import {
+  handleQueryFirestore,
+  handleUpdateFirestore,
+  handleUpdateFirestoreSubcollection,
+  handleUploadFirestore,
+} from "@/utils/firestoreUtils";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -33,7 +38,23 @@ const SearchData = ({ oferteInregistrate }) => {
           };
           await handleUpdateFirestoreSubcollection(
             data,
-            `Users/${currentUser.uid}/OferteÎnregistrate/${oferta.documentId}`
+            `Users/${oferta?.collectionId}/OferteÎnregistrate/${oferta?.documentId}`
+          );
+          const doctor = await handleQueryFirestore(
+            "Users",
+            "user_uid",
+            oferta?.idUtilizator
+          );
+          console.log("test....doctor[0]....", doctor[0]);
+          if (newStatus === "Confirmata") {
+            doctor[0].rulajCont = doctor[0].rulajCont + oferta.pretFinal;
+          } else if (newStatus === "Neconfirmata") {
+            doctor[0].rulajCont = doctor[0].rulajCont - oferta.pretFinal;
+          }
+          console.log("test....doctor[0]....", doctor[0]);
+          await handleUpdateFirestore(
+            `Users/${oferta.idUtilizator}`,
+            doctor[0]
           );
           return { ...item, status: newStatus }; // Returnează obiectul actualizat
         }

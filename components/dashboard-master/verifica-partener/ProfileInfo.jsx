@@ -1,44 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { handleQueryFirestoreSubcollection } from "@/utils/firestoreUtils";
+import { useEffect, useState } from "react";
 
 const ProfileInfo = ({ partener: part }) => {
   const [profile, setProfile] = useState(null);
+  const [localitati, setLocalitati] = useState([]);
+  const { judete } = useAuth();
 
   // upload profile
   const uploadProfile = (e) => {
     setProfile(e.target.files[0]);
   };
 
+  const handleGetLocalitatiJudet = async () => {
+    const judetSelectedName = part?.judet; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    console.log("judete...", judete);
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    console.log("judetSelected...", judetSelected);
+    if (judetSelected) {
+      try {
+        // Utilizăm judet pentru a interoga Firestore
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        console.log("localitatiFromFirestore...", localitatiFromFirestore);
+        // Presupunem că localitatiFromFirestore este array-ul corect al localităților
+        setLocalitati(localitatiFromFirestore);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        setLocalitati([]); // Resetează localitățile în caz de eroare
+      }
+    } else {
+      // Dacă nu găsim județul selectat, resetăm localitățile
+      setLocalitati([]);
+    }
+  };
+
+  useEffect(() => {
+    handleGetLocalitatiJudet();
+  }, []);
+
   return (
     <div className="row">
-      <div className="col-lg-12">
-        <div className="wrap-custom-file">
-          <input
-            type="file"
-            id="image1"
-            accept="image/png, image/gif, image/jpeg"
-            onChange={uploadProfile}
-          />
-          <label
-            style={
-              profile !== null
-                ? {
-                    backgroundImage: `url(${URL.createObjectURL(profile)})`,
-                  }
-                : undefined
-            }
-            htmlFor="image1"
-          >
-            <span>
-              <i className="flaticon-download"></i> încarcă Logo{" "}
-            </span>
-          </label>
-        </div>
-        <p>*minimum 260px x 260px</p>
-      </div>
-      {/* End .col */}
-
       <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExampleInput1">Denumire Brand</label>
@@ -110,9 +123,12 @@ const ProfileInfo = ({ partener: part }) => {
             value={part?.judet}
             readOnly
           >
-            <option data-tokens="Status1">Alege Judet</option>
-            <option data-tokens="Status2">Dambovita</option>
-            <option data-tokens="Status3">Timisoara</option>
+            {judete &&
+              judete.map((judet, index) => (
+                <option key={index} value={judet.judet}>
+                  {judet.judet}
+                </option>
+              ))}
           </select>
         </div>
       </div>
@@ -128,10 +144,11 @@ const ProfileInfo = ({ partener: part }) => {
             value={part?.localitate}
             readOnly
           >
-            <option data-tokens="Status1">Alege Localitate</option>
-            <option data-tokens="Status2">Targoviste</option>
-            <option data-tokens="Status2">Bucuresti</option>
-            <option data-tokens="Status3">Timisoara</option>
+            {localitati.map((location, index) => (
+              <option key={index} value={location.localitate}>
+                {location.localitate}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -161,9 +178,11 @@ const ProfileInfo = ({ partener: part }) => {
             value={part?.categorie}
             disabled
           >
-            <option data-tokens="Status1">Alege Categorie</option>
-            <option data-tokens="Status2">Categorie1</option>
-            <option data-tokens="Status3">Categorie2</option>
+            <option data-tokens="Autovehicule">Autovehicule</option>
+            <option data-tokens="Servicii">Servicii</option>
+            <option data-tokens="Cafenele">Cafenele</option>
+            <option data-tokens="Restaurante">Restaurante</option>
+            <option data-tokens="Hoteluri">Hoteluri</option>
           </select>
         </div>
       </div>

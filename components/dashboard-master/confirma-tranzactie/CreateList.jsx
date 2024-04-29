@@ -1,8 +1,14 @@
 "use client";
 
+import ImageModal from "@/components/common/ImageModa";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const CreateList = ({ oferta }) => {
+  const [modalShow, setModalShow] = useState(false);
+
+  const handleModalOpen = () => setModalShow(true);
+  const handleModalClose = () => setModalShow(false);
   const [profile, setProfile] = useState(null);
   const [fullPrice, setFullPrice] = useState("");
   const [discountedPrice, setDiscountedPrice] = useState("");
@@ -34,6 +40,23 @@ const CreateList = ({ oferta }) => {
 
   return (
     <>
+      <div className="col-lg-12">
+        <div className="my_profile_setting_input form-group">
+          <label htmlFor="propertyTitle">Imagine bon/factura</label>
+          <Image
+            width={200}
+            height={200}
+            className="img-fluid cover"
+            src={oferta?.imagineBonFactura?.finalUri}
+            alt="Bon/Factura"
+            onClick={handleModalOpen}
+            style={{ cursor: "pointer" }}
+          />
+        </div>
+      </div>
+
+      {/* End .col */}
+
       <div className="col-lg-12">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="propertyTitle">Nume Partener</label>
@@ -180,48 +203,76 @@ const CreateList = ({ oferta }) => {
           />
         </div>
       </div> */}
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="fullPrice">Preț întreg</label>
-          <input
-            type="number"
-            className="form-control"
-            id="fullPrice"
-            value={oferta?.oferta?.pretIntreg}
-            readOnly
-          />
-        </div>
-      </div>
-      {/* End .col */}
+      {oferta?.oferta?.tipOferta === "Oferta specifică" ? (
+        <>
+          <div className="col-lg-4 col-xl-4">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="fullPrice">Preț întreg</label>
+              <input
+                type="number"
+                className="form-control"
+                id="fullPrice"
+                value={oferta?.oferta?.pretIntreg}
+                readOnly
+              />
+            </div>
+          </div>
 
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="discountedPrice">Preț redus</label>
-          <input
-            type="number"
-            className="form-control"
-            id="discountedPrice"
-            value={oferta?.oferta?.pretRedus}
-            readOnly
-          />
-        </div>
-      </div>
-      {/* End .col */}
+          <div className="col-lg-4 col-xl-4">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="discountedPrice">Preț redus</label>
+              <input
+                type="number"
+                className="form-control"
+                id="discountedPrice"
+                value={oferta?.oferta?.pretRedus}
+                readOnly
+              />
+            </div>
+          </div>
 
-      <div className="col-lg-4 col-xl-4">
+          <div className="col-lg-4 col-xl-4">
+            <div className="my_profile_setting_input form-group">
+              <label htmlFor="discountPercentage">Procent reducere</label>
+              <input
+                type="text"
+                className="form-control"
+                id="discountPercentage"
+                value={oferta?.oferta?.procentReducere + "%"}
+                readOnly
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="col-lg-4 col-xl-4">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="procentReducere">Procent reducere</label>
+            <input
+              type="text"
+              className="form-control"
+              id="procentReducere"
+              value={oferta?.oferta?.procentReducere + "%"}
+              readOnly
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="col-lg-12">
         <div className="my_profile_setting_input form-group">
-          <label htmlFor="discountPercentage">Procent reducere</label>
+          <label htmlFor="pretFinal">Pret final (RON)</label>
           <input
             type="text"
             className="form-control"
-            id="discountPercentage"
-            value={oferta?.oferta?.procentReducere + "%"}
+            id="pretFinal"
+            value={oferta?.pretFinal}
             readOnly
           />
         </div>
       </div>
-
       {/* End .col */}
+
       {/* <div className="col-lg-4 col-xl-4">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExampleArea">Area</label>
@@ -253,12 +304,20 @@ const CreateList = ({ oferta }) => {
       </div> */}
       {/* End .col */}
 
-      <div className="col-xl-12">
+      {/* <div className="col-xl-12">
         <div className="my_profile_setting_input">
-          {/* <button className="btn btn1 float-start">Back</button> */}
+          <button className="btn btn1 float-start">Back</button>
           <button className="btn btn2 float-end">Confirma tranzactie</button>
         </div>
-      </div>
+      </div> */}
+
+      {/* Utilizează componenta ImageModal */}
+      <ImageModal
+        isOpen={modalShow}
+        handleClose={handleModalClose}
+        imageSrc={oferta?.imagineBonFactura?.finalUri}
+        altText="Bon/Factura"
+      />
     </>
   );
 };

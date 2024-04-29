@@ -1,13 +1,10 @@
 import dynamic from "next/dynamic";
-import HomeMain from "@/components/home-4";
-import {
-  handleGetFirestore,
-  handleQueryFirestoreSubcollection,
-} from "@/utils/firestoreUtils";
+import GridV1 from "@/components/listing-grid/grid-v1";
+import { handleGetFirestore } from "@/utils/firestoreUtils";
 
 export const metadata = {
-  title: "Home || Portal",
-  description: "Portal",
+  title: "titlu",
+  description: "meta descriere",
 };
 
 export async function getServerData() {
@@ -26,12 +23,13 @@ export async function getServerData() {
   return data; // Data will be available as props in your component
 }
 
-const index = async () => {
+const index = async ({ params }) => {
+  console.log("params.id...", params.id);
   const judete = await getServerData();
 
   return (
     <>
-      <HomeMain />
+      <GridV1 params={params.id} />
     </>
   );
 };

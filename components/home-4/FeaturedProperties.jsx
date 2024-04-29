@@ -15,45 +15,46 @@ import { handleDiacrtice } from "@/utils/strintText";
 import {
   handleQueryDoubleParam,
   handleQueryFirestore,
+  handleQueryTripleParam,
 } from "@/utils/firestoreUtils";
 import { useAuth } from "@/context/AuthContext";
 import PropertyItem from "./PropertyItem";
 
 const FeaturedProperties = () => {
+  const [parteneri, setParteneri] = useState([]);
+  const { currentUser } = useAuth();
   const settings = {
     dots: true,
     arrows: false,
-    slidesToShow: 4,
+    slidesToShow: Math.min(4, parteneri.length), // Afișează până la 4 slide-uri sau mai puțin dacă sunt mai puțini parteneri
     slidesToScroll: 3,
     autoplay: false,
     speed: 1200,
+    variableWidth: parteneri.length < 4 ? true : false,
     responsive: [
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: Math.min(3, parteneri.length),
           slidesToScroll: 3,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: Math.min(2, parteneri.length),
           slidesToScroll: 3,
         },
       },
       {
         breakpoint: 520,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: Math.min(1, parteneri.length),
           slidesToScroll: 3,
         },
       },
     ],
   };
-
-  const [parteneri, setParteneri] = useState([]);
-  const { currentUser } = useAuth();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -62,14 +63,17 @@ const FeaturedProperties = () => {
 
         try {
           let res = await fetchLocation(latitude, longitude);
+          console.log("res...", res);
           let localitate = handleDiacrtice(res.results[0].locality);
-
-          let parteneri = await handleQueryDoubleParam(
+          console.log("localitate a utilizatorului...", localitate);
+          let parteneri = await handleQueryTripleParam(
             "Users",
             "localitate",
             localitate,
             "userType",
-            "Partener"
+            "Partener",
+            "statusCont",
+            "Activ"
           );
 
           // Adaugă distanța ca o proprietate pentru fiecare partener

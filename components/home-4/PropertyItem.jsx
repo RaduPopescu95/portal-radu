@@ -67,7 +67,7 @@ const PropertyItem = ({ item, isActive }) => {
               <span className="flaticon-placeholder"></span>
               {item?.adresaSediu}
             </p>
-            <p>{item?.distanta} metri</p>
+            {item?.distanta && <p>{item?.distanta} metri</p>}
 
             {/* <ul className="prop_details mb0">
           {item?.itemDetails.map((val, i) => (

@@ -12,7 +12,7 @@ import { handleLogout } from "@/utils/authUtils";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
 
-const SidebarMenu = () => {
+const SidebarMenu = ({ partenerId }) => {
   const { currentUser, userData, loading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
@@ -45,7 +45,11 @@ const SidebarMenu = () => {
   useEffect(() => {
     console.log(currentUser);
     console.log(userData);
-    if (!loading && userData?.userType != "Partener") {
+    console.log("partener id...", partenerId);
+    if (
+      (!loading && userData?.userType != "Partener") ||
+      (!loading && userData.user_uid != partenerId)
+    ) {
       router.push("/");
     }
   }, [loading]);

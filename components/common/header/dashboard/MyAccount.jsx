@@ -58,7 +58,7 @@ const MyAccount = () => {
               }
             }}
           >
-            {item.name}
+            {item?.name}
           </Link>
         ))}
       </div>

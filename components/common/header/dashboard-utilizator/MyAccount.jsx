@@ -29,9 +29,9 @@ const MyAccount = () => {
           alt="e1.png"
         />
         <p>
-          {userData.numeUtilizator}
+          {userData?.numeUtilizator}
           <br />
-          <span className="address">{userData.email}</span>
+          <span className="address">{userData?.email}</span>
         </p>
       </div>
       {/* End user_set_header */}

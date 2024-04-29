@@ -241,6 +241,7 @@ const CreateList = ({ oferta }) => {
           logoImg={logo}
           isEdit={isEdit}
           isNewImage={isNewLogo}
+          text={"Adauga imagine"}
         />
       )}
       {/* End .col */}

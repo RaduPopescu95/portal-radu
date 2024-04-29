@@ -165,7 +165,7 @@ const HeaderMenuContent = ({ float = "" }) => {
               src="/assets/images/team/e1.png"
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1">{userData.numeUtilizator}</span>
+            <span className="dn-1199 ms-1">{userData?.numeUtilizator}</span>
           </a>
           <div className="dropdown-menu">
             <MyAccount />

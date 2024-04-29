@@ -1,9 +1,8 @@
 import Header from "../../common/header/dashboard-utilizator/Header";
 import SidebarMenu from "../../common/header/dashboard-utilizator/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
-import Activities from "./Activities";
-import AllStatistics from "./AllStatistics";
-import StatisticsChart from "./StatisticsChart";
+import SearchData from "../lista-tranzactii/SearchData";
+import SearchBox from "./SearchBox";
 
 const index = ({ oferteInregistrate }) => {
   return (
@@ -43,44 +42,49 @@ const index = ({ oferteInregistrate }) => {
                         aria-controls="DashboardOffcanvasMenu"
                       >
                         <i className="fa fa-bars pr10"></i> Navigatie Panou de
-                        Administrare
+                        administrare
                       </button>
                     </div>
                   </div>
                 </div>
                 {/* End Dashboard Navigation */}
+              </div>
+              {/* End .row */}
 
-                <div className="col-lg-12 mb10">
-                  <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Salut, Popescu</h2>
+              <div className="row align-items-center">
+                <div className="col-md-8 col-lg-8 col-xl-9 mb20">
+                  <div className="breadcrumb_content style2 mb30-991">
+                    <h2 className="breadcrumb_title">Lista tranzactii</h2>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
+                {/* End .col */}
+                <div className="col-md-4 col-lg-4 col-xl-3 mb20">
+                  <ul className="sasw_list mb0">
+                    <li className="search_area">
+                      <SearchBox />
+                    </li>
+                  </ul>
+                </div>
+                {/* End .col */}
               </div>
               {/* End .row */}
 
               <div className="row">
-                <AllStatistics />
-              </div>
-              {/* End .row Dashboard top statistics */}
-
-              <div className="row">
-                {/* <div className="col-xl-7">
-                  <div className="application_statics">
-                    <h4 className="mb-4">View Statistics</h4>
-                    <StatisticsChart />
+                <div className="col-lg-12">
+                  <div className="my_dashboard_review mb40">
+                    <div className="col-lg-12">
+                      <div className="savesearched_table">
+                        <div className="table-responsive mt0">
+                          <SearchData oferteInregistrate={oferteInregistrate} />
+                        </div>
+                      </div>
+                      {/* End .packages_table */}
+                    </div>
                   </div>
-                </div> */}
-                {/* End statistics chart */}
-
-                {/* <div className="col-xl-12">
-                  <div className="recent_job_activity">
-                    <h4 className="title mb-4">Oferte accesate recent</h4>
-                    <Activities oferteInregistrate={oferteInregistrate} />
-                  </div>
-                </div> */}
+                </div>
               </div>
-              {/* End .row  */}
+              {/* End .row */}
             </div>
             {/* End .col */}
           </div>

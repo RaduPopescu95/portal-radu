@@ -1,4 +1,9 @@
+"use client";
+
+import { useAuth } from "@/context/AuthContext";
+
 const AllStatistics = () => {
+  const { userData } = useAuth();
   const allStatistics = [
     {
       id: 1,
@@ -32,19 +37,28 @@ const AllStatistics = () => {
 
   return (
     <>
-      {allStatistics.map((item) => (
-        <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3" key={item.id}>
-          <div className={`ff_one ${item.blockStyle}`}>
-            <div className="detais">
-              <div className="timer">{item.timer}</div>
-              <p>{item.name}</p>
-            </div>
-            <div className="icon">
-              <span className={item.icon}></span>
-            </div>
+      <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+        <div className={`ff_one`}>
+          <div className="detais">
+            <div className="timer">{userData?.gradFidelitate}</div>
+            <p>Grad de fidelitate</p>
+          </div>
+          <div className="icon">
+            <span className="flaticon-user-1"></span>
           </div>
         </div>
-      ))}
+      </div>
+      <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3">
+        <div className={`ff_one style2`}>
+          <div className="detais">
+            <div className="timer">{userData?.rulajCont}</div>
+            <p>Rulaj Cont</p>
+          </div>
+          <div className="icon">
+            <span className="flaticon-money-bag"></span>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

@@ -18,6 +18,7 @@ const CreateList = ({ oferta, utilizator }) => {
   const [procentReducere, setProcentReducere] = useState(
     oferta?.procentReducere || ""
   );
+  const [pretFinal, setPretFinal] = useState("");
   const [titluOferta, setTitluOferta] = useState(oferta?.titluOferta || "");
   const [descriereOferta, setDescriereOferta] = useState(
     oferta?.descriereOferta || ""
@@ -96,6 +97,8 @@ const CreateList = ({ oferta, utilizator }) => {
       oferta,
       numePartener: userData.denumireBrand,
       status: "Neconfirmata",
+      imagineBonFactura: {},
+      pretFinal,
     };
 
     try {
@@ -125,7 +128,6 @@ const CreateList = ({ oferta, utilizator }) => {
             className="form-control"
             id="propertyTitle"
             value={titluOferta}
-            onChange={(e) => setTitluOferta(e.target.value)}
             readOnly
           />
         </div>
@@ -314,6 +316,21 @@ const CreateList = ({ oferta, utilizator }) => {
           </div>
         </div>
       )}
+
+      <div className="col-lg-12">
+        <div className="my_profile_setting_input form-group">
+          <label htmlFor="pretFinal">Pret final (RON)</label>
+          <input
+            type="text"
+            className="form-control"
+            id="pretFinal"
+            value={pretFinal}
+            onChange={(e) => setPretFinal(e.target.value)}
+          />
+        </div>
+      </div>
+      {/* End .col */}
+
       {tipOferta === "Oferta specifică" && (
         <>
           <div className="col-lg-6 col-xl-6">

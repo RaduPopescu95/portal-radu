@@ -56,7 +56,7 @@ const index = async ({ params }) => {
 
                 <div className="col-lg-12 mb10">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Profil</h2>
+                    <h2 className="breadcrumb_title">Informatii partener</h2>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>

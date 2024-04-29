@@ -84,7 +84,7 @@ const ProfileInfo = ({ doctor: doc }) => {
       </div> */}
       {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
+      {/* <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Titulatura</label>
           <select
@@ -105,10 +105,23 @@ const ProfileInfo = ({ doctor: doc }) => {
             <option data-tokens="SingleUser">Altele</option>
           </select>
         </div>
+      </div> */}
+      {/* End .col */}
+      <div className="col-lg-6 col-xl-6">
+        <div className="my_profile_setting_input form-group">
+          <label htmlFor="formGroupExampleEmail">Titulatura</label>
+          <input
+            type="text"
+            className="form-control"
+            id="formGroupExampleEmail"
+            readOnly
+            value={doc?.titulatura}
+          />
+        </div>
       </div>
       {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
+      {/* <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Judet</label>
           <select
@@ -124,10 +137,24 @@ const ProfileInfo = ({ doctor: doc }) => {
             <option data-tokens="SingleUser">Timisoara</option>
           </select>
         </div>
-      </div>
+      </div> */}
       {/* End .col */}
 
       <div className="col-lg-6 col-xl-6">
+        <div className="my_profile_setting_input form-group">
+          <label htmlFor="formGroupExampleEmail">Judet</label>
+          <input
+            type="email"
+            className="form-control"
+            id="formGroupExampleEmail"
+            readOnly
+            value={doc?.judet}
+          />
+        </div>
+      </div>
+      {/* End .col */}
+
+      {/* <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Localitate</label>
           <select
@@ -141,6 +168,19 @@ const ProfileInfo = ({ doctor: doc }) => {
             <option data-tokens="Agent/Agency">Targoviste</option>
             <option data-tokens="SingleUser">Brasov</option>
           </select>
+        </div>
+      </div> */}
+      {/* End .col */}
+      <div className="col-lg-6 col-xl-6">
+        <div className="my_profile_setting_input form-group">
+          <label htmlFor="formGroupExampleEmail">Localitate</label>
+          <input
+            type="email"
+            className="form-control"
+            id="formGroupExampleEmail"
+            readOnly
+            value={doc?.localitate}
+          />
         </div>
       </div>
       {/* End .col */}
@@ -160,7 +200,7 @@ const ProfileInfo = ({ doctor: doc }) => {
       </div>
       {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
+      {/* <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Specializare</label>
           <select
@@ -252,7 +292,22 @@ const ProfileInfo = ({ doctor: doc }) => {
             <option data-tokens="SingleUser">Altele</option>
           </select>
         </div>
-      </div>
+      </div> */}
+      {/* End .col */}
+      {doc?.titulatura === "Asistent Medical" ? null : (
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleEmail">Specializare</label>
+            <input
+              type="text"
+              className="form-control"
+              id="formGroupExampleEmail"
+              readOnly
+              value={doc?.specializare}
+            />
+          </div>
+        </div>
+      )}
       {/* End .col */}
 
       <div className="col-lg-6 col-xl-6">
@@ -263,6 +318,7 @@ const ProfileInfo = ({ doctor: doc }) => {
             className="form-control"
             id="formGroupExampleInput9"
             placeholder="CUIM"
+            readOnly
             value={doc?.cuim}
           />
         </div>

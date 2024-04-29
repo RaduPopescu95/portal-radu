@@ -1,4 +1,5 @@
 export const toUrlSlug = (string) => {
+  console.log("test tourlstring....", string);
   return string
     .toLowerCase()
     .replace(/\s+/g, "-") // Replace spaces with -

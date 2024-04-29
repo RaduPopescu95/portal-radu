@@ -1,13 +1,18 @@
 "use client";
 
+import { AlertModal } from "@/components/common/AlertModal";
 import { useAuth } from "@/context/AuthContext";
-import { handleUpdateFirestore } from "@/utils/firestoreUtils";
+import {
+  handleQueryFirestoreSubcollection,
+  handleUpdateFirestore,
+} from "@/utils/firestoreUtils";
 import { emailWithoutSpace } from "@/utils/strintText";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ProfileInfo = () => {
   const [profile, setProfile] = useState(null);
-  const { userData, currentUser, setCurrentUser, setUserData } = useAuth();
+  const { userData, currentUser, setCurrentUser, setUserData, judete } =
+    useAuth();
   const [email, setEmail] = useState(userData?.email || "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,6 +30,20 @@ const ProfileInfo = () => {
     userData?.specializare || ""
   );
   const [cuim, setCuim] = useState(userData?.cuim || "");
+  const [localitati, setLocalitati] = useState([]);
+  const [isJudetSelected, setIsJudetSelected] = useState(true);
+  const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
+  const [isCateogireSelected, setIsCategorieSelected] = useState(true);
+
+  const [alert, setAlert] = useState({ message: "", type: "" });
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type });
+  };
+
+  const closeAlert = () => {
+    setAlert({ message: "", type: "" });
+  };
 
   // upload profile
   const uploadProfile = (e) => {
@@ -53,11 +72,80 @@ const ProfileInfo = () => {
       setUserData(data);
       await handleUpdateFirestore(`Users/${user_uid}`, data).then(() => {
         console.log("update succesfully....");
+        showAlert("Actualizare cu succes!", "success");
       });
     } catch (error) {
+      showAlert(`Eroare la Actualizare: ${error.message}`, "danger");
       console.error("Error signing up: ", error);
     }
   };
+
+  const handleJudetChange = async (e) => {
+    const judetSelectedName = e.target.value; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+    setJudet(judetSelectedName);
+    setIsJudetSelected(!!judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    if (judetSelected) {
+      try {
+        // Utilizăm judet pentru a interoga Firestore
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        // Presupunem că localitatiFromFirestore este array-ul corect al localităților
+        setLocalitati(localitatiFromFirestore);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        setLocalitati([]); // Resetează localitățile în caz de eroare
+      }
+    } else {
+      // Dacă nu găsim județul selectat, resetăm localitățile
+      setLocalitati([]);
+    }
+  };
+  const handleGetLocalitatiJudet = async () => {
+    const judetSelectedName = judet; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+    setJudet(judetSelectedName);
+    setIsJudetSelected(!!judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    if (judetSelected) {
+      try {
+        // Utilizăm judet pentru a interoga Firestore
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        // Presupunem că localitatiFromFirestore este array-ul corect al localităților
+        setLocalitati(localitatiFromFirestore);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        setLocalitati([]); // Resetează localitățile în caz de eroare
+      }
+    } else {
+      // Dacă nu găsim județul selectat, resetăm localitățile
+      setLocalitati([]);
+    }
+  };
+
+  useEffect(() => {
+    if (judet.length > 0) {
+      handleGetLocalitatiJudet();
+    }
+  }, []);
 
   return (
     <div className="row">
@@ -262,12 +350,15 @@ const ProfileInfo = () => {
             data-live-search="true"
             data-width="100%"
             value={judet}
-            onChange={(e) => setJudet(e.target.value)}
+            onChange={handleJudetChange}
           >
             <option data-tokens="SelectRole">Judet</option>
-            <option data-tokens="Agent/Agency">Dambovita</option>
-            <option data-tokens="SingleUser">Prahova</option>
-            <option data-tokens="SingleUser">Timisoara</option>
+            {judete &&
+              judete.map((judet, index) => (
+                <option key={index} value={judet.judet}>
+                  {judet.judet}
+                </option>
+              ))}
           </select>
         </div>
       </div>
@@ -283,9 +374,11 @@ const ProfileInfo = () => {
             value={localitate}
             onChange={(e) => setLocalitate(e.target.value)}
           >
-            <option data-tokens="SelectRole">Localitate</option>
-            <option data-tokens="Agent/Agency">Targoviste</option>
-            <option data-tokens="SingleUser">Brasov</option>
+            {localitati.map((location, index) => (
+              <option key={index} value={location.localitate}>
+                {location.localitate}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -310,7 +403,7 @@ const ProfileInfo = () => {
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExampleInput7">Data nașterii</label>
           <input
-            type="text"
+            type="date"
             className="form-control"
             id="formGroupExampleInput7"
             placeholder="Data Nasterii"
@@ -371,6 +464,11 @@ const ProfileInfo = () => {
         </div>
       </div>
       {/* End .col */}
+      <AlertModal
+        message={alert.message}
+        type={alert.type}
+        onClose={closeAlert}
+      />
     </div>
   );
 };

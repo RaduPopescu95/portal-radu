@@ -11,7 +11,7 @@ import PopupSignInUp from "../../common/PopupSignInUp";
 import BreadCrumb2 from "./BreadCrumb2";
 import FeaturedItem from "./FeaturedItem";
 
-const index = ({ judete }) => {
+const index = ({ params }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -57,7 +57,7 @@ const index = ({ judete }) => {
               {/* End .row */}
 
               <div className="row">
-                <FeaturedItem />
+                <FeaturedItem params={params} />
               </div>
               {/* End .row */}
 
@@ -74,7 +74,7 @@ const index = ({ judete }) => {
             {/* End  page conent */}
             <div className="col-lg-4 col-xl-4">
               <div className="sidebar-listing-wrapper">
-                <SidebarListing judete={judete} />
+                <SidebarListing params={params} />
               </div>
               {/* End SidebarListing */}
 

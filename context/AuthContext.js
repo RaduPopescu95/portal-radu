@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { authentication } from "../firebase";
 import { handleGetUserInfo } from "../utils/handleFirebaseQuery";
+import { handleGetFirestore } from "@/utils/firestoreUtils";
 
 const AuthContext = createContext();
 
@@ -13,6 +14,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [judete, setJudete] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isGuestUser, setIsGuestUser] = useState(false); // Inițializat ca false
 
@@ -27,17 +29,28 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("start use effect from auth context");
     const unsubscribe = authentication.onAuthStateChanged(async (user) => {
+      console.log("start use effect from auth context", user);
       if (user) {
         try {
           const userDataFromFirestore = await handleGetUserInfo();
+          console.log(
+            "user data fetched at onAuthStateChanged....",
+            userDataFromFirestore
+          );
           setUserData(userDataFromFirestore);
         } catch (error) {
           console.error("Failed to fetch user data:", error);
         }
       }
       setCurrentUser(user);
+
+      try {
+        const judeteRomania = await handleGetFirestore("Judete");
+        setJudete(judeteRomania);
+      } catch (error) {
+        console.error("Failed to fetch judete data in context auth:", error);
+      }
 
       try {
         const guestUserValue = localStorage.getItem("isGuestUser");
@@ -63,6 +76,7 @@ export const AuthProvider = ({ children }) => {
     setAsGuestUser, // Expuși funcția prin context
     setUserData,
     setCurrentUser,
+    judete,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

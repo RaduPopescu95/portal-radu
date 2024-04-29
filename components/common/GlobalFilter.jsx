@@ -14,14 +14,18 @@ import {
   uploadJudete,
 } from "@/utils/firestoreUtils";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
-const GlobalFilter = ({ className = "", judete }) => {
+const GlobalFilter = ({ className = "" }) => {
   const router = useRouter();
+  const { judete } = useAuth();
   const [selectedJudet, setSelectedJudet] = useState("");
   const [selectedLocalitate, setSelectedLocalitate] = useState("");
+  const [selectedCategorie, setSelectedCategorie] = useState("");
   const [localitati, setLocalitati] = useState([]);
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
+  const [isCateogireSelected, setIsCategorieSelected] = useState(true);
 
   // Handler pentru schimbarea selectiei de judete
   const handleJudetChange = async (e) => {
@@ -60,17 +64,44 @@ const GlobalFilter = ({ className = "", judete }) => {
     setSelectedLocalitate(e.target.value);
     setIsLocalitateSelected(!!e.target.value);
   };
+  const handleCategorieChange = (e) => {
+    console.log("Categorie selected: ", e.target.value); // Acesta ar trebui să arate numele localității ca string
+    setSelectedCategorie(e.target.value);
+    setIsCategorieSelected(!!e.target.value);
+  };
 
   // submit handler
   const submitHandler = () => {
     console.log("submit...", selectedJudet);
     console.log("submit...", selectedLocalitate);
-    if (!selectedJudet) {
-      setIsJudetSelected(!!selectedJudet);
-    } else if (selectedJudet) {
-      router.push(`/parteneri/${selectedJudet}`);
-    } else if (selectedJudet && selectedLocalitate) {
-      router.push(`/parteneri/${selectedJudet}-${selectedLocalitate}`);
+
+    if (!selectedCategorie && !selectedLocalitate && !selectedJudet) {
+      router.push(`/parteneri`);
+      return;
+    }
+
+    if (selectedJudet && !selectedLocalitate) {
+      setIsLocalitateSelected(!!selectedLocalitate);
+      return;
+    }
+
+    if (selectedLocalitate && selectedCategorie) {
+      router.push(
+        `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedLocalitate.toLocaleLowerCase()}`
+      );
+      return;
+    }
+
+    if (selectedLocalitate) {
+      router.push(
+        `/parteneri/parteneri-${selectedLocalitate.toLocaleLowerCase()}`
+      );
+      return;
+    }
+
+    if (selectedCategorie) {
+      router.push(`/${selectedCategorie.toLocaleLowerCase()}`);
+      return;
     }
   };
 
@@ -92,14 +123,19 @@ const GlobalFilter = ({ className = "", judete }) => {
         <li className="list-inline-item">
           <div className="search_option_two">
             <div className="candidate_revew_select">
-              <select className="selectpicker w100 form-select show-tick">
+              <select
+                className={`selectpicker w100 form-select show-tick ${
+                  !isCateogireSelected ? "border-danger" : ""
+                }`}
+                onChange={handleCategorieChange}
+                value={selectedCategorie}
+              >
                 <option value="">Categorie</option>
-                <option>Categorie</option>
-                <option>Categorie</option>
-                <option>Categorie</option>
-                <option>Categorie</option>
-                <option>Categorie</option>
-                <option>Categorie</option>
+                <option data-tokens="Autovehicule">Autovehicule</option>
+                <option data-tokens="Servicii">Servicii</option>
+                <option data-tokens="Cafenele">Cafenele</option>
+                <option data-tokens="Restaurante">Restaurante</option>
+                <option data-tokens="Hoteluri">Hoteluri</option>
               </select>
             </div>
           </div>
@@ -214,7 +250,7 @@ const GlobalFilter = ({ className = "", judete }) => {
         <li className="list-inline-item">
           <div className="search_option_button">
             <button
-              onClick={() => uploadJudete(jd)}
+              onClick={submitHandler}
               type="submit"
               className="btn btn-thm"
             >

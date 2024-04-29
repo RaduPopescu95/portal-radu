@@ -47,7 +47,7 @@ const index = ({ judete }) => {
                     Gaseste usor operatorul economic cel mai apropiata de tine
                   </p>
                 </div>
-                <GlobalHeroFilter className="home4" judete={judete} />
+                <GlobalHeroFilter className="home4" />
               </div>
             </div>
           </div>

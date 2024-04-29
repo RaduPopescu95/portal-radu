@@ -10,6 +10,7 @@ const LogoUpload = ({
   logoImg,
   isEdit,
   isNewImage,
+  text,
 }) => {
   return (
     <div className="row">
@@ -69,7 +70,7 @@ const LogoUpload = ({
             <div className="icon">
               <span className="flaticon-download"></span>
             </div>
-            <p>Drag and Drop Logo</p>
+            <p>{text}</p>
           </div>
         </div>
       )}

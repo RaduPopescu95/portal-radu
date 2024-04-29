@@ -13,9 +13,14 @@ import {
 } from "@/utils/commonUtils";
 import { fetchLocation } from "@/app/services/geocoding";
 import { handleDiacrtice } from "@/utils/strintText";
-import { handleQueryDoubleParam } from "@/utils/firestoreUtils";
+import {
+  handleQueryDoubleParam,
+  handleQueryFirestore,
+} from "@/utils/firestoreUtils";
+import FeaturedProperty from "./Item";
+import { useAuth } from "@/context/AuthContext";
 
-const FeaturedItem = () => {
+const FeaturedItem = ({ params }) => {
   const {
     keyword,
     location,
@@ -32,7 +37,7 @@ const FeaturedItem = () => {
   const { statusType, featured, isGridOrList } = useSelector(
     (state) => state.filter
   );
-
+  const { currentUser } = useAuth();
   const [parteneri, setParteneri] = useState([]);
 
   const dispatch = useDispatch();
@@ -71,9 +76,104 @@ const FeaturedItem = () => {
             (a, b) => a.distanta - b.distanta
           );
 
-          console.log("parteneri cu distanta...", parteneriOrdonati);
+          let parteneriFiltrati = [];
+          if (params) {
+            if (params[0].split("-")[0] === "parteneri") {
+              console.log("testing...here....test", params[0].split("-")[0]);
+              let localitate = params[0]; // presupunem că params[0] este un string
+              const parts = localitate.split("-");
 
-          setParteneri([...parteneriOrdonati]);
+              // Decodifică partea pentru a elimina codificările URL (de exemplu, transformă "%20" înapoi în spații)
+              let decodedPart = decodeURIComponent(parts[1]);
+              // Verifică dacă stringul decodificat conține cuvântul "sector"
+              if (decodedPart.includes("sector")) {
+                console.log("Partea conține 'sector'", decodedPart);
+
+                let sectorDorit =
+                  decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
+                console.log("Test here sector dorit....", sectorDorit);
+                parteneriFiltrati = await handleQueryFirestore(
+                  "Users",
+                  "sector",
+                  sectorDorit,
+                  "userType",
+                  "Partener"
+                );
+                console.log("Test here localitate....", parteneriFiltrati);
+                setParteneri([...parteneriFiltrati]);
+
+                // Execută codul dorit aici
+              } else {
+                console.log("Partea nu conține 'sector'");
+                let localitateDorita =
+                  parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+                console.log("Test here localitate....", localitateDorita);
+                parteneriFiltrati = await handleQueryFirestore(
+                  "Users",
+                  "localitate",
+                  localitateDorita,
+                  "userType",
+                  "Partener"
+                );
+                console.log("Test here localitate....", parteneriFiltrati);
+                setParteneri([...parteneriFiltrati]);
+              }
+            } else {
+              if (params.length === 1) {
+                let string = params[0]; // presupunem că params[0] este un string
+
+                let categorieDorita =
+                  string.charAt(0).toUpperCase() + string.slice(1);
+                parteneriFiltrati = parteneriOrdonati.filter(
+                  (partener) => partener.categorie === categorieDorita
+                );
+                setParteneri([...parteneriFiltrati]);
+              } else if (params.length === 2) {
+                let string = params[0]; // presupunem că params[0] este un string
+
+                let categorieDorita =
+                  string.charAt(0).toUpperCase() + string.slice(1);
+                let localitate = params[1]; // presupunem că params[0] este un string
+                const parts = localitate.split("-");
+                let decodedPart = decodeURIComponent(parts[1]);
+                console.log("it tests....", decodedPart);
+                if (decodedPart.includes("sector")) {
+                  let sectorDorit =
+                    decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
+                  console.log("Test here localitate....", categorieDorita);
+                  console.log("Test here sector....", sectorDorit);
+                  parteneriFiltrati = await handleQueryFirestore(
+                    "Users",
+                    "categorie",
+                    categorieDorita,
+                    "sector",
+                    sectorDorit
+                  );
+                  console.log("Test here localitate....", parteneriFiltrati);
+                  setParteneri([...parteneriFiltrati]);
+                } else {
+                  let localitateDorita =
+                    parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+                  console.log("Test here localitate....", categorieDorita);
+                  console.log("Test here localitate....", localitateDorita);
+                  parteneriFiltrati = await handleQueryFirestore(
+                    "Users",
+                    "categorie",
+                    categorieDorita,
+                    "localitate",
+                    localitateDorita
+                  );
+                  console.log("Test here localitate....", parteneriFiltrati);
+                  setParteneri([...parteneriFiltrati]);
+                }
+              } else {
+                setParteneri([...parteneriOrdonati]);
+              }
+            }
+          } else {
+            setParteneri([...parteneriOrdonati]);
+          }
+          console.log("parteneri cu distanta...", parteneriOrdonati);
         } catch (error) {
           console.error("Error fetching location data: ", error);
         }
@@ -86,29 +186,29 @@ const FeaturedItem = () => {
 
   // keyword filter
   const keywordHandler = (item) =>
-    item.title.toLowerCase().includes(keyword?.toLowerCase());
+    item?.title.toLowerCase().includes(keyword?.toLowerCase());
 
   // location handler
   const locationHandler = (item) => {
-    return item.location.toLowerCase().includes(location.toLowerCase());
+    return item?.location.toLowerCase().includes(location.toLowerCase());
   };
 
   // status handler
   const statusHandler = (item) =>
-    item.type.toLowerCase().includes(status.toLowerCase());
+    item?.type.toLowerCase().includes(status.toLowerCase());
 
   // properties handler
   const propertiesHandler = (item) =>
-    item.type.toLowerCase().includes(propertyType.toLowerCase());
+    item?.type.toLowerCase().includes(propertyType.toLowerCase());
 
   // price handler
   const priceHandler = (item) =>
-    item.price < price?.max && item.price > price?.min;
+    item?.price < price?.max && item?.price > price?.min;
 
   // bathroom handler
   const bathroomHandler = (item) => {
     if (bathrooms !== "") {
-      return item.itemDetails[1].number == bathrooms;
+      return item?.itemDetails[1].number == bathrooms;
     }
     return true;
   };
@@ -116,7 +216,7 @@ const FeaturedItem = () => {
   // bedroom handler
   const bedroomHandler = (item) => {
     if (bedrooms !== "") {
-      return item.itemDetails[0].number == bedrooms;
+      return item?.itemDetails[0].number == bedrooms;
     }
     return true;
   };
@@ -124,7 +224,7 @@ const FeaturedItem = () => {
   // garages handler
   const garagesHandler = (item) =>
     garages !== ""
-      ? item.garages?.toLowerCase().includes(garages.toLowerCase())
+      ? item?.garages?.toLowerCase().includes(garages.toLowerCase())
       : true;
 
   // built years handler
@@ -136,8 +236,8 @@ const FeaturedItem = () => {
     if (area.min !== 0 && area.max !== 0) {
       if (area.min !== "" && area.max !== "") {
         return (
-          parseInt(item.itemDetails[2].number) > area.min &&
-          parseInt(item.itemDetails[2].number) < area.max
+          parseInt(item?.itemDetails[2].number) > area.min &&
+          parseInt(item?.itemDetails[2].number) < area.max
         );
       }
     }
@@ -148,7 +248,7 @@ const FeaturedItem = () => {
   const advanceHandler = (item) => {
     if (amenities.length !== 0) {
       return amenities.find((item2) =>
-        item2.toLowerCase().includes(item.amenities.toLowerCase())
+        item2.toLowerCase().includes(item?.amenities.toLowerCase())
       );
     }
     return true;
@@ -168,7 +268,7 @@ const FeaturedItem = () => {
   // featured handler
   const featuredHandler = (item) => {
     if (featured !== "") {
-      return item.featured === featured;
+      return item?.featured === featured;
     }
     return true;
   };
@@ -194,113 +294,25 @@ const FeaturedItem = () => {
         className={`${
           isGridOrList ? "col-12 feature-list" : "col-md-6 col-lg-6"
         } `}
-        key={item.id}
+        key={item?.id}
       >
-        <Link
-          href={`/partener/${item.id}-${toUrlSlug(item.denumireBrand)}`}
-          key={item.id}
-          passHref
-        >
-          <div
-            className={`feat_property home7 style4 ${
-              isGridOrList ? "d-flex align-items-center" : undefined
-            }`}
+        {currentUser ? (
+          <Link
+            href={`/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`}
+            key={item?.id}
+            passHref
           >
-            <div
-              className="thumb"
-              style={{ backgroundImage: item.gradient.gradientSelected }}
-            >
-              <Image
-                width={342}
-                height={220}
-                className="img-whp w-100 h-100 cover"
-                src={"/assets/clinicaexample.png"}
-                alt="fp1.jpg"
-              />
-              <div className="thmb_cntnt">
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "1px",
-                    left: "10px",
-                    zIndex: 10,
-                  }}
-                >
-                  <Image
-                    src="/assets/user-profile.png" // Asigură-te că calea este corectă
-                    alt="Logo"
-                    width={50}
-                    height={50}
-                    className="logo"
-                  />
-                </div>
-                {/* <ul className="icon mb0">
-                <li className="list-inline-item">
-                  <a href="#">
-                    <span className="flaticon-transfer-1"></span>
-                  </a>
-                </li>
-                <li className="list-inline-item">
-                  <a href="#">
-                    <span className="flaticon-heart"></span>
-                  </a>
-                </li>
-              </ul> */}
-
-                <Link
-                  href={`/partener/${item.id}-${toUrlSlug(item.denumireBrand)}`}
-                  className="fp_price"
-                >
-                  {item.denumireBrand}
-                </Link>
-              </div>
-            </div>
-            <div className="details">
-              <div className="tc_content">
-                <p className="text-thm">{item.type}</p>
-                {/* <h4>
-                  <Link href={`/partener/${item.id}`}>3 oferte</Link>
-                </h4> */}
-                <p>
-                  <span className="flaticon-placeholder"></span>
-                  {item.adresaSediu}
-                </p>
-                <p>{item.distanta} metri</p>
-
-                {/* <ul className="prop_details mb0">
-                {item.itemDetails.map((val, i) => (
-                  <li className="list-inline-item" key={i}>
-                    <a href="#">
-                      {val.name}: {val.number}
-                    </a>
-                  </li>
-                ))}
-              </ul> */}
-              </div>
-              {/* End .tc_content */}
-
-              {/* <div className="fp_footer">
-              <ul className="fp_meta float-start mb0">
-                <li className="list-inline-item">
-                  <Link href="/agent-v2">
-                    <Image
-                      width={40}
-                      height={40}
-                      src={item.posterAvatar}
-                      alt="pposter1.png"
-                    />
-                  </Link>
-                </li>
-                <li className="list-inline-item">
-                  <Link href="/agent-v2">{item.posterName}</Link>
-                </li>
-              </ul>
-              <div className="fp_pdate float-end">{item.postedYear}</div>
-            </div> */}
-              {/* End .fp_footer */}
-            </div>
-          </div>
-        </Link>
+            <FeaturedProperty item={item} isGridOrList={isGridOrList} />
+          </Link>
+        ) : (
+          <a
+            key={item?.id}
+            data-bs-toggle="modal"
+            data-bs-target=".bd-utilizator-modal-lg"
+          >
+            <FeaturedProperty item={item} isGridOrList={isGridOrList} />
+          </a>
+        )}
       </div>
     ));
 

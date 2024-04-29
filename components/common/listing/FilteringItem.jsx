@@ -26,14 +26,18 @@ import PricingRangeSlider from "../../common/PricingRangeSlider";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { handleQueryFirestoreSubcollection } from "@/utils/firestoreUtils";
+import { useAuth } from "@/context/AuthContext";
 
-const FilteringItem = ({ judete }) => {
+const FilteringItem = ({ categorieDorita, localitateDorita }) => {
+  const { judete } = useAuth();
   const router = useRouter();
   const [selectedJudet, setSelectedJudet] = useState("");
   const [selectedLocalitate, setSelectedLocalitate] = useState("");
+  const [selectedCategorie, setSelectedCategorie] = useState("");
   const [localitati, setLocalitati] = useState([]);
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
+  const [isCateogireSelected, setIsCategorieSelected] = useState(true);
 
   // Handler pentru schimbarea selectiei de judete
   const handleJudetChange = async (e) => {
@@ -72,17 +76,44 @@ const FilteringItem = ({ judete }) => {
     setSelectedLocalitate(e.target.value);
     setIsLocalitateSelected(!!e.target.value);
   };
+  const handleCategorieChange = (e) => {
+    console.log("Categorie selected: ", e.target.value); // Acesta ar trebui să arate numele localității ca string
+    setSelectedCategorie(e.target.value);
+    setIsCategorieSelected(!!e.target.value);
+  };
 
   // submit handler
   const submitHandler = () => {
     console.log("submit...", selectedJudet);
     console.log("submit...", selectedLocalitate);
-    if (!selectedJudet) {
-      setIsJudetSelected(!!selectedJudet);
-    } else if (selectedJudet) {
-      router.push(`/parteneri/${selectedJudet}`);
-    } else if (selectedJudet && selectedLocalitate) {
-      router.push(`/parteneri/${selectedJudet}-${selectedLocalitate}`);
+
+    if (!selectedCategorie && !selectedLocalitate && !selectedJudet) {
+      router.push(`/parteneri`);
+      return;
+    }
+
+    if (selectedJudet && !selectedLocalitate) {
+      setIsLocalitateSelected(!!selectedLocalitate);
+      return;
+    }
+
+    if (selectedLocalitate && selectedCategorie) {
+      router.push(
+        `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedLocalitate.toLocaleLowerCase()}`
+      );
+      return;
+    }
+
+    if (selectedLocalitate) {
+      router.push(
+        `/parteneri/parteneri-${selectedLocalitate.toLocaleLowerCase()}`
+      );
+      return;
+    }
+
+    if (selectedCategorie) {
+      router.push(`/${selectedCategorie.toLocaleLowerCase()}`);
+      return;
     }
   };
 
@@ -264,6 +295,28 @@ const FilteringItem = ({ judete }) => {
           </label>
         </div>
       </li> */}
+      {/* End li */}
+
+      <li>
+        <div className="search_option_two">
+          <div className="candidate_revew_select">
+            <select
+              className={`selectpicker w100 form-select show-tick ${
+                !isCateogireSelected ? "border-danger" : ""
+              }`}
+              onChange={handleCategorieChange}
+              value={selectedCategorie}
+            >
+              <option value="">Categorie</option>
+              <option data-tokens="Autovehicule">Autovehicule</option>
+              <option data-tokens="Servicii">Servicii</option>
+              <option data-tokens="Cafenele">Cafenele</option>
+              <option data-tokens="Restaurante">Restaurante</option>
+              <option data-tokens="Hoteluri">Hoteluri</option>
+            </select>
+          </div>
+        </div>
+      </li>
       {/* End li */}
 
       <li>
@@ -500,7 +553,7 @@ const FilteringItem = ({ judete }) => {
       <li>
         <div className="search_option_button">
           <button
-            onClick={clearHandler}
+            onClick={submitHandler}
             type="button"
             className="btn btn-block btn-thm w-100"
           >

@@ -28,7 +28,7 @@ const index = async () => {
 
   return (
     <>
-      <GridV1 judete={judete} />
+      <GridV1 />
     </>
   );
 };

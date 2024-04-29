@@ -5,6 +5,7 @@ import { authentication, db } from "@/firebase";
 import { handleFirebaseAuthError } from "@/utils/authUtils";
 import {
   getFirestoreCollectionLength,
+  handleQueryFirestoreSubcollection,
   handleUploadFirestore,
 } from "@/utils/firestoreUtils";
 import { emailWithoutSpace } from "@/utils/strintText";
@@ -19,19 +20,55 @@ import Link from "next/link";
 import { useState } from "react";
 
 const LoginSignupUtilizator = () => {
-  const { userData, currentUser, setCurrentUser } = useAuth();
+  const { userData, currentUser, setCurrentUser, judete } = useAuth();
+  const [localitati, setLocalitati] = useState([]);
+  const [judet, setJudet] = useState("");
+  const [localitate, setLocalitate] = useState("");
+  const [isJudetSelected, setIsJudetSelected] = useState(true);
+  const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
+  const [isCateogireSelected, setIsCategorieSelected] = useState(true);
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [numeUtilizator, setNumeUtilizator] = useState("");
   const [telefon, setTelefon] = useState("");
   const [dataNasterii, setDataNasterii] = useState("");
-  const [judet, setJudet] = useState("");
-  const [localitate, setLocalitate] = useState("");
   const [titulatura, setTitulatura] = useState("");
   const [specializare, setSpecializare] = useState("");
   const [cuim, setCuim] = useState("");
   const [titulaturaSelectata, setTitulaturaSelectata] = useState("");
+
+  const handleJudetChange = async (e) => {
+    const judetSelectedName = e.target.value; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+    setJudet(judetSelectedName);
+    setIsJudetSelected(!!judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    if (judetSelected) {
+      try {
+        // Utilizăm judet pentru a interoga Firestore
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        // Presupunem că localitatiFromFirestore este array-ul corect al localităților
+        setLocalitati(localitatiFromFirestore);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        setLocalitati([]); // Resetează localitățile în caz de eroare
+      }
+    } else {
+      // Dacă nu găsim județul selectat, resetăm localitățile
+      setLocalitati([]);
+    }
+  };
 
   const handleReset = () => {
     setEmail("");
@@ -104,6 +141,7 @@ const LoginSignupUtilizator = () => {
         userType: "Doctor",
         gradFidelitate: "Silver",
         statusCont: "Inactiv",
+        rulajCont: 0,
         firstUploadDate: dateTime.date,
         firstUploadTime: dateTime.time,
       };
@@ -112,6 +150,9 @@ const LoginSignupUtilizator = () => {
       const documentId = user_uid;
       setDoc(doc(db, collectionId, documentId), data);
       handleReset();
+      setTimeout(() => {
+        router.push("/profil"); // Redirecționează după ce mesajul de succes este afișat și închis
+      }, 3000); // Așteaptă să dispară alerta
     } catch (error) {
       console.error("Error signing up: ", error);
     }
@@ -249,7 +290,7 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End input-group */}
 
-                  <div className="form-group form-check custom-checkbox mb-3">
+                  {/* <div className="form-group form-check custom-checkbox mb-3">
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -266,7 +307,7 @@ const LoginSignupUtilizator = () => {
                     <a className="btn-fpswd float-end" href="#">
                       Ai uitat parola?
                     </a>
-                  </div>
+                  </div> */}
                   {/* End remember me checkbox */}
 
                   <button
@@ -279,12 +320,12 @@ const LoginSignupUtilizator = () => {
                   </button>
                   {/* End submit button */}
 
-                  <p className="text-center">
+                  {/* <p className="text-center">
                     Nu ai cont?{" "}
                     <a className="text-thm" href="#">
                       Înregistrează-te
                     </a>
-                  </p>
+                  </p> */}
                 </form>
               </div>
               {/* End .col .login_form */}
@@ -418,18 +459,13 @@ const LoginSignupUtilizator = () => {
                 <div className="sign_up_form">
                   <div className="form-group input-group mb-3">
                     <input
-                      type="text"
+                      type="date"
                       className="form-control"
                       id="exampleInputName"
                       placeholder="Data nașterii"
                       value={dataNasterii}
                       onChange={(e) => setDataNasterii(e.target.value)}
                     />
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-user"></i>
-                      </div>
-                    </div>
                   </div>
                   {/* End .row */}
 
@@ -439,12 +475,15 @@ const LoginSignupUtilizator = () => {
                       data-live-search="true"
                       data-width="100%"
                       value={judet}
-                      onChange={(e) => setJudet(e.target.value)}
+                      onChange={handleJudetChange}
                     >
                       <option data-tokens="SelectRole">Judet</option>
-                      <option data-tokens="Agent/Agency">Dambovita</option>
-                      <option data-tokens="SingleUser">Prahova</option>
-                      <option data-tokens="SingleUser">Timisoara</option>
+                      {judete &&
+                        judete.map((judet, index) => (
+                          <option key={index} value={judet.judet}>
+                            {judet.judet}
+                          </option>
+                        ))}
                     </select>
                   </div>
                   {/* End from-group */}
@@ -458,8 +497,11 @@ const LoginSignupUtilizator = () => {
                       onChange={(e) => setLocalitate(e.target.value)}
                     >
                       <option data-tokens="SelectRole">Localitate</option>
-                      <option data-tokens="Agent/Agency">Targoviste</option>
-                      <option data-tokens="SingleUser">Brasov</option>
+                      {localitati.map((location, index) => (
+                        <option key={index} value={location.localitate}>
+                          {location.localitate}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   {/* End from-group */}
@@ -684,12 +726,16 @@ const LoginSignupUtilizator = () => {
                   type="checkbox"
                   value=""
                   id="terms"
+                  onChange={(e) => setIsTermsAccepted(e.target.checked)}
                 />
                 <label
                   className="form-check-label form-check-label"
                   htmlFor="terms"
                 >
-                  Accept termenii si conditiile.
+                  Accept{" "}
+                  <Link href={"/termeni-confidentialitate"}>
+                    termenii si conditiile.
+                  </Link>
                 </label>
               </div>
               {/* End from-group */}
@@ -698,18 +744,18 @@ const LoginSignupUtilizator = () => {
                 type="submit"
                 className="btn btn-log w-100 btn-thm"
                 data-bs-dismiss="modal"
-                aria-label="Close"
+                disabled={!isTermsAccepted}
               >
                 înregistrare
               </button>
               {/* End btn */}
 
-              <p className="text-center">
+              {/* <p className="text-center">
                 Aveti cont?{" "}
                 <a className="text-thm" href="#">
                   Autentificati-va
                 </a>
-              </p>
+              </p> */}
               {/* End register content */}
             </form>
           </div>

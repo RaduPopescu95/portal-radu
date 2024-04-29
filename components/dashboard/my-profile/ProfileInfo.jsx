@@ -1,10 +1,13 @@
 "use client";
 
 import { generateRandomGradient } from "@/utils/commonUtils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GradientSelect from "./GradientSelect";
 import { useAuth } from "@/context/AuthContext";
-import { handleUpdateFirestore } from "@/utils/firestoreUtils";
+import {
+  handleQueryFirestoreSubcollection,
+  handleUpdateFirestore,
+} from "@/utils/firestoreUtils";
 import { emailWithoutSpace } from "@/utils/strintText";
 import AutocompleteInput from "@/components/common/AutocompleteInput";
 import { AlertModal } from "@/components/common/AlertModal";
@@ -16,7 +19,8 @@ import CommonLoader from "@/components/common/CommonLoader";
 import LogoUpload from "./LogoUpload";
 
 const ProfileInfo = () => {
-  const { userData, currentUser, setCurrentUser, setUserData } = useAuth();
+  const { userData, currentUser, setCurrentUser, setUserData, judete } =
+    useAuth();
   const [denumireBrand, setDenumireBrand] = useState(
     userData?.denumireBrand || ""
   );
@@ -30,6 +34,7 @@ const ProfileInfo = () => {
   );
   const [judet, setJudet] = useState(userData?.judet || "");
   const [localitate, setLocalitate] = useState(userData?.localitate || "");
+  const [sector, setSector] = useState(userData?.sector || "");
   const [categorie, setCategorie] = useState(userData?.categorie || "");
   const [cui, setCui] = useState(userData?.cui || "");
   const [adresaSediu, setAdresaSediu] = useState(userData?.adresaSediu || "");
@@ -55,7 +60,12 @@ const ProfileInfo = () => {
     userData?.images?.imgs || []
   );
   const [deletedImages, setDeletedImages] = useState([]);
+  const [localitati, setLocalitati] = useState([]);
   const [isNewImage, setIsNewImage] = useState(false);
+
+  const [isJudetSelected, setIsJudetSelected] = useState(true);
+  const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
+  const [isCateogireSelected, setIsCategorieSelected] = useState(true);
 
   const params = useParams();
   const router = useRouter();
@@ -156,7 +166,8 @@ const ProfileInfo = () => {
       let data = {
         cui,
         categorie,
-        localitate,
+        localitate: judet === "Bucuresti" ? "Bucuresti" : localitate,
+        sector: judet === "Bucuresti" ? sector : "",
         judet,
         telefonContact,
         numeContact,
@@ -234,6 +245,74 @@ const ProfileInfo = () => {
     }
   };
 
+  // Handler pentru schimbarea selectiei de judete
+  const handleJudetChange = async (e) => {
+    const judetSelectedName = e.target.value; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+    setJudet(judetSelectedName);
+    setIsJudetSelected(!!judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    if (judetSelected) {
+      try {
+        // Utilizăm judet pentru a interoga Firestore
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        // Presupunem că localitatiFromFirestore este array-ul corect al localităților
+        setLocalitati(localitatiFromFirestore);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        setLocalitati([]); // Resetează localitățile în caz de eroare
+      }
+    } else {
+      // Dacă nu găsim județul selectat, resetăm localitățile
+      setLocalitati([]);
+    }
+  };
+  const handleGetLocalitatiJudet = async () => {
+    const judetSelectedName = judet; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+    setJudet(judetSelectedName);
+    setIsJudetSelected(!!judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    if (judetSelected) {
+      try {
+        // Utilizăm judet pentru a interoga Firestore
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        // Presupunem că localitatiFromFirestore este array-ul corect al localităților
+        setLocalitati(localitatiFromFirestore);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        setLocalitati([]); // Resetează localitățile în caz de eroare
+      }
+    } else {
+      // Dacă nu găsim județul selectat, resetăm localitățile
+      setLocalitati([]);
+    }
+  };
+
+  useEffect(() => {
+    if (judet.length > 0) {
+      handleGetLocalitatiJudet();
+    }
+  }, []);
+
   return (
     <div className="row">
       <div className="row">
@@ -265,6 +344,7 @@ const ProfileInfo = () => {
         logoImg={logo}
         isEdit={isEdit}
         isNewImage={isNewLogo}
+        text={"Drag and drop Logo"}
       />
       {/* End .col */}
 
@@ -352,11 +432,14 @@ const ProfileInfo = () => {
             data-live-search="true"
             data-width="100%"
             value={judet}
-            onChange={(e) => setJudet(e.target.value)}
+            onChange={handleJudetChange}
           >
-            <option data-tokens="Status1">Alege Judet</option>
-            <option data-tokens="Status2">Dambovita</option>
-            <option data-tokens="Status3">Timisoara</option>
+            {judete &&
+              judete.map((judet, index) => (
+                <option key={index} value={judet.judet}>
+                  {judet.judet}
+                </option>
+              ))}
           </select>
         </div>
       </div>
@@ -370,12 +453,21 @@ const ProfileInfo = () => {
             data-live-search="true"
             data-width="100%"
             value={localitate}
-            onChange={(e) => setLocalitate(e.target.value)}
+            onChange={(e) => {
+              console.log("Test...");
+              if (e.target.value.includes("Sector")) {
+                setLocalitate(e.target.value);
+                setSector(e.target.value);
+              } else {
+                setLocalitate(e.target.value);
+              }
+            }}
           >
-            <option data-tokens="Status1">Alege Localitate</option>
-            <option data-tokens="Status2">Targoviste</option>
-            <option data-tokens="Status2">Bucuresti</option>
-            <option data-tokens="Status3">Timisoara</option>
+            {localitati.map((location, index) => (
+              <option key={index} value={location.localitate}>
+                {location.localitate}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -405,9 +497,11 @@ const ProfileInfo = () => {
             value={categorie}
             onChange={(e) => setCategorie(e.target.value)}
           >
-            <option data-tokens="Status1">Alege Categorie</option>
-            <option data-tokens="Status2">Categorie1</option>
-            <option data-tokens="Status3">Categorie2</option>
+            <option data-tokens="Autovehicule">Autovehicule</option>
+            <option data-tokens="Servicii">Servicii</option>
+            <option data-tokens="Cafenele">Cafenele</option>
+            <option data-tokens="Restaurante">Restaurante</option>
+            <option data-tokens="Hoteluri">Hoteluri</option>
           </select>
         </div>
       </div>

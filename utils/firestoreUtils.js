@@ -179,12 +179,12 @@ export const handleGetFirestore = async (location) => {
   const querySnapshot = await getDocs(collection(db, location));
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, ` ${location} => `, doc.data());
+    // console.log(doc.id, ` ${location} => `, doc.data());
     arr.push(doc.data());
   });
   // Sortează array-ul după id
   arr.sort((a, b) => {
-    console.log("sort...", a);
+    // console.log("sort...", a);
     // Presupunând că id-urile sunt numerice
     return a.id - b.id;
 
@@ -354,6 +354,7 @@ export const handleQueryFirestore = async (
   location,
   queryParam,
   elementOne = null,
+  queryParamTwo = null,
   elementTwo = null
 ) => {
   console.log("start query firestore pentru elementOne...", elementOne);
@@ -368,7 +369,7 @@ export const handleQueryFirestore = async (
   }
 
   if (elementTwo) {
-    conditions.push(where(queryParam, "==", elementTwo));
+    conditions.push(where(queryParamTwo, "==", elementTwo));
   }
 
   const q = query(...conditions);
@@ -456,6 +457,32 @@ export const handleQueryDoubleParam = async (
   });
   return arr;
 };
+export const handleQueryTripleParam = async (
+  location,
+  paramOne,
+  elementOne,
+  paramTwo,
+  elementTwo,
+  paramThree,
+  elementThree
+) => {
+  let arr = []; // Specificați tipul de obiecte pe care îl conține matricea
+  const q = query(
+    collection(db, location),
+    where(paramOne, "==", elementOne),
+    where(paramTwo, "==", elementTwo),
+    where(paramThree, "==", elementThree)
+  );
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data());
+    // arr.push(doc.data().data);
+    arr.push(doc.data());
+  });
+  return arr;
+};
 
 export const handlePaginateFirestore = (location) => {
   const auth = authentication;
@@ -486,3 +513,70 @@ export const uploadJudete = async (jd) => {
     }
   }
 };
+
+export async function getLocalitatiWithUserCounts() {
+  const countyCapitals = [
+    "Alba Iulia",
+    "Arad",
+    "Pitesti",
+    "Bacau",
+    "Oradea",
+    "Bistrita",
+    "Botosani",
+    "Braila",
+    "Brasov",
+    "Bucuresti",
+    "Buzau",
+    "Calarasi",
+    "Resita",
+    "Cluj-Napoca",
+    "Constanta",
+    "Sfantu Gheorghe",
+    "Targoviste",
+    "Craiova",
+    "Galati",
+    "Giurgiu",
+    "Targu Jiu",
+    "Miercurea Ciuc",
+    "Deva",
+    "Slobozia",
+    "Iasi",
+    "Baia Mare",
+    "Drobeta-Turnu Severin",
+    "Targu Mures",
+    "Piatra Neamt",
+    "Slatina",
+    "Ploiesti",
+    "Satu Mare",
+    "Zalau",
+    "Sibiu",
+    "Suceava",
+    "Alexandria",
+    "Timisoara",
+    "Tulcea",
+    "Ramnicu Valcea",
+    "Vaslui",
+    "Focsani",
+  ];
+  try {
+    const counts = [];
+
+    for (const city of countyCapitals) {
+      console.log(city);
+      const q = query(collection(db, "Users"), where("localitate", "==", city));
+      const querySnapshot = await getDocs(q);
+      const count = querySnapshot.size;
+      if (count > 0) {
+        counts.push({ localitate: city, count });
+      }
+    }
+
+    // Sortează rezultatele descrescător după count
+    counts.sort((a, b) => b.count - a.count);
+
+    return counts;
+  } catch (error) {
+    console.error("Error during data retrieval and processing: ", error);
+    throw error; // Aruncă eroarea mai departe dacă dorești să o gestionezi și în alte părți ale aplicației
+  }
+}

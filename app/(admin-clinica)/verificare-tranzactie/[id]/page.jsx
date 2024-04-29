@@ -15,7 +15,10 @@ const index = async ({ params }) => {
   const id = params.id;
   const parts = id.split("-");
   const userId = parseFloat(parts[0]);
-  const offerId = parts[1];
+  const cod = parts[1];
+  const codParts = cod.split("UIDD");
+  const offerId = codParts[0];
+  const partenerId = codParts[1];
 
   let utilizator = await handleQueryFirestore("Users", "id", userId);
   let oferta = await handleQueryFirestoreSubcollection(
@@ -39,7 +42,7 @@ const index = async ({ params }) => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu />
+          <SidebarMenu partenerId={partenerId} />
         </div>
       </div>
       {/* End sidebar_menu */}

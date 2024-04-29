@@ -25,8 +25,11 @@ const WhatsNearby = ({ oferte }) => {
   }, []);
 
   const handleOfferSelect = (offer) => {
+    console.log("user data id....", userData?.id);
+    console.log("offer?.documentId....", offer?.documentId);
+    console.log("offer?.collectionId....", offer?.collectionId);
     setSelectedOffer(
-      `https://portal-adrian-beta.vercel.app/verificare-tranzactie/${userData?.id}-${offer?.documentId}`
+      `https://portal-adrian-beta.vercel.app/verificare-tranzactie/${userData?.id}-${offer?.documentId}UIDD-${offer?.collectionId}`
     );
     setIsModalVisible(true);
   };
@@ -39,11 +42,12 @@ const WhatsNearby = ({ oferte }) => {
         {oferte
           .filter(
             (offer) =>
-              offer.gradeFidelitate.includes(level) && offer.status === "Activa"
+              offer?.gradeFidelitate.includes(level) &&
+              offer?.status === "Activa"
           )
           .map((offer, index) => {
             const isAvailable =
-              fidelityLevels[userData.gradFidelitate].includes(level);
+              fidelityLevels[userData?.gradFidelitate].includes(level);
             return (
               <div key={index} className={`offer ${index > 0 ? "mt10" : ""}`}>
                 <div className="single_line">
@@ -54,9 +58,9 @@ const WhatsNearby = ({ oferte }) => {
                   >
                     <h5>
                       <span className={"flaticon-money-bag"}></span>
-                      {offer.titluOferta}
+                      {offer?.titluOferta}
                     </h5>
-                    <p>{offer.descriereOferta}</p>
+                    <p>{offer?.descriereOferta}</p>
                   </div>
                   {isAvailable ? (
                     <button

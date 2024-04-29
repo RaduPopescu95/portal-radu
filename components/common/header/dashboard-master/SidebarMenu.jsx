@@ -9,10 +9,13 @@ import {
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { handleLogout } from "@/utils/authUtils";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 const SidebarMenu = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { userData, currentUser, loading } = useAuth();
 
   const myProperties = [
     { id: 1, name: "General Elements", route: "/my-properties" },
@@ -38,6 +41,19 @@ const SidebarMenu = () => {
     // },
     { id: 3, name: "Deconectare", route: "/", icon: "flaticon-logout" },
   ];
+
+  useEffect(() => {
+    console.log(currentUser);
+    console.log(userData);
+    console.log(loading);
+    if (!currentUser) {
+      router.push("/signin");
+    } else {
+      if (!currentUser.uid === "ieAXxQk505VmglsvXoWthv8q04F2") {
+        router.push("/signin");
+      }
+    }
+  }, []);
 
   return (
     <>

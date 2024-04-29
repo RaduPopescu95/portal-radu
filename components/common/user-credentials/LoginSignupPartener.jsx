@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -10,6 +10,7 @@ import {
 import { authentication, db } from "@/firebase";
 import {
   getFirestoreCollectionLength,
+  handleGetFirestore,
   handleQueryFirestoreSubcollection,
   handleUploadFirestore,
 } from "@/utils/firestoreUtils";
@@ -24,7 +25,14 @@ import { AlertModal } from "../AlertModal";
 import { useRouter } from "next/navigation";
 
 const LoginSignupPartener = () => {
-  const { userData, currentUser, setCurrentUser, setUserData } = useAuth();
+  const { userData, currentUser, setCurrentUser, setUserData, judete } =
+    useAuth();
+  const [localitati, setLocalitati] = useState([]);
+  const [judet, setJudet] = useState("");
+  const [localitate, setLocalitate] = useState("");
+  const [isJudetSelected, setIsJudetSelected] = useState(true);
+  const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
+  const [isCateogireSelected, setIsCategorieSelected] = useState(true);
   const router = useRouter();
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [denumireBrand, setDenumireBrand] = useState("");
@@ -35,8 +43,7 @@ const LoginSignupPartener = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [numeContact, setNumeContact] = useState("");
   const [telefonContact, setTelefonContact] = useState("");
-  const [judet, setJudet] = useState("");
-  const [localitate, setLocalitate] = useState("");
+
   const [categorie, setCategorie] = useState("");
   const [cui, setCui] = useState("");
   const [adresaSediu, setAdresaSediu] = useState("");
@@ -50,6 +57,38 @@ const LoginSignupPartener = () => {
 
   const closeAlert = () => {
     setAlert({ message: "", type: "" });
+  };
+
+  // Handler pentru schimbarea selectiei de judete
+  const handleJudetChange = async (e) => {
+    const judetSelectedName = e.target.value; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+    setJudet(judetSelectedName);
+    setIsJudetSelected(!!judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    if (judetSelected) {
+      try {
+        // Utilizăm judet pentru a interoga Firestore
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        // Presupunem că localitatiFromFirestore este array-ul corect al localităților
+        setLocalitati(localitatiFromFirestore);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        setLocalitati([]); // Resetează localitățile în caz de eroare
+      }
+    } else {
+      // Dacă nu găsim județul selectat, resetăm localitățile
+      setLocalitati([]);
+    }
   };
 
   const handleLocationSelect = (lat, lng, adresa, urlMaps) => {
@@ -143,7 +182,8 @@ const LoginSignupPartener = () => {
         numeContact,
         telefonContact,
         judet,
-        localitate,
+        localitate: judet === "Bucuresti" ? "Bucuresti" : localitate,
+        sector: judet === "Bucuresti" ? localitate : "",
         categorie,
         cui,
         adresaSediu,
@@ -520,11 +560,15 @@ const LoginSignupPartener = () => {
                       data-live-search="true"
                       data-width="100%"
                       value={judet}
-                      onChange={(e) => setJudet(e.target.value)}
+                      onChange={handleJudetChange}
                     >
                       <option value="">Selectează județ</option>
-                      <option value="Operator economic">Dambovita</option>
-                      <option value="Doctor">Timisoara</option>
+                      {judete &&
+                        judete.map((judet, index) => (
+                          <option key={index} value={judet.judet}>
+                            {judet.judet}
+                          </option>
+                        ))}
                     </select>
                   </div>
                   {/* End from-group */}
@@ -537,9 +581,12 @@ const LoginSignupPartener = () => {
                       value={localitate}
                       onChange={(e) => setLocalitate(e.target.value)}
                     >
-                      <option data-tokens="SelectRole">Localitate</option>
-                      <option data-tokens="Agent/Agency">Targoviste</option>
-                      <option data-tokens="SingleUser">Timisoara</option>
+                      <option value="">Selectează localitate</option>
+                      {localitati.map((location, index) => (
+                        <option key={index} value={location.localitate}>
+                          {location.localitate}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   {/* End from-group */}
@@ -552,9 +599,11 @@ const LoginSignupPartener = () => {
                       value={categorie}
                       onChange={(e) => setCategorie(e.target.value)}
                     >
-                      <option data-tokens="SelectRole">Categorie</option>
-                      <option data-tokens="Agent/Agency">Categorie 1</option>
-                      <option data-tokens="SingleUser">Categorie 2</option>
+                      <option data-tokens="Autovehicule">Autovehicule</option>
+                      <option data-tokens="Servicii">Servicii</option>
+                      <option data-tokens="Cafenele">Cafenele</option>
+                      <option data-tokens="Restaurante">Restaurante</option>
+                      <option data-tokens="Hoteluri">Hoteluri</option>
                     </select>
                   </div>
                   {/* End from-group */}
