@@ -46,11 +46,17 @@ const SidebarMenu = ({ partenerId }) => {
     console.log(currentUser);
     console.log(userData);
     console.log("partener id...", partenerId);
-    if (
-      (!loading && userData?.userType != "Partener") ||
-      (!loading && userData.user_uid != partenerId)
-    ) {
-      router.push("/");
+    if (partenerId) {
+      if (
+        (!loading && userData?.userType != "Partener") ||
+        (!loading && userData.user_uid != partenerId)
+      ) {
+        router.push("/");
+      }
+    } else {
+      if (!loading && userData?.userType != "Partener") {
+        router.push("/");
+      }
     }
   }, [loading]);
 
