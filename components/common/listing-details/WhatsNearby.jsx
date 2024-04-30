@@ -29,7 +29,7 @@ const WhatsNearby = ({ oferte }) => {
     console.log("offer?.documentId....", offer?.documentId);
     console.log("offer?.collectionId....", offer?.collectionId);
     setSelectedOffer(
-      `https://portal-adrian-beta.vercel.app/verificare-tranzactie/${userData?.id}-${offer?.documentId}UIDD-${offer?.collectionId}`
+      `https://portal-adrian-beta.vercel.app/verificare-tranzactie/${userData?.id}-${offer?.documentId}UIDD${offer?.collectionId}`
     );
     setIsModalVisible(true);
   };
