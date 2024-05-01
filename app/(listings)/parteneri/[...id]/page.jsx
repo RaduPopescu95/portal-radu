@@ -24,7 +24,6 @@ export async function getServerData() {
 }
 
 const index = async ({ params }) => {
-  console.log("params.id...", params.id);
   const judete = await getServerData();
 
   return (

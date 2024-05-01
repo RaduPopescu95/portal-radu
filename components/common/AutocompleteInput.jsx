@@ -12,7 +12,6 @@ const AutocompleteInput = ({ onPlaceChanged, adresa }) => {
   }, [adresa]);
 
   const onLoad = (autocomplete) => {
-    console.log("Autocomplete is loaded and ready to use!");
     setAutocomplete(autocomplete);
   };
 

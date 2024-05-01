@@ -25,9 +25,6 @@ const WhatsNearby = ({ oferte }) => {
   }, []);
 
   const handleOfferSelect = (offer) => {
-    console.log("user data id....", userData?.id);
-    console.log("offer?.documentId....", offer?.documentId);
-    console.log("offer?.collectionId....", offer?.collectionId);
     setSelectedOffer(
       `https://portal-adrian-beta.vercel.app/verificare-tranzactie/${userData?.id}-${offer?.documentId}UIDD${offer?.collectionId}`
     );

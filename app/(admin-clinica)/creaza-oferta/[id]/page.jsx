@@ -22,7 +22,7 @@ const index = async ({ params }) => {
     "collectionId",
     partenerId
   );
-  console.log("test here...", oferta);
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}

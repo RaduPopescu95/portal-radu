@@ -42,7 +42,6 @@ const FilteringItem = ({ categorieDorita, localitateDorita }) => {
   // Handler pentru schimbarea selectiei de judete
   const handleJudetChange = async (e) => {
     const judetSelectedName = e.target.value; // Numele județului selectat, un string
-    console.log("judetSelectedName...", judetSelectedName);
     setSelectedJudet(judetSelectedName);
     setIsJudetSelected(!!judetSelectedName);
 
@@ -72,7 +71,6 @@ const FilteringItem = ({ categorieDorita, localitateDorita }) => {
   };
 
   const handleLocalitateChange = (e) => {
-    console.log("Localitate selected: ", e.target.value); // Acesta ar trebui să arate numele localității ca string
     setSelectedLocalitate(e.target.value);
     setIsLocalitateSelected(!!e.target.value);
   };
@@ -84,9 +82,6 @@ const FilteringItem = ({ categorieDorita, localitateDorita }) => {
 
   // submit handler
   const submitHandler = () => {
-    console.log("submit...", selectedJudet);
-    console.log("submit...", selectedLocalitate);
-
     if (!selectedCategorie && !selectedLocalitate && !selectedJudet) {
       router.push(`/parteneri`);
       return;

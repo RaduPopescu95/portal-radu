@@ -23,7 +23,7 @@ const index = async () => {
       userData?.user_uid
     );
   }
-  console.log("test here oferteInregistrate...", oferteInregistrate);
+
   return (
     <>
       <MySavedSearch oferteInregistrate={oferteInregistrate} />
