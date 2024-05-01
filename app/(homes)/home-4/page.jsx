@@ -4,6 +4,7 @@ import {
   handleGetFirestore,
   handleQueryFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata = {
   title: "Home || Portal",
@@ -27,6 +28,7 @@ export async function getServerData() {
 }
 
 const index = async () => {
+  noStore();
   const judete = await getServerData();
 
   return (

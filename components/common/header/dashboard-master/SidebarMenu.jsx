@@ -11,11 +11,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { handleLogout } from "@/utils/authUtils";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
+import { authentication } from "@/firebase";
 
 const SidebarMenu = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { userData, currentUser, loading } = useAuth();
+  // const { userData, currentUser, loading } = useAuth();
 
   const myProperties = [
     { id: 1, name: "General Elements", route: "/my-properties" },
@@ -43,13 +44,17 @@ const SidebarMenu = () => {
   ];
 
   useEffect(() => {
-    console.log(currentUser);
-    console.log(userData);
-    console.log(loading);
+    const auth = authentication;
+    const currentUser = auth.currentUser;
+    // console.log(currentUser);
+    // console.log(userData);
+    // console.log(loading);
     if (!currentUser) {
+      console.log("no curent USER....");
       router.push("/signin");
     } else {
       if (!currentUser.uid === "ieAXxQk505VmglsvXoWthv8q04F2") {
+        console.log("no curent USER UID....");
         router.push("/signin");
       }
     }

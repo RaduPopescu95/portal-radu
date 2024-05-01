@@ -47,10 +47,13 @@ const SearchData = ({ oferteInregistrate }) => {
           );
           console.log("test....doctor[0]....", doctor[0]);
           if (newStatus === "Confirmata") {
-            doctor[0].rulajCont = doctor[0].rulajCont + oferta.pretFinal;
+            doctor[0].rulajCont =
+              Number(doctor[0].rulajCont) + Number(oferta.pretFinal);
           } else if (newStatus === "Neconfirmata") {
-            doctor[0].rulajCont = doctor[0].rulajCont - oferta.pretFinal;
+            doctor[0].rulajCont =
+              Number(doctor[0].rulajCont) - Number(oferta.pretFinal);
           }
+
           console.log("test....doctor[0]....", doctor[0]);
           await handleUpdateFirestore(
             `Users/${oferta.idUtilizator}`,

@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import ListaParteneri from "../../../components/dashboard-master/lista-parteneri";
 import { handleQueryFirestore } from "@/utils/firestoreUtils";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata = {
   title: "Portal || Portal",
@@ -8,6 +9,7 @@ export const metadata = {
 };
 
 const index = async () => {
+  noStore();
   const parteneri = await handleQueryFirestore("Users", "userType", "Partener");
   return (
     <>

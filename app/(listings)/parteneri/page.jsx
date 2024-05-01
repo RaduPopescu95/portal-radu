@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import GridV1 from "@/components/listing-grid/grid-v1";
 import { handleGetFirestore } from "@/utils/firestoreUtils";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata = {
   title: "titlu",
@@ -24,6 +25,7 @@ export async function getServerData() {
 }
 
 const index = async () => {
+  noStore();
   const judete = await getServerData();
 
   return (

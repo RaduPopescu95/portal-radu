@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import { authentication } from "@/firebase";
 import { handleSignIn } from "@/utils/authUtils";
 import { useRouter } from "next/navigation"; // Aici ar trebui să fie "next/router", nu "next/navigation"
 import React, { useState } from "react"; // Importăm useState din React
@@ -20,7 +21,7 @@ const Form = () => {
     handleSignIn(email, password)
       .then((userCredentials) => {
         console.log("user credentials...", userCredentials);
-        // setCurrentUser(userCredentials); // Aici trebuie să asiguri că userCredentials este gestionat corect
+        setCurrentUser(userCredentials); // Aici trebuie să asiguri că userCredentials este gestionat corect
         router.push("/admin");
       })
       .catch((error) => {

@@ -9,18 +9,9 @@ import Activities from "./Activities";
 import AllStatistics from "./AllStatistics";
 import StatisticsChart from "./StatisticsChart";
 
-const index = async () => {
+const index = ({ numarParteneri, numarDoctori }) => {
   // const { userData } = useAuth();
-  const numarParteneri = await getFirestoreQueryLength(
-    `Users`,
-    "userType",
-    "Partener"
-  );
-  const numarDoctori = await getFirestoreQueryLength(
-    `Users`,
-    "userType",
-    "Doctor"
-  );
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
