@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
