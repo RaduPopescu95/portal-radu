@@ -14,6 +14,9 @@ const ErrorPageContent = () => {
       />
       <div className="erro_code">
         <h1>Pagina nu a fost gasita</h1>
+        <h1>Pagina nu a fost gasita</h1>
+        <h1>Pagina nu a fost gasita</h1>
+        <h1>Pagina nu a fost gasita</h1>
       </div>
       {/* <p>We can’t seem to find the page you’re looking for</p> */}
 
