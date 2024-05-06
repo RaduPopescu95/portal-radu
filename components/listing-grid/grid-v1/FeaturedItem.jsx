@@ -18,6 +18,7 @@ import { handleDiacrtice } from "@/utils/strintText";
 import {
   handleQueryDoubleParam,
   handleQueryFirestore,
+  handleQueryTripleParam,
 } from "@/utils/firestoreUtils";
 import FeaturedProperty from "./Item";
 import { useAuth } from "@/context/AuthContext";
@@ -58,12 +59,14 @@ const FeaturedItem = ({ params }) => {
           let res = await fetchLocation(latitude, longitude);
           let localitate = handleDiacrtice(res.results[0].locality);
 
-          let parteneri = await handleQueryDoubleParam(
+          let parteneri = await handleQueryTripleParam(
             "Users",
             "localitate",
             localitate,
             "userType",
-            "Partener"
+            "Partener",
+            "statusCont",
+            "Activ"
           );
 
           // Adaugă distanța ca o proprietate pentru fiecare partener
