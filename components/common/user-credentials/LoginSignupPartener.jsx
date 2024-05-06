@@ -50,6 +50,7 @@ const LoginSignupPartener = () => {
   const [googleMapsLink, setGoogleMapsLink] = useState("");
   const [coordonate, setCoordonate] = useState({});
   const [alert, setAlert] = useState({ message: "", type: "" });
+  const [buttonPressed, setButtonPressed] = useState(false);
 
   const showAlert = (message, type) => {
     setAlert({ message, type });
@@ -113,50 +114,75 @@ const LoginSignupPartener = () => {
     setAdresaSediu("");
     setGoogleMapsLink("");
     setCoordonate({});
+    setButtonPressed(false);
   };
 
   const handleLogIn = async (event) => {
     event.preventDefault();
+    setButtonPressed(true);
     // console.log(userData);
     // console.log(currentUser);
+
+    if (!password || !cui) {
+      return;
+    }
 
     let utilizator = await handleQueryFirestoreSubcollection(
       "Users",
       "cui",
       cui
     );
+
     // setUserData(utilizator[0]);
+    console.log(utilizator);
+    console.log(cui);
+    if (!utilizator) {
+      showAlert(`Nu a fost gasit nici un utilizator cu acest CUI`, "danger");
+    }
     handleSignIn(utilizator[0].email, password)
       .then((userCredentials) => {
         console.log("user credentials...", userCredentials);
         setCurrentUser(userCredentials); // Aici trebuie să asiguri că userCredentials este gestionat corect
-        // router.push("/dashboard");
+        router.push("/panou-partener");
       })
       .catch((error) => {
         console.error("Error during sign in:", error.message);
         console.error("Error during sign in:", error.code);
+        showAlert(`Eroare la autentificare: ${error.message}`, "danger");
         // setError("Failed to log in. Error message: " + error.message); // Utilizează error.message pentru a oferi feedback utilizatorului
       });
   };
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-    let isValid = true;
+    setButtonPressed(true);
 
     setPasswordError("");
     setConfirmPasswordError("");
 
     if (password.length < 6) {
       setPasswordError("Parola trebuie să fie de cel puțin 6 caractere.");
-      isValid = false;
+      return;
     }
 
     if (password !== confirmPassword) {
       setConfirmPasswordError("Parolele nu corespund.");
-      isValid = false;
+      return;
     }
 
-    if (!isValid) {
+    if (
+      !email ||
+      !denumireBrand ||
+      !numeContact ||
+      !telefonContact ||
+      !judet ||
+      !localitate ||
+      !password ||
+      !categorie ||
+      !cui ||
+      !adresaSediu ||
+      !confirmPassword
+    ) {
       return;
     }
 
@@ -311,7 +337,9 @@ const LoginSignupPartener = () => {
                   <div className="input-group mb-2 mr-sm-2">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${
+                        !cui && buttonPressed && "border-danger"
+                      }`}
                       id="inlineFormInputGroupUsername2"
                       placeholder="CUI"
                       value={cui}
@@ -328,7 +356,9 @@ const LoginSignupPartener = () => {
                   <div className="input-group form-group">
                     <input
                       type="password"
-                      className="form-control"
+                      className={`form-control ${
+                        !password && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputPassword1"
                       placeholder="Parola"
                       value={password}
@@ -341,9 +371,9 @@ const LoginSignupPartener = () => {
                     </div>
                   </div>
                   {/* End input-group */}
-
+                  {/* 
                   <div className="form-group form-check custom-checkbox mb-3">
-                    {/* <input
+                    <input
                       className="form-check-input"
                       type="checkbox"
                       value=""
@@ -354,22 +384,23 @@ const LoginSignupPartener = () => {
                       htmlFor="remeberMe"
                     >
                       Rămâi conectat
-                    </label> */}
+                    </label>
 
                     <a className="btn-fpswd float-end" href="#">
                       Ai uitat parola?
                     </a>
-                  </div>
+                  </div> */}
                   {/* End remember me checkbox */}
 
                   <button
                     type="submit"
                     className="btn btn-log w-100 btn-thm"
-                    aria-label="Close"
-                    data-bs-dismiss="modal"
+                    // aria-label="Close"
+                    // data-bs-dismiss="modal"
                   >
                     Autentificare
                   </button>
+
                   {/* End submit button */}
 
                   {/* <p className="text-center">
@@ -420,7 +451,9 @@ const LoginSignupPartener = () => {
                   <div className="form-group input-group mb-3">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${
+                        !denumireBrand && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputName"
                       placeholder="Denumire brand"
                       value={denumireBrand}
@@ -437,7 +470,9 @@ const LoginSignupPartener = () => {
                   <div className="form-group input-group  mb-3">
                     <input
                       type="email"
-                      className="form-control"
+                      className={`form-control ${
+                        !email && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputEmail2"
                       placeholder="Email"
                       value={email}
@@ -454,7 +489,9 @@ const LoginSignupPartener = () => {
                   <div className="form-group input-group  mb-3">
                     <input
                       type="password"
-                      className="form-control"
+                      className={`form-control ${
+                        !password && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputPassword2"
                       placeholder="Parola"
                       value={password}
@@ -485,7 +522,9 @@ const LoginSignupPartener = () => {
                   <div className="form-group input-group  mb-3">
                     <input
                       type="password"
-                      className="form-control"
+                      className={`form-control ${
+                        !confirmPassword && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputPassword3"
                       placeholder="Confirma Parola"
                       value={confirmPassword}
@@ -516,7 +555,9 @@ const LoginSignupPartener = () => {
                   <div className="form-group input-group mb-3">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${
+                        !numeContact && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputName"
                       placeholder="Nume si prenume persoana de contact"
                       value={numeContact}
@@ -540,7 +581,9 @@ const LoginSignupPartener = () => {
                   <div className="form-group input-group mb-3">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${
+                        !telefonContact && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputName"
                       placeholder="Număr de telefon persoana de contact"
                       value={telefonContact}
@@ -556,7 +599,9 @@ const LoginSignupPartener = () => {
 
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
-                      className="form-select"
+                      className={`form-select ${
+                        !judet && buttonPressed && "border-danger"
+                      }`}
                       data-live-search="true"
                       data-width="100%"
                       value={judet}
@@ -575,7 +620,9 @@ const LoginSignupPartener = () => {
 
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
-                      className="form-select"
+                      className={`form-select ${
+                        !localitate && buttonPressed && "border-danger"
+                      }`}
                       data-live-search="true"
                       data-width="100%"
                       value={localitate}
@@ -593,7 +640,9 @@ const LoginSignupPartener = () => {
 
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
-                      className="form-select"
+                      className={`form-select ${
+                        !categorie && buttonPressed && "border-danger"
+                      }`}
                       data-live-search="true"
                       data-width="100%"
                       value={categorie}
@@ -611,7 +660,9 @@ const LoginSignupPartener = () => {
                   <div className="form-group input-group mb-3">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${
+                        !cui && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputName"
                       placeholder="CUI"
                       value={cui}
@@ -642,7 +693,11 @@ const LoginSignupPartener = () => {
                   </div> */}
                   {/* End .row */}
 
-                  <AutocompleteInput onPlaceChanged={handleLocationSelect} />
+                  <AutocompleteInput
+                    onPlaceChanged={handleLocationSelect}
+                    adresaSediu={adresaSediu}
+                    buttonPressed={buttonPressed}
+                  />
 
                   {/* End .form */}
                 </div>
@@ -670,7 +725,7 @@ const LoginSignupPartener = () => {
               <button
                 type="submit"
                 className="btn btn-log w-100 btn-thm"
-                data-bs-dismiss="modal"
+                // data-bs-dismiss="modal"
                 disabled={!isTermsAccepted}
               >
                 înregistrare

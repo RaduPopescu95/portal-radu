@@ -1,4 +1,3 @@
-"use client";
 import Categorie from "./Categorie";
 import FeaturedListings from "./FeaturedListings";
 import FeatureProperties from "./FeatureProperties";
@@ -9,7 +8,7 @@ const SidebarListing = ({ params }) => {
     <div className="sidebar_listing_grid1">
       <div className="sidebar_listing_list">
         <div className="sidebar_advanced_search_widget">
-          <FilteringItem />
+          <FilteringItem params={params} />
         </div>
       </div>
       {/* End .sidebar_listing_list */}

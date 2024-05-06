@@ -61,10 +61,7 @@ const HeaderMenuContent = ({ float = "" }) => {
       data-menu-style="horizontal"
     >
       <li className="last">
-        <Link
-          href="/"
-          className={pathname === "/contact" ? "ui-active" : undefined}
-        >
+        <Link href="/" className={pathname === "/" ? "ui-active" : undefined}>
           Acasă
         </Link>
       </li>
@@ -73,7 +70,7 @@ const HeaderMenuContent = ({ float = "" }) => {
       <li className="last">
         <Link
           href="/parteneri"
-          className={pathname === "/contact" ? "ui-active" : undefined}
+          className={pathname === "/parteneri" ? "ui-active" : undefined}
         >
           Parteneri
         </Link>
@@ -130,6 +127,16 @@ const HeaderMenuContent = ({ float = "" }) => {
           className={pathname === "/contact" ? "ui-active" : undefined}
         >
           Contact
+        </Link>
+      </li>
+      {/* End .simpleitem */}
+
+      <li className="last">
+        <Link
+          href="/plangeri"
+          className={pathname === "/plangeri" ? "ui-active" : undefined}
+        >
+          Plângeri
         </Link>
       </li>
       {/* End .simpleitem */}

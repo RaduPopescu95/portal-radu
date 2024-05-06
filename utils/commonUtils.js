@@ -66,3 +66,15 @@ export const closeSignupModal = (modalId) => {
   const modalInstance = bootstrap.Modal.getInstance(modalElement);
   modalInstance.hide();
 };
+
+export const filtrareParteneri = (parteneriFiltrati, searchQueryParteneri) => {
+  // Convertim searchQueryParteneri într-o expresie regulată pentru a căuta corespunzător în denumireBrand
+  const regex = new RegExp(searchQueryParteneri, "i"); // 'i' face ca căutarea să fie nesensibilă la majuscule/minuscule
+
+  // Filtrăm partenerii pe baza denumirii brandului
+  const parteneriFiltratiGasiti = parteneriFiltrati.filter((partener) =>
+    regex.test(partener.denumireBrand)
+  );
+
+  return parteneriFiltratiGasiti;
+};

@@ -10,9 +10,73 @@ import SearchBox from "./SearchBox";
 import { handleGetFirestore } from "@/utils/firestoreUtils";
 import { useAuth } from "@/context/AuthContext";
 
-const index = async () => {
+import { db } from "@/firebase";
+import { useEffect, useState } from "react";
+import {
+  collection,
+  endAt,
+  endBefore,
+  getDocs,
+  limit,
+  limitToLast,
+  onSnapshot,
+  orderBy,
+  query,
+  startAfter,
+} from "firebase/firestore";
+import { useCollectionPagination } from "@/hooks/useCollectionPagination";
+
+const index = () => {
   const { currentUser } = useAuth();
-  let oferte = await handleGetFirestore(`Users/${currentUser?.uid}/Oferte`);
+
+  const collectionPath = `Users/${currentUser?.uid}/Oferte`; // Replace with your actual path
+  const pageSize = 6; // Set the desired number of items per page
+
+  // Initialize the pagination hook
+  const {
+    items: posts,
+    currentPage,
+    totalPages,
+    setCurrentPage,
+    previousPage,
+    nextPage,
+  } = useCollectionPagination(collectionPath, pageSize);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredPosts, setFilteredPosts] = useState([]);
+
+  useEffect(() => {
+    setFilteredPosts(
+      posts.filter((post) =>
+        post.titluOferta
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase().trim())
+      )
+    );
+  }, [searchQuery, posts]);
+
+  const handlePageChange = (newPageNumber) => {
+    if (newPageNumber === currentPage) return; // Add this to prevent reloading the same page data
+    setCurrentPage(newPageNumber); // This should ideally happen before fetching new data
+    if (newPageNumber > currentPage) {
+      nextPage();
+    } else {
+      previousPage();
+    }
+  };
+
+  const handleSearchChange = (query) => {
+    if (query === 0) {
+      if (newPageNumber > currentPage) {
+        nextPage();
+      } else {
+        previousPage();
+      }
+    } else {
+      setSearchQuery(query);
+    }
+  };
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -69,14 +133,14 @@ const index = async () => {
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">
-                          <SearchBox />
+                          <SearchBox onSearchChange={handleSearchChange} />
                         </div>
                       </li>
                       {/* End li */}
 
-                      <li className="list-inline-item">
+                      {/* <li className="list-inline-item">
                         <Filtering />
-                      </li>
+                      </li> */}
                       {/* End li */}
                     </ul>
                   </div>
@@ -87,12 +151,25 @@ const index = async () => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        <TableData oferte={oferte} />
+                        <TableData
+                          oferte={
+                            filteredPosts.length > 0
+                              ? filteredPosts
+                              : filteredPosts.length === 0 &&
+                                searchQuery.length > 0
+                              ? filteredPosts
+                              : posts
+                          }
+                        />
                       </div>
                       {/* End .table-responsive */}
 
                       <div className="mbp_pagination">
-                        <Pagination />
+                        <Pagination
+                          onPageChange={handlePageChange}
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                        />
                       </div>
                       {/* End .mbp_pagination */}
                     </div>

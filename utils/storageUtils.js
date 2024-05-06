@@ -71,11 +71,7 @@ export const uploadImage = async (
   return { finalUri, fileName };
 };
 
-export const deleteImage = async (
-  firstLocation,
-  secondLocation,
-  oldFileName
-) => {
+export const deleteImage = async (firstLocation, oldFileName) => {
   try {
     console.log("started delete...");
     // Create a reference to the file to delete

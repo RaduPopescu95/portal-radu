@@ -28,23 +28,32 @@ const index = () => {
       <section className="our-contact pb0 bgc-f7">
         <div className="container">
           <div className="row">
-            <div className="col-lg-7 col-xl-8">
+            <div className="col-lg-12 col-xl-12">
               <div className="form_grid">
-                <h4 className="mb5">Trimite-ne un mesaj</h4>
+                <h4 className="mb5">Formular de plângeri</h4>
                 <p>
-                  Acest formular colecteaza numele, telefonul si e-mailul tau
-                  pentru a te putea informa in legatura cu oferta solicitata.
-                  Prin trimiterea acestuia, esti de acord cu conditiile impuse
-                  in raport cu Politica de Confidentialitate.
+                  Acest formular este destinat pentru înregistrarea plângerilor
+                  legate de partenerii noștri care nu au răspuns prompt sau nu
+                  au respectat contractul. Te rugăm să completezi câmpurile de
+                  mai jos cu informațiile relevante.
                 </p>
+                <p>
+                  Prin trimiterea acestui formular, ești de acord cu prelucrarea
+                  datelor tale personale în conformitate cu{" "}
+                  <a href="/politica-de-confidentialitate">
+                    Politica noastră de Confidențialitate
+                  </a>
+                  .
+                </p>
+
                 <Form />
               </div>
             </div>
             {/* End .col */}
 
-            <div className="col-lg-5 col-xl-4">
+            {/* <div className="col-lg-5 col-xl-4">
               <AddressSidebar />
-            </div>
+            </div> */}
           </div>
           {/* End .row */}
         </div>

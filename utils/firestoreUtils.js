@@ -109,9 +109,8 @@ export const handleUploadFirestoreSubcollection = async (
 ) => {
   console.log("create subcollection...", data);
   try {
-    const localitati = await handleGetSubcollections(subcollectionLocation); // Presupunem că returnează un array de obiecte
-
-    let id = localitati.length + 1;
+    const collectionLength = await getFirestoreCollectionLength(location);
+    let id = collectionLength + 1;
     // Adăugarea documentului în subcolecție
 
     const docRef = doc(collection(db, location));
@@ -256,7 +255,7 @@ export const handleDeleteFirestoreSubcollectionData = async (
 
     // Dacă getNewData este true, procedează la obținerea și actualizarea datelor
     if (getNewData) {
-      const data = await handleGetSubcollections(locationToGet); // Presupunem că returnează un array de obiecte
+      const data = await handleGetFirestore(locationToGet); // Presupunem că returnează un array de obiecte
 
       // Sortează datele în ordinea crescătoare a ID-urilor
       data.sort((a, b) => a.id - b.id);
@@ -271,7 +270,7 @@ export const handleDeleteFirestoreSubcollectionData = async (
 
         const ref = doc(
           db,
-          `Judete/${data[i].collectionId}/Localitati/${data[i].documentId}`
+          `Users/${data[i].collectionId}/Oferte/${data[i].documentId}`
         );
 
         const newData = {
@@ -580,3 +579,8 @@ export async function getLocalitatiWithUserCounts() {
     throw error; // Aruncă eroarea mai departe dacă dorești să o gestionezi și în alte părți ale aplicației
   }
 }
+
+//-------- PAGINATION -----
+
+
+//-------- PAGINATION -----

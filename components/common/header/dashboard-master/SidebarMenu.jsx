@@ -103,7 +103,7 @@ const SidebarMenu = () => {
             </li> */}
             <li
               className={`treeview ${
-                isSinglePageActive("/my-saved-search", pathname) ? "active" : ""
+                isSinglePageActive("/lista-doctori", pathname) ? "active" : ""
               }`}
             >
               <Link href="/lista-doctori">
@@ -113,7 +113,7 @@ const SidebarMenu = () => {
             </li>
             <li
               className={`treeview ${
-                isSinglePageActive("/my-saved-search", pathname) ? "active" : ""
+                isSinglePageActive("/lista-parteneri", pathname) ? "active" : ""
               }`}
             >
               <Link href="/lista-parteneri">
@@ -136,12 +136,34 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
-                isSinglePageActive("/my-saved-search", pathname) ? "active" : ""
+                isSinglePageActive("/lista-tranzactii", pathname)
+                  ? "active"
+                  : ""
               }`}
             >
               <Link href="/lista-tranzactii">
                 <i className="flaticon-layers"></i>
                 <span>Lista Tranzactii</span>
+              </Link>
+            </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/mesaje", pathname) ? "active" : ""
+              }`}
+            >
+              <Link href="/mesaje">
+                <i className="flaticon-layers"></i>
+                <span>Lista Mesaje</span>
+              </Link>
+            </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/plangeri-admin", pathname) ? "active" : ""
+              }`}
+            >
+              <Link href="/plangeri-admin">
+                <i className="flaticon-layers"></i>
+                <span>Lista Plangeri</span>
               </Link>
             </li>
             {/* <li

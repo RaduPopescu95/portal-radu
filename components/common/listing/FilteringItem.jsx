@@ -28,8 +28,8 @@ import { useRouter } from "next/navigation";
 import { handleQueryFirestoreSubcollection } from "@/utils/firestoreUtils";
 import { useAuth } from "@/context/AuthContext";
 
-const FilteringItem = ({ categorieDorita, localitateDorita }) => {
-  const { judete } = useAuth();
+const FilteringItem = ({ params }) => {
+  const { judete, searchQueryParteneri, setSearchQueryPateneri } = useAuth();
   const router = useRouter();
   const [selectedJudet, setSelectedJudet] = useState("");
   const [selectedLocalitate, setSelectedLocalitate] = useState("");
@@ -265,8 +265,8 @@ const FilteringItem = ({ categorieDorita, localitateDorita }) => {
             type="text"
             className="form-control"
             placeholder="Cauta dupa cuvant..."
-            value={getKeyword}
-            onChange={(e) => setKeyword(e.target.value)}
+            value={searchQueryParteneri}
+            onChange={(e) => setSearchQueryPateneri(e.target.value)}
           />
           <label>
             <span className="flaticon-magnifying-glass"></span>

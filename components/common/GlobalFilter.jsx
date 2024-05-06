@@ -18,7 +18,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const GlobalFilter = ({ className = "" }) => {
   const router = useRouter();
-  const { judete } = useAuth();
+  const { judete, setSearchQueryPateneri, searchQueryParteneri } = useAuth();
   const [selectedJudet, setSelectedJudet] = useState("");
   const [selectedLocalitate, setSelectedLocalitate] = useState("");
   const [selectedCategorie, setSelectedCategorie] = useState("");
@@ -110,7 +110,8 @@ const GlobalFilter = ({ className = "" }) => {
               type="text"
               className="form-control"
               placeholder="Cauta dupa cuvant..."
-              onChange={(e) => dispatch(addKeyword(e.target.value))}
+              value={searchQueryParteneri}
+              onChange={(e) => setSearchQueryPateneri(e.target.value)}
             />
           </div>
         </li>

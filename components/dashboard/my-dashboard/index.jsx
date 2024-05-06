@@ -69,12 +69,12 @@ const index = () => {
                 </div> */}
                 {/* End statistics chart */}
 
-                <div className="col-xl-12">
+                {/* <div className="col-xl-12">
                   <div className="recent_job_activity">
                     <h4 className="title mb-4">Oferte accesate recent</h4>
                     <Activities />
                   </div>
-                </div>
+                </div> */}
               </div>
               {/* End .row  */}
             </div>

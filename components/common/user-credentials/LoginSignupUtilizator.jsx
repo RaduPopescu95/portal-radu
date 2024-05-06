@@ -17,6 +17,7 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const LoginSignupUtilizator = () => {
@@ -38,6 +39,19 @@ const LoginSignupUtilizator = () => {
   const [specializare, setSpecializare] = useState("");
   const [cuim, setCuim] = useState("");
   const [titulaturaSelectata, setTitulaturaSelectata] = useState("");
+  const [alert, setAlert] = useState({ message: "", type: "" });
+  const [buttonPressed, setButtonPressed] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const router = useRouter();
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type });
+  };
+
+  const closeAlert = () => {
+    setAlert({ message: "", type: "" });
+  };
 
   const handleJudetChange = async (e) => {
     const judetSelectedName = e.target.value; // Numele județului selectat, un string
@@ -82,19 +96,28 @@ const LoginSignupUtilizator = () => {
     setTitulatura("");
     setSpecializare("");
     setCuim("");
+    setButtonPressed(false);
   };
 
   const handleLogIn = async (event) => {
     console.log(userData);
     event.preventDefault();
+    setButtonPressed(true);
+
+    if (!password || !email) {
+      return;
+    }
 
     signInWithEmailAndPassword(authentication, email, password)
       .then(async (userCredentials) => {
         setCurrentUser(userCredentials);
         console.log("success login");
+        router.push("/profil"); // Redirecționează după ce mesajul de succes este afișat și închis
       })
       .catch((error) => {
         const errorMessage = handleFirebaseAuthError(error);
+        showAlert(`Eroare la autentificare: ${error.message}`, "danger");
+
         // Aici puteți folosi errorMessage pentru a afișa un snackbar sau un alert
         // setShowSnackback(true);
         // setMessage(errorMessage);
@@ -107,11 +130,37 @@ const LoginSignupUtilizator = () => {
   const handleSignUp = async (event) => {
     event.preventDefault();
     const emailNew = emailWithoutSpace(email);
+    setButtonPressed(true);
     // Verifică dacă parola este confirmată corect și apoi creează utilizatorul
     if (password !== confirmPassword) {
       console.error("Passwords do not match!");
       return;
     }
+
+    if (password.length < 6) {
+      setPasswordError("Parola trebuie să fie de cel puțin 6 caractere.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("Parolele nu corespund.");
+      return;
+    }
+
+    if (
+      !email ||
+      !numeUtilizator ||
+      !telefon ||
+      !dataNasterii ||
+      !judet ||
+      !localitate ||
+      !titulatura ||
+      !cuim ||
+      !confirmPassword
+    ) {
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         authentication,
@@ -148,13 +197,16 @@ const LoginSignupUtilizator = () => {
       // await handleUploadFirestore(data, "Users");
       const collectionId = "Users";
       const documentId = user_uid;
-      setDoc(doc(db, collectionId, documentId), data);
+      setDoc(doc(db, collectionId, documentId), data).then(() => {
+        showAlert("Înregistrare cu succes!", "success");
+      });
       handleReset();
       setTimeout(() => {
         router.push("/profil"); // Redirecționează după ce mesajul de succes este afișat și închis
       }, 3000); // Așteaptă să dispară alerta
     } catch (error) {
       console.error("Error signing up: ", error);
+      showAlert(`Eroare la înregistrare: ${error.message}`, "danger");
     }
   };
 
@@ -259,7 +311,9 @@ const LoginSignupUtilizator = () => {
                   <div className="input-group mb-2 mr-sm-2">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${
+                        !email && buttonPressed && "border-danger"
+                      }`}
                       id="inlineFormInputGroupUsername2"
                       placeholder="Email"
                       value={email}
@@ -276,7 +330,9 @@ const LoginSignupUtilizator = () => {
                   <div className="input-group form-group">
                     <input
                       type="password"
-                      className="form-control"
+                      className={`form-control ${
+                        !password && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputPassword1"
                       placeholder="Parola"
                       value={password}
@@ -313,7 +369,7 @@ const LoginSignupUtilizator = () => {
                   <button
                     type="submit"
                     className="btn btn-log w-100 btn-thm"
-                    data-bs-dismiss="modal"
+                    // data-bs-dismiss="modal"
                     aria-label="Close"
                   >
                     Autentificare
@@ -368,7 +424,9 @@ const LoginSignupUtilizator = () => {
                   <div className="form-group input-group mb-3">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${
+                        !numeUtilizator && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputName"
                       placeholder="Nume utilizator"
                       value={numeUtilizator}
@@ -385,7 +443,9 @@ const LoginSignupUtilizator = () => {
                   <div className="form-group input-group  mb-3">
                     <input
                       type="email"
-                      className="form-control"
+                      className={`form-control ${
+                        !email && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputEmail2"
                       placeholder="Email"
                       value={email}
@@ -402,7 +462,9 @@ const LoginSignupUtilizator = () => {
                   <div className="form-group input-group  mb-3">
                     <input
                       type="password"
-                      className="form-control"
+                      className={`form-control ${
+                        !password && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputPassword2"
                       placeholder="Parola"
                       value={password}
@@ -419,7 +481,9 @@ const LoginSignupUtilizator = () => {
                   <div className="form-group input-group  mb-3">
                     <input
                       type="password"
-                      className="form-control"
+                      className={`form-control ${
+                        !confirmPassword && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputPassword3"
                       placeholder="Confirma Parola"
                       value={confirmPassword}
@@ -436,7 +500,9 @@ const LoginSignupUtilizator = () => {
                   <div className="form-group input-group mb-3">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${
+                        !telefon && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputName"
                       placeholder="Număr de telefon"
                       value={telefon}
@@ -460,7 +526,9 @@ const LoginSignupUtilizator = () => {
                   <div className="form-group input-group mb-3">
                     <input
                       type="date"
-                      className="form-control"
+                      className={`form-control ${
+                        !dataNasterii && buttonPressed && "border-danger"
+                      }`}
                       id="exampleInputName"
                       placeholder="Data nașterii"
                       value={dataNasterii}
@@ -471,7 +539,9 @@ const LoginSignupUtilizator = () => {
 
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
-                      className="form-select"
+                      className={`form-select ${
+                        !judet && buttonPressed && "border-danger"
+                      }`}
                       data-live-search="true"
                       data-width="100%"
                       value={judet}
@@ -490,7 +560,9 @@ const LoginSignupUtilizator = () => {
 
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
-                      className="form-select"
+                      className={`form-select ${
+                        !localitate && buttonPressed && "border-danger"
+                      }`}
                       data-live-search="true"
                       data-width="100%"
                       value={localitate}
@@ -508,7 +580,9 @@ const LoginSignupUtilizator = () => {
 
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
-                      className="form-select"
+                      className={`form-select ${
+                        !titulatura && buttonPressed && "border-danger"
+                      }`}
                       data-live-search="true"
                       data-width="100%"
                       value={titulatura}
@@ -536,7 +610,9 @@ const LoginSignupUtilizator = () => {
                     <>
                       <div className="form-group ui_kit_select_search mb-3">
                         <select
-                          className="form-select"
+                          className={`form-select ${
+                            !specializare && buttonPressed && "border-danger"
+                          }`}
                           data-live-search="true"
                           data-width="100%"
                           value={specializare}
@@ -702,7 +778,9 @@ const LoginSignupUtilizator = () => {
                       <div className="form-group input-group mb-3">
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${
+                            !cuim && buttonPressed && "border-danger"
+                          }`}
                           id="exampleInputName"
                           placeholder="CUIM"
                           value={cuim}
@@ -743,7 +821,7 @@ const LoginSignupUtilizator = () => {
               <button
                 type="submit"
                 className="btn btn-log w-100 btn-thm"
-                data-bs-dismiss="modal"
+                // data-bs-dismiss="modal"
                 disabled={!isTermsAccepted}
               >
                 înregistrare

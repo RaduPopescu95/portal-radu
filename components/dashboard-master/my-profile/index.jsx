@@ -42,7 +42,8 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Navigatie Panou de Administrare
+                        <i className="fa fa-bars pr10"></i> Navigatie Panou de
+                        Administrare
                       </button>
                     </div>
                   </div>
@@ -79,7 +80,7 @@ const index = () => {
                   </div> */}
                   {/* End .SocialMedia */}
 
-                  <div className="my_dashboard_review mt30">
+                  {/* <div className="my_dashboard_review mt30">
                     <div className="row">
                       <div className="col-xl-2">
                         <h4>Schimba parola</h4>
@@ -88,11 +89,10 @@ const index = () => {
                         <ChangePassword />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               {/* End .row */}
-
             </div>
             {/* End .col */}
           </div>

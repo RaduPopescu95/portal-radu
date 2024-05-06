@@ -52,13 +52,13 @@ const Form = () => {
 
     if (isFormValid) {
       try {
-        await handleUploadFirestore(formData, "Mesaje");
-        showAlert("Mesaj trimis cu succes!", "success");
+        await handleUploadFirestore(formData, "Plângeri");
+        showAlert("Plângere trimisă cu succes!", "success");
         console.log("Formularul este valid și poate fi trimis:", formData);
         handleReset(); // Resetează formularul după trimiterea cu succes
       } catch (error) {
-        console.error("Eroare transmitere mesaj:", error);
-        showAlert(`Eroare transmitere mesaj ${error.message}`, "danger");
+        console.error("Eroare transmitere plângere:", error);
+        showAlert(`Eroare transmitere plângere ${error.message}`, "danger");
       }
     } else {
       console.log(

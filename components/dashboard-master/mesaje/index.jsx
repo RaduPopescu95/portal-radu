@@ -1,11 +1,10 @@
-import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
+import Header from "../../common/header/dashboard-master/Header";
+import SidebarMenu from "../../common/header/dashboard-master/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
-import ChangePassword from "./ChangePassword";
-import ProfileInfo from "./ProfileInfo";
-import SocialMedia from "./SocialMedia";
+import SearchData from "../mesaje/SearchData";
+import SearchBox from "./SearchBox";
 
-const index = () => {
+const index = ({ mesajeInregistrare }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -42,55 +41,47 @@ const index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Navigatie panou de
+                        <i className="fa fa-bars pr10"></i> Navigatie Panou de
                         administrare
                       </button>
                     </div>
                   </div>
                 </div>
                 {/* End Dashboard Navigation */}
+              </div>
+              {/* End .row */}
 
-                <div className="col-lg-12 mb10">
-                  <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Profil Partener</h2>
+              <div className="row align-items-center">
+                <div className="col-md-8 col-lg-8 col-xl-9 mb20">
+                  <div className="breadcrumb_content style2 mb30-991">
+                    <h2 className="breadcrumb_title">Lista tranzactii</h2>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
                 {/* End .col */}
+                <div className="col-md-4 col-lg-4 col-xl-3 mb20">
+                  <ul className="sasw_list mb0">
+                    <li className="search_area">
+                      <SearchBox />
+                    </li>
+                  </ul>
+                </div>
+                {/* End .col */}
+              </div>
+              {/* End .row */}
 
+              <div className="row">
                 <div className="col-lg-12">
-                  <div className="my_dashboard_review">
-                    <div className="row">
-                      <div className="col-xl-12">
-                        <ProfileInfo />
+                  <div className="my_dashboard_review mb40">
+                    <div className="col-lg-12">
+                      <div className="savesearched_table">
+                        <div className="table-responsive mt0">
+                          <SearchData mesajeInregistrare={mesajeInregistrare} />
+                        </div>
                       </div>
+                      {/* End .packages_table */}
                     </div>
                   </div>
-                  {/* End prifle info wrapper end */}
-
-                  {/* <div className="my_dashboard_review mt30">
-                    <div className="row">
-                      <div className="col-xl-2">
-                        <h4>Social Media</h4>
-                      </div>
-                      <div className="col-xl-10">
-                        <SocialMedia />
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* End .SocialMedia */}
-
-                  {/* DE FINALIZAT SCHIMBA PAROLA !!!!!!*/}
-                  {/* <div className="my_dashboard_review mt30">
-                    <div className="row">
-                      <div className="col-xl-12">
-                        <h4>Schimba parola</h4>
-                      </div>
-                      <div className="col-xl-12">
-                        <ChangePassword />
-                      </div>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               {/* End .row */}

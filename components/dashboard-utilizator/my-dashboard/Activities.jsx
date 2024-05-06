@@ -13,19 +13,19 @@ const Activities = ({ oferteInregistrate }) => {
     const file = e.target.files[0]; // Get the selected file
     console.log("test..here...", file.name);
     console.log("idOfertaInregistrata", idOfertaInregistrata);
-    // if (file) {
-    //   // Check if the file is already selected
-    //   const isExist = logo.some(
-    //     (existingFile) => existingFile.name === file.name
-    //   );
+    if (file) {
+      // Check if the file is already selected
+      const isExist = logo.some(
+        (existingFile) => existingFile.name === file.name
+      );
 
-    //   if (!isExist) {
-    //     setLogo([file]); // Replace the current file
-    //     setIsNewLogo(true);
-    //   } else {
-    //     alert("This image is already selected!");
-    //   }
-    // }
+      if (!isExist) {
+        setLogo([file]); // Replace the current file
+        setIsNewLogo(true);
+      } else {
+        alert("This image is already selected!");
+      }
+    }
   };
 
   // delete logo

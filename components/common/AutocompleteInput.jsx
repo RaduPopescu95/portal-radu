@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { LoadScript, Autocomplete } from "@react-google-maps/api";
 
-const AutocompleteInput = ({ onPlaceChanged, adresa }) => {
+const AutocompleteInput = ({ onPlaceChanged, adresa, buttonPressed }) => {
   const [autocomplete, setAutocomplete] = useState(null);
   const [inputValue, setInputValue] = useState("");
 
@@ -45,6 +45,9 @@ const AutocompleteInput = ({ onPlaceChanged, adresa }) => {
     >
       <input
         type="text"
+        className={`form-control ${
+          !adresa && buttonPressed && "border-danger"
+        }`}
         placeholder="Introduceți adresa"
         style={{ width: "100%", padding: "10px" }}
         value={inputValue}

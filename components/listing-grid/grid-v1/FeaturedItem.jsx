@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Pagination from "../../common/blog/Pagination";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addLength } from "../../../features/properties/propertiesSlice";
@@ -8,6 +9,7 @@ import properties from "../../../data/properties";
 import Image from "next/image";
 import {
   calculateDistance,
+  filtrareParteneri,
   generateRandomGradient,
   toUrlSlug,
 } from "@/utils/commonUtils";
@@ -37,12 +39,17 @@ const FeaturedItem = ({ params }) => {
   const { statusType, featured, isGridOrList } = useSelector(
     (state) => state.filter
   );
-  const { currentUser } = useAuth();
+  const { currentUser, setSearchQueryPateneri, searchQueryParteneri } =
+    useAuth();
+
   const [parteneri, setParteneri] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("test....de query...", searchQueryParteneri);
     navigator.geolocation.getCurrentPosition(
       async function (position) {
         const { latitude, longitude } = position.coords;
@@ -99,8 +106,19 @@ const FeaturedItem = ({ params }) => {
                   "userType",
                   "Partener"
                 );
-                console.log("Test here localitate....", parteneriFiltrati);
-                setParteneri([...parteneriFiltrati]);
+                console.log(
+                  "Test here parteneriFiltrati....",
+                  parteneriFiltrati
+                );
+                if (!searchQueryParteneri) {
+                  setParteneri([...parteneriFiltrati]);
+                } else {
+                  const rezultatFiltrare = filtrareParteneri(
+                    parteneriFiltrati,
+                    searchQueryParteneri
+                  );
+                  setParteneri([...rezultatFiltrare]);
+                }
 
                 // Execută codul dorit aici
               } else {
@@ -116,7 +134,15 @@ const FeaturedItem = ({ params }) => {
                   "Partener"
                 );
                 console.log("Test here localitate....", parteneriFiltrati);
-                setParteneri([...parteneriFiltrati]);
+                if (!searchQueryParteneri) {
+                  setParteneri([...parteneriFiltrati]);
+                } else {
+                  const rezultatFiltrare = filtrareParteneri(
+                    parteneriFiltrati,
+                    searchQueryParteneri
+                  );
+                  setParteneri([...rezultatFiltrare]);
+                }
               }
             } else {
               if (params.length === 1) {
@@ -127,7 +153,16 @@ const FeaturedItem = ({ params }) => {
                 parteneriFiltrati = parteneriOrdonati.filter(
                   (partener) => partener.categorie === categorieDorita
                 );
-                setParteneri([...parteneriFiltrati]);
+
+                if (!searchQueryParteneri) {
+                  setParteneri([...parteneriFiltrati]);
+                } else {
+                  const rezultatFiltrare = filtrareParteneri(
+                    parteneriFiltrati,
+                    searchQueryParteneri
+                  );
+                  setParteneri([...rezultatFiltrare]);
+                }
               } else if (params.length === 2) {
                 let string = params[0]; // presupunem că params[0] este un string
 
@@ -150,7 +185,15 @@ const FeaturedItem = ({ params }) => {
                     sectorDorit
                   );
                   console.log("Test here localitate....", parteneriFiltrati);
-                  setParteneri([...parteneriFiltrati]);
+                  if (!searchQueryParteneri) {
+                    setParteneri([...parteneriFiltrati]);
+                  } else {
+                    const rezultatFiltrare = filtrareParteneri(
+                      parteneriFiltrati,
+                      searchQueryParteneri
+                    );
+                    setParteneri([...rezultatFiltrare]);
+                  }
                 } else {
                   let localitateDorita =
                     parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
@@ -164,14 +207,39 @@ const FeaturedItem = ({ params }) => {
                     localitateDorita
                   );
                   console.log("Test here localitate....", parteneriFiltrati);
-                  setParteneri([...parteneriFiltrati]);
+
+                  if (!searchQueryParteneri) {
+                    setParteneri([...parteneriFiltrati]);
+                  } else {
+                    const rezultatFiltrare = filtrareParteneri(
+                      parteneriFiltrati,
+                      searchQueryParteneri
+                    );
+                    setParteneri([...rezultatFiltrare]);
+                  }
                 }
               } else {
-                setParteneri([...parteneriOrdonati]);
+                if (!searchQueryParteneri) {
+                  setParteneri([...parteneriOrdonati]);
+                } else {
+                  const rezultatFiltrare = filtrareParteneri(
+                    parteneriOrdonati,
+                    searchQueryParteneri
+                  );
+                  setParteneri([...rezultatFiltrare]);
+                }
               }
             }
           } else {
-            setParteneri([...parteneriOrdonati]);
+            if (!searchQueryParteneri) {
+              setParteneri([...parteneriOrdonati]);
+            } else {
+              const rezultatFiltrare = filtrareParteneri(
+                parteneriOrdonati,
+                searchQueryParteneri
+              );
+              setParteneri([...rezultatFiltrare]);
+            }
           }
           console.log("parteneri cu distanta...", parteneriOrdonati);
         } catch (error) {
@@ -183,6 +251,9 @@ const FeaturedItem = ({ params }) => {
       }
     );
   }, []);
+
+  // Funcție pentru schimbarea paginilor
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // keyword filter
   const keywordHandler = (item) =>
@@ -272,9 +343,14 @@ const FeaturedItem = ({ params }) => {
     }
     return true;
   };
+  const paginatedParteneri = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return parteneri.slice(startIndex, endIndex);
+  };
 
   // status handler
-  let content = parteneri
+  let content = paginatedParteneri()
     // ?.slice(0, 10)
     // ?.filter(keywordHandler)
     // ?.filter(locationHandler)
@@ -321,7 +397,26 @@ const FeaturedItem = ({ params }) => {
     dispatch(addLength(content.length));
   }, [dispatch, content]);
 
-  return <>{content}</>;
+  return (
+    <>
+      {content}
+
+      <div className="row">
+        <div className="col-lg-12 mt20">
+          <div className="mbp_pagination">
+            <Pagination
+              itemsPerPage={itemsPerPage}
+              totalItems={parteneri.length}
+              paginate={paginate}
+              currentPage={currentPage}
+            />
+          </div>
+        </div>
+        {/* End paginaion .col */}
+      </div>
+      {/* End .row */}
+    </>
+  );
 };
 
 export default FeaturedItem;

@@ -61,15 +61,7 @@ const index = ({ params }) => {
               </div>
               {/* End .row */}
 
-              <div className="row">
-                <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination />
-                  </div>
-                </div>
-                {/* End paginaion .col */}
-              </div>
-              {/* End .row */}
+      
             </div>
             {/* End  page conent */}
             <div className="col-lg-4 col-xl-4">

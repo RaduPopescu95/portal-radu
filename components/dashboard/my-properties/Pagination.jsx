@@ -1,41 +1,46 @@
-const Pagination = () => {
+const Pagination = ({ onPageChange, currentPage, totalPages }) => {
+  console.log("currentPage...", currentPage);
+  console.log("totalPages...", totalPages);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <ul className="page_navigation">
-      <li className="page-item disabled">
-        <a className="page-link" href="#" tabIndex="-1" aria-disabled="true">
-          {" "}
+      <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+        <button
+          className="page-link"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
           <span className="flaticon-left-arrow"></span>
-        </a>
+        </button>
       </li>
-      <li className="page-item">
-        <a className="page-link" href="#">
-          1
-        </a>
-      </li>
-      <li className="page-item active" aria-current="page">
-        <a className="page-link" href="#">
-          2 <span className="sr-only">(current)</span>
-        </a>
-      </li>
-      <li className="page-item">
-        <a className="page-link" href="#">
-          3
-        </a>
-      </li>
-      <li className="page-item">
-        <a className="page-link" href="#">
-          ...
-        </a>
-      </li>
-      <li className="page-item">
-        <a className="page-link" href="#">
-          29
-        </a>
-      </li>
-      <li className="page-item">
-        <a className="page-link" href="#">
+      {pageNumbers.map((number) => (
+        <li
+          key={number}
+          className={`page-item ${number === currentPage ? "active" : ""}`}
+        >
+          <button
+            className="page-link"
+            onClick={() => onPageChange(number)}
+            disabled={number === currentPage}
+          >
+            {number}
+          </button>
+        </li>
+      ))}
+      <li
+        className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}
+      >
+        <button
+          className="page-link"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
           <span className="flaticon-right-arrow"></span>
-        </a>
+        </button>
       </li>
     </ul>
   );
