@@ -126,17 +126,17 @@ const FeaturedItem = ({ params }) => {
                 // Execută codul dorit aici
               } else {
                 console.log("Partea nu conține 'sector'");
-                let localitateDorita =
+                let judetDorit =
                   parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-                console.log("Test here localitate....", localitateDorita);
+                console.log("Test here judet....", judetDorit);
                 parteneriFiltrati = await handleQueryFirestore(
                   "Users",
-                  "localitate",
-                  localitateDorita,
+                  "judet",
+                  judetDorit,
                   "userType",
                   "Partener"
                 );
-                console.log("Test here localitate....", parteneriFiltrati);
+                console.log("Test here judet....", parteneriFiltrati);
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
                 } else {

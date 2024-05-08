@@ -77,7 +77,9 @@ const GlobalFilter = ({ className = "" }) => {
     }
 
     if (selectedJudet && !selectedLocalitate) {
-      setIsLocalitateSelected(!!selectedLocalitate);
+      // setIsLocalitateSelected(!!selectedLocalitate);
+      // return;
+      router.push(`/parteneri/parteneri-${selectedJudet.toLocaleLowerCase()}`);
       return;
     }
 
@@ -161,27 +163,28 @@ const GlobalFilter = ({ className = "" }) => {
           </div>
         </li>
         {/* End li */}
-
-        <li className="list-inline-item">
-          <div className="search_option_two">
-            <div className="candidate_revew_select">
-              <select
-                className={`selectpicker w100 form-select show-tick ${
-                  !isLocalitateSelected ? "border-danger" : ""
-                }`}
-                onChange={handleLocalitateChange}
-                value={selectedLocalitate}
-              >
-                <option value="">Localitati</option>
-                {localitati.map((location, index) => (
-                  <option key={index} value={location.localitate}>
-                    {location.localitate}
-                  </option>
-                ))}
-              </select>
+        {selectedJudet === "Bucuresti" && (
+          <li className="list-inline-item">
+            <div className="search_option_two">
+              <div className="candidate_revew_select">
+                <select
+                  className={`selectpicker w100 form-select show-tick ${
+                    !isLocalitateSelected ? "border-danger" : ""
+                  }`}
+                  onChange={handleLocalitateChange}
+                  value={selectedLocalitate}
+                >
+                  <option value="">Sector</option>
+                  {localitati.map((location, index) => (
+                    <option key={index} value={location.localitate}>
+                      {location.localitate}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
-        </li>
+          </li>
+        )}
         {/* End li */}
 
         {/* <li className="list-inline-item">
