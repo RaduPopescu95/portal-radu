@@ -12,6 +12,7 @@ import {
 } from "@/utils/firestoreUtils";
 import { authentication } from "@/firebase";
 import { verifyCurrentUser } from "@/utils/commonUtils";
+import Form from "@/components/autentificare-partener/Form";
 
 const index = async ({ params }) => {
   const id = params.id;
@@ -89,7 +90,7 @@ const index = async ({ params }) => {
                   </div>
                 </div>
                 {/* End .col */}
-                {verifyCurrentUser(currentUser) && (
+                {verifyCurrentUser(currentUser) ? (
                   <div className="col-lg-12">
                     <div className="my_dashboard_review">
                       <div className="row">
@@ -127,6 +128,10 @@ const index = async ({ params }) => {
     </div>
     <FloorPlans />
   </div> */}
+                  </div>
+                ) : (
+                  <div className="col-lg-12">
+                    <Form />
                   </div>
                 )}
 
