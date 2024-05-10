@@ -35,6 +35,7 @@ const index = () => {
   // Initialize the pagination hook
   const {
     items: posts,
+    setItems,
     currentPage,
     totalPages,
     setCurrentPage,
@@ -160,6 +161,7 @@ const index = () => {
                               ? filteredPosts
                               : posts
                           }
+                          setItems={setItems}
                         />
                       </div>
                       {/* End .table-responsive */}

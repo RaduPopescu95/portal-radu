@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -27,12 +27,14 @@ import { useRouter } from "next/navigation";
 const LoginSignupPartener = () => {
   const { userData, currentUser, setCurrentUser, setUserData, judete } =
     useAuth();
+  const closeButtonRef = useRef(null); // Referință pentru butonul de închidere
   const [localitati, setLocalitati] = useState([]);
   const [judet, setJudet] = useState("");
   const [localitate, setLocalitate] = useState("");
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
   const [isCateogireSelected, setIsCategorieSelected] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [denumireBrand, setDenumireBrand] = useState("");
@@ -44,7 +46,7 @@ const LoginSignupPartener = () => {
   const [numeContact, setNumeContact] = useState("");
   const [telefonContact, setTelefonContact] = useState("");
 
-  const [categorie, setCategorie] = useState("");
+  const [categorie, setCategorie] = useState("Autovehicule");
   const [cui, setCui] = useState("");
   const [adresaSediu, setAdresaSediu] = useState("");
   const [googleMapsLink, setGoogleMapsLink] = useState("");
@@ -143,6 +145,9 @@ const LoginSignupPartener = () => {
       .then((userCredentials) => {
         console.log("user credentials...", userCredentials);
         setCurrentUser(userCredentials); // Aici trebuie să asiguri că userCredentials este gestionat corect
+        if (closeButtonRef.current) {
+          closeButtonRef.current.click();
+        }
         router.push("/panou-partener");
       })
       .catch((error) => {
@@ -154,6 +159,7 @@ const LoginSignupPartener = () => {
   };
 
   const handleSignUp = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
     setButtonPressed(true);
 
@@ -162,10 +168,12 @@ const LoginSignupPartener = () => {
 
     if (password.length < 6) {
       setPasswordError("Parola trebuie să fie de cel puțin 6 caractere.");
+      setIsLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
+      setIsLoading(false);
       setConfirmPasswordError("Parolele nu corespund.");
       return;
     }
@@ -183,6 +191,7 @@ const LoginSignupPartener = () => {
       !adresaSediu ||
       !confirmPassword
     ) {
+      setIsLoading(false);
       return;
     }
 
@@ -227,10 +236,15 @@ const LoginSignupPartener = () => {
       });
       setUserData(userData);
       handleReset();
+      setIsLoading(false);
       setTimeout(() => {
-        router.push("/profil-partener"); // Redirecționează după ce mesajul de succes este afișat și închis
-      }, 3000); // Așteaptă să dispară alerta
+        if (closeButtonRef.current) {
+          closeButtonRef.current.click();
+        }
+        router.push("/profil-partener");
+      }, 3000);
     } catch (error) {
+      setIsLoading(false);
       console.error("Eroare la crearea utilizatorului: ", error);
       showAlert(`Eroare la înregistrare: ${error.message}`, "danger");
     }
@@ -245,6 +259,7 @@ const LoginSignupPartener = () => {
           aria-label="Close"
           className="btn-close"
           onClick={handleReset}
+          ref={closeButtonRef}
         ></button>
       </div>
       {/* End .modal-header */}

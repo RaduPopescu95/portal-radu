@@ -10,11 +10,13 @@ import { uploadImage } from "@/utils/storageUtils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LogoUpload from "../my-profile/LogoUpload";
+import CommonLoader from "@/components/common/CommonLoader";
 
 const CreateList = ({ oferta }) => {
   const { currentUser, userData } = useAuth();
   const router = useRouter();
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [pretIntreg, setPretIntreg] = useState(oferta?.pretIntreg || "");
   const [pretRedus, setPretRedus] = useState(oferta?.pretRedus || "");
   const [procentReducere, setProcentReducere] = useState(
@@ -108,6 +110,7 @@ const CreateList = ({ oferta }) => {
   };
 
   const handleUpdateOffer = async () => {
+    setIsLoading(true);
     console.log("currentUser...", currentUser.uid);
     console.log("userData...", userData);
     let lg = {};
@@ -134,14 +137,17 @@ const CreateList = ({ oferta }) => {
         data,
         `Users/${currentUser.uid}/Oferte/${oferta.documentId}`
       );
+      setIsLoading(false);
       showAlert("Oferta actualizata cu succes!", "success");
     } catch (error) {
+      setIsLoading(false);
       console.error("Eroare la actualizarea ofertei: ", error);
       showAlert("Eroare la actualizarea ofertei.", "danger");
     }
   };
 
   const handleAddOffer = async () => {
+    setIsLoading(true);
     console.log("currentUser...", currentUser.uid);
     console.log("userData...", userData);
     let lg = {};
@@ -175,9 +181,10 @@ const CreateList = ({ oferta }) => {
         "Oferte"
       );
       resetState();
-
+      setIsLoading(false);
       showAlert("Oferta adaugata cu succes!", "success");
     } catch (error) {
+      setIsLoading(false);
       console.error("Eroare la adaugarea ofertei: ", error);
       showAlert("Eroare la adaugarea ofertei.", "danger");
     }
@@ -491,11 +498,11 @@ const CreateList = ({ oferta }) => {
           )}
           {oferta?.titluOferta?.length > 0 ? (
             <button onClick={handleUpdateOffer} className="btn btn2 float-end">
-              Actualizare
+              {isLoading ? <CommonLoader /> : "Actualizeaza"}
             </button>
           ) : (
             <button onClick={handleAddOffer} className="btn btn2 float-end">
-              Adauga
+              {isLoading ? <CommonLoader /> : "Adauga"}
             </button>
           )}
         </div>

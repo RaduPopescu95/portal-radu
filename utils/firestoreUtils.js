@@ -582,5 +582,17 @@ export async function getLocalitatiWithUserCounts() {
 
 //-------- PAGINATION -----
 
+const handleGetFirestorePaginated = async (pageSize,collectionPath) => {
+  const ref = collection(db, collectionPath);
+    let pageQuery;
+
+  pageQuery = query(
+    ref,
+    orderBy("firstUploadDate", "desc"),
+    limit(pageSize)
+  );
+  setLastVisible(null);
+  setFirstVisible(null);
+}
 
 //-------- PAGINATION -----

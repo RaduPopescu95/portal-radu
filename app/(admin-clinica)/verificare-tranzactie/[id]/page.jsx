@@ -10,6 +10,8 @@ import {
   handleQueryFirestore,
   handleQueryFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
+import { authentication } from "@/firebase";
+import { verifyCurrentUser } from "@/utils/commonUtils";
 
 const index = async ({ params }) => {
   const id = params.id;
@@ -19,6 +21,8 @@ const index = async ({ params }) => {
   const codParts = cod.split("UIDD");
   const offerId = codParts[0];
   const partenerId = codParts[1];
+  const auth = authentication;
+  const currentUser = auth.currentUser;
 
   let utilizator = await handleQueryFirestore("Users", "id", userId);
   let oferta = await handleQueryFirestoreSubcollection(
@@ -72,50 +76,60 @@ const index = async ({ params }) => {
 
                 <div className="col-lg-12 mb10">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Verificare tranzactie</h2>
+                    {verifyCurrentUser(currentUser) ? (
+                      <h2 className="breadcrumb_title">
+                        Verificare tranzactie
+                      </h2>
+                    ) : (
+                      <h2 className="breadcrumb_title">
+                        Verificare date utilizator...
+                      </h2>
+                    )}
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
                 {/* End .col */}
-
-                <div className="col-lg-12">
-                  <div className="my_dashboard_review">
-                    <div className="row">
-                      <CreateList
-                        oferta={oferta[0]}
-                        utilizator={utilizator[0]}
-                      />
-                    </div>
-                  </div>
-                  {/* <div className="my_dashboard_review mt30">
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <h3 className="mb30">Location</h3>
+                {verifyCurrentUser(currentUser) && (
+                  <div className="col-lg-12">
+                    <div className="my_dashboard_review">
+                      <div className="row">
+                        <CreateList
+                          oferta={oferta[0]}
+                          utilizator={utilizator[0]}
+                        />
                       </div>
+                    </div>
+                    {/* <div className="my_dashboard_review mt30">
+    <div className="row">
+      <div className="col-lg-12">
+        <h3 className="mb30">Location</h3>
+      </div>
 
-                      <LocationField />
-                    </div>
+      <LocationField />
+    </div>
+  </div>
+  <div className="my_dashboard_review mt30">
+    <div className="col-lg-12">
+      <h3 className="mb30">Detailed Information</h3>
+    </div>
+    <DetailedInfo />
+  </div>
+  <div className="my_dashboard_review mt30">
+    <div className="col-lg-12">
+      <h3 className="mb30">Property media</h3>
+    </div>
+    <PropertyMediaUploader />
+  </div>
+  <div className="my_dashboard_review mt30">
+    <div className="col-lg-12">
+      <h3 className="mb30">Floor Plans</h3>
+      <button className="btn admore_btn mb30">Add More</button>
+    </div>
+    <FloorPlans />
+  </div> */}
                   </div>
-                  <div className="my_dashboard_review mt30">
-                    <div className="col-lg-12">
-                      <h3 className="mb30">Detailed Information</h3>
-                    </div>
-                    <DetailedInfo />
-                  </div>
-                  <div className="my_dashboard_review mt30">
-                    <div className="col-lg-12">
-                      <h3 className="mb30">Property media</h3>
-                    </div>
-                    <PropertyMediaUploader />
-                  </div>
-                  <div className="my_dashboard_review mt30">
-                    <div className="col-lg-12">
-                      <h3 className="mb30">Floor Plans</h3>
-                      <button className="btn admore_btn mb30">Add More</button>
-                    </div>
-                    <FloorPlans />
-                  </div> */}
-                </div>
+                )}
+
                 {/* End .col */}
               </div>
               {/* End .row */}

@@ -87,6 +87,13 @@ const FilteringItem = ({ params }) => {
       return;
     }
 
+    if (selectedJudet && selectedCategorie && !selectedLocalitate) {
+      router.push(
+        `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedJudet.toLocaleLowerCase()}`
+      );
+      return;
+    }
+
     if (selectedJudet && !selectedLocalitate) {
       // setIsLocalitateSelected(!!selectedLocalitate);
       // return;

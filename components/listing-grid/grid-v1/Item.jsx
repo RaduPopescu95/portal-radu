@@ -12,7 +12,7 @@ const FeaturedProperty = ({ item, isGridOrList }) => {
     >
       <div
         className="thumb"
-        style={{ backgroundImage: item?.gradient.gradientSelected }}
+        style={{ backgroundImage: item?.gradient?.gradientSelected }}
       >
         <Image
           width={342}

@@ -95,7 +95,7 @@ const TableData = ({ oferte }) => {
     );
 
     // Actualizează starea oferte cu noul array modificat
-    setOffers(updatedOffers);
+    setItems(updatedOffers);
   };
 
   if (!oferte || oferte.length === 0) {

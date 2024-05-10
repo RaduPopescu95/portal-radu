@@ -76,6 +76,13 @@ const GlobalFilter = ({ className = "" }) => {
       return;
     }
 
+    if (selectedJudet && selectedCategorie) {
+      router.push(
+        `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedJudet.toLocaleLowerCase()}`
+      );
+      return;
+    }
+
     if (selectedJudet && !selectedLocalitate) {
       // setIsLocalitateSelected(!!selectedLocalitate);
       // return;

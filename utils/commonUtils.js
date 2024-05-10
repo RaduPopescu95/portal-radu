@@ -78,3 +78,14 @@ export const filtrareParteneri = (parteneriFiltrati, searchQueryParteneri) => {
 
   return parteneriFiltratiGasiti;
 };
+
+export const verifyCurrentUser = async (currentUser) => {
+  if (!currentUser) {
+    console.log("No current USER...");
+    return false;
+  } else if (currentUser.uid !== "ieAXxQk505VmglsvXoWthv8q04F2") {
+    console.log("Incorrect current USER UID...");
+    return false;
+  }
+  return true;
+};

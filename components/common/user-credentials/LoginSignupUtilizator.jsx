@@ -18,10 +18,11 @@ import { doc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const LoginSignupUtilizator = () => {
   const { userData, currentUser, setCurrentUser, judete } = useAuth();
+  const closeButtonRef = useRef(null); // Referință pentru butonul de închidere
   const [localitati, setLocalitati] = useState([]);
   const [judet, setJudet] = useState("");
   const [localitate, setLocalitate] = useState("");
@@ -112,6 +113,9 @@ const LoginSignupUtilizator = () => {
       .then(async (userCredentials) => {
         setCurrentUser(userCredentials);
         console.log("success login");
+        if (closeButtonRef.current) {
+          closeButtonRef.current.click();
+        }
         router.push("/profil"); // Redirecționează după ce mesajul de succes este afișat și închis
       })
       .catch((error) => {
@@ -201,6 +205,9 @@ const LoginSignupUtilizator = () => {
         showAlert("Înregistrare cu succes!", "success");
       });
       handleReset();
+      if (closeButtonRef.current) {
+        closeButtonRef.current.click();
+      }
       setTimeout(() => {
         router.push("/profil"); // Redirecționează după ce mesajul de succes este afișat și închis
       }, 3000); // Așteaptă să dispară alerta
@@ -219,6 +226,7 @@ const LoginSignupUtilizator = () => {
           aria-label="Close"
           className="btn-close"
           onClick={handleReset}
+          ref={closeButtonRef}
         ></button>
       </div>
       {/* End .modal-header */}

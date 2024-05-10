@@ -206,7 +206,7 @@ const FeaturedItem = ({ params }) => {
                     "Users",
                     "categorie",
                     categorieDorita,
-                    "localitate",
+                    "judet",
                     localitateDorita
                   );
                   console.log("Test here localitate....", parteneriFiltrati);
