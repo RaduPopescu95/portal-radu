@@ -79,13 +79,26 @@ export const filtrareParteneri = (parteneriFiltrati, searchQueryParteneri) => {
   return parteneriFiltratiGasiti;
 };
 
-export const verifyCurrentUser = async (currentUser) => {
-  if (!currentUser) {
-    console.log("No current USER...");
-    return false;
-  } else if (currentUser.uid !== "ieAXxQk505VmglsvXoWthv8q04F2") {
-    console.log("Incorrect current USER UID...");
-    return false;
+export const verifyCurrentUser = async (partenerId, userData, loading) => {
+  if (partenerId) {
+    console.log("is partener id...");
+    if (
+      (!loading && userData?.userType != "Partener") ||
+      (!loading && userData.user_uid != partenerId)
+    ) {
+      console.log("not first...");
+      return false;
+    } else {
+      console.log("is first...");
+      return true;
+    }
+  } else {
+    if (!loading && userData?.userType != "Partener") {
+      console.log("not second...");
+      return false;
+    } else {
+      console.log("is second...");
+      return true;
+    }
   }
-  return true;
 };

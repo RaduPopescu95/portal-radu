@@ -46,16 +46,21 @@ const SidebarMenu = ({ partenerId }) => {
     console.log(currentUser);
     console.log(userData);
     console.log("partener id...", partenerId);
-    if (partenerId) {
-      if (
-        (!loading && userData?.userType != "Partener") ||
-        (!loading && userData.user_uid != partenerId)
-      ) {
-        router.push("/");
-      }
+    console.log("pathname...", pathname);
+    const basePath = pathname.split("/")[1];
+    if (basePath === "verificare-tranzactie") {
     } else {
-      if (!loading && userData?.userType != "Partener") {
-        router.push("/");
+      if (partenerId) {
+        if (
+          (!loading && userData?.userType != "Partener") ||
+          (!loading && userData.user_uid != partenerId)
+        ) {
+          router.push("/");
+        }
+      } else {
+        if (!loading && userData?.userType != "Partener") {
+          router.push("/");
+        }
       }
     }
   }, [loading]);
