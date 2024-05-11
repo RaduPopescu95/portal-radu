@@ -482,6 +482,35 @@ export const handleQueryTripleParam = async (
   });
   return arr;
 };
+export const handleQueryPatruParam = async (
+  location,
+  paramOne,
+  elementOne,
+  paramTwo,
+  elementTwo,
+  paramThree,
+  elementThree,
+  paramPatru,
+  elementPatru
+) => {
+  let arr = []; // Specificați tipul de obiecte pe care îl conține matricea
+  const q = query(
+    collection(db, location),
+    where(paramOne, "==", elementOne),
+    where(paramTwo, "==", elementTwo),
+    where(paramThree, "==", elementThree),
+    where(paramPatru, "==", elementPatru)
+  );
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data());
+    // arr.push(doc.data().data);
+    arr.push(doc.data());
+  });
+  return arr;
+};
 
 export const handlePaginateFirestore = (location) => {
   const auth = authentication;
@@ -582,17 +611,13 @@ export async function getLocalitatiWithUserCounts() {
 
 //-------- PAGINATION -----
 
-const handleGetFirestorePaginated = async (pageSize,collectionPath) => {
+const handleGetFirestorePaginated = async (pageSize, collectionPath) => {
   const ref = collection(db, collectionPath);
-    let pageQuery;
+  let pageQuery;
 
-  pageQuery = query(
-    ref,
-    orderBy("firstUploadDate", "desc"),
-    limit(pageSize)
-  );
+  pageQuery = query(ref, orderBy("firstUploadDate", "desc"), limit(pageSize));
   setLastVisible(null);
   setFirstVisible(null);
-}
+};
 
 //-------- PAGINATION -----

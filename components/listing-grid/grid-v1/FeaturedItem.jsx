@@ -18,6 +18,7 @@ import { handleDiacrtice } from "@/utils/strintText";
 import {
   handleQueryDoubleParam,
   handleQueryFirestore,
+  handleQueryPatruParam,
   handleQueryTripleParam,
 } from "@/utils/firestoreUtils";
 import FeaturedProperty from "./Item";
@@ -102,13 +103,17 @@ const FeaturedItem = ({ params }) => {
                 let sectorDorit =
                   decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
                 console.log("Test here sector dorit....", sectorDorit);
-                parteneriFiltrati = await handleQueryFirestore(
+
+                let parteneriFiltrati = await handleQueryTripleParam(
                   "Users",
                   "sector",
                   sectorDorit,
                   "userType",
-                  "Partener"
+                  "Partener",
+                  "statusCont",
+                  "Activ"
                 );
+
                 console.log(
                   "Test here parteneriFiltrati....",
                   parteneriFiltrati
@@ -129,13 +134,17 @@ const FeaturedItem = ({ params }) => {
                 let judetDorit =
                   parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
                 console.log("Test here judet....", judetDorit);
-                parteneriFiltrati = await handleQueryFirestore(
+
+                let parteneriFiltrati = await handleQueryTripleParam(
                   "Users",
                   "judet",
                   judetDorit,
                   "userType",
-                  "Partener"
+                  "Partener",
+                  "statusCont",
+                  "Activ"
                 );
+
                 console.log("Test here judet....", parteneriFiltrati);
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
@@ -156,13 +165,16 @@ const FeaturedItem = ({ params }) => {
                 let categorieDorita =
                   string.charAt(0).toUpperCase() + string.slice(1);
 
-                parteneriFiltrati = await handleQueryFirestore(
+                let parteneriFiltrati = await handleQueryTripleParam(
                   "Users",
                   "categorie",
                   categorieDorita,
                   "userType",
-                  "Partener"
+                  "Partener",
+                  "statusCont",
+                  "Activ"
                 );
+
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
                 } else {
@@ -187,13 +199,19 @@ const FeaturedItem = ({ params }) => {
                     decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
                   console.log("Test here localitate....", categorieDorita);
                   console.log("Test here sector....", sectorDorit);
-                  parteneriFiltrati = await handleQueryFirestore(
+
+                  let parteneriFiltrati = await handleQueryPatruParam(
                     "Users",
                     "categorie",
                     categorieDorita,
                     "sector",
-                    sectorDorit
+                    sectorDorit,
+                    "userType",
+                    "Partener",
+                    "statusCont",
+                    "Activ"
                   );
+
                   console.log("Test here localitate....", parteneriFiltrati);
                   if (!searchQueryParteneri) {
                     setParteneri([...parteneriFiltrati]);
@@ -205,18 +223,27 @@ const FeaturedItem = ({ params }) => {
                     setParteneri([...rezultatFiltrare]);
                   }
                 } else {
-                  let localitateDorita =
+                  let judetDorit =
                     parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-                  console.log("Test here localitate....", categorieDorita);
-                  console.log("Test here localitate....", localitateDorita);
-                  parteneriFiltrati = await handleQueryFirestore(
+                  console.log("Test here categorie....", categorieDorita);
+                  console.log("Test here judet....", judetDorit);
+
+                  let parteneriFiltrati = await handleQueryPatruParam(
                     "Users",
                     "categorie",
                     categorieDorita,
                     "judet",
-                    localitateDorita
+                    judetDorit,
+                    "userType",
+                    "Partener",
+                    "statusCont",
+                    "Activ"
                   );
-                  console.log("Test here localitate....", parteneriFiltrati);
+
+                  console.log(
+                    "Test here parteneriFiltrati....",
+                    parteneriFiltrati
+                  );
 
                   if (!searchQueryParteneri) {
                     setParteneri([...parteneriFiltrati]);
