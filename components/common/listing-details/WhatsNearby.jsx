@@ -18,15 +18,15 @@ const WhatsNearby = ({ oferte }) => {
     Platinum: ["Silver", "Gold", "Platinum"],
   };
 
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // useEffect(() => {
+  //   const handleResize = () => setWindowWidth(window.innerWidth);
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
 
   const handleOfferSelect = (offer) => {
     setSelectedOffer(
-      `https://portal-adrian-beta.vercel.app/verificare-tranzactie/${userData?.id}-${offer?.documentId}UIDD${offer?.collectionId}`
+      `https://www.exclusivmd.ro/${userData?.id}-${offer?.documentId}UIDD${offer?.collectionId}`
     );
     setIsModalVisible(true);
   };
@@ -34,6 +34,12 @@ const WhatsNearby = ({ oferte }) => {
   const closeModal = () => setIsModalVisible(false);
 
   const renderContent = (level) => {
+    // Verifică dacă utilizatorul este partener și returnează un fragment gol dacă este așa
+    console.log("yes....", userData);
+    if (userData?.userType === "Partener") {
+      return null; // sau poți returna <></> pentru a fi mai explicit
+    }
+
     return (
       <>
         {oferte

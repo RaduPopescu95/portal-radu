@@ -173,6 +173,7 @@ const FeaturedItem = ({ params }) => {
                   setParteneri([...rezultatFiltrare]);
                 }
               } else if (params.length === 2) {
+                console.log("params does not contains parteneri length 2....");
                 let string = params[0]; // presupunem că params[0] este un string
 
                 let categorieDorita =
