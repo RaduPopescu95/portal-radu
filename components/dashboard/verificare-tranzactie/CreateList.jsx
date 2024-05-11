@@ -88,14 +88,14 @@ const CreateList = ({ oferta, utilizator }) => {
   }, [pretIntreg, pretRedus]); // Recalculează la schimbarea prețului întreg sau a celui redus
 
   const handleAddOffer = async () => {
-    console.log("currentUser...", currentUser.uid);
-    console.log("userData...", userData);
+    console.log("currentUser?...", currentUser?.uid);
+    console.log("userData?...", userData);
     let data = {
       idOferta: oferta.documentId,
-      idUtilizator: utilizator.user_uid,
+      idUtilizator: utilizator?.user_uid,
       utilizator,
       oferta,
-      numePartener: userData.denumireBrand,
+      numePartener: userData?.denumireBrand,
       status: "Neconfirmata",
       imagineBonFactura: {},
       pretFinal,
@@ -104,8 +104,8 @@ const CreateList = ({ oferta, utilizator }) => {
     try {
       await handleUploadFirestoreSubcollection(
         data,
-        `Users/${currentUser.uid}/OferteInregistrate`,
-        currentUser.uid,
+        `Users/${currentUser?.uid}/OferteInregistrate`,
+        currentUser?.uid,
         "OferteInregistrate"
       );
 
@@ -141,7 +141,7 @@ const CreateList = ({ oferta, utilizator }) => {
             type="text"
             className="form-control"
             id="numeUtilizator"
-            value={utilizator.numeUtilizator}
+            value={utilizator?.numeUtilizator}
             readOnly
           />
         </div>

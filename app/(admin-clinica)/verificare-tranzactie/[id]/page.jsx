@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/components/common/header/dashboard/Header";
 import SidebarMenu from "@/components/common/header/dashboard/SidebarMenu";
 import MobileMenu from "@/components/common/header/MobileMenu";
@@ -14,9 +16,11 @@ import { authentication } from "@/firebase";
 import { verifyCurrentUser } from "@/utils/commonUtils";
 import Form from "@/components/autentificare-partener/Form";
 import TransactionVerification from "@/components/dashboard/verificare-tranzactie/TransactionVerification";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
 
-const index = async ({ params }) => {
-  const id = params.id;
+const index = ({ params }) => {
+  const { id } = params;
   const parts = id.split("-");
   const userId = parseFloat(parts[0]);
   const cod = parts[1];
@@ -24,31 +28,75 @@ const index = async ({ params }) => {
   const offerId = codParts[0];
   const partenerId = codParts[1];
 
-  let utilizator = await handleQueryFirestore("Users", "id", userId);
-  let oferta = await handleQueryFirestoreSubcollection(
-    "Oferte",
-    "documentId",
-    offerId
-  );
+  const { userData, loading } = useAuth();
+  const [isVerified, setIsVerified] = useState(false);
+  const [utilizator, setUtilizator] = useState([]);
+  const [oferta, setOferta] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const utilizatorData = await handleQueryFirestore("Users", "id", userId);
+      setUtilizator(utilizatorData);
+
+      const ofertaData = await handleQueryFirestoreSubcollection(
+        "Oferte",
+        "documentId",
+        offerId
+      );
+      setOferta(ofertaData);
+    };
+
+    fetchData();
+  }, [userId, offerId]);
+
+  useEffect(() => {
+    const verifyCurrentUser = () => {
+      if (partenerId) {
+        console.log("is partener id...");
+        if (
+          (!loading && userData?.userType !== "Partener") ||
+          (!loading && userData.user_uid !== partenerId)
+        ) {
+          console.log("not first...");
+          setIsVerified(false);
+        } else {
+          console.log("is first...");
+          setIsVerified(true);
+        }
+      } else {
+        if (!loading && userData?.userType !== "Partener") {
+          console.log("not second...");
+          setIsVerified(false);
+        } else {
+          console.log("is second...");
+          setIsVerified(true);
+        }
+      }
+    };
+
+    verifyCurrentUser();
+  }, [partenerId, userData, loading]);
 
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      {!isVerified && <Header />}
 
       {/* <!--  Mobile Menu --> */}
-      <MobileMenu />
+      {!isVerified && <MobileMenu />}
 
-      <div className="dashboard_sidebar_menu">
-        <div
-          className="offcanvas offcanvas-dashboard offcanvas-start"
-          tabIndex="-1"
-          id="DashboardOffcanvasMenu"
-          data-bs-scroll="true"
-        >
-          <SidebarMenu partenerId={partenerId} />
+      {!isVerified && (
+        <div className="dashboard_sidebar_menu">
+          <div
+            className="offcanvas offcanvas-dashboard offcanvas-start"
+            tabIndex="-1"
+            id="DashboardOffcanvasMenu"
+            data-bs-scroll="true"
+          >
+            <SidebarMenu partenerId={partenerId} />
+          </div>
         </div>
-      </div>
+      )}
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
@@ -75,9 +123,9 @@ const index = async ({ params }) => {
                 {/* End Dashboard Navigation */}
 
                 <TransactionVerification
-                  oferta={oferta}
-                  utilizator={utilizator}
-                  partenerId={partenerId}
+                  isVerified={isVerified}
+                  utilizator={utilizator[0] || []}
+                  oferta={oferta[0] || []}
                 />
               </div>
               {/* End .row */}
