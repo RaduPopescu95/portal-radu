@@ -585,13 +585,27 @@ export async function getLocalitatiWithUserCounts() {
     "Ramnicu Valcea",
     "Vaslui",
     "Focsani",
+    "Afumati",
+    "Popesti-Leordeni",
+    "Voluntari",
+    "Otopeni",
+    "Chitila",
+    "Magurele",
+    "Corbeanca",
+    "Buftea",
+    "Bragadiru",
+    "Pantelimon",
   ];
   try {
     const counts = [];
 
     for (const city of countyCapitals) {
       console.log(city);
-      const q = query(collection(db, "Users"), where("localitate", "==", city));
+      const q = query(
+        collection(db, "Users"),
+        where("localitate", "==", city),
+        where("statusCont", "==", "Activ")
+      );
       const querySnapshot = await getDocs(q);
       const count = querySnapshot.size;
       if (count > 0) {
