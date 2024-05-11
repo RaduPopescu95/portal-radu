@@ -114,7 +114,12 @@ const SearchData = ({ oferteInregistrate }) => {
                   style={{ display: "none" }}
                   id={`file-input-${index}`}
                 />
-                <label
+                {
+                  isLoading
+                  ?
+                  <CommonLoader/>
+                  :
+                  <label
                   htmlFor={`file-input-${index}`}
                   className="btn admore_btn mb30"
                 >
@@ -122,6 +127,8 @@ const SearchData = ({ oferteInregistrate }) => {
                     ? "Modifica bon/factura"
                     : "Adauga bon/factura"}
                 </label>
+                }
+           
               </td>
             </tr>
           ))}
