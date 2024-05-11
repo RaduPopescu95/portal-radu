@@ -649,7 +649,8 @@ export async function getLocalitatiWithUserCounts() {
       const q = query(
         collection(db, "Users"),
         where("judet", "==", judet),
-        where("statusCont", "==", "Activ")
+        where("statusCont", "==", "Activ"),
+        where("userType", "==", "Partener")
       );
       const querySnapshot = await getDocs(q);
       const count = querySnapshot.size;

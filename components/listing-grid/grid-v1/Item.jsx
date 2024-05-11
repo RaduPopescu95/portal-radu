@@ -18,7 +18,7 @@ const FeaturedProperty = ({ item, isGridOrList }) => {
           width={342}
           height={220}
           className="img-whp w-100 h-100 cover"
-          src={"/assets/clinicaexample.png"}
+          src={item?.images?.imgs[0]?.finalUri}
           alt="fp1.jpg"
         />
         <div className="thmb_cntnt">
@@ -31,7 +31,7 @@ const FeaturedProperty = ({ item, isGridOrList }) => {
             }}
           >
             <Image
-              src="/assets/user-profile.png" // Ensure the path is correct
+              src={item?.logo?.finalUri}
               alt="Logo"
               width={50}
               height={50}
