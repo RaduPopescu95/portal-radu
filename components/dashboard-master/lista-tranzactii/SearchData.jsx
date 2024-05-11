@@ -29,7 +29,7 @@ const SearchData = ({ oferteInregistrate }) => {
     // Mapați și transformați fiecare item asincron
     const updatedOffers = await Promise.all(
       offers.map(async (item) => {
-        if (item.id === oferta.id) {
+        if (item.documentId === oferta.documentId) {
           // Verifică statusul curent și îl schimbă
           const newStatus =
             item.status === "Confirmata" ? "Neconfirmata" : "Confirmata";
@@ -38,14 +38,19 @@ const SearchData = ({ oferteInregistrate }) => {
           };
           await handleUpdateFirestoreSubcollection(
             data,
-            `Users/${oferta?.collectionId}/OferteÎnregistrate/${oferta?.documentId}`
+            `Users/${oferta?.collectionId}/OferteInregistrate/${oferta?.documentId}`
           );
           const doctor = await handleQueryFirestore(
             "Users",
             "user_uid",
             oferta?.idUtilizator
           );
-          console.log("test....doctor[0]....", doctor[0]);
+          const partener = await handleQueryFirestore(
+            "Users",
+            "user_uid",
+            oferta?.collectionId
+          );
+       
           if (newStatus === "Confirmata") {
             doctor[0].rulajCont =
               Number(doctor[0].rulajCont) + Number(oferta.pretFinal);
@@ -54,7 +59,8 @@ const SearchData = ({ oferteInregistrate }) => {
               Number(doctor[0].rulajCont) - Number(oferta.pretFinal);
           }
 
-          console.log("test....doctor[0]....", doctor[0]);
+          console.log("test....doctor[0]....email", doctor[0].email);
+          console.log("test....partener[0]....email", partener[0].email);
           await handleUpdateFirestore(
             `Users/${oferta.idUtilizator}`,
             doctor[0]

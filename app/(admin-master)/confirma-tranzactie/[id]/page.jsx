@@ -15,10 +15,11 @@ const index = async ({ params }) => {
 
   let offerId = number;
   let oferta = await handleQueryFirestoreSubcollection(
-    "OferteÎnregistrate",
+    "OferteInregistrate",
     "id",
     offerId
   );
+  
   return (
     <>
       {/* <!-- Main Header Nav --> */}

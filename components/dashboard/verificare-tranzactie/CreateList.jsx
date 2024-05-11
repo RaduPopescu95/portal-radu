@@ -104,9 +104,9 @@ const CreateList = ({ oferta, utilizator }) => {
     try {
       await handleUploadFirestoreSubcollection(
         data,
-        `Users/${currentUser.uid}/OferteÎnregistrate`,
+        `Users/${currentUser.uid}/OferteInregistrate`,
         currentUser.uid,
-        "OferteÎnregistrate"
+        "OferteInregistrate"
       );
 
       showAlert("Oferta înregistrată cu succes!", "success");

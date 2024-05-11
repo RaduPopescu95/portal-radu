@@ -44,7 +44,7 @@ const SearchData = ({ oferteInregistrate }) => {
         updateOffers(index, newOffer);
         handleUpdateFirestoreSubcollection(
           newOffer,
-          `Users/${offers[index].collectionId}/OferteÎnregistrate/${offers[index].documentId}`
+          `Users/${offers[index].collectionId}/OferteInregistrate/${offers[index].documentId}`
         )
           .then(() => {
             showAlert("Modificare cu success!", "success");
@@ -71,7 +71,7 @@ const SearchData = ({ oferteInregistrate }) => {
         updateOffers(index, newOffer);
         handleUpdateFirestoreSubcollection(
           newOffer,
-          `Users/${offers[index].collectionId}/OferteÎnregistrate/${offers[index].documentI}`
+          `Users/${offers[index].collectionId}/OferteInregistrate/${offers[index].documentI}`
         )
           .then(() => {
             showAlert("Adaugare cu succes!", "success");

@@ -10,7 +10,7 @@ export const metadata = {
 
 const index = async () => {
   noStore();
-let oferteInregistrate = await handleGetSubcollections("OferteÎnregistrate");
+let oferteInregistrate = await handleGetSubcollections("OferteInregistrate");
   return (
     <>
       <MySavedSearch oferteInregistrate={oferteInregistrate} />

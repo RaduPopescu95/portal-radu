@@ -15,7 +15,7 @@ const index = async () => {
   let oferteInregistrate = [];
   // if (userData?.user_uid) {
   //   oferteInregistrate = await handleQueryFirestoreSubcollection(
-  //     "OferteÎnregistrate",
+  //     "OferteInregistrate",
   //     "idUtilizator",
   //     userData?.user_uid
   //   );

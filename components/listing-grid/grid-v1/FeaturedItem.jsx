@@ -89,7 +89,7 @@ const FeaturedItem = ({ params }) => {
           let parteneriFiltrati = [];
           if (params) {
             if (params[0].split("-")[0] === "parteneri") {
-              console.log("testing...here....test", params[0].split("-")[0]);
+              console.log("params contains parteneri....");
               let localitate = params[0]; // presupunem că params[0] este un string
               const parts = localitate.split("-");
 
@@ -148,15 +148,21 @@ const FeaturedItem = ({ params }) => {
                 }
               }
             } else {
+              console.log("params does not contains parteneri....");
               if (params.length === 1) {
+                console.log("params does not contains parteneri length 1....");
                 let string = params[0]; // presupunem că params[0] este un string
 
                 let categorieDorita =
                   string.charAt(0).toUpperCase() + string.slice(1);
-                parteneriFiltrati = parteneriOrdonati.filter(
-                  (partener) => partener.categorie === categorieDorita
-                );
 
+                parteneriFiltrati = await handleQueryFirestore(
+                  "Users",
+                  "categorie",
+                  categorieDorita,
+                  "userType",
+                  "Partener"
+                );
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
                 } else {

@@ -38,7 +38,7 @@ const SearchData = ({ mesajeInregistrare }) => {
   //         };
   //         await handleUpdateFirestoreSubcollection(
   //           data,
-  //           `Users/${oferta?.collectionId}/OferteÎnregistrate/${oferta?.documentId}`
+  //           `Users/${oferta?.collectionId}/OferteInregistrate/${oferta?.documentId}`
   //         );
   //         const doctor = await handleQueryFirestore(
   //           "Users",
