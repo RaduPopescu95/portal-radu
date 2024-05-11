@@ -110,7 +110,7 @@ const SearchData = ({ oferteInregistrate }) => {
                   data-placement="top"
                   title="View"
                 >
-                  <Link href={`/confirma-tranzactie/${row.id}`}>
+                  <Link href={`/confirma-tranzactie/${row.documentId}`}>
                     <span className="flaticon-view"></span>
                   </Link>
                 </li>
