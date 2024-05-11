@@ -1,7 +1,7 @@
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
-import CreateList from "./CreateList";
+import CreateList from "./Tranzactie";
 import DetailedInfo from "./DetailedInfo";
 import FloorPlans from "./FloorPlans";
 import LocationField from "./LocationField";
@@ -62,7 +62,6 @@ const index = () => {
                 <div className="col-lg-12">
                   <div className="my_dashboard_review">
                     <div className="row">
-
                       <CreateList />
                     </div>
                   </div>
@@ -98,7 +97,6 @@ const index = () => {
                 {/* End .col */}
               </div>
               {/* End .row */}
-
             </div>
             {/* End .col */}
           </div>
