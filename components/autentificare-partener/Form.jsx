@@ -7,11 +7,13 @@ import { handleQueryFirestoreSubcollection } from "@/utils/firestoreUtils";
 import { useRouter } from "next/navigation"; // Aici ar trebui să fie "next/router", nu "next/navigation"
 import React, { useState } from "react"; // Importăm useState din React
 import { AlertModal } from "../common/AlertModal";
+import CommonLoader from "../common/CommonLoader";
 
 const Form = () => {
   // Stări locale pentru email și parolă
   const [cui, setCui] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState("");
   const [error, setError] = useState(""); // Stare pentru a stoca mesaje de eroare
   const { setCurrentUser } = useAuth();
   const router = useRouter();
@@ -27,12 +29,14 @@ const Form = () => {
 
   // Functie pentru a gestiona trimiterea formularului
   const handleSubmit = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
 
     // console.log(userData);
     // console.log(currentUser);
 
     if (!password || !cui) {
+      setIsLoading(false);
       return;
     }
 
@@ -46,14 +50,19 @@ const Form = () => {
     console.log(utilizator);
     console.log(cui);
     if (!utilizator) {
+      setIsLoading(false);
       showAlert(`Nu a fost gasit nici un utilizator cu acest CUI`, "danger");
+      return;
     }
     handleSignIn(utilizator[0].email, password)
       .then((userCredentials) => {
+        setIsLoading(false);
+        showAlert(`Autentificare cu succes!`, "succes");
         console.log("user credentials...", userCredentials);
         setCurrentUser(userCredentials); // Aici trebuie să asiguri că userCredentials este gestionat corect
       })
       .catch((error) => {
+        setIsLoading(false);
         console.error("Error during sign in:", error.message);
         console.error("Error during sign in:", error.code);
         showAlert(`Eroare la autentificare: ${error.message}`, "danger");
@@ -104,7 +113,7 @@ const Form = () => {
           </div>
         </div>
         <button type="submit" className="btn btn-log w-100 btn-thm">
-          Autentificare
+          {isLoading ? <CommonLoader /> : "Autentificare"}
         </button>
       </form>
 
