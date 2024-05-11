@@ -7,27 +7,11 @@ import { useEffect, useState } from "react";
 import { getLocalitatiWithUserCounts } from "@/utils/firestoreUtils";
 import { jd } from "@/data/judeteLocalitati";
 
-const FindProperties = () => {
-  const [parteneriLocalitati, setParteneriLocalitati] = useState([]);
-  useEffect(() => {
-    console.log("Start.....");
-    // Definește o funcție async în interiorul useEffect
-    const fetchData = async () => {
-      try {
-        const localitatiCounts = await getLocalitatiWithUserCounts(jd);
-        console.log(
-          "Localități sortate după numărul de utilizatori:",
-          localitatiCounts
-        );
-        setParteneriLocalitati([...localitatiCounts]);
-      } catch (error) {
-        console.error(" : ", error);
-      }
-    };
+const FindProperties = ({ localitatiCounts }) => {
+  const [parteneriLocalitati, setParteneriLocalitati] = useState([
+    ...localitatiCounts,
+  ]);
 
-    // Apelează funcția async
-    fetchData();
-  }, []);
   return (
     <>
       {parteneriLocalitati.map((item, index) => (

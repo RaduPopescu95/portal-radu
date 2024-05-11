@@ -11,7 +11,7 @@ import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import PopupSignInUp from "../common/PopupSignInUp";
 
-const index = ({ judete }) => {
+const index = ({ localitatiCounts }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -97,7 +97,7 @@ const index = ({ judete }) => {
             </div>
           </div>
           <div className="row">
-            <FindProperties />
+            <FindProperties localitatiCounts={localitatiCounts} />
           </div>
         </div>
       </section>

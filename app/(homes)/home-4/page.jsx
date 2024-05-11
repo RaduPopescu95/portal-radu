@@ -1,10 +1,12 @@
 import dynamic from "next/dynamic";
 import HomeMain from "@/components/home-4";
 import {
+  getLocalitatiWithUserCounts,
   handleGetFirestore,
   handleQueryFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
 import { unstable_noStore as noStore } from "next/cache";
+import { jd } from "@/data/judeteLocalitati";
 
 export const metadata = {
   title: "Home || Portal",
@@ -31,9 +33,11 @@ const index = async () => {
   noStore();
   const judete = await getServerData();
 
+  const localitatiCounts = await getLocalitatiWithUserCounts(jd);
+
   return (
     <>
-      <HomeMain />
+      <HomeMain localitatiCounts={localitatiCounts} />
     </>
   );
 };
