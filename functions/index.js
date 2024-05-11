@@ -28,12 +28,15 @@ exports.sendConfirmationEmails = functions.firestore
         ]);
 
         const emails = [doctor.data().email, partener.data().email];
+        const text = `Tranzactia înregistrată pentru oferta` +
+        ` ${oldV.oferta.titluOferta} a fost confirmată de către echipa ` +
+        `noastră. Pentru detalii suplimentare accesați www.exlusivmd.ro`;
 
         const mailOptions = {
-          from: "webdynamicx@gmail.com",
+          from: "test@email.com",
           to: emails.join(", "),
-          subject: "Confirmare Oferta",
-          text: "Oferta dumneavoastră a fost confirmată.",
+          subject: `Confirmare Oferta ${oldV.oferta.titluOferta}`,
+          text,
         };
 
         await transporter.sendMail(mailOptions);

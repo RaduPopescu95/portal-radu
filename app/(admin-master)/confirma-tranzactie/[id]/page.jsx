@@ -17,9 +17,9 @@ const index = async ({ params }) => {
   let oferta = await handleQueryFirestoreSubcollection(
     "OferteInregistrate",
     "documentId",
-    offerId
+    id
   );
-  
+  console.log("oferta....", oferta)
   return (
     <>
       {/* <!-- Main Header Nav --> */}
