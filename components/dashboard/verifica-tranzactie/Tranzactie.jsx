@@ -80,20 +80,22 @@ const Tranzactie = ({ partenerId, utilizator, oferta }) => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                <div className="col-lg-12">
-                  <div className="dashboard_navigationbar dn db-1024">
-                    <div className="dropdown">
-                      <button
-                        className="dropbtn"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#DashboardOffcanvasMenu"
-                        aria-controls="DashboardOffcanvasMenu"
-                      >
-                        <i className="fa fa-bars pr10"></i> Navigatie cont
-                      </button>
+                {isVerified && (
+                  <div className="col-lg-12">
+                    <div className="dashboard_navigationbar dn db-1024">
+                      <div className="dropdown">
+                        <button
+                          className="dropbtn"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#DashboardOffcanvasMenu"
+                          aria-controls="DashboardOffcanvasMenu"
+                        >
+                          <i className="fa fa-bars pr10"></i> Navigatie cont
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
                 {/* End Dashboard Navigation */}
 
                 <TransactionVerification

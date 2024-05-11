@@ -29,8 +29,8 @@ const index = async ({ params }) => {
     "documentId",
     offerId
   );
-  console.log("parms...ofertaData", ofertaData);
-  console.log("parms...utilizatorData", utilizatorData);
+  // console.log("parms...ofertaData", ofertaData);
+  // console.log("parms...utilizatorData", utilizatorData);
   return (
     <>
       <Tranzactie
