@@ -73,7 +73,12 @@ export const filtrareParteneri = (parteneriFiltrati, searchQueryParteneri) => {
 
   // Filtrăm partenerii pe baza denumirii brandului
   const parteneriFiltratiGasiti = parteneriFiltrati.filter((partener) =>
-    regex.test(partener.denumireBrand)
+    regex.test(partener.denumireBrand) ||
+    regex.test(partener.categorie) ||
+    regex.test(partener.adresaSediu) ||
+    regex.test(partener.descriere) ||
+    regex.test(partener.telefonContact) ||
+    regex.test(partener.email) 
   );
 
   return parteneriFiltratiGasiti;
