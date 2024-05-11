@@ -150,7 +150,7 @@ const MobileMenuContent = () => {
                   href="#"
                   className="btn flaticon-user pl0"
                   data-bs-toggle="modal"
-                  data-bs-target=".bd-partener-modal-lg"
+                  data-bs-target=".bd-utilizator-modal-lg"
                 >
                   <span className="pl5">Utilizator</span>
                 </a>
