@@ -21,7 +21,8 @@ const TransactionVerification = ({
         <section className="dashboard-sigin-container">
           <div className="container">
             <div className="row">
-              <div className="col-sm-12 col-lg-6 offset-lg-3">
+              {/* <div className="col-sm-12 col-lg-6 offset-lg-3"> */}
+              <div className="col-sm-12 col-lg-6 offset-lg-2">
                 <div className="login_form  inner_page">
                   <Form />
                 </div>
@@ -33,7 +34,7 @@ const TransactionVerification = ({
         <div className="col-lg-12">
           <div className="my_dashboard_review">
             <div className="row">
-              <CreateList oferta={oferta[0]} utilizator={utilizator[0]} />
+              <CreateList oferta={oferta} utilizator={utilizator} />
             </div>
           </div>
         </div>

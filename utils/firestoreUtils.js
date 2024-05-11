@@ -356,8 +356,6 @@ export const handleQueryFirestore = async (
   queryParamTwo = null,
   elementTwo = null
 ) => {
-  console.log("start query firestore pentru elementOne...", elementOne);
-  console.log("start query firestore pentru elementTwo...", elementTwo);
   let arr = []; // Specificați tipul de obiecte pe care îl conține matricea, de exemplu: let arr = [{}];
   let conditions = [];
 
@@ -376,7 +374,7 @@ export const handleQueryFirestore = async (
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
+
     arr.push(doc.data()); // Dacă dorești să adaugi un anumit câmp, specifică, de exemplu: doc.data().numeCamp
   });
   return arr;
@@ -389,9 +387,6 @@ export const handleQueryFirestoreSubcollection = async (
   queryParamTwo = null,
   elementTwo = null
 ) => {
-  console.log("Strt....", location);
-  console.log("Strt....", queryParamOne);
-  console.log("Strt....", elementOne);
   let arr = [];
   let localitatiRef;
   // Pasul 1: Interoghează subcolecția Localitati
@@ -408,10 +403,8 @@ export const handleQueryFirestoreSubcollection = async (
     );
   }
 
-  console.log("test....");
   const querySnapshot = await getDocs(localitatiRef);
   querySnapshot.forEach((doc) => {
-    console.log(doc.id, "localitate...=>", doc.data());
     arr.push(doc.data());
   });
   return arr;

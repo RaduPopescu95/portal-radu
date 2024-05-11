@@ -54,12 +54,12 @@ const Tranzactie = ({ partenerId, utilizator, oferta }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      {!isVerified && <Header />}
+      {isVerified && <Header />}
 
       {/* <!--  Mobile Menu --> */}
-      {!isVerified && <MobileMenu />}
+      {isVerified && <MobileMenu />}
 
-      {!isVerified && (
+      {isVerified && (
         <div className="dashboard_sidebar_menu">
           <div
             className="offcanvas offcanvas-dashboard offcanvas-start"
@@ -98,8 +98,8 @@ const Tranzactie = ({ partenerId, utilizator, oferta }) => {
 
                 <TransactionVerification
                   isVerified={isVerified}
-                  utilizator={utilizator[0] || []}
-                  oferta={oferta[0] || []}
+                  utilizator={utilizator}
+                  oferta={oferta}
                 />
               </div>
               {/* End .row */}

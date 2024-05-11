@@ -5,13 +5,17 @@ import {
 } from "@/utils/firestoreUtils";
 import Tranzactie from "@/components/dashboard/verifica-tranzactie/Tranzactie";
 
-export const metadata = {
-  title: "Verifica tranzactie || ExclusivMD",
-  description: "ExclusivMD",
-};
+// export const metadata = {
+//   title: "Verifica tranzactie || ExclusivMD",
+//   description: "ExclusivMD",
+// };
 
 const index = async ({ params }) => {
   const { id } = params;
+  if (id === "favicon.ico") {
+    return null; // Returnează null sau orice alt component care indică că pagina nu trebuie să proceseze acest id.
+  }
+  console.log("parms...", id);
   const parts = id.split("-");
   const userId = parseFloat(parts[0]);
   const cod = parts[1];
@@ -25,6 +29,8 @@ const index = async ({ params }) => {
     "documentId",
     offerId
   );
+  console.log("parms...ofertaData", ofertaData);
+  console.log("parms...utilizatorData", utilizatorData);
   return (
     <>
       <Tranzactie
