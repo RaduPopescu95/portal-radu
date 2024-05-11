@@ -87,7 +87,7 @@ const FilteringItem = ({ params }) => {
       return;
     }
 
-    if (selectedJudet && selectedCategorie && !selectedLocalitate) {
+    if (selectedJudet && selectedCategorie) {
       router.push(
         `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedJudet.toLocaleLowerCase()}`
       );
