@@ -48,9 +48,11 @@ const SearchData = ({ oferteInregistrate }) => {
         )
           .then(() => {
             showAlert("Modificare cu success!", "success");
+            setIsLoading(false)
           })
           .catch((error) => {
             showAlert(`A apărut o eroare: ${error.message}`, "danger");
+            setIsLoading(false)
           });
       } else {
         console.log(
@@ -75,9 +77,11 @@ const SearchData = ({ oferteInregistrate }) => {
         )
           .then(() => {
             showAlert("Adaugare cu succes!", "success");
+            setIsLoading(false)
           })
           .catch((error) => {
             showAlert(`A apărut o eroare: ${error.message}`, "danger");
+            setIsLoading(false)
           });
       }
     }
