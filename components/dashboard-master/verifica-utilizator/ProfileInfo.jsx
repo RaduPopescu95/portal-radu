@@ -1,13 +1,23 @@
 "use client";
 
+import { handleUpdateFirestore } from "@/utils/firestoreUtils";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const ProfileInfo = ({ doctor: doc }) => {
   const [profile, setProfile] = useState(null);
+  const router = useRouter();
 
-  // upload profile
-  const uploadProfile = (e) => {
-    setProfile(e.target.files[0]);
+  const handleToggle = async () => {
+    console.log(doc);
+
+    const newStatus = doc.statusCont === "Activ" ? "Inactiv" : "Activ";
+    let data = {
+      statusCont: newStatus,
+    };
+    await handleUpdateFirestore(`Users/${doc.user_uid}`, data).then(() => {
+      router.refresh();
+    });
   };
 
   return (
@@ -323,6 +333,19 @@ const ProfileInfo = ({ doctor: doc }) => {
           />
         </div>
       </div>
+      {/* End .col */}
+
+      <div className="col-xl-12 text-right mt-4">
+        <div className="my_profile_setting_input">
+          {/* <button className="btn btn1">Actualizeaza Profil</button> */}
+          <button className="btn btn2" onClick={handleToggle}>
+            {doc.statusCont === "Activ"
+              ? "Dezactiveaza Cont"
+              : "Activeaza Cont"}
+          </button>
+        </div>
+      </div>
+
       {/* End .col */}
 
       {/* <div className="col-xl-12">

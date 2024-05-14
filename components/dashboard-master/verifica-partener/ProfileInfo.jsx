@@ -1,17 +1,30 @@
 "use client";
 
+import CommonLoader from "@/components/common/CommonLoader";
 import { useAuth } from "@/context/AuthContext";
-import { handleQueryFirestoreSubcollection } from "@/utils/firestoreUtils";
+import {
+  handleQueryFirestoreSubcollection,
+  handleUpdateFirestore,
+} from "@/utils/firestoreUtils";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ProfileInfo = ({ partener: part }) => {
   const [profile, setProfile] = useState(null);
   const [localitati, setLocalitati] = useState([]);
   const { judete } = useAuth();
+  const router = useRouter();
 
-  // upload profile
-  const uploadProfile = (e) => {
-    setProfile(e.target.files[0]);
+  const handleToggle = async () => {
+    console.log(part);
+
+    const newStatus = part.statusCont === "Activ" ? "Inactiv" : "Activ";
+    let data = {
+      statusCont: newStatus,
+    };
+    await handleUpdateFirestore(`Users/${part.user_uid}`, data).then(() => {
+      router.refresh();
+    });
   };
 
   const handleGetLocalitatiJudet = async () => {
@@ -188,6 +201,22 @@ const ProfileInfo = ({ partener: part }) => {
       </div>
       {/* End .col */}
 
+      <div className="col-xl-12">
+        <div className="my_profile_setting_textarea">
+          <label htmlFor="exampleFormControlTextarea1">
+            Descriere partener
+          </label>
+          <textarea
+            className="form-control"
+            id="exampleFormControlTextarea1"
+            rows="7"
+            value={part?.descriere}
+            readOnly
+          ></textarea>
+        </div>
+      </div>
+      {/* End .col */}
+
       {/* <div className="col-lg-6 col-xl-6">
               <div className="my_profile_setting_input form-group">
                   <label htmlFor="formGroupExampleInput11">Language</label>
@@ -227,6 +256,18 @@ const ProfileInfo = ({ partener: part }) => {
         </div>
       </div>
       {/* End .col */}
+
+      <div className="col-xl-12 text-right mt-4">
+        <div className="my_profile_setting_input">
+          {/* <button className="btn btn1">Actualizeaza Profil</button> */}
+          <button className="btn btn2" onClick={handleToggle}>
+            {part.statusCont === "Activ"
+              ? "Dezactiveaza Cont"
+              : "Activeaza Cont"}
+          </button>
+        </div>
+      </div>
+
       {/* End .col */}
 
       {/* <div className="col-xl-12">

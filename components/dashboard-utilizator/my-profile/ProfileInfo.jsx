@@ -10,9 +10,10 @@ import { emailWithoutSpace } from "@/utils/strintText";
 import { useEffect, useState } from "react";
 
 const ProfileInfo = () => {
-  const [profile, setProfile] = useState(null);
+  const [initialData, setInitialData] = useState({});
   const { userData, currentUser, setCurrentUser, setUserData, judete } =
     useAuth();
+
   const [email, setEmail] = useState(userData?.email || "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -35,6 +36,35 @@ const ProfileInfo = () => {
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
   const [isCateogireSelected, setIsCategorieSelected] = useState(true);
 
+  // Setează starea inițială
+  useEffect(() => {
+    setInitialData({
+      email: userData?.email || "",
+      numeUtilizator: userData?.numeUtilizator || "",
+      telefon: userData?.telefon || "",
+      dataNasterii: userData?.dataNasterii || "",
+      judet: userData?.judet || "",
+      localitate: userData?.localitate || "",
+      titulatura: userData?.titulatura || "",
+      specializare: userData?.specializare || "",
+      cuim: userData?.cuim || "",
+    });
+  }, [userData]);
+
+  const describeChanges = () => {
+    let changes = [];
+    Object.entries(initialData).forEach(([key, value]) => {
+      let currentValue = eval(key);
+      if (value !== currentValue) {
+        changes.push(`${key} de la '${value}' la '${currentValue}'`);
+      }
+    });
+    if (changes.length > 0) {
+      return `${userData.numeUtilizator} a actualizat: ${changes.join(", ")}`;
+    }
+    return null;
+  };
+
   const [alert, setAlert] = useState({ message: "", type: "" });
 
   const showAlert = (message, type) => {
@@ -45,11 +75,6 @@ const ProfileInfo = () => {
     setAlert({ message: "", type: "" });
   };
 
-  // upload profile
-  const uploadProfile = (e) => {
-    setProfile(e.target.files[0]);
-  };
-
   const handleUpdateProfile = async (event) => {
     event.preventDefault();
     const emailNew = emailWithoutSpace(email);
@@ -57,6 +82,7 @@ const ProfileInfo = () => {
     try {
       let user_uid = currentUser.uid;
       let data = {
+        ...userData,
         cuim,
         specializare,
         titulatura,
@@ -70,10 +96,15 @@ const ProfileInfo = () => {
         numeUtilizator,
       };
       setUserData(data);
-      await handleUpdateFirestore(`Users/${user_uid}`, data).then(() => {
-        console.log("update succesfully....");
-        showAlert("Actualizare cu succes!", "success");
-      });
+
+      const actionText = describeChanges();
+
+      await handleUpdateFirestore(`Users/${user_uid}`, data, actionText).then(
+        () => {
+          console.log("update succesfully....");
+          showAlert("Actualizare cu succes!", "success");
+        }
+      );
     } catch (error) {
       showAlert(`Eroare la Actualizare: ${error.message}`, "danger");
       console.error("Error signing up: ", error);

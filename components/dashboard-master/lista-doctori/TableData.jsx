@@ -48,17 +48,12 @@ const TableData = ({ doctori: docs }) => {
     setDoctori(updateDoctors);
   };
 
-  let theadConent = [
-    "Utilizator/Partener",
-    "Data Inregistrare",
-    "Status Cont",
-    "Actiune",
-  ];
+  let theadConent = ["Doctor", "Data Inregistrare", "Status Cont", "Actiune"];
   let tbodyContent = doctori?.map((item) => (
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">
-          <div className="thumb">
+          {/* <div className="thumb">
             <Image
               width={90}
               height={90}
@@ -66,14 +61,14 @@ const TableData = ({ doctori: docs }) => {
               src={"/assets/images/team/utilizator-test-lg.png"}
               alt="fp1.jpg"
             />
-            {/* <div className="thmb_cntnt">
+            <div className="thmb_cntnt">
               <ul className="tag mb0">
                 <li className="list-inline-item">
                   <a href="#">For Rent</a>
                 </li>
               </ul>
-            </div> */}
-          </div>
+            </div>
+          </div> */}
           <div className="details">
             <div className="tc_content">
               <h4>{item.numeUtilizator}</h4>

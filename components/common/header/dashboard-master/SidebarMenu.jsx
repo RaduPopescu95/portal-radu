@@ -16,6 +16,7 @@ import { authentication } from "@/firebase";
 const SidebarMenu = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { currentUser, userData, loading } = useAuth();
   // const { userData, currentUser, loading } = useAuth();
 
   const myProperties = [
@@ -44,8 +45,8 @@ const SidebarMenu = () => {
   ];
 
   useEffect(() => {
-    const auth = authentication;
-    const currentUser = auth.currentUser;
+    // const auth = authentication;
+    // const currentUser = auth.currentUser;
     // console.log(currentUser);
     // console.log(userData);
     // console.log(loading);

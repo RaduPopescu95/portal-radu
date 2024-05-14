@@ -45,7 +45,11 @@ export const getFirestoreQueryLength = async (
   return snapshot.data().count;
 };
 
-export const handleUpdateFirestore = async (location, updatedData) => {
+export const handleUpdateFirestore = async (
+  location,
+  updatedData,
+  actionText
+) => {
   try {
     //current date
     const dateTime = getCurrentDateTime();
@@ -58,13 +62,26 @@ export const handleUpdateFirestore = async (location, updatedData) => {
       Edittime: dateTime.time,
     };
 
+    // UPLOAD ACTION OF USER
+    if (actionText) {
+      const currentUser = authentication.currentUser;
+      let actionData = {
+        actionText,
+      };
+
+      await handleUploadFirestoreSubcollection(
+        actionData,
+        `Users/${currentUser?.uid}/Actiuni`,
+        currentUser?.uid
+      );
+    }
     await updateDoc(ref, newData);
   } catch (err) {
     console.log("Error on...handleUpdateFirestore...", err);
   }
 };
 
-export const handleUploadFirestore = async (data, location) => {
+export const handleUploadFirestore = async (data, location, actionText) => {
   try {
     console.log("test.infor in handle upload firestore...");
     console.log(location);
@@ -94,6 +111,21 @@ export const handleUploadFirestore = async (data, location) => {
     await setDoc(docRef, newData);
 
     console.log(`Documentul cu ID-ul ${docRef.id} a fost adăugat cu succes.`);
+
+    // UPLOAD ACTION OF USER
+    // UPLOAD ACTION OF USER
+    if (actionText) {
+      const currentUser = authentication.currentUser;
+      let actionData = {
+        actionText,
+      };
+
+      await handleUploadFirestoreSubcollection(
+        actionData,
+        `Users/${currentUser?.uid}/Actiuni`,
+        currentUser?.uid
+      );
+    }
     return newData;
   } catch (err) {
     console.log("Eroare la handleUploadFirestore...", err);
@@ -105,7 +137,7 @@ export const handleUploadFirestoreSubcollection = async (
   data,
   location,
   collectionId,
-  subcollectionLocation
+  actionText
 ) => {
   console.log("create subcollection...", data);
   try {
@@ -127,6 +159,20 @@ export const handleUploadFirestoreSubcollection = async (
     };
     await setDoc(docRef, newData); // Actualizează documentul cu noul set de date, dacă este necesar
 
+    // UPLOAD ACTION OF USER
+    if (actionText) {
+      const currentUser = authentication.currentUser;
+      let actionData = {
+        actionText,
+      };
+
+      await handleUploadFirestoreSubcollection(
+        actionData,
+        `Users/${currentUser?.uid}/Actiuni`,
+        currentUser?.uid
+      );
+    }
+
     console.log(`Document adăugat în subcolecție cu ID-ul: ${docRef.id}`);
   } catch (err) {
     console.log("Error on...handleUploadFirestoreSubcollection...", err);
@@ -136,7 +182,8 @@ export const handleUploadFirestoreSubcollection = async (
 //UPDATE A DOCUMENT IN THE SUBCOLLECTION
 export const handleUpdateFirestoreSubcollection = async (
   updatedData,
-  location
+  location,
+  actionText
 ) => {
   console.log("create subcollection history...", updatedData);
   try {
@@ -150,6 +197,20 @@ export const handleUpdateFirestoreSubcollection = async (
       EditDate: dateTime.date,
       Edittime: dateTime.time,
     };
+
+    // UPLOAD ACTION OF USER
+    if (actionText) {
+      const currentUser = authentication.currentUser;
+      let actionData = {
+        actionText,
+      };
+
+      await handleUploadFirestoreSubcollection(
+        actionData,
+        `Users/${currentUser?.uid}/Actiuni`,
+        currentUser?.uid
+      );
+    }
 
     await updateDoc(ref, newData);
   } catch (err) {

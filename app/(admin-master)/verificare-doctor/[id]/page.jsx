@@ -1,15 +1,24 @@
 import Header from "@/components/common/header/dashboard-master/Header";
 import SidebarMenu from "@/components/common/header/dashboard-master/SidebarMenu";
 import MobileMenu from "@/components/common/header/MobileMenu";
+import Activities from "@/components/dashboard-master/my-dashboard/Activities";
 import ChangePassword from "@/components/dashboard-master/verifica-utilizator/ChangePassword";
 import ProfileInfo from "@/components/dashboard-master/verifica-utilizator/ProfileInfo";
 import SocialMedia from "@/components/dashboard-master/verifica-utilizator/SocialMedia";
-import { handleQueryFirestore } from "@/utils/firestoreUtils";
+import {
+  handleQueryFirestore,
+  handleQueryFirestoreSubcollection,
+} from "@/utils/firestoreUtils";
 
 const index = async ({ params }) => {
   const id = params.id;
   const userId = parseFloat(id);
   const doctor = await handleQueryFirestore("Users", "id", userId);
+  const actiuni = await handleQueryFirestoreSubcollection(
+    "Actiuni",
+    "collectionId",
+    doctor[0].user_uid
+  );
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -74,6 +83,19 @@ const index = async ({ params }) => {
                     </div>
                   </div>
                   {/* End prifle info wrapper end */}
+
+                  <div className="col-lg-12 mt10">
+                    <div className="my_dashboard_review">
+                      <div className="row">
+                        <div className="col-xl-12">
+                          <h4>Actiuni Doctor</h4>
+                        </div>
+                        <div className="col-xl-12">
+                          <Activities actiuni={actiuni} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* <div className="my_dashboard_review mt30">
                     <div className="row">

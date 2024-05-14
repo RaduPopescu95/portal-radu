@@ -5,7 +5,6 @@ import {
   handleQueryFirestore,
   handleUpdateFirestore,
   handleUpdateFirestoreSubcollection,
-  handleUploadFirestore,
 } from "@/utils/firestoreUtils";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -50,7 +49,7 @@ const SearchData = ({ oferteInregistrate }) => {
             "user_uid",
             oferta?.collectionId
           );
-       
+
           if (newStatus === "Confirmata") {
             doctor[0].rulajCont =
               Number(doctor[0].rulajCont) + Number(oferta.pretFinal);

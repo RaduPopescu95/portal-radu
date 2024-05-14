@@ -1,12 +1,6 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import {
-  handleQueryFirestore,
-  handleUpdateFirestore,
-  handleUpdateFirestoreSubcollection,
-  handleUploadFirestore,
-} from "@/utils/firestoreUtils";
 import Link from "next/link";
 import React, { useState } from "react";
 

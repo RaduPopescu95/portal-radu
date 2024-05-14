@@ -3,7 +3,6 @@
 import { useAuth } from "@/context/AuthContext";
 import {
   handleUpdateFirestoreSubcollection,
-  handleUploadFirestore,
   handleUploadFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
 import { uploadImage } from "@/utils/storageUtils";
@@ -53,7 +52,46 @@ const CreateList = ({ oferta }) => {
   const [deletedLogo, setDeletedLogo] = useState(null);
   const [isNewLogo, setIsNewLogo] = useState(false);
 
+  const [initialData, setInitialData] = useState({});
+
   let isEdit = oferta?.imagineOferta?.finalUri ? true : false;
+
+  useEffect(() => {
+    if (oferta) {
+      setInitialData({
+        pretIntreg: oferta.pretIntreg || "",
+        pretRedus: oferta.pretRedus || "",
+        procentReducere: oferta.procentReducere || "",
+        titluOferta: oferta.titluOferta || "",
+        descriereOferta: oferta.descriereOferta || "",
+        gradeFidelitate: oferta.gradeFidelitate || [],
+        tipOferta: oferta.tipOferta || "",
+        dataActivare: oferta.dataActivare || "",
+        dataDezactivare: oferta.dataDezactivare || "",
+        logo: oferta.imagineOferta ? [oferta.imagineOferta] : [],
+      });
+    }
+  }, [oferta]);
+
+  const describeChanges = () => {
+    let changes = [];
+    Object.entries(initialData).forEach(([key, value]) => {
+      let currentValue = eval(key); // Utilizează eval cu precauție sau consideră o alternativă mai sigură
+      if (JSON.stringify(value) !== JSON.stringify(currentValue)) {
+        changes.push(
+          `${key} de la '${JSON.stringify(value)}' la '${JSON.stringify(
+            currentValue
+          )}'`
+        );
+      }
+    });
+    if (changes.length > 0) {
+      return `${userData?.denumireBrand} a actualizat oferta ${
+        oferta?.titluOferta
+      }: ${changes.join(", ")}`;
+    }
+    return null;
+  };
 
   // Funcție pentru a afișa alerta
   const showAlert = (message, type) => {
@@ -133,9 +171,11 @@ const CreateList = ({ oferta }) => {
       imagineOferta: lg,
     };
     try {
+      const actionText = describeChanges();
       await handleUpdateFirestoreSubcollection(
         data,
-        `Users/${currentUser.uid}/Oferte/${oferta.documentId}`
+        `Users/${currentUser.uid}/Oferte/${oferta.documentId}`,
+        actionText
       );
       setIsLoading(false);
       showAlert("Oferta actualizata cu succes!", "success");
@@ -174,11 +214,13 @@ const CreateList = ({ oferta }) => {
         imagineOferta: lg,
       };
 
+      const actionText = `${userData.denumireBrand} a creat oferta ${titluOferta}`;
+
       await handleUploadFirestoreSubcollection(
         data,
         `Users/${currentUser.uid}/Oferte`,
         currentUser.uid,
-        "Oferte"
+        actionText
       );
       resetState();
       setIsLoading(false);

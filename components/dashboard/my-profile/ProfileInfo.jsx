@@ -62,6 +62,7 @@ const ProfileInfo = () => {
   const [deletedImages, setDeletedImages] = useState([]);
   const [localitati, setLocalitati] = useState([]);
   const [isNewImage, setIsNewImage] = useState(false);
+  const [initialData, setInitialData] = useState({});
 
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
@@ -69,6 +70,37 @@ const ProfileInfo = () => {
 
   const params = useParams();
   const router = useRouter();
+
+  // Setează starea inițială
+  useEffect(() => {
+    setInitialData({
+      denumireBrand: userData?.denumireBrand || "",
+      descriere: userData?.descriere || "",
+      email: userData?.email || "",
+      numeContact: userData?.numeContact || "",
+      telefonContact: userData?.telefonContact || "",
+      judet: userData?.judet || "",
+      localitate: userData?.localitate || "",
+      sector: userData?.sector || "",
+      categorie: userData?.categorie || "",
+      cui: userData?.cui || "",
+      adresaSediu: userData?.adresaSediu || "",
+    });
+  }, [userData]);
+
+  const describeChanges = () => {
+    let changes = [];
+    Object.entries(initialData).forEach(([key, value]) => {
+      let currentValue = eval(key);
+      if (value !== currentValue) {
+        changes.push(`${key} de la '${value}' la '${currentValue}'`);
+      }
+    });
+    if (changes.length > 0) {
+      return `${userData.denumireBrand} a actualizat: ${changes.join(", ")}`;
+    }
+    return null;
+  };
 
   let isEdit = userData?.logo?.finalUri ? true : false;
 
@@ -184,10 +216,13 @@ const ProfileInfo = () => {
         descriere,
       };
       setUserData(data);
-      await handleUpdateFirestore(`Users/${user_uid}`, data).then(() => {
-        setIsLoading(false);
-        showAlert("Actualizare cu succes!", "success");
-      });
+      const actionText = describeChanges();
+      await handleUpdateFirestore(`Users/${user_uid}`, data, actionText).then(
+        () => {
+          setIsLoading(false);
+          showAlert("Actualizare cu succes!", "success");
+        }
+      );
     } catch (error) {
       setIsLoading(false);
       showAlert(`Eroare la Actualizare: ${error.message}`, "danger");

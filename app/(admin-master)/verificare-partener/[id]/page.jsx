@@ -1,15 +1,25 @@
 import Header from "@/components/common/header/dashboard-master/Header";
 import SidebarMenu from "@/components/common/header/dashboard-master/SidebarMenu";
 import MobileMenu from "@/components/common/header/MobileMenu";
+import Activities from "@/components/dashboard-master/my-dashboard/Activities";
 import ChangePassword from "@/components/dashboard-master/verifica-partener/ChangePassword";
 import ProfileInfo from "@/components/dashboard-master/verifica-partener/ProfileInfo";
 import SocialMedia from "@/components/dashboard-master/verifica-partener/SocialMedia";
-import { handleQueryFirestore } from "@/utils/firestoreUtils";
+import {
+  handleGetSubcollections,
+  handleQueryFirestore,
+  handleQueryFirestoreSubcollection,
+} from "@/utils/firestoreUtils";
 
 const index = async ({ params }) => {
   const id = params.id;
   const userId = parseFloat(id);
   const partener = await handleQueryFirestore("Users", "id", userId);
+  const actiuni = await handleQueryFirestoreSubcollection(
+    "Actiuni",
+    "collectionId",
+    partener[0].user_uid
+  );
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -62,7 +72,7 @@ const index = async ({ params }) => {
                 </div>
                 {/* End .col */}
 
-                <div className="col-lg-12">
+                <div className="col-lg-12 mb10">
                   <div className="my_dashboard_review">
                     <div className="row">
                       <div className="col-xl-2">
@@ -74,6 +84,20 @@ const index = async ({ params }) => {
                     </div>
                   </div>
                   {/* End prifle info wrapper end */}
+
+                  <div className="col-lg-12 mt10">
+                    <div className="my_dashboard_review">
+                      <div className="row">
+                        <div className="col-xl-12">
+                          <h4>Actiuni Partener</h4>
+                        </div>
+                        <div className="col-xl-12">
+                          <Activities actiuni={actiuni} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* End actiuni wrapper end */}
 
                   {/* <div className="my_dashboard_review mt30">
                     <div className="row">

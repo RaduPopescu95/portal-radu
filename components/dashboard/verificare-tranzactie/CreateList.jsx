@@ -1,11 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import {
-  handleUpdateFirestoreSubcollection,
-  handleUploadFirestore,
-  handleUploadFirestoreSubcollection,
-} from "@/utils/firestoreUtils";
+import { handleUploadFirestoreSubcollection } from "@/utils/firestoreUtils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -102,11 +98,12 @@ const CreateList = ({ oferta, utilizator }) => {
     };
 
     try {
+      let actionText = `${userData?.denumireBrand} a verificat tranzactia pentru oferta ${oferta?.titluOferta} accesata de catre ${utilizator?.numeUtilizator}`;
       await handleUploadFirestoreSubcollection(
         data,
         `Users/${currentUser?.uid}/OferteInregistrate`,
         currentUser?.uid,
-        "OferteInregistrate"
+        actionText
       );
 
       showAlert("Oferta înregistrată cu succes!", "success");
