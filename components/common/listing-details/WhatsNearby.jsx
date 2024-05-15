@@ -49,6 +49,10 @@ const WhatsNearby = ({ oferte }) => {
             const offerStart = new Date(offer.dataActivare);
             const offerEnd = new Date(offer.dataDezactivare);
             console.log("offerstart...", offerStart);
+            console.log("offerstart...", offerStart);
+            console.log("offerstart...", offerStart);
+            console.log("offerstart...", offerStart);
+            console.log("offerstart...", offerStart);
             console.log("offerEnd...", offerEnd);
             const isActive =
               today >= offerStart &&

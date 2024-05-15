@@ -72,11 +72,11 @@ const CreateList = ({ oferta }) => {
       console.log("test....partener[0]....email", partener[0].email);
 
       await handleUpdateFirestore(`Users/${oferta.idUtilizator}`, doctor[0]);
-      router.refresh();
     } catch (error) {
       console.error("Failed to update the transaction status:", error);
     } finally {
       setIsLoading(false);
+      router.refresh();
     }
   };
 
