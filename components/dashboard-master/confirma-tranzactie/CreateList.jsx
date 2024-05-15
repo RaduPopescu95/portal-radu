@@ -1,5 +1,6 @@
 "use client";
 
+import CommonLoader from "@/components/common/CommonLoader";
 import ImageModal from "@/components/common/ImageModa";
 import {
   handleQueryFirestore,
@@ -12,6 +13,7 @@ import { useEffect, useState } from "react";
 
 const CreateList = ({ oferta }) => {
   const [modalShow, setModalShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleModalOpen = () => setModalShow(true);
   const handleModalClose = () => setModalShow(false);
@@ -34,46 +36,48 @@ const CreateList = ({ oferta }) => {
 
   // Confirma tranzactie
   const handleToggle = async () => {
-    console.log(oferta);
-    // Mapați și transformați fiecare item asincron
+    setIsLoading(true);
+    try {
+      console.log(oferta);
+      // Verifică statusul curent și îl schimbă
+      const newStatus =
+        oferta.status === "Confirmata" ? "Neconfirmata" : "Confirmata";
+      let data = { status: newStatus };
 
-    // Verifică statusul curent și îl schimbă
-    const newStatus =
-      oferta.status === "Confirmata" ? "Neconfirmata" : "Confirmata";
-    let data = {
-      status: newStatus,
-    };
+      await handleUpdateFirestoreSubcollection(
+        data,
+        `Users/${oferta?.collectionId}/OferteInregistrate/${oferta?.documentId}`
+      );
 
-    await handleUpdateFirestoreSubcollection(
-      data,
-      `Users/${oferta?.collectionId}/OferteInregistrate/${oferta?.documentId}`
-    );
-    const doctor = await handleQueryFirestore(
-      "Users",
-      "user_uid",
-      oferta?.idUtilizator
-    );
-    const partener = await handleQueryFirestore(
-      "Users",
-      "user_uid",
-      oferta?.collectionId
-    );
+      const doctor = await handleQueryFirestore(
+        "Users",
+        "user_uid",
+        oferta?.idUtilizator
+      );
+      const partener = await handleQueryFirestore(
+        "Users",
+        "user_uid",
+        oferta?.collectionId
+      );
 
-    if (newStatus === "Confirmata") {
-      doctor[0].rulajCont =
-        Number(doctor[0].rulajCont) + Number(oferta.pretFinal);
-    } else if (newStatus === "Neconfirmata") {
-      doctor[0].rulajCont =
-        Number(doctor[0].rulajCont) - Number(oferta.pretFinal);
-    }
-
-    console.log("test....doctor[0]....email", doctor[0].email);
-    await handleUpdateFirestore(`Users/${oferta.idUtilizator}`, doctor[0]).then(
-      () => {
-        console.log("test....partener[0]....email", partener[0].email);
-        router.refresh();
+      if (newStatus === "Confirmata") {
+        doctor[0].rulajCont =
+          Number(doctor[0].rulajCont) + Number(oferta.pretFinal);
+      } else if (newStatus === "Neconfirmata") {
+        doctor[0].rulajCont =
+          Number(doctor[0].rulajCont) - Number(oferta.pretFinal);
       }
-    );
+
+      console.log("test....doctor[0]....email", doctor[0].email);
+      console.log("test....partener[0]....email", partener[0].email);
+
+      await handleUpdateFirestore(`Users/${oferta.idUtilizator}`, doctor[0]);
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to update the transaction status:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -320,14 +324,18 @@ const CreateList = ({ oferta }) => {
 
       <div className="col-xl-12 text-right mt-4">
         <div className="my_profile_setting_input">
-          {/* <button className="btn btn1">Actualizeaza Profil</button> */}
-          <button className="btn btn2" onClick={handleToggle}>
-            {status === "Confirmata"
-              ? "Anuleaza confirmare tranzactie"
-              : "Confirma tranzactie"}
-          </button>
+          {isLoading ? (
+            <CommonLoader />
+          ) : (
+            <button className="btn btn2" onClick={handleToggle}>
+              {oferta?.status === "Confirmata"
+                ? "Anuleaza confirmare tranzactie"
+                : "Confirma tranzactie"}
+            </button>
+          )}
         </div>
       </div>
+
       {/* End .col */}
 
       {/* <div className="col-lg-4 col-xl-4">

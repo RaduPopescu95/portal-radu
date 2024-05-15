@@ -19,7 +19,7 @@ const index = async ({ params }) => {
     "documentId",
     id
   );
-  console.log("oferta....", oferta)
+  console.log("oferta....", oferta);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
