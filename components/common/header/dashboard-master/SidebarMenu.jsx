@@ -45,21 +45,13 @@ const SidebarMenu = () => {
   ];
 
   useEffect(() => {
-    // const auth = authentication;
-    // const currentUser = auth.currentUser;
-    // console.log(currentUser);
-    // console.log(userData);
-    // console.log(loading);
-    if (!currentUser) {
-      console.log("no curent USER....");
-      router.push("/signin");
-    } else {
-      if (!currentUser.uid === "ieAXxQk505VmglsvXoWthv8q04F2") {
-        console.log("no curent USER UID....");
+    if (!loading) {
+      if (!currentUser || currentUser.uid !== "ieAXxQk505VmglsvXoWthv8q04F2") {
+        console.log("User not authenticated or UID mismatch");
         router.push("/signin");
       }
     }
-  }, []);
+  }, [loading, currentUser, router]);
 
   return (
     <>
