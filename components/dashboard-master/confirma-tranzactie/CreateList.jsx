@@ -7,6 +7,7 @@ import {
   handleUpdateFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const CreateList = ({ oferta }) => {
@@ -30,6 +31,8 @@ const CreateList = ({ oferta }) => {
   const [fidelityPlatinum, setFidelityPlatinum] = useState(
     oferta?.oferta?.gradeFidelitate?.includes("Platinum") ? true : false
   );
+
+  const router = useRouter();
 
   // Confirma tranzactie
   const handleToggle = async (oferta) => {
@@ -67,7 +70,11 @@ const CreateList = ({ oferta }) => {
 
     console.log("test....doctor[0]....email", doctor[0].email);
     console.log("test....partener[0]....email", partener[0].email);
-    await handleUpdateFirestore(`Users/${oferta.idUtilizator}`, doctor[0]);
+    await handleUpdateFirestore(`Users/${oferta.idUtilizator}`, doctor[0]).then(
+      () => {
+        router.refresh();
+      }
+    );
   };
 
   useEffect(() => {
