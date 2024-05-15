@@ -60,32 +60,47 @@ const FeaturedItem = ({ params }) => {
           let res = await fetchLocation(latitude, longitude);
           let localitate = handleDiacrtice(res.results[0].locality);
 
-          let parteneri = await handleQueryTripleParam(
-            "Users",
-            "localitate",
-            localitate,
-            "userType",
-            "Partener",
-            "statusCont",
-            "Activ"
-          );
+          let parteneri;
+          let parteneriCuDistanta;
+          let parteneriOrdonati;
 
-          // Adaugă distanța ca o proprietate pentru fiecare partener
-          const parteneriCuDistanta = parteneri.map((partener) => {
-            const distanta = calculateDistance(
-              latitude,
-              longitude,
-              partener.coordonate.lat,
-              partener.coordonate.lng
+          if (!params && searchQueryParteneri) {
+            parteneri = await handleQueryDoubleParam(
+              "Users",
+              "userType",
+              "Partener",
+              "statusCont",
+              "Activ"
+            );
+            parteneriOrdonati = parteneri;
+          } else {
+            parteneri = await handleQueryTripleParam(
+              "Users",
+              "localitate",
+              localitate,
+              "userType",
+              "Partener",
+              "statusCont",
+              "Activ"
             );
 
-            return { ...partener, distanta: Math.floor(distanta) };
-          });
+            // Adaugă distanța ca o proprietate pentru fiecare partener
+            parteneriCuDistanta = parteneri.map((partener) => {
+              const distanta = calculateDistance(
+                latitude,
+                longitude,
+                partener.coordonate.lat,
+                partener.coordonate.lng
+              );
 
-          // Sortează partenerii după distanță
-          const parteneriOrdonati = parteneriCuDistanta.sort(
-            (a, b) => a.distanta - b.distanta
-          );
+              return { ...partener, distanta: Math.floor(distanta) };
+            });
+
+            // Sortează partenerii după distanță
+            parteneriOrdonati = parteneriCuDistanta.sort(
+              (a, b) => a.distanta - b.distanta
+            );
+          }
 
           let parteneriFiltrati = [];
           if (params) {

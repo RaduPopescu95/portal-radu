@@ -2,7 +2,6 @@ import Blogs from "../common/Blogs";
 import GlobalHeroFilter from "../common/GlobalHeroFilter";
 import MobileMenu from "../common/header/MobileMenu";
 import FeaturedProperties from "./FeaturedProperties";
-import FindProperties from "./FindProperties";
 import Header from "./Header";
 import HeroSlider from "./HeroSlider";
 import LookingItem from "./LookingItem";
@@ -10,8 +9,13 @@ import Team from "./Team";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import PopupSignInUp from "../common/PopupSignInUp";
+import { Suspense, lazy } from "react";
+import CommonLoader from "../common/CommonLoader";
+import SkeletonLoader from "../common/SkeletonLoader";
 
-const index = ({ localitatiCounts }) => {
+const FindProperties = lazy(() => import("./FindProperties"));
+
+const index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -97,7 +101,9 @@ const index = ({ localitatiCounts }) => {
             </div>
           </div>
           <div className="row">
-            <FindProperties localitatiCounts={localitatiCounts} />
+            <Suspense fallback={<SkeletonLoader />}>
+              <FindProperties />
+            </Suspense>
           </div>
         </div>
       </section>

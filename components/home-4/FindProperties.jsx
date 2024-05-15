@@ -1,20 +1,16 @@
-"use client";
-
 import Link from "next/link";
 import findProperties from "../../data/findProperties";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+
 import { getLocalitatiWithUserCounts } from "@/utils/firestoreUtils";
 import { jd } from "@/data/judeteLocalitati";
 
-const FindProperties = ({ localitatiCounts }) => {
-  const [parteneriLocalitati, setParteneriLocalitati] = useState([
-    ...localitatiCounts,
-  ]);
+const FindProperties = async () => {
+  const localitatiCounts = await getLocalitatiWithUserCounts(jd);
 
   return (
     <>
-      {parteneriLocalitati.map((item, index) => (
+      {localitatiCounts.map((item, index) => (
         <div className="col-sm-6 col-lg-4 col-xl-4" key={index}>
           <Link
             href={`/parteneri/parteneri-${item.localitate.toLowerCase()}`}

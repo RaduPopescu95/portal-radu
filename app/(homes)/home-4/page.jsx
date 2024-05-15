@@ -33,11 +33,11 @@ const index = async () => {
   noStore();
   const judete = await getServerData();
 
-  const localitatiCounts = await getLocalitatiWithUserCounts(jd);
+  // const localitatiCounts = await getLocalitatiWithUserCounts(jd);
 
   return (
     <>
-      <HomeMain localitatiCounts={localitatiCounts} />
+      <HomeMain />
     </>
   );
 };

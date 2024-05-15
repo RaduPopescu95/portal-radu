@@ -68,17 +68,26 @@ export const closeSignupModal = (modalId) => {
 };
 
 export const filtrareParteneri = (parteneriFiltrati, searchQueryParteneri) => {
-  // Convertim searchQueryParteneri într-o expresie regulată pentru a căuta corespunzător în denumireBrand
-  const regex = new RegExp(searchQueryParteneri, "i"); // 'i' face ca căutarea să fie nesensibilă la majuscule/minuscule
+  // Împărțim query-ul de căutare în cuvinte individuale
+  const searchTerms = searchQueryParteneri
+    .split(/\s+/)
+    .map((term) => term.toLowerCase());
 
-  // Filtrăm partenerii pe baza denumirii brandului
-  const parteneriFiltratiGasiti = parteneriFiltrati.filter((partener) =>
-    regex.test(partener.denumireBrand) ||
-    regex.test(partener.categorie) ||
-    regex.test(partener.adresaSediu) ||
-    regex.test(partener.descriere) ||
-    regex.test(partener.telefonContact) ||
-    regex.test(partener.email) 
+  // Funcție care verifică dacă toate cuvintele de căutare apar în text
+  const matchesSearch = (text) => {
+    const lowercasedText = text.toLowerCase();
+    return searchTerms.every((term) => lowercasedText.includes(term));
+  };
+
+  // Filtrăm partenerii pe baza denumirii brandului, categoriilor, adresei, descrierii, telefonului și emailului
+  const parteneriFiltratiGasiti = parteneriFiltrati.filter(
+    (partener) =>
+      matchesSearch(partener.denumireBrand) ||
+      matchesSearch(partener.categorie) ||
+      matchesSearch(partener.adresaSediu) ||
+      matchesSearch(partener.descriere) ||
+      matchesSearch(partener.telefonContact) ||
+      matchesSearch(partener.email)
   );
 
   return parteneriFiltratiGasiti;
