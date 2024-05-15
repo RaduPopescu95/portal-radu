@@ -18,11 +18,9 @@ const WhatsNearby = ({ oferte }) => {
     Platinum: ["Silver", "Gold", "Platinum"],
   };
 
-  // useEffect(() => {
-  //   const handleResize = () => setWindowWidth(window.innerWidth);
-  //   window.addEventListener("resize", handleResize);
-  //   return () => window.removeEventListener("resize", handleResize);
-  // }, []);
+  useEffect(() => {
+    console.log("oferte.....partener....", oferte);
+  }, []);
 
   const handleOfferSelect = (offer) => {
     setSelectedOffer(
