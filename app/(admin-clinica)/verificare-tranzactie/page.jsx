@@ -11,12 +11,6 @@ export const metadata = {
 };
 
 const index = async () => {
-  const utilizatorData = await handleQueryFirestore("Users", "id", userId);
-  const ofertaData = await handleQueryFirestoreSubcollection(
-    "Oferte",
-    "documentId",
-    offerId
-  );
   return (
     <>
       <CreateListing />
