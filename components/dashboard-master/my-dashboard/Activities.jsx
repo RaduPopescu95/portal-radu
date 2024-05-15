@@ -1,16 +1,21 @@
 const Activities = ({ actiuni }) => {
+  // Sortăm actiuni descrescător după firstUploadDate
+  const sortedActiuni = [...actiuni].sort(
+    (a, b) => new Date(b.firstUploadDate) - new Date(a.firstUploadDate)
+  );
+
   return (
     <>
-      {actiuni.map((activity, index) => (
+      {sortedActiuni.map((activity, index) => (
         <div
           key={activity.id}
           className={`grid ${
-            index === actiuni.length - 1 ? "mb0" : ""
+            index === sortedActiuni.length - 1 ? "mb0" : ""
           } d-flex justify-content-between`}
         >
           <ul
             className={`list-unstyled ${
-              index === actiuni.length - 1 ? "pb0 mb0 bb_none" : ""
+              index === sortedActiuni.length - 1 ? "pb0 mb0 bb_none" : ""
             }`}
           >
             <li className="list-inline-item">
