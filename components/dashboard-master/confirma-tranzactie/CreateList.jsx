@@ -316,7 +316,7 @@ const CreateList = ({ oferta }) => {
         <div className="my_profile_setting_input">
           {/* <button className="btn btn1">Actualizeaza Profil</button> */}
           <button className="btn btn2" onClick={handleToggle}>
-            {doc.status === "Confirma"
+            {oferta.status === "Confirma"
               ? "Anuleaza confirmare tranzactie"
               : "Confirma tranzactie"}
           </button>
