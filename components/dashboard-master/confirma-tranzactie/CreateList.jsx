@@ -1,6 +1,11 @@
 "use client";
 
 import ImageModal from "@/components/common/ImageModa";
+import {
+  handleQueryFirestore,
+  handleUpdateFirestore,
+  handleUpdateFirestoreSubcollection,
+} from "@/utils/firestoreUtils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -26,9 +31,43 @@ const CreateList = ({ oferta }) => {
     oferta?.oferta?.gradeFidelitate?.includes("Platinum") ? true : false
   );
 
-  // upload profile
-  const uploadProfile = (e) => {
-    setProfile(e.target.files[0]);
+  // Confirma tranzactie
+  const handleToggle = async (oferta) => {
+    console.log(oferta);
+    // Mapați și transformați fiecare item asincron
+
+    // Verifică statusul curent și îl schimbă
+    const newStatus =
+      oferta.status === "Confirmata" ? "Neconfirmata" : "Confirmata";
+    let data = {
+      status: newStatus,
+    };
+    await handleUpdateFirestoreSubcollection(
+      data,
+      `Users/${oferta?.collectionId}/OferteInregistrate/${oferta?.documentId}`
+    );
+    const doctor = await handleQueryFirestore(
+      "Users",
+      "user_uid",
+      oferta?.idUtilizator
+    );
+    const partener = await handleQueryFirestore(
+      "Users",
+      "user_uid",
+      oferta?.collectionId
+    );
+
+    if (newStatus === "Confirmata") {
+      doctor[0].rulajCont =
+        Number(doctor[0].rulajCont) + Number(oferta.pretFinal);
+    } else if (newStatus === "Neconfirmata") {
+      doctor[0].rulajCont =
+        Number(doctor[0].rulajCont) - Number(oferta.pretFinal);
+    }
+
+    console.log("test....doctor[0]....email", doctor[0].email);
+    console.log("test....partener[0]....email", partener[0].email);
+    await handleUpdateFirestore(`Users/${oferta.idUtilizator}`, doctor[0]);
   };
 
   useEffect(() => {
@@ -269,6 +308,18 @@ const CreateList = ({ oferta }) => {
             value={oferta?.pretFinal}
             readOnly
           />
+        </div>
+      </div>
+      {/* End .col */}
+
+      <div className="col-xl-12 text-right mt-4">
+        <div className="my_profile_setting_input">
+          {/* <button className="btn btn1">Actualizeaza Profil</button> */}
+          <button className="btn btn2" onClick={handleToggle}>
+            {doc.status === "Confirma"
+              ? "Anuleaza confirmare tranzactie"
+              : "Confirma tranzactie"}
+          </button>
         </div>
       </div>
       {/* End .col */}
