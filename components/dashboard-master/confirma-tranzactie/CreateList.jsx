@@ -43,7 +43,7 @@ const CreateList = ({ oferta }) => {
     let data = {
       status: newStatus,
     };
-    setStatus(newStatus);
+
     await handleUpdateFirestoreSubcollection(
       data,
       `Users/${oferta?.collectionId}/OferteInregistrate/${oferta?.documentId}`
@@ -68,9 +68,9 @@ const CreateList = ({ oferta }) => {
     }
 
     console.log("test....doctor[0]....email", doctor[0].email);
-    console.log("test....partener[0]....email", partener[0].email);
     await handleUpdateFirestore(`Users/${oferta.idUtilizator}`, doctor[0]).then(
       () => {
+        console.log("test....partener[0]....email", partener[0].email);
         router.refresh();
       }
     );
