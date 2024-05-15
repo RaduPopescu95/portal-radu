@@ -35,7 +35,7 @@ const CreateList = ({ oferta }) => {
   const router = useRouter();
 
   // Confirma tranzactie
-  const handleToggle = async (oferta) => {
+  const handleToggle = async () => {
     console.log(oferta);
     // Mapați și transformați fiecare item asincron
 
