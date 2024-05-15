@@ -22,13 +22,16 @@ const index = async ({ params }) => {
   const codParts = cod.split("UIDD");
   const offerId = codParts[0];
   const partenerId = codParts[1];
-
-  const utilizatorData = await handleQueryFirestore("Users", "id", userId);
-  const ofertaData = await handleQueryFirestoreSubcollection(
-    "Oferte",
-    "documentId",
-    offerId
-  );
+  let ofertaData = [];
+  let utilizatorData = [];
+  if (userId) {
+    utilizatorData = await handleQueryFirestore("Users", "id", userId);
+    ofertaData = await handleQueryFirestoreSubcollection(
+      "Oferte",
+      "documentId",
+      offerId
+    );
+  }
   // console.log("parms...ofertaData", ofertaData);
   // console.log("parms...utilizatorData", utilizatorData);
   return (
