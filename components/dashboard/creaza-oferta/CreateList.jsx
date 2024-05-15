@@ -167,7 +167,7 @@ const CreateList = ({ oferta }) => {
       procentReducere,
       pretRedus,
       pretIntreg,
-      status: "Inactiva",
+      status: "Activa",
       imagineOferta: lg,
     };
     try {
@@ -210,7 +210,7 @@ const CreateList = ({ oferta }) => {
         procentReducere,
         pretRedus,
         pretIntreg,
-        status: "Inactiva",
+        status: "Activa",
         imagineOferta: lg,
       };
 
@@ -452,7 +452,7 @@ const CreateList = ({ oferta }) => {
           {/* End .col */}
         </>
       ) : (
-        <div className="col-lg-4 col-xl-4">
+        <div className="col-lg-12 col-xl-12">
           <div className="my_profile_setting_input form-group">
             <label htmlFor="procentReducere">Procent reducere %</label>
             <input
@@ -467,37 +467,37 @@ const CreateList = ({ oferta }) => {
         </div>
       )}
 
-      {tipOferta === "Oferta specifică" && (
-        <>
-          <div className="col-lg-6 col-xl-6">
-            <div className="my_profile_setting_input form-group">
-              <label htmlFor="activationDate">Data de activare</label>
-              <input
-                type="date"
-                className="form-control"
-                id="activationDate"
-                value={dataActivare}
-                onChange={(e) => setDataActivare(e.target.value)}
-              />
-            </div>
+      {/* {tipOferta === "Oferta specifică" && ( */}
+      <>
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="activationDate">Data de activare</label>
+            <input
+              type="date"
+              className="form-control"
+              id="activationDate"
+              value={dataActivare}
+              onChange={(e) => setDataActivare(e.target.value)}
+            />
           </div>
-          {/* End .col */}
+        </div>
+        {/* End .col */}
 
-          <div className="col-lg-6 col-xl-6">
-            <div className="my_profile_setting_input form-group">
-              <label htmlFor="deactivationDate">Data de dezactivare</label>
-              <input
-                type="date"
-                className="form-control"
-                id="deactivationDate"
-                value={dataDezactivare}
-                onChange={(e) => setDataDezactivare(e.target.value)}
-              />
-            </div>
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="deactivationDate">Data de dezactivare</label>
+            <input
+              type="date"
+              className="form-control"
+              id="deactivationDate"
+              value={dataDezactivare}
+              onChange={(e) => setDataDezactivare(e.target.value)}
+            />
           </div>
-          {/* End .col */}
-        </>
-      )}
+        </div>
+        {/* End .col */}
+      </>
+      {/* )} */}
 
       {/* End .col */}
       {/* <div className="col-lg-4 col-xl-4">

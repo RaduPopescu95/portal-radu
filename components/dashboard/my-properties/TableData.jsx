@@ -147,12 +147,20 @@ const TableData = ({ oferte }) => {
       {/* End td */}
 
       <td>
-        {item.status === "Inactiva" ? (
-          <span className="status_tag redbadge">Inactiva</span>
-        ) : item.status === "Activa" ? (
-          <span className="status_tag badge">Activa</span>
-        ) : null}
+        {(() => {
+          const today = new Date();
+          const startDate = new Date(item.dataActivare);
+          const endDate = new Date(item.dataDezactivare);
+          const isActive = today >= startDate && today <= endDate;
+
+          if (isActive) {
+            return <span className="status_tag badge">Activa</span>;
+          } else {
+            return <span className="status_tag redbadge">Inactiva</span>;
+          }
+        })()}
       </td>
+
       {/* End td */}
 
       <GradeFidelitate grades={item.gradeFidelitate} />
@@ -188,7 +196,7 @@ const TableData = ({ oferte }) => {
             </a>
           </li>
           {/* End li */}
-          <li
+          {/* <li
             className="list-inline-item"
             data-toggle="tooltip"
             data-placement="top"
@@ -213,7 +221,7 @@ const TableData = ({ oferte }) => {
                 </>
               )}
             </a>
-          </li>
+          </li> */}
           {/* End li */}
         </ul>
       </td>

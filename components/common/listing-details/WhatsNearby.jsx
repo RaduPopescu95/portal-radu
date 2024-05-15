@@ -33,21 +33,29 @@ const WhatsNearby = ({ oferte }) => {
 
   const closeModal = () => setIsModalVisible(false);
 
+  const today = new Date();
+
   const renderContent = (level) => {
-    // Verifică dacă utilizatorul este partener și returnează un fragment gol dacă este așa
-    console.log("yes....", userData);
-    if (userData?.userType === "Partener") {
-      return null; // sau poți returna <></> pentru a fi mai explicit
+    if (userData?.userType === "Partener" || !userData) {
+      return null;
     }
+
+    const today = new Date();
 
     return (
       <>
         {oferte
-          .filter(
-            (offer) =>
-              offer?.gradeFidelitate.includes(level) &&
-              offer?.status === "Activa"
-          )
+          .filter((offer) => {
+            const offerStart = new Date(offer.dataActivare);
+            const offerEnd = new Date(offer.dataDezactivare);
+            console.log("offerstart...", offerStart);
+            console.log("offerEnd...", offerEnd);
+            const isActive =
+              today >= offerStart &&
+              today <= offerEnd &&
+              offer?.gradeFidelitate.includes(level);
+            return isActive;
+          })
           .map((offer, index) => {
             const isAvailable =
               fidelityLevels[userData?.gradFidelitate].includes(level);
