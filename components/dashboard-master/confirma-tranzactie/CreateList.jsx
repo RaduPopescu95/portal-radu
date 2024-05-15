@@ -19,9 +19,7 @@ const CreateList = ({ oferta }) => {
   const [fullPrice, setFullPrice] = useState("");
   const [discountedPrice, setDiscountedPrice] = useState("");
   const [discountPercentage, setDiscountPercentage] = useState("");
-  const [selectedOfferType, setSelectedOfferType] = useState(
-    "Oferta cu discount procentual general"
-  ); // Starea pentru select
+  const [status, setStatus] = useState(oferta.status || ""); // Starea pentru select
   const [fidelitySilver, setFidelitySilver] = useState(
     oferta?.oferta?.gradeFidelitate?.includes("Silver") ? true : false
   );
@@ -45,6 +43,7 @@ const CreateList = ({ oferta }) => {
     let data = {
       status: newStatus,
     };
+    setStatus(newStatus);
     await handleUpdateFirestoreSubcollection(
       data,
       `Users/${oferta?.collectionId}/OferteInregistrate/${oferta?.documentId}`
@@ -323,7 +322,7 @@ const CreateList = ({ oferta }) => {
         <div className="my_profile_setting_input">
           {/* <button className="btn btn1">Actualizeaza Profil</button> */}
           <button className="btn btn2" onClick={handleToggle}>
-            {oferta.status === "Confirma"
+            {status === "Confirma"
               ? "Anuleaza confirmare tranzactie"
               : "Confirma tranzactie"}
           </button>
