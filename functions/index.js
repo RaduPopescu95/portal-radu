@@ -5,10 +5,12 @@ const nodemailer = require("nodemailer");
 admin.initializeApp();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "mail.creditemedicale.ro",
+  port: 465,
+  secure: true, // true for 465, false for other ports
   auth: {
-    user: "webdynamicx@gmail.com",
-    pass: "fvpa iumc syvz cueq",
+    user: "exclusivmd@creditemedicale.ro",
+    pass: "vtn0079su8dh",
   },
 });
 
@@ -33,7 +35,7 @@ exports.sendConfirmationEmails = functions.firestore
         `noastră. Pentru detalii suplimentare accesați www.exlusivmd.ro`;
 
         const mailOptions = {
-          from: "test@email.com",
+          from: "exclusivmd@creditemedicale.ro",
           to: emails.join(", "),
           subject: `Confirmare Oferta ${oldV.oferta.titluOferta}`,
           text,

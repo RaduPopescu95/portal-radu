@@ -229,6 +229,7 @@ const LoginSignupPartener = () => {
         firstUploadDate: dateTime.date,
         firstUploadTime: dateTime.time,
         user_uid,
+        gradFidelitate: "Platinum",
       };
 
       await setDoc(doc(db, "Users", user_uid), userData).then(() => {

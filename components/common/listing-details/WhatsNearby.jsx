@@ -34,7 +34,7 @@ const WhatsNearby = ({ oferte }) => {
   const today = new Date();
 
   const renderContent = (level) => {
-    if (userData?.userType === "Partener" || !userData) {
+    if (userData?.userType === "Partener" && userData?.user_uid !== oferte[0].collectionId || !userData) {
       return null;
     }
 
@@ -46,12 +46,7 @@ const WhatsNearby = ({ oferte }) => {
           .filter((offer) => {
             const offerStart = new Date(offer.dataActivare);
             const offerEnd = new Date(offer.dataDezactivare);
-            console.log("offerstart...", offerStart);
-            console.log("offerstart...", offerStart);
-            console.log("offerstart...", offerStart);
-            console.log("offerstart...", offerStart);
-            console.log("offerstart...", offerStart);
-            console.log("offerEnd...", offerEnd);
+       
             const isActive =
               today >= offerStart &&
               today <= offerEnd &&
