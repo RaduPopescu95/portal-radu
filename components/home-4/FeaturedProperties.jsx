@@ -42,15 +42,15 @@ const FeaturedProperties = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: Math.min(2, parteneri.length),
-          slidesToScroll: 3,
+          slidesToShow: 1,
+          slidesToScroll: 1,
         },
       },
       {
         breakpoint: 520,
         settings: {
-          slidesToShow: Math.min(1, parteneri.length),
-          slidesToScroll: 3,
+          slidesToShow: 1,
+          slidesToScroll: 1,
         },
       },
     ],
