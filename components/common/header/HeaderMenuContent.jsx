@@ -67,14 +67,14 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End .simpleitem */}
 
-      <li className="last">
+      {/* <li className="last">
         <Link
           href="/parteneri"
           className={pathname === "/parteneri" ? "ui-active" : undefined}
         >
           Parteneri
         </Link>
-      </li>
+      </li> */}
       {/* End .simpleitem */}
 
       <li className="dropitem">
@@ -150,7 +150,7 @@ const HeaderMenuContent = ({ float = "" }) => {
               data-bs-toggle="modal"
               data-bs-target=".bd-utilizator-modal-lg"
             >
-              <span className="dn-lg">Utilizator</span>
+              <span className="dn-lg">Cadre medicale</span>
             </a>
           </li>
           {/* End .dropitem */}
@@ -161,7 +161,7 @@ const HeaderMenuContent = ({ float = "" }) => {
               data-bs-toggle="modal"
               data-bs-target=".bd-partener-modal-lg"
             >
-              <span className="dn-lg">Partener</span>
+              <span className="dn-lg">Parteneri</span>
             </a>
           </li>
           {/* End .dropitem */}
@@ -171,13 +171,13 @@ const HeaderMenuContent = ({ float = "" }) => {
       {userData?.userType === "Partener" && currentUser ? (
         <li className={`list-inline-item add_listing ${float}`}>
           <Link href="/panou-partener">
-            <span className="dn-lg">CONT PARTENER</span>
+            <span className="dn-lg">CONTUL MEU</span>
           </Link>
         </li>
       ) : userData?.userType === "Doctor" && currentUser ? (
         <li className={`list-inline-item add_listing ${float}`}>
           <Link href="/utilizator">
-            <span className="dn-lg">CONT UTILIZATOR</span>
+            <span className="dn-lg">CONTUL MEU</span>
           </Link>
         </li>
       ) : null}

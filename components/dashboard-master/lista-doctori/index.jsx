@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "../../common/header/dashboard-master/Header";
 import SidebarMenu from "../../common/header/dashboard-master/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -5,8 +7,18 @@ import TableData from "./TableData";
 import Filtering from "./Filtering";
 import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
+import { useEffect, useState } from "react";
+import { useDataWithPaginationAndSearch } from "@/hooks/useDataWithPaginationAndSearch";
 
 const index = ({ doctori }) => {
+  const {
+    currentData,
+    setCurrentPage,
+    totalPages,
+    setSearchTerm,
+    currentPage,
+  } = useDataWithPaginationAndSearch(doctori, "numeUtilizator");
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -63,7 +75,7 @@ const index = ({ doctori }) => {
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">
-                          <SearchBox />
+                          <SearchBox onSearch={setSearchTerm} />
                         </div>
                       </li>
                       {/* End li */}
@@ -81,14 +93,16 @@ const index = ({ doctori }) => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        <TableData doctori={doctori} />
+                        <TableData doctori={currentData} />
                       </div>
-                      {/* End .table-responsive */}
 
                       <div className="mbp_pagination">
-                        <Pagination />
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          setCurrentPage={setCurrentPage}
+                        />
                       </div>
-                      {/* End .mbp_pagination */}
                     </div>
                     {/* End .property_table */}
                   </div>

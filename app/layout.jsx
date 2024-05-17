@@ -20,6 +20,11 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Nunito:400,400i,500,600,700&display=swap"
         />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+
         <link rel="icon" href="./favicon.ico" />
       </head>
       <body>

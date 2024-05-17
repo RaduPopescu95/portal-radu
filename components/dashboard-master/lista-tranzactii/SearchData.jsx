@@ -7,6 +7,7 @@ import {
   handleUpdateFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 // CSS in JS pentru simbolurile tick și close
@@ -20,8 +21,8 @@ const styles = {
 };
 
 const SearchData = ({ oferteInregistrate }) => {
-  const [offers, setOffers] = useState([...oferteInregistrate]);
   const { currentUser } = useAuth();
+  const router = useRouter();
 
   const handleToggle = async (oferta) => {
     console.log(oferta);
@@ -69,9 +70,7 @@ const SearchData = ({ oferteInregistrate }) => {
         return item; // Returnează obiectul neschimbat
       })
     );
-
-    // Actualizează starea offers cu noul array modificat
-    setOffers(updatedOffers);
+    router.refresh();
   };
   return (
     <table className="table">
@@ -87,7 +86,7 @@ const SearchData = ({ oferteInregistrate }) => {
         </tr>
       </thead>
       <tbody>
-        {offers.map((row, index) => (
+        {oferteInregistrate.map((row, index) => (
           <tr key={index} className={row.active ? "title active" : "title"}>
             <td className="para">{row.oferta?.titluOferta}</td>
             <td className="para">{row.oferta?.tipOferta}</td>

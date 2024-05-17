@@ -11,6 +11,7 @@ import {
   handleUpdateFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
 import { update } from "firebase/database";
+import { useRouter } from "next/navigation";
 
 // CSS in JS pentru simbolurile tick și close
 const styles = {
@@ -23,7 +24,7 @@ const styles = {
 };
 
 const TableData = ({ parteneri: parts }) => {
-  const [parteneri, setParteneri] = useState([...parts]);
+  const router = useRouter();
   // const { currentUser } = useAuth();
 
   const handleToggle = async (doctor) => {
@@ -44,12 +45,12 @@ const TableData = ({ parteneri: parts }) => {
       })
     );
     console.log(updateParteners);
+    router.refresh();
     // Actualizează starea offers cu noul array modificat
-    setParteneri(updateParteners);
   };
 
   let theadConent = ["Partener", "Data Inregistrare", "Status Cont", "Actiune"];
-  let tbodyContent = parteneri?.map((item) => (
+  let tbodyContent = parts?.map((item) => (
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">

@@ -1,10 +1,22 @@
+"use client";
+
+import { useDataWithPaginationAndSearch } from "@/hooks/useDataWithPaginationAndSearch";
 import Header from "../../common/header/dashboard-master/Header";
 import SidebarMenu from "../../common/header/dashboard-master/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
+import Pagination from "../lista-doctori/Pagination";
 import SearchData from "../lista-tranzactii/SearchData";
 import SearchBox from "./SearchBox";
 
 const index = ({ oferteInregistrate }) => {
+  const {
+    currentData,
+    setCurrentPage,
+    totalPages,
+    setSearchTerm,
+    currentPage,
+  } = useDataWithPaginationAndSearch(oferteInregistrate, "numePartener");
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -62,7 +74,7 @@ const index = ({ oferteInregistrate }) => {
                 <div className="col-md-4 col-lg-4 col-xl-3 mb20">
                   <ul className="sasw_list mb0">
                     <li className="search_area">
-                      <SearchBox />
+                      <SearchBox onSearch={setSearchTerm} />
                     </li>
                   </ul>
                 </div>
@@ -76,10 +88,17 @@ const index = ({ oferteInregistrate }) => {
                     <div className="col-lg-12">
                       <div className="savesearched_table">
                         <div className="table-responsive mt0">
-                          <SearchData oferteInregistrate={oferteInregistrate} />
+                          <SearchData oferteInregistrate={currentData} />
                         </div>
                       </div>
                       {/* End .packages_table */}
+                      <div className="mbp_pagination">
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          setCurrentPage={setCurrentPage}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

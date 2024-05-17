@@ -44,6 +44,8 @@ const LoginSignupUtilizator = () => {
   const [buttonPressed, setButtonPressed] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const router = useRouter();
 
   const showAlert = (message, type) => {
@@ -337,7 +339,7 @@ const LoginSignupUtilizator = () => {
 
                   <div className="input-group form-group">
                     <input
-                      type="password"
+                      type={passwordVisible ? "text" : "password"}
                       className={`form-control ${
                         !password && buttonPressed && "border-danger"
                       }`}
@@ -347,8 +349,15 @@ const LoginSignupUtilizator = () => {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-password"></i>
+                      <div
+                        className="input-group-text"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                      >
+                        <i
+                          className={
+                            passwordVisible ? "fas fa-eye" : "fas fa-eye-slash"
+                          }
+                        ></i>
                       </div>
                     </div>
                   </div>
@@ -469,7 +478,7 @@ const LoginSignupUtilizator = () => {
 
                   <div className="form-group input-group  mb-3">
                     <input
-                      type="password"
+                      type={passwordVisible ? "text" : "password"}
                       className={`form-control ${
                         !password && buttonPressed && "border-danger"
                       }`}
@@ -479,8 +488,15 @@ const LoginSignupUtilizator = () => {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-password"></i>
+                      <div
+                        className="input-group-text"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                      >
+                        <i
+                          className={
+                            passwordVisible ? "fas fa-eye" : "fas fa-eye-slash"
+                          }
+                        ></i>
                       </div>
                     </div>
                   </div>
@@ -488,7 +504,7 @@ const LoginSignupUtilizator = () => {
 
                   <div className="form-group input-group  mb-3">
                     <input
-                      type="password"
+                      type={passwordVisible ? "text" : "password"}
                       className={`form-control ${
                         !confirmPassword && buttonPressed && "border-danger"
                       }`}
@@ -498,8 +514,15 @@ const LoginSignupUtilizator = () => {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-password"></i>
+                      <div
+                        className="input-group-text"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                      >
+                        <i
+                          className={
+                            passwordVisible ? "fas fa-eye" : "fas fa-eye-slash"
+                          }
+                        ></i>
                       </div>
                     </div>
                   </div>

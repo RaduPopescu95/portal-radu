@@ -72,7 +72,7 @@ const MobileMenuContent = () => {
               Acasă
             </div>
           </MenuItem>
-          <MenuItem>
+          {/* <MenuItem>
             <div
               onClick={() => router.push("/parteneri")}
               className={
@@ -81,7 +81,7 @@ const MobileMenuContent = () => {
             >
               Parteneri
             </div>
-          </MenuItem>
+          </MenuItem> */}
 
           <SubMenu
             label="Despre noi"
@@ -142,7 +142,7 @@ const MobileMenuContent = () => {
                   data-bs-toggle="modal"
                   data-bs-target=".bd-partener-modal-lg"
                 >
-                  <span className="pl5">Partener</span>
+                  <span className="pl5">Parteneri</span>
                 </a>
               </MenuItem>
               <MenuItem>
@@ -152,7 +152,7 @@ const MobileMenuContent = () => {
                   data-bs-toggle="modal"
                   data-bs-target=".bd-utilizator-modal-lg"
                 >
-                  <span className="pl5">Utilizator</span>
+                  <span className="pl5">Cadre medicale</span>
                 </a>
               </MenuItem>
             </>
@@ -166,7 +166,7 @@ const MobileMenuContent = () => {
           className="btn btn-block btn-lg btn-thm circle"
           style={{ width: "90%", margin: "10px auto" }}
         >
-          Cont Partener
+          CONTUL MEU
         </Link>
       ) : userData?.userType === "Doctor" && currentUser ? (
         <Link
@@ -174,7 +174,7 @@ const MobileMenuContent = () => {
           className="btn btn-block btn-lg btn-thm circle"
           style={{ width: "90%", margin: "0px auto" }}
         >
-          Cont Utilizator
+          CONTUL MEU
         </Link>
       ) : null}
     </>

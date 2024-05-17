@@ -11,6 +11,7 @@ import {
   handleUpdateFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
 import { update } from "firebase/database";
+import { useRouter } from "next/navigation";
 
 // CSS in JS pentru simbolurile tick și close
 const styles = {
@@ -23,7 +24,8 @@ const styles = {
 };
 
 const TableData = ({ doctori: docs }) => {
-  const [doctori, setDoctori] = useState([...docs]);
+  // const [doctori, setDoctori] = useState([...docs]);
+  const router = useRouter();
   // const { currentUser } = useAuth();
 
   const handleToggle = async (doctor) => {
@@ -45,11 +47,12 @@ const TableData = ({ doctori: docs }) => {
     );
     console.log(updateDoctors);
     // Actualizează starea offers cu noul array modificat
-    setDoctori(updateDoctors);
+
+    router.refresh();
   };
 
   let theadConent = ["Doctor", "Data Inregistrare", "Status Cont", "Actiune"];
-  let tbodyContent = doctori?.map((item) => (
+  let tbodyContent = docs?.map((item) => (
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">

@@ -14,7 +14,7 @@ const PropertyItem = ({ item, isActive }) => {
           <Image
             width={343}
             height={220}
-            className="img-whp w-100 h-100 cover"
+            className="img-whp"
             src={item?.images?.imgs[0]?.finalUri}
             alt="fp1.jpg"
           />

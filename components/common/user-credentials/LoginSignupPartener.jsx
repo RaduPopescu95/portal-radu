@@ -54,6 +54,9 @@ const LoginSignupPartener = () => {
   const [alert, setAlert] = useState({ message: "", type: "" });
   const [buttonPressed, setButtonPressed] = useState(false);
 
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
   const showAlert = (message, type) => {
     setAlert({ message, type });
   };
@@ -371,7 +374,7 @@ const LoginSignupPartener = () => {
 
                   <div className="input-group form-group">
                     <input
-                      type="password"
+                      type={passwordVisible ? "text" : "password"}
                       className={`form-control ${
                         !password && buttonPressed && "border-danger"
                       }`}
@@ -381,8 +384,15 @@ const LoginSignupPartener = () => {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-password"></i>
+                      <div
+                        className="input-group-text"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                      >
+                        <i
+                          className={
+                            passwordVisible ? "fas fa-eye" : "fas fa-eye-slash"
+                          }
+                        ></i>
                       </div>
                     </div>
                   </div>
@@ -504,7 +514,7 @@ const LoginSignupPartener = () => {
 
                   <div className="form-group input-group  mb-3">
                     <input
-                      type="password"
+                      type={passwordVisible ? "text" : "password"}
                       className={`form-control ${
                         !password && buttonPressed && "border-danger"
                       }`}
@@ -514,8 +524,15 @@ const LoginSignupPartener = () => {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-password"></i>
+                      <div
+                        className="input-group-text"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                      >
+                        <i
+                          className={
+                            passwordVisible ? "fas fa-eye" : "fas fa-eye-slash"
+                          }
+                        ></i>
                       </div>
                     </div>
                   </div>
@@ -537,7 +554,7 @@ const LoginSignupPartener = () => {
 
                   <div className="form-group input-group  mb-3">
                     <input
-                      type="password"
+                      type={passwordVisible ? "text" : "password"}
                       className={`form-control ${
                         !confirmPassword && buttonPressed && "border-danger"
                       }`}
@@ -547,8 +564,15 @@ const LoginSignupPartener = () => {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-password"></i>
+                      <div
+                        className="input-group-text"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                      >
+                        <i
+                          className={
+                            passwordVisible ? "fas fa-eye" : "fas fa-eye-slash"
+                          }
+                        ></i>
                       </div>
                     </div>
                   </div>

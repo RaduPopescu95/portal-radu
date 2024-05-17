@@ -15,7 +15,6 @@ const styles = {
 };
 
 const SearchData = ({ mesajeInregistrare }) => {
-  const [offers, setOffers] = useState([...mesajeInregistrare]);
   const { currentUser } = useAuth();
 
   // const handleToggle = async (oferta) => {
@@ -74,7 +73,7 @@ const SearchData = ({ mesajeInregistrare }) => {
         </tr>
       </thead>
       <tbody>
-        {offers.map((row, index) => (
+        {mesajeInregistrare.map((row, index) => (
           <tr key={index} className={"title"}>
             <td className="para">{row.form_name}</td>
             <td className="para">{row.form_subject}</td>
