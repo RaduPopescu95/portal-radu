@@ -31,21 +31,21 @@ const Header = () => {
         {/* <!-- Ace Responsive Menu --> */}
 
         <Link href="/" className="navbar_brand float-start dn-smd">
-          {/* <Image
-            width={40}
-            height={45}
+          <Image
+            width={220}
+            height={225}
             className="logo1 img-fluid"
-            src="/assets/images/header-logo.png"
-            alt="header-logo.png"
+            src="/assets/images/logo_exclusivmd.svg"
+            alt="logo_exclusivmd.svg"
           />
           <Image
-            width={40}
-            height={45}
+            width={220}
+            height={225}
             className="logo2 img-fluid"
-            src="/assets/images/header-logo2.png"
+            src="/assets/images/logo_exclusivmd.svg"
             alt="header-logo2.png"
-          /> */}
-          <span>Portal</span>
+          />
+          {/* <span>ExclusivMD</span> */}
         </Link>
         {/* site logo brand */}
 

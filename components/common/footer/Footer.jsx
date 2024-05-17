@@ -5,7 +5,7 @@ import SubscribeForm from "./SubscribeForm";
 const Footer = () => {
   return (
     <>
-      <div className="col-sm-6 col-md-6 col-lg-3 col-xl-3 pr0 pl0">
+      <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4 pr0 pl0">
         <div className="footer_about_widget">
           <h4>ExclusivMD</h4>
           <p>
@@ -20,7 +20,7 @@ const Footer = () => {
       </div>
       {/* End .col */}
 
-      <div className="col-sm-6 col-md-6 col-lg-3 col-xl-3">
+      <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
         <div className="footer_qlink_widget">
           <h4>Companie</h4>
           <ul className="list-unstyled">
@@ -41,7 +41,7 @@ const Footer = () => {
       </div>
       {/* End .col */}
 
-      <div className="col-sm-6 col-md-6 col-lg-3 col-xl-3">
+      <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
         <div className="footer_contact_widget">
           <h4>Contactează-ne</h4>
           <ul className="list-unstyled">
@@ -59,16 +59,16 @@ const Footer = () => {
       </div>
       {/* End .col */}
 
-      <div className="col-sm-6 col-md-6 col-lg-3 col-xl-3">
+      {/* <div className="col-sm-6 col-md-6 col-lg-3 col-xl-3">
         <div className="footer_social_widget">
           <h4>Urmărește-ne</h4>
           <ul className="mb30">
             <Social />
           </ul>
-          {/* <h4>Subscribe</h4>
-          <SubscribeForm /> */}
+          <h4>Subscribe</h4>
+          <SubscribeForm />
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
