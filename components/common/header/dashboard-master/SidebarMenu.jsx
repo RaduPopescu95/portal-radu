@@ -46,7 +46,7 @@ const SidebarMenu = () => {
 
   useEffect(() => {
     if (!loading) {
-      if (!currentUser || currentUser.uid !== "ieAXxQk505VmglsvXoWthv8q04F2") {
+      if (!currentUser || currentUser.uid !== "tXKgggOktOMhBNxBKHFnDTArdP63") {
         console.log("User not authenticated or UID mismatch");
         router.push("/signin");
       }
