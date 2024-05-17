@@ -296,7 +296,7 @@ const LoginSignupUtilizator = () => {
               <div className="login_form">
                 <form onSubmit={handleLogIn} action="#">
                   <div className="heading">
-                    <h4>Autentificare utilizator</h4>
+                    <h4>Autentificare cadru medical</h4>
                   </div>
                   {/* End heading */}
 
@@ -416,7 +416,7 @@ const LoginSignupUtilizator = () => {
               <div className="col-lg-6 col-xl-6">
                 <div className="sign_up_form">
                   <div className="heading">
-                    <h4>Înregistrare Utilizator</h4>
+                    <h4>Înregistrare Cadru medical</h4>
                   </div>
                   {/* End .heading */}
 
