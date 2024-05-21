@@ -10,6 +10,7 @@ import {
   handleDeleteFirestoreData,
   handleUpdateFirestore,
   handleUpdateFirestoreSubcollection,
+  handleUploadFirestore,
 } from "@/utils/firestoreUtils";
 import { update } from "firebase/database";
 import { useRouter } from "next/navigation";
@@ -61,26 +62,38 @@ const TableData = ({ doctori: docs }) => {
   };
 
   const handleDeleteClick = (itemId) => {
-    console.log(itemId)
+    console.log(itemId);
     setSelectedItemId(itemId); // Salvează ID-ul elementului selectat
     setShowModal(true); // Afișează modalul
   };
 
   // Logica de ștergere a elementului
   const handleConfirmDelete = async () => {
-    console.log("Deleting item with ID:", selectedItemId);
-    console.log("location.....:", location);
-    await handleDeleteFirestoreData(
-      `${"Users"}/${selectedItemId}`,
-      true,
-      "Users",
-      "Doctor"
-    ).then(() => {
-      router.refresh()
-    })
-    // Aici adaugi logica pentru a șterge elementul din sursa ta de date
-   
-    setShowModal(false); // Închide modalul după ștergere
+    try {
+      console.log("Deleting item with ID:", selectedItemId);
+      console.log("location.....:", location);
+
+      await handleDeleteFirestoreData(
+        `${"Users"}/${selectedItemId}`,
+        true,
+        "Users",
+        "Doctor"
+      );
+
+      await handleUploadFirestore(
+        { uidToDelete: selectedItemId },
+        "DeletedUsers"
+      );
+
+      router.refresh();
+
+      // Aici adaugi logica pentru a șterge elementul din sursa ta de date
+
+      setShowModal(false); // Închide modalul după ștergere
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      // Optionally handle the error (e.g., show a notification to the user)
+    }
   };
 
   let theadConent = ["Doctor", "Data Inregistrare", "Status Cont", "Actiune"];

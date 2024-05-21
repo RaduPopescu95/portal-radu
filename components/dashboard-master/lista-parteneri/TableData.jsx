@@ -10,6 +10,7 @@ import {
   handleDeleteFirestoreData,
   handleUpdateFirestore,
   handleUpdateFirestoreSubcollection,
+  handleUploadFirestore,
 } from "@/utils/firestoreUtils";
 import { update } from "firebase/database";
 import { useRouter } from "next/navigation";
@@ -57,15 +58,15 @@ const TableData = ({ parteneri: parts }) => {
     // Actualizează starea offers cu noul array modificat
   };
 
-    // Închide modalul fără a șterge
-    const handleCloseModal = () => {
-      setShowModal(false);
-    };
+  // Închide modalul fără a șterge
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   const handleDeleteClick = (partener) => {
-    console.log(partener)
-    setImagesToDelete([...partener.images.imgs])
-    setLogoToDelete(partener.logo.fileName)
+    console.log(partener);
+    setImagesToDelete([...partener.images.imgs]);
+    setLogoToDelete(partener.logo.fileName);
     setSelectedItemId(partener.user_uid); // Salvează ID-ul elementului selectat
     setShowModal(true); // Afișează modalul
   };
@@ -73,12 +74,12 @@ const TableData = ({ parteneri: parts }) => {
   // Logica de ștergere a elementului
   const handleConfirmDelete = async () => {
     setIsLoading(true);
-  
+
     try {
       console.log("Deleting item with ID:", selectedItemId);
       console.log("location.....:", location);
-      const fileNames = imagesToDelete.map(image => image.fileName);
-      
+      const fileNames = imagesToDelete.map((image) => image.fileName);
+
       await deleteMultipleImages("ImaginiProfil", fileNames);
       await deleteImage("ProfileLogo", logoToDelete);
       await handleDeleteFirestoreData(
@@ -87,10 +88,14 @@ const TableData = ({ parteneri: parts }) => {
         "Users",
         "Partener"
       );
-  
+      await handleUploadFirestore(
+        { uidToDelete: selectedItemId },
+        "DeletedUsers"
+      );
+
       // Aici adaugi logica pentru a șterge elementul din sursa ta de date
       setShowModal(false); // Închide modalul după ștergere
-  
+
       // Dacă dorești să aștepți până când router-ul se reîmprospătează înainte de a seta loading-ul la false
       router.refresh();
     } catch (error) {
@@ -100,7 +105,6 @@ const TableData = ({ parteneri: parts }) => {
       setIsLoading(false); // Setează isLoading la false indiferent dacă ștergerea a reușit sau a eșuat
     }
   };
-  
 
   let theadConent = ["Partener", "Data Inregistrare", "Status Cont", "Actiune"];
   let tbodyContent = parts?.map((item) => (
@@ -194,7 +198,6 @@ const TableData = ({ parteneri: parts }) => {
             title="Toggle"
           >
             <a
-     
               onClick={(e) => {
                 e.preventDefault();
                 handleToggle(item);
