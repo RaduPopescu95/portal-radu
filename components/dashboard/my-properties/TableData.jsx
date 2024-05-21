@@ -31,7 +31,6 @@ const TableData = ({ oferte }) => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  console.log("TableData oferte:", oferte); // Check what is received exactly
   const { currentUser } = useAuth();
   const collectionPath = `Users/${currentUser?.uid}/Oferte`; // Replace with your actual path
   const pageSize = 6; // Set the desired number of items per page
@@ -63,7 +62,6 @@ const TableData = ({ oferte }) => {
       );
 
       if (selectedItem.imagineOferta) {
-        console.log("trying to delete image....");
         await deleteImage("PozeOferte", selectedItem.imagineOferta.fileName);
       }
 
@@ -80,28 +78,25 @@ const TableData = ({ oferte }) => {
     }
   };
 
-  const handleToggle = async (oferta) => {
-    // Mapați și transformați fiecare item asincron
-    const updatedOffers = await Promise.all(
-      oferte.map(async (item) => {
-        if (item.id === oferta.id) {
-          // Verifică statusul curent și îl schimbă
-          const newStatus = item.status === "Activa" ? "Inactiva" : "Activa";
-          let data = {
-            status: newStatus,
-          };
-          await handleUpdateFirestoreSubcollection(
-            data,
-            `Users/${currentUser.uid}/Oferte/${oferta.documentId}`
-          );
-          return { ...item, status: newStatus }; // Returnează obiectul actualizat
-        }
-        return item; // Returnează obiectul neschimbat
-      })
-    );
-
-    // Actualizează starea oferte cu noul array modificat
-  };
+  // const handleToggle = async (oferta) => {
+  //   const updatedOffers = await Promise.all(
+  //     oferte.map(async (item) => {
+  //       if (item.id === oferta.id) {
+  //         // Verifică statusul curent și îl schimbă
+  //         const newStatus = item.status === "Activa" ? "Inactiva" : "Activa";
+  //         let data = {
+  //           status: newStatus,
+  //         };
+  //         await handleUpdateFirestoreSubcollection(
+  //           data,
+  //           `Users/${currentUser.uid}/Oferte/${oferta.documentId}`
+  //         );
+  //         return { ...item, status: newStatus }; // Returnează obiectul actualizat
+  //       }
+  //       return item; // Returnează obiectul neschimbat
+  //     })
+  //   );
+  // };
 
   if (!oferte || oferte.length === 0) {
     return <p>No data available.</p>; // Show a message if no data
@@ -196,7 +191,12 @@ const TableData = ({ oferte }) => {
             }}
             title="Delete"
           >
-            <a href="#">
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteClick(item);
+              }}
+            >
               <span className="flaticon-garbage"></span>
             </a>
           </li>
