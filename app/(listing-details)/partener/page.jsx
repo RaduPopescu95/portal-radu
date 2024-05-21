@@ -2,10 +2,9 @@ import dynamic from "next/dynamic";
 import ListingDetailsV1 from "@/components/listing-details-v1";
 
 export const metadata = {
-  title: 'Listing Single – Details V1 || Portal',
-  description:
-    'Portal',
-}
+  title: "Partener || ExclusivMD",
+  description: "Portal",
+};
 
 const index = () => {
   return (

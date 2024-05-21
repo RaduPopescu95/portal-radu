@@ -2,10 +2,9 @@ import dynamic from "next/dynamic";
 import MySavedSearch from "@/components/dashboard/my-saved-search";
 
 export const metadata = {
-  title: 'My Saved Search || Portal',
-  description:
-    'Portal',
-}
+  title: "My Saved Search || ExclusivMD",
+  description: "Portal",
+};
 
 const index = () => {
   return (

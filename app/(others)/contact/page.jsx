@@ -2,10 +2,10 @@ import dynamic from "next/dynamic";
 import Contact from "@/components/contact";
 
 export const metadata = {
-  title: 'Contact || Portal',
+  title: "Contactează-ne - ExclusivMD",
   description:
-    'Portal',
-}
+    "Ai întrebări sau dorești mai multe informații? Contactează echipa ExclusivMD și vom fi bucuroși să te asistăm cu orice solicitare sau întrebare.",
+};
 
 const index = () => {
   return (

@@ -17,20 +17,16 @@ import blogs from "@/data/blogs";
 import Image from "next/image";
 
 export const metadata = {
-  title: 'Blog Details || Portal',
-  description:
-    'Portal',
-}
+  title: "Blog Details || ExclusivMD",
+  description: "Portal",
+};
 
-const BlogDetailsDynamic = ({params}) => {
-  
+const BlogDetailsDynamic = ({ params }) => {
   const id = params.id;
-  const blog = blogs.find((item) => item.id == id) ||  blogs[0]
-
+  const blog = blogs.find((item) => item.id == id) || blogs[0];
 
   return (
     <>
-
       {/* <!-- Main Header Nav --> */}
       <Header />
 

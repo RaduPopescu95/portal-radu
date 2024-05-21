@@ -2,10 +2,9 @@ import dynamic from "next/dynamic";
 import CreateListing from "@/components/dashboard/creaza-oferta";
 
 export const metadata = {
-  title: 'Creaza discount || nume portal',
-  description:
-    'nume portal',
-}
+  title: "Creaza discount || ExclusivMD",
+  description: "nume portal",
+};
 
 const index = () => {
   return (

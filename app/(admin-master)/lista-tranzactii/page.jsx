@@ -4,13 +4,13 @@ import { handleGetSubcollections } from "@/utils/firestoreUtils";
 import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata = {
-  title: "Lista oferte || Porta",
+  title: "Lista oferte || ExclusivMD",
   description: "Porta",
 };
 
 const index = async () => {
   noStore();
-let oferteInregistrate = await handleGetSubcollections("OferteInregistrate");
+  let oferteInregistrate = await handleGetSubcollections("OferteInregistrate");
   return (
     <>
       <MySavedSearch oferteInregistrate={oferteInregistrate} />

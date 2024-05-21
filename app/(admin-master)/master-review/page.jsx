@@ -2,10 +2,9 @@ import dynamic from "next/dynamic";
 import MyReview from "@/components/dashboard/my-review";
 
 export const metadata = {
-  title: 'My Review || Portal',
-  description:
-    'Portal',
-}
+  title: "My Review || ExclusivMD",
+  description: "Portal",
+};
 
 const index = () => {
   return (

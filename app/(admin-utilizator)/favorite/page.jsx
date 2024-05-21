@@ -2,11 +2,9 @@ import dynamic from "next/dynamic";
 import MyFavourites from "@/components/dashboard/my-favourites";
 
 export const metadata = {
-  title: 'My Favourites || Portal',
-  description:
-    'Portal',
-}
-
+  title: "My Favourites || ExclusivMD",
+  description: "Portal",
+};
 
 const index = () => {
   return (

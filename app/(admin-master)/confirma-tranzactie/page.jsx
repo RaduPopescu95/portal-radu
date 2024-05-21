@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import CreateListing from "@/components/dashboard-master/confirma-tranzactie";
 
 export const metadata = {
-  title: "Creaza discount || nume portal",
+  title: "Creaza discount || ExclusivMD",
   description: "nume portal",
 };
 

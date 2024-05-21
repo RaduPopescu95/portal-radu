@@ -2,10 +2,9 @@ import dynamic from "next/dynamic";
 import MyMessage from "@/components/dashboard/my-message";
 
 export const metadata = {
-  title: 'My Message || Portal',
-  description:
-    'Portal',
-}
+  title: "My Message || ExclusivMD",
+  description: "Portal",
+};
 
 const index = () => {
   return (

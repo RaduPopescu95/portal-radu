@@ -2,10 +2,9 @@ import dynamic from "next/dynamic";
 import MyProperties from "@/components/dashboard-utilizator/my-properties";
 
 export const metadata = {
-  title: 'My Properties || Portal',
-  description:
-    'Portal',
-}
+  title: "My Properties || ExclusivMD",
+  description: "Portal",
+};
 
 const index = () => {
   return (
