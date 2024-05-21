@@ -14,6 +14,7 @@ import { useAuth } from "@/context/AuthContext";
 import DeleteDialog from "@/components/common/dialogs/DeleteDialog";
 import { deleteImage } from "@/utils/storageUtils";
 import { useCollectionPagination } from "@/hooks/useCollectionPagination";
+import { useRouter } from "next/navigation";
 
 // CSS in JS pentru simbolurile tick și close
 const styles = {
@@ -27,8 +28,10 @@ const styles = {
 
 const TableData = ({ oferte }) => {
   console.log("TableData oferte:", oferte); // Check what is received exactly
-  const [offers, setOffers] = useState([]);
+  const router = useRouter()
+  const [offers, setOffers] = useState(oferte);
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   console.log("TableData oferte:", oferte); // Check what is received exactly
   const { currentUser } = useAuth();
@@ -43,7 +46,7 @@ const TableData = ({ oferte }) => {
     nextPage,
     setItems,
   } = useCollectionPagination(collectionPath, pageSize);
-  let content = offers.length > 0 ? offers : oferte;
+  // let content = offers.length > 0 ? offers : oferte;
 
   const handleDeleteClick = (item) => {
     console.log("item...", item);
@@ -57,27 +60,46 @@ const TableData = ({ oferte }) => {
   };
 
   // Logica de ștergere a elementului
+
   const handleConfirmDelete = async () => {
-    console.log("Deleting item with ID:", selectedItem);
-    // console.log("location.....:", location);
-    let updatedData = await handleDeleteFirestoreSubcollectionData(
-      `Users/${selectedItem.collectionId}/Oferte/${selectedItem.documentId}`,
-      true,
-      `Users/${selectedItem.collectionId}/Oferte`,
-      selectedItem
-    );
-    if (selectedItem.imagineOferta) {
-      deleteImage("PozeOferte", selectedItem.imagineOferta.fileName);
+    setIsLoading(true);
+  
+    try {
+      console.log("Deleting item with ID:", selectedItem);
+      
+    
+      await handleDeleteFirestoreSubcollectionData(
+        `Users/${selectedItem.collectionId}/Oferte/${selectedItem.documentId}`,
+        true,
+        `Users/${selectedItem.collectionId}/Oferte`,
+        selectedItem
+      )
+
+      if (selectedItem.imagineOferta) {
+        console.log("trying to delete image....")
+        await deleteImage("PozeOferte", selectedItem.imagineOferta.fileName);
+      }
+  
+      // Aici adaugi logica pentru a șterge elementul din sursa ta de date
+      setShowModal(false); // Închide modalul după ștergere
+  
+      // Dacă dorești să aștepți până când router-ul se reîmprospătează înainte de a seta loading-ul la false
+      router.replace("/lista-oferte");
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      // Aici poți adăuga logica de afișare a unui mesaj de eroare pentru utilizator, dacă este cazul
+    } finally {
+      setIsLoading(false); // Setează isLoading la false indiferent dacă ștergerea a reușit sau a eșuat
     }
-    // // Aici adaugi logica pentru a șterge elementul din sursa ta de date
-    setItems(updatedData);
-    setShowModal(false); // Închide modalul după ștergere
   };
+  
+  
+
 
   const handleToggle = async (oferta) => {
     // Mapați și transformați fiecare item asincron
     const updatedOffers = await Promise.all(
-      content.map(async (item) => {
+      oferte.map(async (item) => {
         if (item.id === oferta.id) {
           // Verifică statusul curent și îl schimbă
           const newStatus = item.status === "Activa" ? "Inactiva" : "Activa";
@@ -104,7 +126,7 @@ const TableData = ({ oferte }) => {
 
   let theadConent = ["Oferta", "Data", "Status", "Fidelitate", "Actiune"];
 
-  let tbodyContent = content?.map((item) => (
+  let tbodyContent = oferte?.map((item) => (
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">
@@ -250,6 +272,7 @@ const TableData = ({ oferte }) => {
         <DeleteDialog
           handleConfirmDelete={handleConfirmDelete}
           handleCloseModal={handleCloseModal}
+          isLoading={isLoading}
         />
       )}
     </>

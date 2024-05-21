@@ -1,8 +1,10 @@
 import React from "react";
+import CommonLoader from "../CommonLoader";
 
 export default function DeleteDialog({
   handleCloseModal,
   handleConfirmDelete,
+  isLoading
 }) {
   return (
     <>
@@ -37,7 +39,7 @@ export default function DeleteDialog({
                 className="btn btn-danger"
                 onClick={handleConfirmDelete}
               >
-                Șterge
+                {isLoading ? <CommonLoader/> : "Șterge"}
               </button>
             </div>
           </div>

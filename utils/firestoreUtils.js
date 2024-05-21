@@ -259,26 +259,33 @@ export const handleGetFirestore = async (location) => {
 export const handleDeleteFirestoreData = async (
   locationToDelete,
   getNewData,
-  locationToGet = null
+  locationToGet = null,
+  locationToGetQueryType = ""
 ) => {
   try {
-    console.log("STart....delete...");
+    console.log("STart....delete...location to delete....", locationToDelete);
     const ref = doc(db, locationToDelete);
     await deleteDoc(ref);
 
     // Dacă getNewData este true, procedează la obținerea și actualizarea datelor
+    let data = [];
     if (getNewData) {
-      const data = await handleGetFirestore(locationToGet); // Presupunem că returnează un array de obiecte
-
+     
+        data = await handleGetFirestore(locationToGet); // Presupunem că returnează un array de obiecte
+  
+      
       // Sortează datele în ordinea crescătoare a ID-urilor
+      console.log("data before sort...", data)
       data.sort((a, b) => a.id - b.id);
-
+      console.log("data after sort...", data)
+      
       let updatedData = []; // Inițializează un array gol pentru a stoca datele actualizate
-
+      
       // Actualizează ID-urile documentelor rămase pentru a fi consecutive
+      console.log("iteratie...")
       for (let i = 0; i < data.length; i++) {
         const newId = i + 1; // Calculul noului ID
-        const docRef = doc(db, locationToGet, data[i].documentId); // Presupunem că fiecare document are un `docId` unic
+        const docRef = doc(db, locationToGet, data[i].user_uid); // Presupunem că fiecare document are un `docId` unic
         await updateDoc(docRef, {
           id: newId, // Actualizează ID-ul pentru a fi consecutiv
         });
@@ -289,7 +296,7 @@ export const handleDeleteFirestoreData = async (
           id: newId,
         });
       }
-
+      console.log("stergere din firestore cu success....")
       return updatedData; // Returnează datele actualizate dacă getNewData este true
     }
     // Dacă getNewData este false, nu returna nimic sau returnează o valoare specifică

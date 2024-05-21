@@ -7,11 +7,14 @@ import oferte from "@/data/oferte";
 import listaUtilizatori from "@/data/listaUtilizatori";
 import Link from "next/link";
 import {
+  handleDeleteFirestoreData,
   handleUpdateFirestore,
   handleUpdateFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
 import { update } from "firebase/database";
 import { useRouter } from "next/navigation";
+import DeleteDialog from "@/components/common/dialogs/DeleteDialog";
+import { deleteImage, deleteMultipleImages } from "@/utils/storageUtils";
 
 // CSS in JS pentru simbolurile tick și close
 const styles = {
@@ -25,13 +28,18 @@ const styles = {
 
 const TableData = ({ parteneri: parts }) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
+  const [logoToDelete, setLogoToDelete] = useState(null);
   // const { currentUser } = useAuth();
 
   const handleToggle = async (doctor) => {
     console.log(doctor);
     // Mapați și transformați fiecare item asincron
     const updateParteners = await Promise.all(
-      parteneri.map(async (item) => {
+      parts.map(async (item) => {
         if (item.id === doctor.id) {
           // Verifică statusul curent și îl schimbă
           const newStatus = item.statusCont === "Activ" ? "Inactiv" : "Activ";
@@ -48,6 +56,51 @@ const TableData = ({ parteneri: parts }) => {
     router.refresh();
     // Actualizează starea offers cu noul array modificat
   };
+
+    // Închide modalul fără a șterge
+    const handleCloseModal = () => {
+      setShowModal(false);
+    };
+
+  const handleDeleteClick = (partener) => {
+    console.log(partener)
+    setImagesToDelete([...partener.images.imgs])
+    setLogoToDelete(partener.logo.fileName)
+    setSelectedItemId(partener.user_uid); // Salvează ID-ul elementului selectat
+    setShowModal(true); // Afișează modalul
+  };
+
+  // Logica de ștergere a elementului
+  const handleConfirmDelete = async () => {
+    setIsLoading(true);
+  
+    try {
+      console.log("Deleting item with ID:", selectedItemId);
+      console.log("location.....:", location);
+      const fileNames = imagesToDelete.map(image => image.fileName);
+      
+      await deleteMultipleImages("ImaginiProfil", fileNames);
+      await deleteImage("ProfileLogo", logoToDelete);
+      await handleDeleteFirestoreData(
+        `${"Users"}/${selectedItemId}`,
+        true,
+        "Users",
+        "Partener"
+      );
+  
+      // Aici adaugi logica pentru a șterge elementul din sursa ta de date
+      setShowModal(false); // Închide modalul după ștergere
+  
+      // Dacă dorești să aștepți până când router-ul se reîmprospătează înainte de a seta loading-ul la false
+      router.refresh();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      // Aici poți adăuga logica de afișare a unui mesaj de eroare pentru utilizator, dacă este cazul
+    } finally {
+      setIsLoading(false); // Setează isLoading la false indiferent dacă ștergerea a reușit sau a eșuat
+    }
+  };
+  
 
   let theadConent = ["Partener", "Data Inregistrare", "Status Cont", "Actiune"];
   let tbodyContent = parts?.map((item) => (
@@ -119,8 +172,17 @@ const TableData = ({ parteneri: parts }) => {
             data-toggle="tooltip"
             data-placement="top"
             title="Delete"
+            onClick={(e) => {
+              e.preventDefault();
+              handleDeleteClick(item);
+            }}
           >
-            <a href="#">
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteClick(item);
+              }}
+            >
               <span className="flaticon-garbage"></span>
             </a>
           </li>
@@ -132,7 +194,7 @@ const TableData = ({ parteneri: parts }) => {
             title="Toggle"
           >
             <a
-              href="#"
+     
               onClick={(e) => {
                 e.preventDefault();
                 handleToggle(item);
@@ -168,6 +230,13 @@ const TableData = ({ parteneri: parts }) => {
 
         <tbody>{tbodyContent}</tbody>
       </table>
+      {showModal && (
+        <DeleteDialog
+          handleConfirmDelete={handleConfirmDelete}
+          handleCloseModal={handleCloseModal}
+          isLoading={isLoading}
+        />
+      )}
     </>
   );
 };

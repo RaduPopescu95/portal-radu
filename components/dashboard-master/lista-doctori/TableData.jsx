@@ -7,11 +7,13 @@ import oferte from "@/data/oferte";
 import listaUtilizatori from "@/data/listaUtilizatori";
 import Link from "next/link";
 import {
+  handleDeleteFirestoreData,
   handleUpdateFirestore,
   handleUpdateFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
 import { update } from "firebase/database";
 import { useRouter } from "next/navigation";
+import DeleteDialog from "@/components/common/dialogs/DeleteDialog";
 
 // CSS in JS pentru simbolurile tick și close
 const styles = {
@@ -26,13 +28,15 @@ const styles = {
 const TableData = ({ doctori: docs }) => {
   // const [doctori, setDoctori] = useState([...docs]);
   const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
   // const { currentUser } = useAuth();
 
   const handleToggle = async (doctor) => {
     console.log(doctor);
     // Mapați și transformați fiecare item asincron
     const updateDoctors = await Promise.all(
-      doctori.map(async (item) => {
+      docs.map(async (item) => {
         if (item.id === doctor.id) {
           // Verifică statusul curent și îl schimbă
           const newStatus = item.statusCont === "Activ" ? "Inactiv" : "Activ";
@@ -49,6 +53,34 @@ const TableData = ({ doctori: docs }) => {
     // Actualizează starea offers cu noul array modificat
 
     router.refresh();
+  };
+
+  // Închide modalul fără a șterge
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleDeleteClick = (itemId) => {
+    console.log(itemId)
+    setSelectedItemId(itemId); // Salvează ID-ul elementului selectat
+    setShowModal(true); // Afișează modalul
+  };
+
+  // Logica de ștergere a elementului
+  const handleConfirmDelete = async () => {
+    console.log("Deleting item with ID:", selectedItemId);
+    console.log("location.....:", location);
+    await handleDeleteFirestoreData(
+      `${"Users"}/${selectedItemId}`,
+      true,
+      "Users",
+      "Doctor"
+    ).then(() => {
+      router.refresh()
+    })
+    // Aici adaugi logica pentru a șterge elementul din sursa ta de date
+   
+    setShowModal(false); // Închide modalul după ștergere
   };
 
   let theadConent = ["Doctor", "Data Inregistrare", "Status Cont", "Actiune"];
@@ -121,8 +153,17 @@ const TableData = ({ doctori: docs }) => {
             data-toggle="tooltip"
             data-placement="top"
             title="Delete"
+            onClick={(e) => {
+              e.preventDefault();
+              handleDeleteClick(item.user_uid);
+            }}
           >
-            <a href="#">
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteClick(item.user_uid);
+              }}
+            >
               <span className="flaticon-garbage"></span>
             </a>
           </li>
@@ -170,6 +211,13 @@ const TableData = ({ doctori: docs }) => {
 
         <tbody>{tbodyContent}</tbody>
       </table>
+
+      {showModal && (
+        <DeleteDialog
+          handleConfirmDelete={handleConfirmDelete}
+          handleCloseModal={handleCloseModal}
+        />
+      )}
     </>
   );
 };

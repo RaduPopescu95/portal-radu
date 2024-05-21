@@ -28,7 +28,7 @@ const SearchData = ({ oferteInregistrate }) => {
     console.log(oferta);
     // Mapați și transformați fiecare item asincron
     const updatedOffers = await Promise.all(
-      offers.map(async (item) => {
+      oferteInregistrate.map(async (item) => {
         if (item.documentId === oferta.documentId) {
           // Verifică statusul curent și îl schimbă
           const newStatus =
