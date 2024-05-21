@@ -58,13 +58,21 @@ const SidebarMenu = () => {
       <ul className="sidebar-menu">
         <li className="sidebar_header header">
           <Link href="/">
+            <Image
+              width={220}
+              height={225}
+              className="logo1 img-fluid"
+              src="/assets/images/logo_exclusivmd.svg"
+              alt="logo_exclusivmd.svg"
+            />
             {/* <Image
-              width={40}
-              height={45}
-              src="/assets/images/header-logo2.png"
-              alt="header-logo2.png"
-            /> */}
-            <span>Portal</span>
+            width={220}
+            height={225}
+            className="logo2 img-fluid"
+            src="/assets/images/logo_exclusivmd.svg"
+            alt="header-logo2.png"
+          /> */}
+            {/* <span>Portal</span> */}
           </Link>
         </li>
         {/* End header */}
