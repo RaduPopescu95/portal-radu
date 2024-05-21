@@ -26,17 +26,12 @@ const styles = {
 
 const TableData = ({ oferte }) => {
   console.log("TableData oferte:", oferte); // Check what is received exactly
-  const router = useRouter();
-  const [offers, setOffers] = useState(oferte);
+
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const { currentUser } = useAuth();
-  const collectionPath = `Users/${currentUser?.uid}/Oferte`; // Replace with your actual path
-  const pageSize = 6; // Set the desired number of items per page
 
   const handleDeleteClick = (item) => {
-    console.log("item...", item);
     setSelectedItem(item); // Salvează ID-ul elementului selectat
     setShowModal(true); // Afișează modalul
   };
@@ -78,26 +73,6 @@ const TableData = ({ oferte }) => {
     }
   };
 
-  // const handleToggle = async (oferta) => {
-  //   const updatedOffers = await Promise.all(
-  //     oferte.map(async (item) => {
-  //       if (item.id === oferta.id) {
-  //         // Verifică statusul curent și îl schimbă
-  //         const newStatus = item.status === "Activa" ? "Inactiva" : "Activa";
-  //         let data = {
-  //           status: newStatus,
-  //         };
-  //         await handleUpdateFirestoreSubcollection(
-  //           data,
-  //           `Users/${currentUser.uid}/Oferte/${oferta.documentId}`
-  //         );
-  //         return { ...item, status: newStatus }; // Returnează obiectul actualizat
-  //       }
-  //       return item; // Returnează obiectul neschimbat
-  //     })
-  //   );
-  // };
-
   if (!oferte || oferte.length === 0) {
     return <p>No data available.</p>; // Show a message if no data
   }
@@ -117,26 +92,11 @@ const TableData = ({ oferte }) => {
                 src={item?.imagineOferta?.finalUri}
                 alt="fp1.jpg"
               />
-              {/* <div className="thmb_cntnt">
-              <ul className="tag mb0">
-                <li className="list-inline-item">
-                  <a href="#">For Rent</a>
-                </li>
-              </ul>
-            </div> */}
             </div>
           )}
           <div className="details d-flex justify-content-center">
             <div className="tc_content d-flex align-items-center justify-content-center">
               <h4>{item.titluOferta}</h4>
-              {/* <p>
-                <span className="flaticon-placeholder"></span>
-                {item.location}
-              </p> */}
-              {/* <a className="fp_price text-thm" href="#">
-                ${item.price}
-                <small>/mo</small>
-              </a> */}
             </div>
           </div>
         </div>
