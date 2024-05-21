@@ -1,4 +1,9 @@
-const SearchBox = ({ onSearchChange }) => {
+const SearchBox = ({ onSearch }) => {
+  const handleInputChange = (e) => {
+    const query = e.target.value;
+    onSearch(query);
+  };
+
   return (
     <form
       className="d-flex flex-wrap align-items-center my-2"
@@ -7,13 +12,10 @@ const SearchBox = ({ onSearchChange }) => {
       <input
         className="form-control mr-sm-2"
         type="search"
-        placeholder="Cauta..."
+        placeholder="Search"
         aria-label="Search"
-        onChange={(e) => onSearchChange(e.target.value)}
+        onChange={handleInputChange}
       />
-      <button className=" my-2 my-sm-0" type="submit">
-        <span className="flaticon-magnifying-glass"></span>
-      </button>
     </form>
   );
 };

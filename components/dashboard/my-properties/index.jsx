@@ -1,5 +1,3 @@
-"use client";
-
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -25,58 +23,16 @@ import {
   startAfter,
 } from "firebase/firestore";
 import { useCollectionPagination } from "@/hooks/useCollectionPagination";
+import { useDataWithPaginationAndSearch } from "@/hooks/useDataWithPaginationAndSearch";
 
-const index = () => {
-  const { currentUser } = useAuth();
-
-  const collectionPath = `Users/${currentUser?.uid}/Oferte`; // Replace with your actual path
-  const pageSize = 6; // Set the desired number of items per page
-
-  // Initialize the pagination hook
+const index = ({ oferte }) => {
   const {
-    items: posts,
-    setItems,
-    currentPage,
-    totalPages,
+    currentData,
     setCurrentPage,
-    previousPage,
-    nextPage,
-  } = useCollectionPagination(collectionPath, pageSize);
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredPosts, setFilteredPosts] = useState([]);
-
-  useEffect(() => {
-    setFilteredPosts(
-      posts.filter((post) =>
-        post.titluOferta
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase().trim())
-      )
-    );
-  }, [searchQuery, posts]);
-
-  const handlePageChange = (newPageNumber) => {
-    if (newPageNumber === currentPage) return; // Add this to prevent reloading the same page data
-    setCurrentPage(newPageNumber); // This should ideally happen before fetching new data
-    if (newPageNumber > currentPage) {
-      nextPage();
-    } else {
-      previousPage();
-    }
-  };
-
-  const handleSearchChange = (query) => {
-    if (query === 0) {
-      if (newPageNumber > currentPage) {
-        nextPage();
-      } else {
-        previousPage();
-      }
-    } else {
-      setSearchQuery(query);
-    }
-  };
+    totalPages,
+    setSearchTerm,
+    currentPage,
+  } = useDataWithPaginationAndSearch(oferte, "titluOferta");
 
   return (
     <>
@@ -134,7 +90,7 @@ const index = () => {
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">
-                          <SearchBox onSearchChange={handleSearchChange} />
+                          <SearchBox onSearch={setSearchTerm} />
                         </div>
                       </li>
                       {/* End li */}
@@ -152,25 +108,15 @@ const index = () => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        <TableData
-                          oferte={
-                            filteredPosts.length > 0
-                              ? filteredPosts
-                              : filteredPosts.length === 0 &&
-                                searchQuery.length > 0
-                              ? filteredPosts
-                              : posts
-                          }
-                          setItems={setItems}
-                        />
+                        <TableData oferte={currentData} />
                       </div>
                       {/* End .table-responsive */}
 
                       <div className="mbp_pagination">
                         <Pagination
-                          onPageChange={handlePageChange}
                           currentPage={currentPage}
                           totalPages={totalPages}
+                          setCurrentPage={setCurrentPage}
                         />
                       </div>
                       {/* End .mbp_pagination */}

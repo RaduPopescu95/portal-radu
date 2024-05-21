@@ -1,6 +1,11 @@
-const Pagination = ({ onPageChange, currentPage, totalPages }) => {
-  console.log("currentPage...", currentPage);
-  console.log("totalPages...", totalPages);
+import React from "react";
+
+const Pagination = ({ currentPage, totalPages, setCurrentPage }) => {
+  const handleClick = (page, event) => {
+    event.preventDefault(); // prevenirea comportamentului default al link-ului
+    setCurrentPage(page);
+  };
+
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
@@ -9,38 +14,38 @@ const Pagination = ({ onPageChange, currentPage, totalPages }) => {
   return (
     <ul className="page_navigation">
       <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-        <button
+        <a
           className="page-link"
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
+          href="#"
+          onClick={(e) => handleClick(currentPage - 1, e)}
         >
           <span className="flaticon-left-arrow"></span>
-        </button>
+        </a>
       </li>
       {pageNumbers.map((number) => (
         <li
           key={number}
           className={`page-item ${number === currentPage ? "active" : ""}`}
         >
-          <button
+          <a
             className="page-link"
-            onClick={() => onPageChange(number)}
-            disabled={number === currentPage}
+            href="#"
+            onClick={(e) => handleClick(number, e)}
           >
             {number}
-          </button>
+          </a>
         </li>
       ))}
       <li
         className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}
       >
-        <button
+        <a
           className="page-link"
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
+          href="#"
+          onClick={(e) => handleClick(currentPage + 1, e)}
         >
           <span className="flaticon-right-arrow"></span>
-        </button>
+        </a>
       </li>
     </ul>
   );

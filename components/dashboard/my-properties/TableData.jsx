@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import properties from "../../../data/properties";
 import { useState } from "react";
@@ -28,7 +26,7 @@ const styles = {
 
 const TableData = ({ oferte }) => {
   console.log("TableData oferte:", oferte); // Check what is received exactly
-  const router = useRouter()
+  const router = useRouter();
   const [offers, setOffers] = useState(oferte);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,16 +35,6 @@ const TableData = ({ oferte }) => {
   const { currentUser } = useAuth();
   const collectionPath = `Users/${currentUser?.uid}/Oferte`; // Replace with your actual path
   const pageSize = 6; // Set the desired number of items per page
-  const {
-    items,
-    currentPage,
-    totalPages,
-    setCurrentPage,
-    previousPage,
-    nextPage,
-    setItems,
-  } = useCollectionPagination(collectionPath, pageSize);
-  // let content = offers.length > 0 ? offers : oferte;
 
   const handleDeleteClick = (item) => {
     console.log("item...", item);
@@ -63,38 +51,34 @@ const TableData = ({ oferte }) => {
 
   const handleConfirmDelete = async () => {
     setIsLoading(true);
-  
+
     try {
       console.log("Deleting item with ID:", selectedItem);
-      
-    
+
       await handleDeleteFirestoreSubcollectionData(
         `Users/${selectedItem.collectionId}/Oferte/${selectedItem.documentId}`,
         true,
         `Users/${selectedItem.collectionId}/Oferte`,
         selectedItem
-      )
+      );
 
       if (selectedItem.imagineOferta) {
-        console.log("trying to delete image....")
+        console.log("trying to delete image....");
         await deleteImage("PozeOferte", selectedItem.imagineOferta.fileName);
       }
-  
+
       // Aici adaugi logica pentru a șterge elementul din sursa ta de date
       setShowModal(false); // Închide modalul după ștergere
-  
+
       // Dacă dorești să aștepți până când router-ul se reîmprospătează înainte de a seta loading-ul la false
-      router.replace("/lista-oferte");
     } catch (error) {
       console.error("Error deleting item:", error);
       // Aici poți adăuga logica de afișare a unui mesaj de eroare pentru utilizator, dacă este cazul
     } finally {
+      window.location.reload();
       setIsLoading(false); // Setează isLoading la false indiferent dacă ștergerea a reușit sau a eșuat
     }
   };
-  
-  
-
 
   const handleToggle = async (oferta) => {
     // Mapați și transformați fiecare item asincron
@@ -117,7 +101,6 @@ const TableData = ({ oferte }) => {
     );
 
     // Actualizează starea oferte cu noul array modificat
-    setItems(updatedOffers);
   };
 
   if (!oferte || oferte.length === 0) {
