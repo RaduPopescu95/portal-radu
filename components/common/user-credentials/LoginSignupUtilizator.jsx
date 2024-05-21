@@ -21,7 +21,8 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 const LoginSignupUtilizator = () => {
-  const { userData, currentUser, setCurrentUser, judete } = useAuth();
+  const { userData, currentUser, setCurrentUser, setUserData, judete } =
+    useAuth();
   const closeButtonRef = useRef(null); // Referință pentru butonul de închidere
   const [localitati, setLocalitati] = useState([]);
   const [judet, setJudet] = useState("");
@@ -118,7 +119,7 @@ const LoginSignupUtilizator = () => {
         if (closeButtonRef.current) {
           closeButtonRef.current.click();
         }
-        router.push("/profil"); // Redirecționează după ce mesajul de succes este afișat și închis
+        router.push("/utilizator"); // Redirecționează după ce mesajul de succes este afișat și închis
       })
       .catch((error) => {
         const errorMessage = handleFirebaseAuthError(error);
@@ -206,12 +207,13 @@ const LoginSignupUtilizator = () => {
       setDoc(doc(db, collectionId, documentId), data).then(() => {
         showAlert("Înregistrare cu succes!", "success");
       });
+      setUserData(data);
       handleReset();
       if (closeButtonRef.current) {
         closeButtonRef.current.click();
       }
       setTimeout(() => {
-        router.push("/profil"); // Redirecționează după ce mesajul de succes este afișat și închis
+        router.push("/utilizator"); // Redirecționează după ce mesajul de succes este afișat și închis
       }, 3000); // Așteaptă să dispară alerta
     } catch (error) {
       console.error("Error signing up: ", error);
