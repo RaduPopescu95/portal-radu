@@ -35,7 +35,7 @@ const HeaderMenuContent = ({ float = "" }) => {
       items: [
         {
           name: "Cont",
-          routerPath: "/utilizator",
+          routerPath: "/panou-doctor",
         },
       ],
     },
@@ -176,7 +176,7 @@ const HeaderMenuContent = ({ float = "" }) => {
         </li>
       ) : userData?.userType === "Doctor" && currentUser ? (
         <li className={`list-inline-item add_listing ${float}`}>
-          <Link href="/utilizator">
+          <Link href="/panou-doctor">
             <span className="dn-lg">CONTUL MEU</span>
           </Link>
         </li>

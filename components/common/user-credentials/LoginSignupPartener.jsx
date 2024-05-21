@@ -156,7 +156,8 @@ const LoginSignupPartener = () => {
       .catch((error) => {
         console.error("Error during sign in:", error.message);
         console.error("Error during sign in:", error.code);
-        showAlert(`Eroare la autentificare: ${error.message}`, "danger");
+        const errorMessage = handleFirebaseAuthError(error);
+        showAlert(`Eroare la autentificare: ${errorMessage}`, "danger");
         // setError("Failed to log in. Error message: " + error.message); // Utilizează error.message pentru a oferi feedback utilizatorului
       });
   };
@@ -250,7 +251,8 @@ const LoginSignupPartener = () => {
     } catch (error) {
       setIsLoading(false);
       console.error("Eroare la crearea utilizatorului: ", error);
-      showAlert(`Eroare la înregistrare: ${error.message}`, "danger");
+      const message = handleFirebaseAuthError(error);
+      showAlert(`Eroare la înregistrare: ${message}`, "danger");
     }
   };
 

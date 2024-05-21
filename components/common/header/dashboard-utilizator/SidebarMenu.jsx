@@ -68,10 +68,10 @@ const SidebarMenu = () => {
           <ul>
             <li
               className={`treeview ${
-                isSinglePageActive("/utilizator", pathname) ? "active" : ""
+                isSinglePageActive("/panou-doctor", pathname) ? "active" : ""
               }`}
             >
-              <Link href="/utilizator">
+              <Link href="/panou-doctor">
                 <i className="flaticon-layers"></i>
                 <span> Dashboard</span>
               </Link>

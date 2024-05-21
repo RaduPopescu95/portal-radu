@@ -170,7 +170,7 @@ const MobileMenuContent = () => {
         </Link>
       ) : userData?.userType === "Doctor" && currentUser ? (
         <Link
-          href="/utilizator"
+          href="/panou-doctor"
           className="btn btn-block btn-lg btn-thm circle"
           style={{ width: "90%", margin: "0px auto" }}
         >

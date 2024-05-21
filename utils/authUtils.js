@@ -124,37 +124,37 @@ export const handleFirebaseAuthError = (error) => {
   console.log("test...", error.code);
   switch (error.code) {
     case "auth/invalid-email":
-      message = "firebaseErrorInvalidEmail";
+      message = "Error Invalid Email";
       break;
     case "auth/email-already-in-use":
-      message = "firebaseErrorEmailAlreadyInUse";
+      message = "Error Email Already In Use";
       break;
     case "auth/weak-password":
-      message = "firebaseErrorWeakPassword";
+      message = "Error Weak Password";
       break;
     case "auth/user-not-found":
-      message = "firebaseErrorUserNotFound";
+      message = "Error User Not Found";
       break;
     case "auth/user-disabled":
-      message = "firebaseErrorUserDisabled";
+      message = "Error User Disabled";
       break;
     case "auth/wrong-password":
-      message = "firebaseErrorWrongPassword";
+      message = "Error Wrong Password";
       break;
     case "auth/too-many-requests":
-      message = "firebaseErrorTooManyRequests";
+      message = "Error Too Many Requests";
       break;
     case "auth/operation-not-allowed":
-      message = "firebaseErrorOperationNotAllowed";
+      message = "Error Operation Not Allowed";
       break;
     case "auth/network-request-failed":
-      message = "firebaseErrorNetworkRequestFailed";
+      message = "Error Network Request Failed. Check network connection and try again.";
       break;
     case "auth/invalid-credential":
-      message = "firebaseErrorInvalidCredentials";
+      message = "Error Invalid Credentials";
       break;
     default:
-      message = "firebaseErrorUnknown";
+      message = "Error Unknown";
   }
   return message;
 };

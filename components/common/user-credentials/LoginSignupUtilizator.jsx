@@ -19,6 +19,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import { AlertModal } from "../AlertModal";
 
 const LoginSignupUtilizator = () => {
   const { userData, currentUser, setCurrentUser, setUserData, judete } =
@@ -119,11 +120,11 @@ const LoginSignupUtilizator = () => {
         if (closeButtonRef.current) {
           closeButtonRef.current.click();
         }
-        router.push("/utilizator"); // Redirecționează după ce mesajul de succes este afișat și închis
+        router.push("/panou-doctor"); // Redirecționează după ce mesajul de succes este afișat și închis
       })
       .catch((error) => {
         const errorMessage = handleFirebaseAuthError(error);
-        showAlert(`Eroare la autentificare: ${error.message}`, "danger");
+        showAlert(`Eroare la autentificare: ${errorMessage}`, "danger");
 
         // Aici puteți folosi errorMessage pentru a afișa un snackbar sau un alert
         // setShowSnackback(true);
@@ -140,19 +141,19 @@ const LoginSignupUtilizator = () => {
     setButtonPressed(true);
     // Verifică dacă parola este confirmată corect și apoi creează utilizatorul
     if (password !== confirmPassword) {
-      console.error("Passwords do not match!");
-      return;
-    }
-
-    if (password.length < 6) {
-      setPasswordError("Parola trebuie să fie de cel puțin 6 caractere.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
       setConfirmPasswordError("Parolele nu corespund.");
       return;
+    }else{
+      
+      setConfirmPasswordError("");
     }
+    
+    if (password.length < 6) {
+      setPasswordError("Parola este prea scurta");
+      return;
+    }
+
+
 
     if (
       !email ||
@@ -213,11 +214,12 @@ const LoginSignupUtilizator = () => {
         closeButtonRef.current.click();
       }
       setTimeout(() => {
-        router.push("/utilizator"); // Redirecționează după ce mesajul de succes este afișat și închis
+        router.push("/panou-doctor"); // Redirecționează după ce mesajul de succes este afișat și închis
       }, 3000); // Așteaptă să dispară alerta
     } catch (error) {
       console.error("Error signing up: ", error);
-      showAlert(`Eroare la înregistrare: ${error.message}`, "danger");
+      const message = handleFirebaseAuthError(error);
+    showAlert(`Eroare la înregistrare: ${message}`, "danger");
     }
   };
 
@@ -365,6 +367,9 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End input-group */}
 
+                  
+              
+
                   {/* <div className="form-group form-check custom-checkbox mb-3">
                     <input
                       className="form-check-input"
@@ -504,6 +509,21 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End .row */}
 
+                  {passwordError && (
+                    <div
+                      style={{
+                        color: "red",
+                        marginTop: "5px",
+                        fontSize: "0.875rem",
+                        marginTop: "0px",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      {passwordError}
+                    </div>
+                  )}
+
+
                   <div className="form-group input-group  mb-3">
                     <input
                       type={passwordVisible ? "text" : "password"}
@@ -529,6 +549,21 @@ const LoginSignupUtilizator = () => {
                     </div>
                   </div>
                   {/* End .row */}
+
+                  
+                  {confirmPasswordError && (
+                    <div
+                      style={{
+                        color: "red",
+                        marginTop: "5px",
+                        fontSize: "0.875rem",
+                        marginTop: "0px",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      {confirmPasswordError}
+                    </div>
+                  )}
 
                   <div className="form-group input-group mb-3">
                     <input
@@ -873,6 +908,11 @@ const LoginSignupUtilizator = () => {
           {/* End .tab-pane */}
         </div>
       </div>
+      <AlertModal
+        message={alert.message}
+        type={alert.type}
+        onClose={closeAlert}
+      />
     </div>
   );
 };
