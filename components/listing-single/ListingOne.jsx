@@ -22,9 +22,9 @@ export default function ListingOne({ partener }) {
           {partener?.images?.imgs.map((val, i) => (
             <div
               key={i}
-              className={`col-${
+              className={`col-lg-${
                 12 / Math.min(partener.images.imgs.length, 3)
-              } mb-4`}
+              } col-md-6 col-sm-6 mb-4`}
             >
               <Image
                 width={752} // Fixed width
