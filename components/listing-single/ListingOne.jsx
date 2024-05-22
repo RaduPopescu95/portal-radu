@@ -1,42 +1,8 @@
 "use client";
 
-import { Gallery, Item } from "react-photoswipe-gallery";
 import Image from "next/image";
-import Slider from "react-slick";
 
 export default function ListingOne({ partener }) {
-  const settings = {
-    dots: true,
-    arrows: false,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    autoplay: false,
-    speed: 1200,
-    responsive: [
-      {
-        breakpoint: 1200,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 3,
-        },
-      },
-      {
-        breakpoint: 520,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
   return (
     <section className="listing-title-area mt85 md-mt0">
       <div className="container">
@@ -48,62 +14,30 @@ export default function ListingOne({ partener }) {
             </div>
           </div>
           <div className="col-lg-5 col-xl-4">
-            <div className="single_property_social_share position-static transform-none">
-              {/* <div className="price float-start fn-400">
-                <h2>
-                  ${property?.price}
-                  <small>/mo</small>
-                </h2>
-              </div> */}
-
-              {/* <div className="spss style2 mt20 text-end tal-400">
-                <ul className="mb0">
-                  <li className="list-inline-item">
-                    <a href="#">
-                      <span className="flaticon-transfer-1"></span>
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a href="#">
-                      <span className="flaticon-heart"></span>
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a href="#">
-                      <span className="flaticon-share"></span>
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a href="#">
-                      <span className="flaticon-printer"></span>
-                    </a>
-                  </li>
-                </ul>
-              </div> */}
-              {/* End activity and social sharing */}
-            </div>
+            {/* Placeholder for social share buttons */}
           </div>
         </div>
-        {/* End .row */}
-
+        {/* Images rendering based on count */}
         <div className="row">
-          <div className="col-lg-12">
-            <Slider {...settings}>
-              {partener?.images?.imgs.map((val, i) => (
-                <div key={i} className="slick-slide-padding">
-                  <Image
-                    width={752}
-                    height={450}
-                    className="img-fluid w100"
-                    src={val?.finalUri}
-                    alt={`Property Image ${i + 1}`}
-                  />
-                </div>
-              ))}
-            </Slider>
-          </div>
+          {partener?.images?.imgs.map((val, i) => (
+            <div
+              key={i}
+              className={`col-${
+                12 / Math.min(partener.images.imgs.length, 3)
+              } mb-4`}
+            >
+              <Image
+                width={752} // Fixed width
+                height={450} // Fixed height
+                src={val.finalUri}
+                alt={`Property Image ${i + 1}`}
+                layout="responsive" // Makes the image scale responsively within the fixed dimensions
+                objectFit="cover" // Covers the area without distorting the image, may crop
+                className="img-fluid"
+              />
+            </div>
+          ))}
         </div>
-        {/* End .row */}
       </div>
     </section>
   );
