@@ -11,7 +11,7 @@ const MyAccount = () => {
   const { userData } = useAuth();
   const profileMenuItems = [
     { id: 1, name: "Profil", ruterPath: "/profil" },
-    { id: 2, name: "Dashboard", ruterPath: "/panou-doctorutilizator" },
+    { id: 2, name: "Activitatea mea", ruterPath: "/panou-doctor" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
     // { id: 4, name: " My Package", ruterPath: "/my-package" },

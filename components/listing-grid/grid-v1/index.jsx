@@ -60,8 +60,6 @@ const index = ({ params }) => {
                 <FeaturedItem params={params} />
               </div>
               {/* End .row */}
-
-      
             </div>
             {/* End  page conent */}
             <div className="col-lg-4 col-xl-4">

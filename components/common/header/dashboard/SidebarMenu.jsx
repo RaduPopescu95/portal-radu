@@ -99,7 +99,7 @@ const SidebarMenu = ({ partenerId }) => {
             >
               <Link href="/panou-partener">
                 <i className="flaticon-layers"></i>
-                <span>Dashboard</span>
+                <span>Activitatea mea</span>
               </Link>
             </li>
             <li
@@ -122,6 +122,32 @@ const SidebarMenu = ({ partenerId }) => {
                 <span>Lista oferte</span>
               </Link>
             </li>
+            {manageAccount.map((item) => (
+              <li
+                className={
+                  isSinglePageActive(item.route, pathname) ? "active" : ""
+                }
+                key={item.id}
+              >
+                <Link
+                  href={item.route}
+                  onClick={(e) => {
+                    // Prevenim comportamentul default al link-ului dacă este necesar
+                    if (item.name === "Deconectare") {
+                      e.preventDefault();
+                      console.log(userData);
+                      console.log(currentUser);
+                      handleLogout();
+                      router.push("/");
+                    } else {
+                      console.log("profile...");
+                    }
+                  }}
+                >
+                  <i className={item.icon}></i> <span>{item.name}</span>
+                </Link>
+              </li>
+            ))}
             {/* <li
               className={`treeview ${
                 isSinglePageActive("/creaza-produs-serviciu", pathname)

@@ -64,7 +64,7 @@ const SidebarMenu = () => {
         {/* End header */}
 
         <li className="title">
-          <span>Main</span>
+          {/* <span>Main</span> */}
           <ul>
             <li
               className={`treeview ${
@@ -88,6 +88,30 @@ const SidebarMenu = () => {
                 <span> Lista Tranzactii</span>
               </Link>
             </li>
+            {manageAccount.map((item) => (
+              <li
+                className={
+                  isSinglePageActive(item.route, pathname) ? "active" : ""
+                }
+                key={item.id}
+              >
+                <Link
+                  href={item.route}
+                  onClick={(e) => {
+                    // Prevenim comportamentul default al link-ului dacă este necesar
+                    if (item.name === "Deconectare") {
+                      e.preventDefault();
+                      handleLogout();
+                      router.push("/");
+                    } else {
+                      console.log("profile...");
+                    }
+                  }}
+                >
+                  <i className={item.icon}></i> <span>{item.name}</span>
+                </Link>
+              </li>
+            ))}
             {/* <li
               className={`treeview ${
                 isSinglePageActive("/create-listing", pathname)
@@ -190,7 +214,7 @@ const SidebarMenu = () => {
         </li> */}
         {/* End manage listing */}
 
-        <li className="title">
+        {/* <li className="title">
           <span>Cont</span>
           <ul>
             {manageAccount.map((item) => (
@@ -218,7 +242,7 @@ const SidebarMenu = () => {
               </li>
             ))}
           </ul>
-        </li>
+        </li> */}
       </ul>
     </>
   );

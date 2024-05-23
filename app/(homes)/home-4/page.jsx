@@ -29,7 +29,7 @@ export async function getServerData() {
   return data; // Data will be available as props in your component
 }
 
-const index = async () => {
+const index = async ({ params }) => {
   noStore();
   const judete = await getServerData();
 
@@ -37,7 +37,7 @@ const index = async () => {
 
   return (
     <>
-      <HomeMain />
+      <HomeMain params={params} />
     </>
   );
 };

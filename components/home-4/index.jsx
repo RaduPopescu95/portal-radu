@@ -13,9 +13,18 @@ import { Suspense, lazy } from "react";
 import CommonLoader from "../common/CommonLoader";
 import SkeletonLoader from "../common/SkeletonLoader";
 
+import FilterTopBar from "../common/listing/FilterTopBar";
+import GridListButton from "../common/listing/GridListButton";
+import ShowFilter from "../common/listing/ShowFilter";
+import SidebarListing from "../common/listing/SidebarListing";
+
+import BreadCrumb2 from "../listing-grid/grid-v1/BreadCrumb2";
+import FeaturedItem from "../listing-grid/grid-v1/FeaturedItem";
+import FeaturedItemHome from "../listing-grid/grid-v1/FeaturedItemHome";
+
 const FindProperties = lazy(() => import("./FindProperties"));
 
-const index = () => {
+const index = ({ params }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -68,14 +77,87 @@ const index = () => {
         </div>
       </div>
 
+      <section className="our-listing bgc-f7 pb30-991 md-mt0 pt-0 ">
+        <div className="container">
+          <div className="row pt30">
+            <div className="col-lg-6 offset-lg-3">
+              <div className="main-title text-center mb40">
+                <h2>Parteneri apropiati de tine</h2>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            {/* <div className="col-lg-6">
+              <BreadCrumb2 titlu={"Parteneri apropiați de tine"} />
+            </div> */}
+            {/* End .col */}
+
+            {/* <div className="col-lg-6 position-relative">
+              <div className="listing_list_style mb20-xsd tal-991">
+                <GridListButton />
+              </div>
+
+              <div className="dn db-991 mt30 mb0">
+                <ShowFilter />
+              </div>
+            </div> */}
+            {/* End .col filter grid list */}
+          </div>
+          {/* End Page Breadcrumb and Grid,List and filter Button */}
+
+          <div className="row">
+            <div className="col-md-12 col-lg-12">
+              {/* <div className="grid_list_search_result ">
+                <div className="row align-items-center">
+                  <FilterTopBar />
+                </div>
+              </div> */}
+              {/* End .row */}
+
+              <div className="row">
+                <FeaturedItemHome params={params} />
+              </div>
+              {/* End .row */}
+            </div>
+            {/* End  page conent */}
+            {/* <div className="col-lg-4 col-xl-4">
+              <div className="sidebar-listing-wrapper">
+                <SidebarListing params={params} />
+              </div>
+
+              <div
+                className="offcanvas offcanvas-start offcanvas-listing-sidebar"
+                tabIndex="-1"
+                id="sidebarListing"
+              >
+                <div className="offcanvas-header">
+                  <h5 className="offcanvas-title">Advanced Search</h5>
+                  <button
+                    type="button"
+                    className="btn-close text-reset"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                  ></button>
+                </div>
+
+                <div className="offcanvas-body">
+                  <SidebarListing />
+                </div>
+              </div>
+            </div> */}
+            {/* End sidebar conent */}
+          </div>
+          {/* End .row */}
+        </div>
+      </section>
+
       {/* <!-- Property Cities --> */}
-      <section id="best-property" className="best-property bgc-f7">
+      {/* <section id="best-property" className="best-property bgc-f7">
         <div className="container ovh">
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center mb40">
                 <h2>Parteneri apropiati de tine</h2>
-                {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
               </div>
             </div>
           </div>
@@ -87,16 +169,16 @@ const index = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Property Cities --> */}
-      <section id="property-city" className="property-city pb30">
+      {/* <section id="property-city" className="property-city pb30">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
                 <h2>Gaseste parteneri in aceste orase</h2>
-                {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
+          
               </div>
             </div>
           </div>
@@ -106,7 +188,7 @@ const index = () => {
             </Suspense>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Our Blog --> */}
       {/* <section className="our-blog bgc-f7 pb30">

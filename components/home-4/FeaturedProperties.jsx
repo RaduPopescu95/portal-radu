@@ -42,7 +42,7 @@ const FeaturedProperties = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: Math.min(2, parteneri.length),
+          slidesToShow: Math.min(3, parteneri.length),
           slidesToScroll: 1,
         },
       },

@@ -1,3 +1,5 @@
+"use client";
+
 import TabDetailsContent from "../agency-details/TabDetailsContent";
 import Comments from "../blog-details/Comments";
 import Ratings from "../blog-details/Ratings";
@@ -15,6 +17,16 @@ import WalkScore from "../common/listing-details/WalkScore";
 import WhatsNearby from "../common/listing-details/WhatsNearby";
 
 const DetailsContent = ({ partener, oferte }) => {
+  const handleNavigare = () => {
+    if (partener && partener.coordonate) {
+      const { lat, lng } = partener.coordonate;
+      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+      window.open(googleMapsUrl, "_blank");
+    } else {
+      console.log("Coordonatele nu sunt disponibile");
+    }
+  };
+
   return (
     <>
       <div className="listing_single_description">
@@ -74,6 +86,15 @@ const DetailsContent = ({ partener, oferte }) => {
         </h4>
         <div className="property_video p0">
           <PropertyLocation coordonate={partener?.coordonate} />
+        </div>
+        <div className="search_option_button mt20">
+          <button
+            onClick={handleNavigare}
+            type="submit"
+            className="btn btn-thm"
+          >
+            Navighează la partener
+          </button>
         </div>
       </div>
       {/* End .location_area */}

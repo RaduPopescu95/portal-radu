@@ -16,7 +16,6 @@ const PropertyLocation = ({ coordonate }) => {
             <iframe title="map" className="gmap_iframe" src={mapSrc}></iframe>
           </div>
         </div>
-        {/* Optional overlay icon */}
       </div>
     </>
   );

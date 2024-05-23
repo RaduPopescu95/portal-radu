@@ -12,12 +12,21 @@ const PropertyItem = ({ item, isActive }) => {
           style={{ backgroundImage: item?.gradient?.gradientSelected }}
         >
           <Image
-            width={343}
-            height={220}
-            className="img-whp cover"
+            // width={343}
+            // height={220}
+            className="img-fluid"
             src={item?.images?.imgs[0]?.finalUri}
             alt="fp1.jpg"
+            layout="fill" // Important for Next.js Image to use the parent dimensions
           />
+          {/* <Image
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageLoaded(false)}
+              className="img-fluid"
+              src={item?.images?.imgs[0]?.finalUri}
+              alt="Property Image"
+              layout="fill" // Important for Next.js Image to use the parent dimensions
+            /> */}
           <div className="thmb_cntnt">
             <div
               style={{

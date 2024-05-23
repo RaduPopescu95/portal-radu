@@ -24,7 +24,7 @@ export default function ListingOne({ partener }) {
               key={i}
               className={`col-lg-${
                 12 / Math.min(partener.images.imgs.length, 3)
-              } col-md-6 col-sm-6 mb-4`}
+              } col-md-4 col-sm-4 mb-4`}
             >
               <Image
                 width={752} // Fixed width

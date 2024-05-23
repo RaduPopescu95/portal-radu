@@ -152,7 +152,7 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End .simpleitem */}
 
-      <li className="user_setting">
+      {/* <li className="user_setting">
         <div className="dropdown">
           <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
             <Image
@@ -168,7 +168,7 @@ const HeaderMenuContent = ({ float = "" }) => {
             <MyAccount />
           </div>
         </div>
-      </li>
+      </li> */}
       {/* End ."user_setting */}
 
       {/* <li className={`list-inline-item add_listing ${float}`}>

@@ -87,7 +87,7 @@ const SidebarMenu = () => {
             >
               <Link href="/admin">
                 <i className="flaticon-layers"></i>
-                <span>Dashboard</span>
+                <span>Activitatea mea</span>
               </Link>
             </li>
             {/* <li

@@ -1,5 +1,4 @@
-
-'use client'
+"use client";
 
 import Link from "next/link";
 
@@ -8,8 +7,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const HeaderMenuContent = ({ float = "" }) => {
-
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const home = [
     {
@@ -45,14 +43,16 @@ const HeaderMenuContent = ({ float = "" }) => {
     },
   ];
 
-  const blog = [
-    { id: 1, name: "Blog List 1", routerPath: "/blog-list-1" },
-  ];
+  const blog = [{ id: 1, name: "Blog List 1", routerPath: "/blog-list-1" }];
 
   const pages = [
     { id: 1, name: "Despre noi", routerPath: "/despre-noi" },
     // { id: 2, name: "Faq", routerPath: "/faq" },
-    { id: 3, name: "Termeni & Conditii", routerPath: "/termeni-confidentialitate" },
+    {
+      id: 3,
+      name: "Termeni & Conditii",
+      routerPath: "/termeni-confidentialitate",
+    },
     // { id: 3, name: "Cum functioneaza", routerPath: "/cum-functioneaza" },
   ];
 
@@ -106,7 +106,10 @@ const HeaderMenuContent = ({ float = "" }) => {
         <a
           href="#"
           className={
-            pages.some((page) => page.routerPath?.split('/')[1] === pathname?.split('/')[1])
+            pages.some(
+              (page) =>
+                page.routerPath?.split("/")[1] === pathname?.split("/")[1]
+            )
               ? "ui-active"
               : undefined
           }
@@ -120,7 +123,9 @@ const HeaderMenuContent = ({ float = "" }) => {
               <Link
                 href={item.routerPath}
                 className={
-                  pathname?.split('/')[1] === item.routerPath?.split('/')[1] ? "ui-active" : undefined
+                  pathname?.split("/")[1] === item.routerPath?.split("/")[1]
+                    ? "ui-active"
+                    : undefined
                 }
               >
                 {item.name}

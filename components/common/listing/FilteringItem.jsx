@@ -317,6 +317,7 @@ const FilteringItem = ({ params }) => {
               <option data-tokens="Cafenele">Cafenele</option>
               <option data-tokens="Restaurante">Restaurante</option>
               <option data-tokens="Hoteluri">Hoteluri</option>
+              <option data-tokens="Altele">Altele</option>
             </select>
           </div>
         </div>

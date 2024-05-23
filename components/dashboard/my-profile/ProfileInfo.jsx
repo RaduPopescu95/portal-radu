@@ -352,7 +352,7 @@ const ProfileInfo = () => {
     <div className="row">
       <div className="row">
         <div className="col-lg-12">
-          <h3 className="mb30">Galerie foto</h3>
+          <h3 className="mb30">Adauga imagini aici</h3>
         </div>
         {/* End .col */}
 
@@ -537,6 +537,7 @@ const ProfileInfo = () => {
             <option data-tokens="Cafenele">Cafenele</option>
             <option data-tokens="Restaurante">Restaurante</option>
             <option data-tokens="Hoteluri">Hoteluri</option>
+            <option data-tokens="Altele">Altele</option>
           </select>
         </div>
       </div>
