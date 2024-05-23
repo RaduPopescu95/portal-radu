@@ -260,7 +260,7 @@ const SidebarMenu = ({ partenerId }) => {
           </ul>
         </li> */}
 
-        <li className="title">
+        {/* <li className="title">
           <span>Cont</span>
           <ul>
             {manageAccount.map((item) => (
@@ -290,7 +290,7 @@ const SidebarMenu = ({ partenerId }) => {
               </li>
             ))}
           </ul>
-        </li>
+        </li> */}
       </ul>
     </>
   );
