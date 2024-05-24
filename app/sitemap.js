@@ -39,10 +39,17 @@ export default async function sitemap() {
     return acc;
   }, []);
 
-  const judete = judeteData.map(({ judet, _updatedAt }) => ({
-    url: `${URL}/${judet.judet.toLowerCase()}`,
-    lastModified: _updatedAt,
-  }));
+  const judete = judeteData.reduce((acc, { judet, _updatedAt }) => {
+    if (judet?.judet) {
+      // Verifică dacă există judet
+      const url = `${URL}/${judet.judet.toLowerCase()}`;
+      acc.push({
+        url: url,
+        lastModified: _updatedAt,
+      });
+    }
+    return acc;
+  }, []);
 
   const routes = [
     "",

@@ -15,19 +15,34 @@ export async function GET(req, res) {
   const seenUrls = new Set();
 
   const judeteCategorii = parteneri.reduce((acc, { partener }) => {
-    const url = `/${partener.categorie.toLowerCase()}/${partener.categorie.toLowerCase()}-${partener.judet.toLowerCase()}`;
-    if (!seenUrls.has(url)) {
-      seenUrls.add(url);
+    if (partener?.categorie && partener?.judet) {
+      // Verifică dacă există categorie și judet
+      const url = `/${partener.categorie.toLowerCase()}/${partener.categorie.toLowerCase()}-${partener.judet.toLowerCase()}`;
+      if (!seenUrls.has(url)) {
+        seenUrls.add(url);
+        acc.push(url);
+      }
+    }
+    return acc;
+  }, []);
+
+  const parteners = parteneri.reduce((acc, { item }) => {
+    if (item?.id && item?.denumireBrand) {
+      // Verifică dacă există id și denumireBrand
+      const url = `/partener/${item.id}-${toUrlSlug(item.denumireBrand)}`;
       acc.push(url);
     }
     return acc;
   }, []);
 
-  const parteners = parteneri.map(
-    ({ item }) => `/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`
-  );
-
-  const judete = judeteData.map(({ judet }) => `/${judet.judet.toLowerCase()}`);
+  const judete = judeteData.reduce((acc, { judet }) => {
+    if (judet?.judet) {
+      // Verifică dacă există judet
+      const url = `/${judet.judet.toLowerCase()}`;
+      acc.push(url);
+    }
+    return acc;
+  }, []);
 
   const routes = [
     "",
