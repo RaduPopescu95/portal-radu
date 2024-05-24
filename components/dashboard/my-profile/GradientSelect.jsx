@@ -7,22 +7,22 @@ import properties from "@/data/properties";
 import carduriFidelitate from "@/data/carduriFidelitate";
 
 const predefinedGradients = [
-  "linear-gradient(135deg, #647DEE, #7F53AC)", // Albastru la Mov
-  "linear-gradient(135deg, #605C3C, #3E5151)", // Gri-verde la Albastru petrol
-  "linear-gradient(135deg, #9FA8DA, #7986CB)", // Albastru deschis la Albastru moderat
-  "linear-gradient(135deg, #6A1B9A, #8E24AA)", // Violet închis la Violet
-  "linear-gradient(135deg, #6200EA, #311B92)", // Violet electric la Violet închis
-  "linear-gradient(135deg, #536DFE, #3D5AFE)", // Albastru electric la Albastru intens
-  "linear-gradient(135deg, #8C9EFF, #536DFE)", // Albastru pal la Albastru electric
-  "linear-gradient(135deg, #B39DDB, #9575CD)", // Mov pal la Mov
-  "linear-gradient(135deg, #9575CD, #7E57C2)", // Mov la Violet închis
-  "linear-gradient(135deg, #673AB7, #5E35B1)", // Violet profund la Violet închis
-  "linear-gradient(135deg, #7C4DFF, #651FFF)", // Violet electric la Violet profund
-  "linear-gradient(135deg, #7E57C2, #673AB7)", // Violet la Violet profund
-  "linear-gradient(135deg, #5C6BC0, #3F51B5)", // Albastru gri la Albastru închis
-  "linear-gradient(135deg, #7986CB, #5C6BC0)", // Albastru mediu la Albastru gri
-  "linear-gradient(135deg, #8E24AA, #7B1FA2)", // Violet la Violet închis
-  "linear-gradient(135deg, #AB47BC, #8E24AA)", // Violet pal la Violet
+  "linear-gradient(to right, rgb(62, 62, 165), rgb(72, 61, 163))",
+  "linear-gradient(to right, rgb(72, 61, 163), rgb(84, 59, 161))",
+  "linear-gradient(to right, rgb(84, 59, 161), rgb(95, 58, 159))",
+  "linear-gradient(to right, rgb(95, 58, 159), rgb(107, 56, 156))",
+  "linear-gradient(to right, rgb(107, 56, 156), rgb(119, 55, 154))",
+  "linear-gradient(to right, rgb(119, 55, 154), rgb(131, 53, 151))",
+  "linear-gradient(to right, rgb(131, 53, 151), rgb(142, 52, 149))",
+  "linear-gradient(to right, rgb(142, 52, 149), rgb(154, 50, 146))",
+  "linear-gradient(to right, rgb(154, 50, 146), rgb(166, 49, 144))",
+  "linear-gradient(to right, rgb(166, 49, 144), rgb(178, 47, 141))",
+  "linear-gradient(to right, rgb(178, 47, 141), rgb(189, 46, 139))",
+  "linear-gradient(to right, rgb(189, 46, 139), rgb(201, 44, 136))",
+  "linear-gradient(to right, rgb(201, 44, 136), rgb(213, 43, 134))",
+  "linear-gradient(to right, rgb(213, 43, 134), rgb(224, 41, 132))",
+  "linear-gradient(to right, rgb(224, 41, 132), rgb(236, 40, 129))",
+  "linear-gradient(to right, rgb(236, 40, 129), rgb(255, 90, 95))",
 ];
 
 const GradientSelect = ({

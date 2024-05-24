@@ -74,7 +74,7 @@ const SidebarMenu = ({ partenerId }) => {
               width={220}
               height={225}
               className="logo1 img-fluid"
-              src="/assets/images/logo_exclusivmd.svg"
+              src="/assets/images/logo_exclusivmd_alb.svg"
               alt="logo_exclusivmd.svg"
             />
             {/* <Image

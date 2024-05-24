@@ -336,7 +336,6 @@ const LoginSignupPartener = () => {
                     <h4>Autentificare partener</h4>
                   </div>
                   {/* End heading */}
-
                   {/* <div className="row mt25">
                     <div className="col-lg-12">
                       <button type="submit" className="btn btn-fb w-100">
@@ -352,9 +351,7 @@ const LoginSignupPartener = () => {
                     </div>
                   </div> */}
                   {/* End .row */}
-
                   <hr />
-
                   <div className="input-group mb-2 mr-sm-2">
                     <input
                       type="text"
@@ -373,7 +370,6 @@ const LoginSignupPartener = () => {
                     </div>
                   </div>
                   {/* End input-group */}
-
                   <div className="input-group form-group">
                     <input
                       type={passwordVisible ? "text" : "password"}
@@ -423,14 +419,26 @@ const LoginSignupPartener = () => {
                   <button
                     type="submit"
                     className="btn btn-log w-100 btn-thm"
-                    // aria-label="Close"
-                    // data-bs-dismiss="modal"
+                    // aria-label="Close" // data-bs-dismiss="modal"
                   >
-                    Autentificare
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Image
+                        src="/assets/images/iconite/parteneri2.png"
+                        alt="Cadre medicale Icon"
+                        width={35} // Setează lățimea iconului
+                        height={35} // Setează înălțimea iconului
+                        priority // Încarcă imaginea cât mai rapid posibil
+                      />
+                      <span style={{ marginLeft: 8 }}>Autentificare</span>
+                    </span>
                   </button>
-
                   {/* End submit button */}
-
                   {/* <p className="text-center">
                     Nu ai cont?{" "}
                     <a className="text-thm" href="#">

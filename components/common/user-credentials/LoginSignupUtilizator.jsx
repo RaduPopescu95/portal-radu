@@ -48,6 +48,7 @@ const LoginSignupUtilizator = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [inputType, setInputType] = useState("text");
   const router = useRouter();
 
   const showAlert = (message, type) => {
@@ -143,17 +144,14 @@ const LoginSignupUtilizator = () => {
     if (password !== confirmPassword) {
       setConfirmPasswordError("Parolele nu corespund.");
       return;
-    }else{
-      
+    } else {
       setConfirmPasswordError("");
     }
-    
+
     if (password.length < 6) {
       setPasswordError("Parola este prea scurta");
       return;
     }
-
-
 
     if (
       !email ||
@@ -219,7 +217,7 @@ const LoginSignupUtilizator = () => {
     } catch (error) {
       console.error("Error signing up: ", error);
       const message = handleFirebaseAuthError(error);
-    showAlert(`Eroare la înregistrare: ${message}`, "danger");
+      showAlert(`Eroare la înregistrare: ${message}`, "danger");
     }
   };
 
@@ -367,9 +365,6 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End input-group */}
 
-                  
-              
-
                   {/* <div className="form-group form-check custom-checkbox mb-3">
                     <input
                       className="form-check-input"
@@ -393,10 +388,25 @@ const LoginSignupUtilizator = () => {
                   <button
                     type="submit"
                     className="btn btn-log w-100 btn-thm"
+                    // aria-label="Close"
                     // data-bs-dismiss="modal"
-                    aria-label="Close"
                   >
-                    Autentificare
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Image
+                        src="/assets/images/iconite/cadremedicale2.png"
+                        alt="Cadre medicale Icon"
+                        width={35} // Setează lățimea iconului
+                        height={35} // Setează înălțimea iconului
+                        priority // Încarcă imaginea cât mai rapid posibil
+                      />
+                      <span style={{ marginLeft: 8 }}>Autentificare</span>
+                    </span>
                   </button>
                   {/* End submit button */}
 
@@ -523,7 +533,6 @@ const LoginSignupUtilizator = () => {
                     </div>
                   )}
 
-
                   <div className="form-group input-group  mb-3">
                     <input
                       type={passwordVisible ? "text" : "password"}
@@ -550,7 +559,6 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End .row */}
 
-                  
                   {confirmPasswordError && (
                     <div
                       style={{
@@ -593,7 +601,7 @@ const LoginSignupUtilizator = () => {
                 <div className="sign_up_form">
                   <div className="form-group input-group mb-3">
                     <input
-                      type="date"
+                      type={inputType}
                       className={`form-control ${
                         !dataNasterii && buttonPressed && "border-danger"
                       }`}
@@ -601,6 +609,8 @@ const LoginSignupUtilizator = () => {
                       placeholder="Data nașterii"
                       value={dataNasterii}
                       onChange={(e) => setDataNasterii(e.target.value)}
+                      onFocus={() => setInputType("date")}
+                      onBlur={() => dataNasterii || setInputType("text")}
                     />
                   </div>
                   {/* End .row */}
