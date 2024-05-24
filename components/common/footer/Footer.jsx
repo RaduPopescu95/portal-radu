@@ -46,14 +46,16 @@ const Footer = () => {
           <h4>Contactează-ne</h4>
           <ul className="list-unstyled">
             <li>
-              <a href="mailto:info@email.com">info@numeportal.com</a>
+              <a href="mailto:exclusivmd@creditemedicale.ro">
+                exclusivmd@creditemedicale.ro
+              </a>
             </li>
-            <li>
+            {/* <li>
               <a href="#">Bucurest, str. Cernauti, nr.1A</a>
             </li>
             <li>
               <a href="tel:+079999999">079999999</a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

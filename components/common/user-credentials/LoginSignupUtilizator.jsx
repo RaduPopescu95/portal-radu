@@ -404,6 +404,7 @@ const LoginSignupUtilizator = () => {
                         width={35} // Setează lățimea iconului
                         height={35} // Setează înălțimea iconului
                         priority // Încarcă imaginea cât mai rapid posibil
+                        className="loginImg"
                       />
                       <span style={{ marginLeft: 8 }}>Autentificare</span>
                     </span>
