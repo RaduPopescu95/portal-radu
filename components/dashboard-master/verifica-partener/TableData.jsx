@@ -148,12 +148,12 @@ const TableData = ({ oferte }) => {
             title="Edit"
           >
             <Link href={`/verifica-oferta/${item.id}-${item.collectionId}`}>
-              <span className="flaticon-edit"></span>
+              <span className="flaticon-view"></span>
             </Link>
           </li>
           {/* End li */}
 
-          <li
+          {/* <li
             className="list-inline-item"
             data-toggle="tooltip"
             data-placement="top"
@@ -171,7 +171,7 @@ const TableData = ({ oferte }) => {
             >
               <span className="flaticon-garbage"></span>
             </a>
-          </li>
+          </li> */}
           {/* End li */}
           {/* <li
             className="list-inline-item"
