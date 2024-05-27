@@ -52,69 +52,63 @@ const FeaturedItemHome = ({ params }) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log("test....de query...", searchQueryParteneri);
-    navigator.geolocation.getCurrentPosition(
-      async function (position) {
-        const { latitude, longitude } = position.coords;
-
-        try {
-          let res = await fetchLocation(latitude, longitude);
-          let localitate;
-if (res && res.results && res.results.length > 0 && res.results[0].locality) {
-    localitate = handleDiacrtice(res.results[0].locality);
-    // Restul codului...
-} else {
-    console.error('Invalid response or locality missing:', res);
-}
-       
-
-          let parteneri;
-          let parteneriCuDistanta;
-          let parteneriOrdonati;
-          // let maxQuery = 10; NU AI CUM SA FACI SORTARE DUPA DISTANTA DIN SERVER DACA DISTANTA ESTE CALCULATA PE CLIENT
-          parteneri = await handleQueryTripleParam(
-            "Users",
-            "localitate",
-            localitate,
-            "userType",
-            "Partener",
-            "statusCont",
-            "Activ"
-          );
-
-          // Adaugă distanța ca o proprietate pentru fiecare partener
-          parteneriCuDistanta = parteneri.map((partener) => {
-            const distanta = calculateDistance(
-              latitude,
-              longitude,
-              partener.coordonate.lat,
-              partener.coordonate.lng
-            );
-
-            return { ...partener, distanta: Math.floor(distanta) };
-          });
-
-          // Sortează partenerii după distanță
-          parteneriOrdonati = parteneriCuDistanta.sort(
-            (a, b) => a.distanta - b.distanta
-          );
-
-          setParteneri(parteneriOrdonati);
-          setIsLoading(false);
-          let parteneriFiltrati = [];
-          
-          console.log("parteneri cu distanta...", parteneriOrdonati);
-        } catch (error) {
-          setIsLoading(false);
-          console.error("Error fetching location data: ", error);
+  async function fetchLocationAndUpdatePartners(latitude, longitude) {
+    try {
+        let res = await fetchLocation(latitude, longitude);
+        if (res && res.results && res.results.length > 0 && res.results[0].locality) {
+            const localitate = handleDiacrtice(res.results[0].locality);
+            updatePartnersByLocation(localitate, latitude, longitude);
+        } else {
+            console.error('Invalid response or locality missing:', res);
         }
-      },
-      function (error) {
-        console.error("Geolocation error: ", error);
-      }
+    } catch (error) {
+        setIsLoading(false);
+        console.error("Error fetching location data: ", error);
+    }
+}
+
+async function updatePartnersByLocation(localitate, latitude, longitude) {
+    let parteneri = await handleQueryTripleParam(
+        "Users",
+        "localitate",
+        localitate,
+        "userType",
+        "Partener",
+        "statusCont",
+        "Activ"
     );
-  }, []);
+
+    let parteneriCuDistanta = parteneri.map((partener) => {
+        const distanta = calculateDistance(latitude, longitude, partener.coordonate.lat, partener.coordonate.lng);
+        return { ...partener, distanta: Math.floor(distanta) };
+    });
+
+    let parteneriOrdonati = parteneriCuDistanta.sort((a, b) => a.distanta - b.distanta);
+
+    setParteneri(parteneriOrdonati);
+    setIsLoading(false);
+}
+
+useEffect(() => {
+  function handleGeoSuccess(position) {
+      const { latitude, longitude } = position.coords;
+      fetchLocationAndUpdatePartners(latitude, longitude);
+  }
+
+  function handleGeoError() {
+      console.error("Geolocation error: User denied location access......");
+      setIsLoading(false);
+      // Oferă utilizatorului posibilitatea de a introduce manual locația
+      // sau de a continua fără funcționalități bazate pe localizare
+  }
+
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(handleGeoSuccess, handleGeoError);
+  } else {
+      console.error("Geolocation is not supported by this browser.");
+      setIsLoading(false);
+  }
+}, []);
 
   // Funcție pentru schimbarea paginilor
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
