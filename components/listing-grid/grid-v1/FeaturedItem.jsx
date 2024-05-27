@@ -72,7 +72,11 @@ const FeaturedItem = ({ params }) => {
     try {
       const localitate = await getLocalitate(latitude, longitude);
       const parteneri = await fetchPartners(localitate, latitude, longitude);
-      const parteneriOrdonati = orderPartnersByDistance(parteneri, latitude, longitude);
+      const parteneriOrdonati = orderPartnersByDistance(
+        parteneri,
+        latitude,
+        longitude
+      );
       updatePartners(parteneriOrdonati);
     } catch (error) {
       console.error("Error fetching location data: ", error);
@@ -82,7 +86,9 @@ const FeaturedItem = ({ params }) => {
   const getLocalitate = async (latitude, longitude) => {
     let res = await fetchLocation(latitude, longitude);
     if (res && res.results && res.results.length > 0) {
-      const firstLocality = res.results.find(result => result.locality !== undefined);
+      const firstLocality = res.results.find(
+        (result) => result.locality !== undefined
+      );
       return firstLocality ? handleDiacritice(firstLocality.locality) : null;
     } else {
       throw new Error("Invalid response or results missing");
@@ -91,34 +97,63 @@ const FeaturedItem = ({ params }) => {
 
   const fetchPartners = async (localitate, latitude, longitude) => {
     if (!params && searchQueryParteneri) {
-      return await handleQueryDoubleParam("Users", "userType", "Partener", "statusCont", "Activ");
+      return await handleQueryDoubleParam(
+        "Users",
+        "userType",
+        "Partener",
+        "statusCont",
+        "Activ"
+      );
     } else {
-      return await handleQueryTripleParam("Users", "localitate", localitate, "userType", "Partener", "statusCont", "Activ");
+      return await handleQueryTripleParam(
+        "Users",
+        "localitate",
+        localitate,
+        "userType",
+        "Partener",
+        "statusCont",
+        "Activ"
+      );
     }
   };
 
   const orderPartnersByDistance = (parteneri, latitude, longitude) => {
-    return parteneri.map(partener => {
-      const distanta = calculateDistance(latitude, longitude, partener.coordonate.lat, partener.coordonate.lng);
-      return { ...partener, distanta: Math.floor(distanta) };
-    }).sort((a, b) => a.distanta - b.distanta);
+    return parteneri
+      .map((partener) => {
+        const distanta = calculateDistance(
+          latitude,
+          longitude,
+          partener.coordonate.lat,
+          partener.coordonate.lng
+        );
+        return { ...partener, distanta: Math.floor(distanta) };
+      })
+      .sort((a, b) => a.distanta - b.distanta);
   };
 
   const updatePartners = (parteneri) => {
     if (!searchQueryParteneri) {
       setParteneri([...parteneri]);
     } else {
-      const rezultatFiltrare = filtrareParteneri(parteneri, searchQueryParteneri);
+      const rezultatFiltrare = filtrareParteneri(
+        parteneri,
+        searchQueryParteneri
+      );
       setParteneri([...rezultatFiltrare]);
     }
   };
 
   const handlePartnersWithoutLocation = async () => {
     // Handle cases where location is not available but partners still need to be fetched or handled.
-    const parteneri = await handleQueryDoubleParam("Users", "userType", "Partener", "statusCont", "Activ");
+    const parteneri = await handleQueryDoubleParam(
+      "Users",
+      "userType",
+      "Partener",
+      "statusCont",
+      "Activ"
+    );
     updatePartners(parteneri);
   };
-}
 
   // useEffect(() => {
   //   console.log("test....de query...", searchQueryParteneri);
