@@ -3,15 +3,43 @@ import SidebarMenu from "@/components/common/header/dashboard-master/SidebarMenu
 import MobileMenu from "@/components/common/header/MobileMenu";
 import Activities from "@/components/dashboard-master/my-dashboard/Activities";
 import ChangePassword from "@/components/dashboard-master/verifica-partener/ChangePassword";
+import Pagination from "@/components/dashboard-master/verifica-partener/Pagination";
 import ProfileInfo from "@/components/dashboard-master/verifica-partener/ProfileInfo";
+import SearchBox from "@/components/dashboard-master/verifica-partener/SearchBox";
 import SocialMedia from "@/components/dashboard-master/verifica-partener/SocialMedia";
+import TabelOferte from "@/components/dashboard-master/verifica-partener/TabelOferte";
+import TableData from "@/components/dashboard-master/verifica-partener/TableData";
+import { db } from "@/firebase";
+import { useDataWithPaginationAndSearch } from "@/hooks/useDataWithPaginationAndSearch";
 import {
   handleGetSubcollections,
   handleQueryFirestore,
   handleQueryFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { unstable_noStore as noStore } from "next/cache";
+
+const fetchItems = async (userId) => {
+  const collectionPath = `Users/${userId}/Oferte`; // Replace with your actual path
+  const ref = collection(db, collectionPath);
+  let pageQuery;
+
+  pageQuery = query(ref, orderBy("firstUploadDate", "desc"));
+
+  if (!pageQuery) return;
+
+  const documentSnapshots = await getDocs(pageQuery);
+  const newItems = documentSnapshots.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  console.log("newItems....", newItems);
+  return newItems;
+};
+
 
 const index = async ({ params }) => {
+  noStore();
   const id = params.id;
   const userId = parseFloat(id);
   const partener = await handleQueryFirestore("Users", "id", userId);
@@ -20,6 +48,7 @@ const index = async ({ params }) => {
     "collectionId",
     partener[0].user_uid
   );
+  let oferte = await fetchItems(partener[0].user_uid);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -84,6 +113,8 @@ const index = async ({ params }) => {
                     </div>
                   </div>
                   {/* End prifle info wrapper end */}
+
+             <TabelOferte oferte={oferte}/>
 
                   <div className="col-lg-12 mt10">
                     <div className="my_dashboard_review">

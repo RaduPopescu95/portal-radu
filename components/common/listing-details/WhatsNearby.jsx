@@ -31,10 +31,20 @@ const WhatsNearby = ({ oferte }) => {
 
   const closeModal = () => setIsModalVisible(false);
 
-  const today = new Date();
+  const isSameOrAfter = (date1, date2) => {
+    return date1.setHours(0, 0, 0, 0) >= date2.setHours(0, 0, 0, 0);
+  };
+
+  const isSameOrBefore = (date1, date2) => {
+    return date1.setHours(0, 0, 0, 0) <= date2.setHours(0, 0, 0, 0);
+  };
 
   const renderContent = (level) => {
-    if (userData?.userType === "Partener" && userData?.user_uid !== oferte[0].collectionId || !userData) {
+    if (
+      (userData?.userType === "Partener" &&
+        userData?.user_uid !== oferte[0].collectionId) ||
+      !userData
+    ) {
       return null;
     }
 
@@ -46,10 +56,14 @@ const WhatsNearby = ({ oferte }) => {
           .filter((offer) => {
             const offerStart = new Date(offer.dataActivare);
             const offerEnd = new Date(offer.dataDezactivare);
-       
+            console.log("........................");
+            console.log("offerStart...", offerStart);
+            console.log("offerEnd...", offerEnd);
+            console.log("today...", today);
+
             const isActive =
-              today >= offerStart &&
-              today <= offerEnd &&
+              isSameOrAfter(today, offerStart) &&
+              isSameOrBefore(today, offerEnd) &&
               offer?.gradeFidelitate.includes(level);
             return isActive;
           })

@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import HeaderMenuContent from "./HeaderMenuContent";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
+  const pathname = usePathname();
 
   const changeBackground = () => {
     if (window.scrollY >= 95) {
@@ -33,7 +35,11 @@ const Header = () => {
             width={220}
             height={225}
             className="logo1 img-fluid"
-            src="/assets/images/logo_exclusivmd_alb.svg"
+            src={
+              pathname === "/"
+                ? "/assets/images/logo_exclusivmd_alb.svg"
+                : "/assets/images/logo_exclusivmd.svg"
+            }
             alt="logo_exclusivmd.svg"
           />
           <Image

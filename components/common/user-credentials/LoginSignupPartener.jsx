@@ -141,8 +141,9 @@ const LoginSignupPartener = () => {
     // setUserData(utilizator[0]);
     console.log(utilizator);
     console.log(cui);
-    if (!utilizator) {
-      showAlert(`Nu a fost gasit nici un utilizator cu acest CUI`, "danger");
+    if (!utilizator || utilizator?.length === 0 ) {
+      showAlert(`Nu a fost gasit nici un cont cu acest CUI`, "danger");
+      return
     }
     handleSignIn(utilizator[0].email, password)
       .then((userCredentials) => {

@@ -1,5 +1,6 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -27,21 +28,6 @@ const HeaderMenuContent = ({ float = "" }) => {
       ],
     },
   ];
-
-  const property = [
-    {
-      id: 1,
-      title: "User Admin",
-      items: [
-        {
-          name: "Cont",
-          routerPath: "/panou-doctor",
-        },
-      ],
-    },
-  ];
-
-  const blog = [{ id: 1, name: "Blog List 1", routerPath: "/blog-list-1" }];
 
   const pages = [
     { id: 1, name: "Despre noi", routerPath: "/despre-noi" },
@@ -146,10 +132,23 @@ const HeaderMenuContent = ({ float = "" }) => {
           <li className={`list-inline-item list_s ${float}`}>
             <a
               href="#"
-              className="btn flaticon-user"
+              // className="btn flaticon-user"
+              className="btn"
               data-bs-toggle="modal"
               data-bs-target=".bd-utilizator-modal-lg"
             >
+              <Image
+                src={
+                  pathname === "/"
+                    ? "/assets/images/iconite/cadremedicale2.png"
+                    : "/assets/images/iconite/cadremedicale1.png"
+                }
+                alt="Cadre medicale Icon"
+                width={25} // Setează lățimea iconului
+                height={25} // Setează înălțimea iconului
+                priority // Încarcă imaginea cât mai rapid posibil
+                className="mr5 mb-1"
+              />
               <span className="dn-lg">Cadre medicale</span>
             </a>
           </li>
@@ -157,11 +156,24 @@ const HeaderMenuContent = ({ float = "" }) => {
           <li className={`list-inline-item list_s ${float}`}>
             <a
               href="#"
-              className="btn flaticon-user"
+              // className="btn flaticon-user" flaticon-user pentru a afisa icon
+              className="btn"
               data-bs-toggle="modal"
               data-bs-target=".bd-partener-modal-lg"
             >
-              <span className="dn-lg">Parteneri</span>
+              <Image
+                src={
+                  pathname === "/"
+                    ? "/assets/images/iconite/parteneri2.png"
+                    : "/assets/images/iconite/parteneri1.png"
+                }
+                alt="Cadre medicale Icon"
+                width={25} // Setează lățimea iconului
+                height={25} // Setează înălțimea iconului
+                priority // Încarcă imaginea cât mai rapid posibil
+                className="mr5 mb-1"
+              />
+              <span className="dn-lg"> Parteneri</span>
             </a>
           </li>
           {/* End .dropitem */}

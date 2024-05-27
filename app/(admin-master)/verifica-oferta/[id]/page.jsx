@@ -2,14 +2,14 @@ import {
   handleGetSubcollections,
   handleQueryFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
-import Header from "@/components/common/header/dashboard/Header";
-import SidebarMenu from "@/components/common/header/dashboard/SidebarMenu";
+import Header from "@/components/common/header/dashboard-master/Header";
+import SidebarMenu from "@/components/common/header/dashboard-master/SidebarMenu";
 import MobileMenu from "@/components/common/header/MobileMenu";
-import CreateList from "@/components/dashboard/creaza-oferta/CreateList";
-import DetailedInfo from "@/components/dashboard/creaza-oferta/DetailedInfo";
-import FloorPlans from "@/components/dashboard/creaza-oferta/FloorPlans";
-import LocationField from "@/components/dashboard/creaza-oferta/LocationField";
-import PropertyMediaUploader from "@/components/dashboard/creaza-oferta/PropertyMediaUploader";
+import CreateList from "@/components/dashboard-master/verifica-oferta/CreateList";
+import DetailedInfo from "@/components/dashboard-master/verifica-oferta/DetailedInfo";
+import FloorPlans from "@/components/dashboard-master/verifica-oferta/FloorPlans";
+import LocationField from "@/components/dashboard-master/verifica-oferta/LocationField";
+import PropertyMediaUploader from "@/components/dashboard-master/verifica-oferta/PropertyMediaUploader";
 import { unstable_noStore as noStore } from "next/cache";
 
 const index = async ({ params }) => {
@@ -70,7 +70,7 @@ const index = async ({ params }) => {
 
                 <div className="col-lg-12 mb10">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Creaza oferta</h2>
+                    <h2 className="breadcrumb_title">Verifica oferta</h2>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
@@ -79,9 +79,9 @@ const index = async ({ params }) => {
                 <div className="col-lg-12">
                   <div className="my_dashboard_review">
                     <div className="row">
-                      <div className="col-lg-12">
+                      {/* <div className="col-lg-12">
                         <h3 className="mb30">Creaza oferta</h3>
-                      </div>
+                      </div> */}
 
                       <CreateList oferta={oferta[0]} />
                     </div>

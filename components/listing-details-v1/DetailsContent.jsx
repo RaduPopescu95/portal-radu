@@ -20,8 +20,24 @@ const DetailsContent = ({ partener, oferte }) => {
   const handleNavigare = () => {
     if (partener && partener.coordonate) {
       const { lat, lng } = partener.coordonate;
+      // Creăm URL-ul pentru Google Maps
       const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-      window.open(googleMapsUrl, "_blank");
+      // Creăm URL-ul pentru Waze
+      const wazeUrl = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+
+      // Detectăm dacă dispozitivul este mobil
+      const isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+
+      if (isMobile) {
+        // Încercăm să deschidem Waze, dacă nu este instalat, browserul va reveni la Google Maps
+        window.open(wazeUrl, "_blank");
+      } else {
+        // Pentru PC-uri, deschidem Google Maps
+        window.open(googleMapsUrl, "_blank");
+      }
     } else {
       console.log("Coordonatele nu sunt disponibile");
     }

@@ -21,28 +21,89 @@ exports.sendConfirmationEmails = functions.firestore
       const oldV = change.before.data();
 
       if (newV.status === "Confirmata" && oldV.status !== "Confirmata") {
-        const doctorRef = admin.firestore().doc(`Users/${newV.idUtilizator}`);
-        const partenerRef = admin.firestore().doc(`Users/${newV.collectionId}`);
+        try {
+          const doctorRef = admin.firestore().doc(`Users/${newV.idUtilizator}`);
+          const partRef = admin.firestore().doc(`Users/${newV.collectionId}`);
 
-        const [doctor, partener] = await Promise.all([
-          doctorRef.get(),
-          partenerRef.get(),
-        ]);
+          const [doctor, partener] = await Promise.all([
+            doctorRef.get(),
+            partRef.get(),
+          ]);
 
-        const emails = [doctor.data().email, partener.data().email];
-        const text = `Tranzactia înregistrată pentru oferta` +
-        ` ${oldV.oferta.titluOferta} a fost confirmată de către echipa ` +
-        `noastră. Pentru detalii suplimentare accesați www.exlusivmd.ro`;
+          const emails = [doctor.data().email, partener.data().email];
+          const text =
+          `Tranzactia înregistrată pentru oferta` +
+          ` ${oldV.oferta.titluOferta} a fost confirmată de către echipa ` +
+          `noastră. Pentru detalii suplimentare accesați www.exclusivmd.ro`;
 
-        const mailOptions = {
-          from: "exclusivmd@creditemedicale.ro",
-          to: emails.join(", "),
-          subject: `Confirmare Oferta ${oldV.oferta.titluOferta}`,
-          text,
-        };
+          const mailOptions = (email) => ({
+            from: "exclusivmd@creditemedicale.ro",
+            to: email,
+            subject: `Confirmare Oferta ${oldV.oferta.titluOferta}`,
+            text,
+          });
 
-        await transporter.sendMail(mailOptions);
-        console.log("Email-uri de confirmare trimise cu succes!");
+          for (const email of emails) {
+            try {
+              await transporter.sendMail(mailOptions(email));
+              console.log(`Email trimis cu succes la: ${email}`);
+            } catch (error) {
+              console.error(
+                  `Eroare la trimiterea emailului la ${email}: `,
+                  error,
+              );
+            }
+          }
+        } catch (error) {
+          console.error("Eroare la preluarea datelor utilizatorilor: ", error);
+        }
       }
       return null;
     });
+
+
+exports.sendDeactivationEmails = functions.pubsub
+    .schedule("every 5 minutes")
+    .onRun(async (context) => {
+      const today = new Date().toISOString().slice(0, 10);
+      const usersRef = admin.firestore().collection("Users");
+
+      const querySnapshot = await usersRef.get();
+      const emailsToSend = [];
+
+      for (const doc of querySnapshot.docs) {
+        const oR = doc.ref.collection("Oferte");
+        const oS = await oR.where("dataDezactivare", "==", today).get();
+        if (!oS.empty) {
+          const userData = doc.data();
+          const userEmail = userData.email;
+          oS.forEach((offerDoc) => {
+            emailsToSend.push({
+              email: userEmail,
+              offerTitle: offerDoc.data().titluOferta,
+            });
+          });
+        }
+      }
+
+      for (const {email, offerTitle} of emailsToSend) {
+        const cText = "Pentru detalii suplimentare accesați www.exclusivmd.ro";
+        const text = `Oferta ${offerTitle} a expirat astăzi. ${cText}`;
+        const mailOptions = {
+          from: "exclusivmd@creditemedicale.ro",
+          to: email,
+          subject: `Expirare Oferta ${offerTitle}`,
+          text,
+        };
+
+        try {
+          await transporter.sendMail(mailOptions);
+          console.log(`Email trimis cu succes la: ${email}`);
+        } catch (error) {
+          console.error(`Eroare la trimiterea emailului la ${email}: `, error);
+        }
+      }
+
+      return null;
+    });
+

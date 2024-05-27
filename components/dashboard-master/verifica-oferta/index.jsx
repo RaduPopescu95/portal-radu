@@ -2,29 +2,16 @@ import {
   handleGetSubcollections,
   handleQueryFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
-import Header from "@/components/common/header/dashboard/Header";
-import SidebarMenu from "@/components/common/header/dashboard/SidebarMenu";
-import MobileMenu from "@/components/common/header/MobileMenu";
-import CreateList from "@/components/dashboard/creaza-oferta/CreateList";
-import DetailedInfo from "@/components/dashboard/creaza-oferta/DetailedInfo";
-import FloorPlans from "@/components/dashboard/creaza-oferta/FloorPlans";
-import LocationField from "@/components/dashboard/creaza-oferta/LocationField";
-import PropertyMediaUploader from "@/components/dashboard/creaza-oferta/PropertyMediaUploader";
-import { unstable_noStore as noStore } from "next/cache";
+import Header from "../../common/header/dashboard/Header";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
+import MobileMenu from "../../common/header/MobileMenu";
+import CreateList from "./CreateList";
+import DetailedInfo from "./DetailedInfo";
+import FloorPlans from "./FloorPlans";
+import LocationField from "./LocationField";
+import PropertyMediaUploader from "./PropertyMediaUploader";
 
-const index = async ({ params }) => {
-  noStore();
-  const parts = params.id.split("-");
-  const id = parseFloat(parts[0]);
-  const partenerId = parts[1];
-  const oferta = await handleQueryFirestoreSubcollection(
-    "Oferte",
-    "id",
-    id,
-    "collectionId",
-    partenerId
-  );
-
+const index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -83,37 +70,37 @@ const index = async ({ params }) => {
                         <h3 className="mb30">Creaza oferta</h3>
                       </div>
 
-                      <CreateList oferta={oferta[0]} />
+                      <CreateList />
                     </div>
                   </div>
                   {/* <div className="my_dashboard_review mt30">
-                      <div className="row">
-                        <div className="col-lg-12">
-                          <h3 className="mb30">Location</h3>
-                        </div>
-  
-                        <LocationField />
-                      </div>
-                    </div>
-                    <div className="my_dashboard_review mt30">
+                    <div className="row">
                       <div className="col-lg-12">
-                        <h3 className="mb30">Detailed Information</h3>
+                        <h3 className="mb30">Location</h3>
                       </div>
-                      <DetailedInfo />
+
+                      <LocationField />
                     </div>
-                    <div className="my_dashboard_review mt30">
-                      <div className="col-lg-12">
-                        <h3 className="mb30">Property media</h3>
-                      </div>
-                      <PropertyMediaUploader />
+                  </div>
+                  <div className="my_dashboard_review mt30">
+                    <div className="col-lg-12">
+                      <h3 className="mb30">Detailed Information</h3>
                     </div>
-                    <div className="my_dashboard_review mt30">
-                      <div className="col-lg-12">
-                        <h3 className="mb30">Floor Plans</h3>
-                        <button className="btn admore_btn mb30">Add More</button>
-                      </div>
-                      <FloorPlans />
-                    </div> */}
+                    <DetailedInfo />
+                  </div>
+                  <div className="my_dashboard_review mt30">
+                    <div className="col-lg-12">
+                      <h3 className="mb30">Property media</h3>
+                    </div>
+                    <PropertyMediaUploader />
+                  </div>
+                  <div className="my_dashboard_review mt30">
+                    <div className="col-lg-12">
+                      <h3 className="mb30">Floor Plans</h3>
+                      <button className="btn admore_btn mb30">Add More</button>
+                    </div>
+                    <FloorPlans />
+                  </div> */}
                 </div>
                 {/* End .col */}
               </div>

@@ -33,7 +33,7 @@ export default function ListingOne({ partener }) {
                 alt={`Property Image ${i + 1}`}
                 layout="responsive" // Makes the image scale responsively within the fixed dimensions
                 objectFit="cover" // Covers the area without distorting the image, may crop
-                className="img-fluid"
+              className="img-fluid"
               />
             </div>
           ))}

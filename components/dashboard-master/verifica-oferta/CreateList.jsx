@@ -8,8 +8,9 @@ import {
 import { uploadImage } from "@/utils/storageUtils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import LogoUpload from "../my-profile/LogoUpload";
+
 import CommonLoader from "@/components/common/CommonLoader";
+import LogoUpload from "@/components/dashboard/my-profile/LogoUpload";
 
 const CreateList = ({ oferta }) => {
   const { currentUser, userData } = useAuth();
@@ -165,7 +166,7 @@ const CreateList = ({ oferta }) => {
       dataActivare,
       tipOferta,
       gradeFidelitate,
-      descriereOferta,
+    descriereOferta,
       titluOferta,
       procentReducere,
       pretRedus,
@@ -276,6 +277,7 @@ const CreateList = ({ oferta }) => {
             data-width="100%"
             value={tipOferta}
             onChange={(e) => setTipOferta(e.target.value)}
+            disabled
           >
             <option data-tokens="Status1">Selecteaza tip oferta</option>
             <option data-tokens="Oferta cu discount procentual general">
@@ -289,9 +291,9 @@ const CreateList = ({ oferta }) => {
       {tipOferta === "Oferta specifică" && (
         <LogoUpload
           singleImage={singleImage}
-          deleteLogo={deleteLogo}
+        deleteLogo={deleteLogo}
           logoImg={logo}
-          isEdit={isEdit}
+          isVerifica={true}
           isNewImage={isNewLogo}
           text={"Adauga imagine"}
         />
@@ -306,6 +308,7 @@ const CreateList = ({ oferta }) => {
             id="propertyTitle"
             value={titluOferta}
             onChange={(e) => setTitluOferta(e.target.value)}
+            readOnly
           />
         </div>
       </div>
@@ -320,6 +323,7 @@ const CreateList = ({ oferta }) => {
             rows="7"
             value={descriereOferta}
             onChange={(e) => setDescriereOferta(e.target.value)}
+            readOnly
           ></textarea>
         </div>
       </div>
@@ -356,6 +360,7 @@ const CreateList = ({ oferta }) => {
                   id="Silver"
                   checked={fidelitySilver}
                   onChange={handleFidelityChange}
+                  disabled
                 />
                 <label className="form-check-label" for="fidelityGradeSilver">
                   Silver
@@ -371,6 +376,7 @@ const CreateList = ({ oferta }) => {
                   id="Gold"
                   checked={fidelityGold}
                   onChange={handleFidelityChange}
+                  disabled
                 />
                 <label className="form-check-label" for="fidelityGradeGold">
                   Gold
@@ -386,6 +392,7 @@ const CreateList = ({ oferta }) => {
                   id="Platinum"
                   checked={fidelityPlatinum}
                   onChange={handleFidelityChange}
+                  disabled
                 />
                 <label className="form-check-label" for="fidelityGradePlatinum">
                   Platinum
@@ -420,6 +427,7 @@ const CreateList = ({ oferta }) => {
                 value={pretIntreg}
                 onChange={(e) => setPretIntreg(e.target.value)}
                 placeholder="Introdu prețul întreg"
+                readOnly
               />
             </div>
           </div>
@@ -435,6 +443,7 @@ const CreateList = ({ oferta }) => {
                 value={pretRedus}
                 onChange={(e) => setPretRedus(e.target.value)}
                 placeholder="Introdu prețul redus"
+                readOnly
               />
             </div>
           </div>
@@ -465,6 +474,7 @@ const CreateList = ({ oferta }) => {
               value={procentReducere}
               onChange={(e) => setProcentReducere(e.target.value)}
               placeholder="Introdu procentul de reducere"
+              readOnly
             />
           </div>
         </div>
@@ -481,6 +491,7 @@ const CreateList = ({ oferta }) => {
               id="activationDate"
               value={dataActivare}
               onChange={(e) => setDataActivare(e.target.value)}
+              readOnly
             />
           </div>
         </div>
@@ -495,6 +506,7 @@ const CreateList = ({ oferta }) => {
               id="deactivationDate"
               value={dataDezactivare}
               onChange={(e) => setDataDezactivare(e.target.value)}
+              readOnly
             />
           </div>
         </div>
@@ -534,7 +546,7 @@ const CreateList = ({ oferta }) => {
       </div> */}
       {/* End .col */}
 
-      <div className="col-xl-12">
+      {/* <div className="col-xl-12">
         <div className="my_profile_setting_input">
           {alert.show && (
             <div className={`alert alert-${alert.type} mb-0`}>
@@ -551,7 +563,7 @@ const CreateList = ({ oferta }) => {
             </button>
           )}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

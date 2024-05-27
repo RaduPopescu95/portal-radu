@@ -1,5 +1,7 @@
+"use client"
+
 import Image from "next/image";
-import properties from "../../../data/properties";
+
 import { useState } from "react";
 import oferte from "@/data/oferte";
 import GradeFidelitate from "./GradeFidelitate";
@@ -145,7 +147,7 @@ const TableData = ({ oferte }) => {
             data-placement="top"
             title="Edit"
           >
-            <Link href={`creaza-oferta/${item.id}-${item.collectionId}`}>
+            <Link href={`/verifica-oferta/${item.id}-${item.collectionId}`}>
               <span className="flaticon-edit"></span>
             </Link>
           </li>

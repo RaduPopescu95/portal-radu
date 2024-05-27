@@ -138,20 +138,36 @@ const MobileMenuContent = () => {
               <MenuItem>
                 <a
                   href="#"
-                  className="btn flaticon-user pl0"
+                  className="btn pl0"
                   data-bs-toggle="modal"
                   data-bs-target=".bd-partener-modal-lg"
                 >
+                  <Image
+                    src="/assets/images/iconite/parteneri1.png"
+                    alt="Cadre medicale Icon"
+                    width={25} // Setează lățimea iconului
+                    height={25} // Setează înălțimea iconului
+                    priority // Încarcă imaginea cât mai rapid posibil
+                    className="mr5 mb-1"
+                  />
                   <span className="pl5">Parteneri</span>
                 </a>
               </MenuItem>
               <MenuItem>
                 <a
                   href="#"
-                  className="btn flaticon-user pl0"
+                  className="btn pl0"
                   data-bs-toggle="modal"
                   data-bs-target=".bd-utilizator-modal-lg"
                 >
+                  <Image
+                    src="/assets/images/iconite/cadremedicale1.png"
+                    alt="Cadre medicale Icon"
+                    width={25} // Setează lățimea iconului
+                    height={25} // Setează înălțimea iconului
+                    priority // Încarcă imaginea cât mai rapid posibil
+                    className="mr5 mb-1"
+                  />
                   <span className="pl5">Cadre medicale</span>
                 </a>
               </MenuItem>

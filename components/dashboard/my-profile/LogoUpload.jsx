@@ -8,7 +8,7 @@ const LogoUpload = ({
   singleImage,
   deleteLogo,
   logoImg,
-  isEdit,
+  isVerifica,
   isNewImage,
   text,
 }) => {
@@ -37,6 +37,11 @@ const LogoUpload = ({
                         alt="fp1.jpg"
                       />
                     )}
+                    {
+                    isVerifica
+                    ?
+                    null
+                    :
                     <div
                       className="edu_stats_list"
                       data-bs-toggle="tooltip"
@@ -48,6 +53,7 @@ const LogoUpload = ({
                         <span className="flaticon-garbage"></span>
                       </a>
                     </div>
+                    }
                   </div>
                 </li>
               ))
