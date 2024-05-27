@@ -120,9 +120,7 @@ const FeaturedItemHome = ({ params }) => {
     // setIsNoLocation(true);
     // Informează utilizatorul despre cum poate activa locația manual
     if (error.code === error.PERMISSION_DENIED) {
-      alert(
-        "Accesul la locație a fost blocat. Te rog activează accesul la locație din setările browserului sau dispozitivului tău."
-      );
+      setIsNoLocation(true);
     }
   }
 
@@ -191,7 +189,19 @@ const FeaturedItemHome = ({ params }) => {
     dispatch(addLength(content.length));
   }, [dispatch, content]);
 
-  return <>{isLoading ? <SkeletonLoader /> : content}</>;
+  return (
+    <>
+      {isLoading ? <SkeletonLoader /> : content}
+      {isNoLocation && (
+        <div className="d-flex justify-content-center align-items-center">
+          <p>
+            Accesul la locație a fost blocat. Te rog activează accesul la
+            locație din setările browserului sau dispozitivului tău.
+          </p>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default FeaturedItemHome;
