@@ -134,7 +134,7 @@ const ProfileInfo = ({ partener: part }) => {
             data-live-search="true"
             data-width="100%"
             value={part?.judet}
-            readOnly
+            disabled
           >
             {judete &&
               judete.map((judet, index) => (
@@ -155,7 +155,7 @@ const ProfileInfo = ({ partener: part }) => {
             data-live-search="true"
             data-width="100%"
             value={part?.localitate}
-            readOnly
+            disabled
           >
             {localitati.map((location, index) => (
               <option key={index} value={location.localitate}>
