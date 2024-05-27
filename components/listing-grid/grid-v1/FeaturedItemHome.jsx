@@ -56,16 +56,22 @@ const FeaturedItemHome = ({ params }) => {
   async function fetchLocationAndUpdatePartners(latitude, longitude) {
     try {
       let res = await fetchLocation(latitude, longitude);
-      if (
-        res &&
-        res.results &&
-        res.results.length > 0 &&
-        res.results[0].locality
-      ) {
-        const localitate = handleDiacrtice(res.results[0].locality);
-        updatePartnersByLocation(localitate, latitude, longitude);
+      console.log("res...here...", res);
+
+      if (res && res.results && res.results.length > 0) {
+        // Caută primul element cu proprietatea 'locality' definită
+        const firstLocality = res.results.find(
+          (result) => result.locality !== undefined
+        );
+
+        if (firstLocality && firstLocality.locality) {
+          const localitate = handleDiacrtice(firstLocality.locality);
+          updatePartnersByLocation(localitate, latitude, longitude);
+        } else {
+          console.error("Localitate missing in all results:", res);
+        }
       } else {
-        console.error("Invalid response or locality missing:", res);
+        console.error("Invalid response or results missing:", res);
       }
     } catch (error) {
       setIsLoading(false);
@@ -108,6 +114,7 @@ const FeaturedItemHome = ({ params }) => {
   }
 
   function handleGeoError(error) {
+    // alert("Geolocation error: ", error.message);
     console.error("Geolocation error: ", error.message);
     setIsLoading(false);
     // setIsNoLocation(true);
