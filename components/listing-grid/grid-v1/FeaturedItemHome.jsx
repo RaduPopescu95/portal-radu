@@ -60,7 +60,14 @@ const FeaturedItemHome = ({ params }) => {
 
         try {
           let res = await fetchLocation(latitude, longitude);
-          let localitate = handleDiacrtice(res.results[0].locality);
+          let localitate;
+if (res && res.results && res.results.length > 0 && res.results[0].locality) {
+    localitate = handleDiacrtice(res.results[0].locality);
+    // Restul codului...
+} else {
+    console.error('Invalid response or locality missing:', res);
+}
+       
 
           let parteneri;
           let parteneriCuDistanta;
@@ -96,9 +103,10 @@ const FeaturedItemHome = ({ params }) => {
           setParteneri(parteneriOrdonati);
           setIsLoading(false);
           let parteneriFiltrati = [];
-
+          
           console.log("parteneri cu distanta...", parteneriOrdonati);
         } catch (error) {
+          setIsLoading(false);
           console.error("Error fetching location data: ", error);
         }
       },

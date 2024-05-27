@@ -63,7 +63,7 @@ exports.sendConfirmationEmails = functions.firestore
 
 
 exports.sendDeactivationEmails = functions.pubsub
-    .schedule("every 5 minutes")
+    .schedule("every 24 hours")
     .onRun(async (context) => {
       const today = new Date().toISOString().slice(0, 10);
       const usersRef = admin.firestore().collection("Users");
