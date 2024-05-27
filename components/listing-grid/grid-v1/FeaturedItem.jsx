@@ -57,8 +57,22 @@ const FeaturedItem = ({ params }) => {
         const { latitude, longitude } = position.coords;
 
         try {
+          let localitate;
           let res = await fetchLocation(latitude, longitude);
-          let localitate = handleDiacrtice(res.results[0].locality);
+          if (res && res.results && res.results.length > 0) {
+            // Caută primul element cu proprietatea 'locality' definită
+            const firstLocality = res.results.find(
+              (result) => result.locality !== undefined
+            );
+
+            if (firstLocality && firstLocality.locality) {
+              localitate = handleDiacrtice(firstLocality.locality);
+            } else {
+              console.error("Localitate missing in all results:", res);
+            }
+          } else {
+            console.error("Invalid response or results missing:", res);
+          }
 
           let parteneri;
           let parteneriCuDistanta;
