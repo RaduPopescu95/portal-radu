@@ -51,92 +51,191 @@ const FeaturedItem = ({ params }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("test....de query...", searchQueryParteneri);
-    navigator.geolocation.getCurrentPosition(
-      async function (position) {
-        const { latitude, longitude } = position.coords;
+    const fetchData = async () => {
+      try {
+        let parteneri;
+        let parteneriCuDistanta;
+        let parteneriOrdonati;
 
-        try {
-          let localitate;
-          let res = await fetchLocation(latitude, longitude);
-          if (res && res.results && res.results.length > 0) {
-            // Caută primul element cu proprietatea 'locality' definită
-            const firstLocality = res.results.find(
-              (result) => result.locality !== undefined
-            );
+        if (!params && searchQueryParteneri) {
+          parteneri = await handleQueryDoubleParam(
+            "Users",
+            "userType",
+            "Partener",
+            "statusCont",
+            "Activ"
+          );
+          parteneriOrdonati = parteneri;
+        } else {
+          // parteneri = await handleQueryTripleParam(
+          //   "Users",
+          //   "localitate",
+          //   localitate,
+          //   "userType",
+          //   "Partener",
+          //   "statusCont",
+          //   "Activ"
+          // );
+          // // Adaugă distanța ca o proprietate pentru fiecare partener
+          // parteneriCuDistanta = parteneri.map((partener) => {
+          //   const distanta = calculateDistance(
+          //     latitude,
+          //     longitude,
+          //     partener.coordonate.lat,
+          //     partener.coordonate.lng
+          //   );
+          //   return { ...partener, distanta: Math.floor(distanta) };
+          // });
+          // // Sortează partenerii după distanță
+          // parteneriOrdonati = parteneriCuDistanta.sort(
+          //   (a, b) => a.distanta - b.distanta
+          // );
+        }
 
-            if (firstLocality && firstLocality.locality) {
-              localitate = handleDiacrtice(firstLocality.locality);
-            } else {
-              console.error("Localitate missing in all results:", res);
-            }
-          } else {
-            console.error("Invalid response or results missing:", res);
-          }
+        let parteneriFiltrati = [];
+        if (params) {
+          if (params[0].split("-")[0] === "parteneri") {
+            console.log("params contains parteneri....");
+            let localitate = params[0]; // presupunem că params[0] este un string
+            const parts = localitate.split("-");
 
-          let parteneri;
-          let parteneriCuDistanta;
-          let parteneriOrdonati;
+            // Decodifică partea pentru a elimina codificările URL (de exemplu, transformă "%20" înapoi în spații)
+            let decodedPart = decodeURIComponent(parts[1]);
+            // Verifică dacă stringul decodificat conține cuvântul "sector"
+            if (decodedPart.includes("sector")) {
+              console.log("Partea conține 'sector'", decodedPart);
 
-          if (!params && searchQueryParteneri) {
-            parteneri = await handleQueryDoubleParam(
-              "Users",
-              "userType",
-              "Partener",
-              "statusCont",
-              "Activ"
-            );
-            parteneriOrdonati = parteneri;
-          } else {
-            parteneri = await handleQueryTripleParam(
-              "Users",
-              "localitate",
-              localitate,
-              "userType",
-              "Partener",
-              "statusCont",
-              "Activ"
-            );
+              let sectorDorit =
+                decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
+              console.log("Test here sector dorit....", sectorDorit);
 
-            // Adaugă distanța ca o proprietate pentru fiecare partener
-            parteneriCuDistanta = parteneri.map((partener) => {
-              const distanta = calculateDistance(
-                latitude,
-                longitude,
-                partener.coordonate.lat,
-                partener.coordonate.lng
+              let parteneriFiltrati = await handleQueryTripleParam(
+                "Users",
+                "sector",
+                sectorDorit,
+                "userType",
+                "Partener",
+                "statusCont",
+                "Activ"
               );
 
-              return { ...partener, distanta: Math.floor(distanta) };
-            });
+              console.log("Test here parteneriFiltrati....", parteneriFiltrati);
+              if (!searchQueryParteneri) {
+                setParteneri([...parteneriFiltrati]);
+              } else {
+                const rezultatFiltrare = filtrareParteneri(
+                  parteneriFiltrati,
+                  searchQueryParteneri
+                );
+                setParteneri([...rezultatFiltrare]);
+              }
 
-            // Sortează partenerii după distanță
-            parteneriOrdonati = parteneriCuDistanta.sort(
-              (a, b) => a.distanta - b.distanta
-            );
-          }
+              // Execută codul dorit aici
+            } else {
+              console.log("Partea nu conține 'sector'");
+              let judetDorit =
+                parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+              console.log("Test here judet....", judetDorit);
 
-          let parteneriFiltrati = [];
-          if (params) {
-            if (params[0].split("-")[0] === "parteneri") {
-              console.log("params contains parteneri....");
-              let localitate = params[0]; // presupunem că params[0] este un string
+              let parteneriFiltrati = await handleQueryTripleParam(
+                "Users",
+                "judet",
+                judetDorit,
+                "userType",
+                "Partener",
+                "statusCont",
+                "Activ"
+              );
+
+              console.log("Test here judet....", parteneriFiltrati);
+              if (!searchQueryParteneri) {
+                setParteneri([...parteneriFiltrati]);
+              } else {
+                const rezultatFiltrare = filtrareParteneri(
+                  parteneriFiltrati,
+                  searchQueryParteneri
+                );
+                setParteneri([...rezultatFiltrare]);
+              }
+            }
+          } else {
+            console.log("params does not contains parteneri....");
+            if (params.length === 1) {
+              console.log("params does not contains parteneri length 1....");
+              let string = params[0]; // presupunem că params[0] este un string
+
+              let categorieDorita =
+                string.charAt(0).toUpperCase() + string.slice(1);
+
+              let parteneriFiltrati = await handleQueryTripleParam(
+                "Users",
+                "categorie",
+                categorieDorita,
+                "userType",
+                "Partener",
+                "statusCont",
+                "Activ"
+              );
+
+              if (!searchQueryParteneri) {
+                setParteneri([...parteneriFiltrati]);
+              } else {
+                const rezultatFiltrare = filtrareParteneri(
+                  parteneriFiltrati,
+                  searchQueryParteneri
+                );
+                setParteneri([...rezultatFiltrare]);
+              }
+            } else if (params.length === 2) {
+              console.log("params does not contains parteneri length 2....");
+              let string = params[0]; // presupunem că params[0] este un string
+
+              let categorieDorita =
+                string.charAt(0).toUpperCase() + string.slice(1);
+              let localitate = params[1]; // presupunem că params[0] este un string
               const parts = localitate.split("-");
-
-              // Decodifică partea pentru a elimina codificările URL (de exemplu, transformă "%20" înapoi în spații)
               let decodedPart = decodeURIComponent(parts[1]);
-              // Verifică dacă stringul decodificat conține cuvântul "sector"
+              console.log("it tests....", decodedPart);
               if (decodedPart.includes("sector")) {
-                console.log("Partea conține 'sector'", decodedPart);
-
                 let sectorDorit =
                   decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
-                console.log("Test here sector dorit....", sectorDorit);
+                console.log("Test here localitate....", categorieDorita);
+                console.log("Test here sector....", sectorDorit);
 
-                let parteneriFiltrati = await handleQueryTripleParam(
+                let parteneriFiltrati = await handleQueryPatruParam(
                   "Users",
+                  "categorie",
+                  categorieDorita,
                   "sector",
                   sectorDorit,
+                  "userType",
+                  "Partener",
+                  "statusCont",
+                  "Activ"
+                );
+
+                console.log("Test here localitate....", parteneriFiltrati);
+                if (!searchQueryParteneri) {
+                  setParteneri([...parteneriFiltrati]);
+                } else {
+                  const rezultatFiltrare = filtrareParteneri(
+                    parteneriFiltrati,
+                    searchQueryParteneri
+                  );
+                  setParteneri([...rezultatFiltrare]);
+                }
+              } else {
+                let judetDorit =
+                  parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+                console.log("Test here categorie....", categorieDorita);
+                console.log("Test here judet....", judetDorit);
+
+                let parteneriFiltrati = await handleQueryPatruParam(
+                  "Users",
+                  "categorie",
+                  categorieDorita,
+                  "judet",
+                  judetDorit,
                   "userType",
                   "Partener",
                   "statusCont",
@@ -147,34 +246,7 @@ const FeaturedItem = ({ params }) => {
                   "Test here parteneriFiltrati....",
                   parteneriFiltrati
                 );
-                if (!searchQueryParteneri) {
-                  setParteneri([...parteneriFiltrati]);
-                } else {
-                  const rezultatFiltrare = filtrareParteneri(
-                    parteneriFiltrati,
-                    searchQueryParteneri
-                  );
-                  setParteneri([...rezultatFiltrare]);
-                }
 
-                // Execută codul dorit aici
-              } else {
-                console.log("Partea nu conține 'sector'");
-                let judetDorit =
-                  parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-                console.log("Test here judet....", judetDorit);
-
-                let parteneriFiltrati = await handleQueryTripleParam(
-                  "Users",
-                  "judet",
-                  judetDorit,
-                  "userType",
-                  "Partener",
-                  "statusCont",
-                  "Activ"
-                );
-
-                console.log("Test here judet....", parteneriFiltrati);
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
                 } else {
@@ -186,137 +258,35 @@ const FeaturedItem = ({ params }) => {
                 }
               }
             } else {
-              console.log("params does not contains parteneri....");
-              if (params.length === 1) {
-                console.log("params does not contains parteneri length 1....");
-                let string = params[0]; // presupunem că params[0] este un string
-
-                let categorieDorita =
-                  string.charAt(0).toUpperCase() + string.slice(1);
-
-                let parteneriFiltrati = await handleQueryTripleParam(
-                  "Users",
-                  "categorie",
-                  categorieDorita,
-                  "userType",
-                  "Partener",
-                  "statusCont",
-                  "Activ"
-                );
-
-                if (!searchQueryParteneri) {
-                  setParteneri([...parteneriFiltrati]);
-                } else {
-                  const rezultatFiltrare = filtrareParteneri(
-                    parteneriFiltrati,
-                    searchQueryParteneri
-                  );
-                  setParteneri([...rezultatFiltrare]);
-                }
-              } else if (params.length === 2) {
-                console.log("params does not contains parteneri length 2....");
-                let string = params[0]; // presupunem că params[0] este un string
-
-                let categorieDorita =
-                  string.charAt(0).toUpperCase() + string.slice(1);
-                let localitate = params[1]; // presupunem că params[0] este un string
-                const parts = localitate.split("-");
-                let decodedPart = decodeURIComponent(parts[1]);
-                console.log("it tests....", decodedPart);
-                if (decodedPart.includes("sector")) {
-                  let sectorDorit =
-                    decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
-                  console.log("Test here localitate....", categorieDorita);
-                  console.log("Test here sector....", sectorDorit);
-
-                  let parteneriFiltrati = await handleQueryPatruParam(
-                    "Users",
-                    "categorie",
-                    categorieDorita,
-                    "sector",
-                    sectorDorit,
-                    "userType",
-                    "Partener",
-                    "statusCont",
-                    "Activ"
-                  );
-
-                  console.log("Test here localitate....", parteneriFiltrati);
-                  if (!searchQueryParteneri) {
-                    setParteneri([...parteneriFiltrati]);
-                  } else {
-                    const rezultatFiltrare = filtrareParteneri(
-                      parteneriFiltrati,
-                      searchQueryParteneri
-                    );
-                    setParteneri([...rezultatFiltrare]);
-                  }
-                } else {
-                  let judetDorit =
-                    parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-                  console.log("Test here categorie....", categorieDorita);
-                  console.log("Test here judet....", judetDorit);
-
-                  let parteneriFiltrati = await handleQueryPatruParam(
-                    "Users",
-                    "categorie",
-                    categorieDorita,
-                    "judet",
-                    judetDorit,
-                    "userType",
-                    "Partener",
-                    "statusCont",
-                    "Activ"
-                  );
-
-                  console.log(
-                    "Test here parteneriFiltrati....",
-                    parteneriFiltrati
-                  );
-
-                  if (!searchQueryParteneri) {
-                    setParteneri([...parteneriFiltrati]);
-                  } else {
-                    const rezultatFiltrare = filtrareParteneri(
-                      parteneriFiltrati,
-                      searchQueryParteneri
-                    );
-                    setParteneri([...rezultatFiltrare]);
-                  }
-                }
+              if (!searchQueryParteneri) {
+                setParteneri([...parteneriOrdonati]);
               } else {
-                if (!searchQueryParteneri) {
-                  setParteneri([...parteneriOrdonati]);
-                } else {
-                  const rezultatFiltrare = filtrareParteneri(
-                    parteneriOrdonati,
-                    searchQueryParteneri
-                  );
-                  setParteneri([...rezultatFiltrare]);
-                }
+                const rezultatFiltrare = filtrareParteneri(
+                  parteneriOrdonati,
+                  searchQueryParteneri
+                );
+                setParteneri([...rezultatFiltrare]);
               }
-            }
-          } else {
-            if (!searchQueryParteneri) {
-              setParteneri([...parteneriOrdonati]);
-            } else {
-              const rezultatFiltrare = filtrareParteneri(
-                parteneriOrdonati,
-                searchQueryParteneri
-              );
-              setParteneri([...rezultatFiltrare]);
             }
           }
-          console.log("parteneri cu distanta...", parteneriOrdonati);
-        } catch (error) {
-          console.error("Error fetching location data: ", error);
+        } else {
+          // if (!searchQueryParteneri) {
+          //   setParteneri([]);
+          // } else {
+          //   const rezultatFiltrare = filtrareParteneri(
+          //     parteneriOrdonati,
+          //     searchQueryParteneri
+          //   );
+          //   setParteneri([...rezultatFiltrare]);
+          // }
         }
-      },
-      function (error) {
-        console.error("Geolocation error: ", error);
+      } catch (error) {
+        console.error("Error fetching location data: ", error);
       }
-    );
-  }, []);
+    };
+
+    fetchData();
+  }, [params, searchQueryParteneri]);
 
   // Funcție pentru schimbarea paginilor
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
