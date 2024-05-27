@@ -3,31 +3,38 @@ import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const HeaderMenuContent = ({ float = "" }) => {
   const pathname = usePathname();
   const { userData, currentUser } = useAuth();
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const home = [
-    {
-      id: 1,
-      name: "Home 1",
-      routerPath: "/",
-    },
-  ];
+  useEffect(() => {
+    const handleScroll = () => {
+      const position = window.scrollY;
+      console.log(position);
+      setIsScrolled(position > 96); // Assuming the threshold is 100px
+    };
 
-  const listing = [
-    {
-      id: 1,
-      title: "Listing Grid",
-      items: [
-        {
-          name: "Grid v1",
-          routerPath: "/parteneri",
-        },
-      ],
-    },
-  ];
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener when the component unmounts
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const getImageSrc = (base, variant1, variant2) => {
+    if (pathname === "/" && isScrolled) {
+      console.log("variant 1");
+      return variant2;
+    } else if (pathname === "/") {
+      console.log("variant 2");
+      return variant1;
+    } else {
+      console.log("variant 1");
+      return variant2;
+    }
+  };
 
   const pages = [
     { id: 1, name: "Despre noi", routerPath: "/despre-noi" },
@@ -138,11 +145,11 @@ const HeaderMenuContent = ({ float = "" }) => {
               data-bs-target=".bd-utilizator-modal-lg"
             >
               <Image
-                src={
-                  pathname === "/"
-                    ? "/assets/images/iconite/cadremedicale2.png"
-                    : "/assets/images/iconite/cadremedicale1.png"
-                }
+                src={getImageSrc(
+                  "/assets/images/iconite/cadremedicale",
+                  "/assets/images/iconite/cadremedicale2.png",
+                  "/assets/images/iconite/cadremedicale1.png"
+                )}
                 alt="Cadre medicale Icon"
                 width={25} // Setează lățimea iconului
                 height={25} // Setează înălțimea iconului
@@ -162,11 +169,11 @@ const HeaderMenuContent = ({ float = "" }) => {
               data-bs-target=".bd-partener-modal-lg"
             >
               <Image
-                src={
-                  pathname === "/"
-                    ? "/assets/images/iconite/parteneri2.png"
-                    : "/assets/images/iconite/parteneri1.png"
-                }
+                src={getImageSrc(
+                  "/assets/images/iconite/cadremedicale",
+                  "/assets/images/iconite/parteneri2.png",
+                  "/assets/images/iconite/parteneri1.png"
+                )}
                 alt="Cadre medicale Icon"
                 width={25} // Setează lățimea iconului
                 height={25} // Setează înălțimea iconului
