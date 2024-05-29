@@ -13,7 +13,10 @@ export const metadata = {
 
 const index = async () => {
   noStore();
-  let mesajeInregistrare = await handleGetFirestore("Mesaje");
+  let mesajeInregistrare = await handleGetFirestore(
+    "Mesaje",
+    "firstUploadDate"
+  );
   return (
     <>
       <MySavedSearch mesajeInregistrare={mesajeInregistrare} />

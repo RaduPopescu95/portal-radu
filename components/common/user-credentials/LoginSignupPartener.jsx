@@ -35,6 +35,7 @@ const LoginSignupPartener = () => {
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
   const [isCateogireSelected, setIsCategorieSelected] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [cuiAlready, setCuiAlready] = useState(false);
   const router = useRouter();
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [denumireBrand, setDenumireBrand] = useState("");
@@ -141,9 +142,9 @@ const LoginSignupPartener = () => {
     // setUserData(utilizator[0]);
     console.log(utilizator);
     console.log(cui);
-    if (!utilizator || utilizator?.length === 0 ) {
+    if (!utilizator || utilizator?.length === 0) {
       showAlert(`Nu a fost gasit nici un cont cu acest CUI`, "danger");
-      return
+      return;
     }
     handleSignIn(utilizator[0].email, password)
       .then((userCredentials) => {
@@ -181,6 +182,23 @@ const LoginSignupPartener = () => {
       setIsLoading(false);
       setConfirmPasswordError("Parolele nu corespund.");
       return;
+    }
+
+    let utilizator = await handleQueryFirestoreSubcollection(
+      "Users",
+      "cui",
+      cui
+    );
+
+    if (utilizator || utilizator?.length > 0) {
+      setCuiAlready(true);
+      showAlert(
+        `Acest CUI este deja înregistrat în baza noastră de date!`,
+        "danger"
+      );
+      return;
+    } else {
+      setCuiAlready(false);
     }
 
     if (
@@ -357,7 +375,9 @@ const LoginSignupPartener = () => {
                     <input
                       type="text"
                       className={`form-control ${
-                        !cui && buttonPressed && "border-danger"
+                        (!cui && buttonPressed) || (cuiAlready && buttonPressed)
+                          ? "border-danger"
+                          : null
                       }`}
                       id="inlineFormInputGroupUsername2"
                       placeholder="CUI"
