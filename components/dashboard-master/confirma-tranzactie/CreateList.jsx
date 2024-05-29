@@ -92,15 +92,19 @@ const CreateList = ({ oferta }) => {
       <div className="col-lg-12">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="propertyTitle">Imagine bon/factura</label>
-          <Image
-            width={200}
-            height={200}
-            className="img-fluid cover"
-            src={oferta?.imagineBonFactura?.finalUri}
-            alt="Bon/Factura"
-            onClick={handleModalOpen}
-            style={{ cursor: "pointer" }}
-          />
+          {oferta?.imagineBonFactura?.finalUri ? (
+            <Image
+              width={200}
+              height={200}
+              className="img-fluid cover"
+              src={oferta?.imagineBonFactura?.finalUri}
+              alt="Bon/Factura"
+              onClick={handleModalOpen}
+              style={{ cursor: "pointer" }}
+            />
+          ) : (
+            <p>Doctorul nu a adaugat imagine pentru bon/factura</p>
+          )}
         </div>
       </div>
 
