@@ -364,7 +364,7 @@ export const handleDeleteFirestoreSubcollectionData = async (
 };
 
 //get all subcolletion from a collection
-export const handleGetSubcollections = async (subcollection) => {
+export const handleGetSubcollections = async (subcollection, sortBy = null) => {
   try {
     // Creează o interogare pentru grupul de colecții "Localitati"
     const q = query(collectionGroup(db, subcollection));
@@ -384,7 +384,16 @@ export const handleGetSubcollections = async (subcollection) => {
     docs.sort((a, b) => {
       console.log("sort...", a);
       // Presupunând că id-urile sunt numerice
-      return a.id - b.id;
+      if (sortBy) {
+        // Converteste șirurile de caractere 'firstUploadDate' la obiecte de tip Date
+        const dateA = new Date(a[sortBy].split("-").reverse().join("-"));
+        const dateB = new Date(b[sortBy].split("-").reverse().join("-"));
+
+        // Compară obiectele de tip Date
+        return dateB - dateA; // Sortare descrescătoare
+      } else {
+        return a.id - b.id;
+      }
 
       // Dacă id-urile sunt string-uri și vrei să le sortezi lexicografic, folosește:
       // return a.id.localeCompare(b.id);

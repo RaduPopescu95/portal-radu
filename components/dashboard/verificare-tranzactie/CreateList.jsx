@@ -15,6 +15,7 @@ const CreateList = ({ oferta, utilizator }) => {
     oferta?.procentReducere || ""
   );
   const [pretFinal, setPretFinal] = useState("");
+  const [noPretFinal, setNoPretFinal] = useState(false);
   const [titluOferta, setTitluOferta] = useState(oferta?.titluOferta || "");
   const [descriereOferta, setDescriereOferta] = useState(
     oferta?.descriereOferta || ""
@@ -86,6 +87,12 @@ const CreateList = ({ oferta, utilizator }) => {
   const handleAddOffer = async () => {
     console.log("currentUser?...", currentUser?.uid);
     console.log("userData?...", userData);
+    if (pretFinal.length === 0) {
+      showAlert("Adauga pret final!", "danger");
+      setNoPretFinal(true);
+      return;
+    }
+    setNoPretFinal(false);
     let data = {
       idOferta: oferta.documentId,
       idUtilizator: utilizator?.user_uid,
@@ -319,7 +326,7 @@ const CreateList = ({ oferta, utilizator }) => {
           <label htmlFor="pretFinal">Pret final (RON)</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${noPretFinal && "border-danger"}`}
             id="pretFinal"
             value={pretFinal}
             onChange={(e) => setPretFinal(e.target.value)}
