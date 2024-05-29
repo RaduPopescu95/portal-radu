@@ -203,11 +203,9 @@ const ProfileInfo = () => {
         !telefonContact ||
         !judet ||
         !localitate ||
-        !password ||
         !categorie ||
         !cui ||
-        !adresaSediu ||
-        !confirmPassword
+        !adresaSediu
       ) {
         setIsLoading(false);
         return;
@@ -221,7 +219,8 @@ const ProfileInfo = () => {
 
       console.log(utilizator);
       console.log(cui);
-      if (utilizator || utilizator?.length > 0) {
+      if (utilizator?.length > 0) {
+        setIsLoading(false);
         setCuiAlready(true);
         showAlert(
           `Acest CUI este deja înregistrat în baza noastră de date!`,
