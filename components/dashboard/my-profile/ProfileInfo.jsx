@@ -17,6 +17,7 @@ import selectedFiles from "@/utils/selectedFiles";
 import { uploadImage, uploadMultipleImages } from "@/utils/storageUtils";
 import CommonLoader from "@/components/common/CommonLoader";
 import LogoUpload from "./LogoUpload";
+import PasswordDialog from "@/components/common/dialogs/PasswordDialog";
 
 const ProfileInfo = () => {
   const { userData, currentUser, setCurrentUser, setUserData, judete } =
@@ -26,6 +27,7 @@ const ProfileInfo = () => {
   );
   const [descriere, setDescriere] = useState(userData?.descriere || "");
   const [email, setEmail] = useState(userData?.email || "");
+  const [oldEmail, setOldEmail] = useState(userData?.email || "");
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState("");
   const [numeContact, setNumeContact] = useState(userData?.numeContact || "");
@@ -40,6 +42,7 @@ const ProfileInfo = () => {
   const [adresaSediu, setAdresaSediu] = useState(userData?.adresaSediu || "");
   const [deletedLogo, setDeletedLogo] = useState(null);
   const [isNewLogo, setIsNewLogo] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [googleMapsLink, setGoogleMapsLink] = useState(
     userData?.googleMapsLink || ""
@@ -64,6 +67,7 @@ const ProfileInfo = () => {
   const [isNewImage, setIsNewImage] = useState(false);
   const [initialData, setInitialData] = useState({});
   const [buttonPressed, setButtonPressed] = useState(false);
+  const [cuiAlready, setCuiAlready] = useState(false);
 
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
@@ -145,12 +149,33 @@ const ProfileInfo = () => {
     // Aici poți actualiza starea sau trimite aceste date către backend
   };
 
+  // Închide modalul fără a șterge
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  // Logica de ștergere a elementului
+
+  const handleConfirm = async () => {
+    // setIsLoading(true);
+
+    try {
+      // Dacă dorești să aștepți până când router-ul se reîmprospătează înainte de a seta loading-ul la false
+    } catch (error) {
+      console.error("Error confirm:", error);
+      // Aici poți adăuga logica de afișare a unui mesaj de eroare pentru utilizator, dacă este cazul
+    } finally {
+      // window.location.reload();
+      // setIsLoading(false); // Setează isLoading la false indiferent dacă ștergerea a reușit sau a eșuat
+      handleCloseModal();
+    }
+  };
+
   const handleUpdateProfile = async (event) => {
     setButtonPressed(true);
     setIsLoading(true);
     event.preventDefault();
     const emailNew = emailWithoutSpace(email);
-
     // Verifică dacă parola este confirmată corect și apoi creează utilizatorul
     try {
       let user_uid = currentUser.uid;
@@ -196,9 +221,15 @@ const ProfileInfo = () => {
 
       console.log(utilizator);
       console.log(cui);
-      if (!utilizator || utilizator?.length === 0) {
-        showAlert(`Nu a fost gasit nici un cont cu acest CUI`, "danger");
+      if (utilizator || utilizator?.length > 0) {
+        setCuiAlready(true);
+        showAlert(
+          `Acest CUI este deja înregistrat în baza noastră de date!`,
+          "danger"
+        );
         return;
+      } else {
+        setCuiAlready(false);
       }
 
       console.log("test....", isNewLogo);
@@ -565,7 +596,9 @@ const ProfileInfo = () => {
           <input
             type="text"
             className={`form-control ${
-              !cui && buttonPressed && "border-danger"
+              (!cui && buttonPressed) || (cuiAlready && buttonPressed)
+                ? "border-danger"
+                : null
             }`}
             id="formGroupExampleInput7"
             value={cui}
@@ -659,6 +692,12 @@ const ProfileInfo = () => {
         type={alert.type}
         onClose={closeAlert}
       />
+      {showModal ? (
+        <PasswordDialog
+          handleCloseModal={handleCloseModal}
+          handleConfirm={handleConfirm}
+        />
+      ) : null}
     </div>
   );
 };
