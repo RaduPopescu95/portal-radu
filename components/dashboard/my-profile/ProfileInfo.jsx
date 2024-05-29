@@ -63,6 +63,7 @@ const ProfileInfo = () => {
   const [localitati, setLocalitati] = useState([]);
   const [isNewImage, setIsNewImage] = useState(false);
   const [initialData, setInitialData] = useState({});
+  const [buttonPressed, setButtonPressed] = useState(false);
 
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
@@ -145,6 +146,7 @@ const ProfileInfo = () => {
   };
 
   const handleUpdateProfile = async (event) => {
+    setButtonPressed(true);
     setIsLoading(true);
     event.preventDefault();
     const emailNew = emailWithoutSpace(email);
@@ -157,15 +159,48 @@ const ProfileInfo = () => {
 
       if (propertySelectedImgs.length === 0) {
         setIsLoading(false);
+        setButtonPressed(false);
         showAlert("Selelctati cel putin o imagine în galeria foto", "danger");
         return;
       }
 
       if (logo.length === 0) {
         setIsLoading(false);
+        setButtonPressed(false);
         showAlert("Selelctati logo", "danger");
         return;
       }
+
+      if (
+        !email ||
+        !denumireBrand ||
+        !numeContact ||
+        !telefonContact ||
+        !judet ||
+        !localitate ||
+        !password ||
+        !categorie ||
+        !cui ||
+        !adresaSediu ||
+        !confirmPassword
+      ) {
+        setIsLoading(false);
+        return;
+      }
+
+      let utilizator = await handleQueryFirestoreSubcollection(
+        "Users",
+        "cui",
+        cui
+      );
+
+      console.log(utilizator);
+      console.log(cui);
+      if (!utilizator || utilizator?.length === 0) {
+        showAlert(`Nu a fost gasit nici un cont cu acest CUI`, "danger");
+        return;
+      }
+
       console.log("test....", isNewLogo);
       console.log("test....", isNewImage);
       if (isNewLogo) {
@@ -220,11 +255,13 @@ const ProfileInfo = () => {
       await handleUpdateFirestore(`Users/${user_uid}`, data, actionText).then(
         () => {
           setIsLoading(false);
+          setButtonPressed(false);
           showAlert("Actualizare cu succes!", "success");
         }
       );
     } catch (error) {
       setIsLoading(false);
+      setButtonPressed(false);
       showAlert(`Eroare la Actualizare: ${error.message}`, "danger");
       console.error("Error actualizare profil partener: ", error);
     }
@@ -388,7 +425,9 @@ const ProfileInfo = () => {
           <label htmlFor="formGroupExampleInput1">Denumire Brand</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${
+              !denumireBrand && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleInput1"
             value={denumireBrand}
             onChange={(e) => setDenumireBrand(e.target.value)}
@@ -402,7 +441,9 @@ const ProfileInfo = () => {
           <label htmlFor="formGroupExampleEmail">Email</label>
           <input
             type="email"
-            className="form-control"
+            className={`form-control ${
+              !email && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleEmail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -417,7 +458,9 @@ const ProfileInfo = () => {
             Descriere partener
           </label>
           <textarea
-            className="form-control"
+            className={`form-control ${
+              !descriere && buttonPressed && "border-danger"
+            }`}
             id="exampleFormControlTextarea1"
             rows="7"
             value={descriere}
@@ -434,7 +477,9 @@ const ProfileInfo = () => {
           </label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${
+              !numeContact && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleInput3"
             value={numeContact}
             onChange={(e) => setNumeContact(e.target.value)}
@@ -450,7 +495,9 @@ const ProfileInfo = () => {
           </label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${
+              !telefonContact && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleInput4"
             value={telefonContact}
             onChange={(e) => setTelefonContact(e.target.value)}
@@ -463,7 +510,9 @@ const ProfileInfo = () => {
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Judet</label>
           <select
-            className="selectpicker form-select"
+            className={`selectpicker form-select ${
+              !judet && buttonPressed && "border-danger"
+            }`}
             data-live-search="true"
             data-width="100%"
             value={judet}
@@ -484,7 +533,9 @@ const ProfileInfo = () => {
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Localitate</label>
           <select
-            className="selectpicker form-select"
+            className={`selectpicker form-select ${
+              !localitate && buttonPressed && "border-danger"
+            }`}
             data-live-search="true"
             data-width="100%"
             value={localitate}
@@ -513,7 +564,9 @@ const ProfileInfo = () => {
           <label htmlFor="formGroupExampleInput7">CUI</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${
+              !cui && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleInput7"
             value={cui}
             onChange={(e) => setCui(e.target.value)}
@@ -526,7 +579,9 @@ const ProfileInfo = () => {
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Categorie</label>
           <select
-            className="selectpicker form-select"
+            className={`selectpicker form-select ${
+              !categorie && buttonPressed && "border-danger"
+            }`}
             data-live-search="true"
             data-width="100%"
             value={categorie}
@@ -585,6 +640,7 @@ const ProfileInfo = () => {
       <AutocompleteInput
         onPlaceChanged={handleLocationSelect}
         adresa={adresaSediu}
+        buttonPressed={buttonPressed}
       />
       {/* End .col */}
 
