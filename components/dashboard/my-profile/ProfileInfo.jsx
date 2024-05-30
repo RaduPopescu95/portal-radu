@@ -39,6 +39,7 @@ const ProfileInfo = () => {
   const [sector, setSector] = useState(userData?.sector || "");
   const [categorie, setCategorie] = useState(userData?.categorie || "");
   const [cui, setCui] = useState(userData?.cui || "");
+  const [oldCui, setOldCui] = useState(userData?.cui || "");
   const [adresaSediu, setAdresaSediu] = useState(userData?.adresaSediu || "");
   const [deletedLogo, setDeletedLogo] = useState(null);
   const [isNewLogo, setIsNewLogo] = useState(false);
@@ -219,7 +220,7 @@ const ProfileInfo = () => {
 
       console.log(utilizator);
       console.log(cui);
-      if (utilizator?.length > 0) {
+      if (utilizator?.length > 0 && cui !== oldCui) {
         setIsLoading(false);
         setCuiAlready(true);
         showAlert(
