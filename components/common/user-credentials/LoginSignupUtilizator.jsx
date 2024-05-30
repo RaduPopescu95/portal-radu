@@ -164,9 +164,17 @@ const LoginSignupUtilizator = () => {
       !judet ||
       !localitate ||
       !titulatura ||
-      !cuim ||
-      !confirmPassword
+      !password
     ) {
+      console.log("noo...", email);
+      console.log("noo...", numeUtilizator);
+      console.log("noo...", telefon);
+      console.log("noo...", judet);
+      console.log("noo...", localitate);
+      console.log("noo...", titulatura);
+      console.log("noo...", cuim);
+      console.log("noo...", password);
+      console.log("noo...", confirmPassword);
       return;
     }
 
