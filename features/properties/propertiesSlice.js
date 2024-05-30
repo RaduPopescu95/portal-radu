@@ -19,6 +19,7 @@ const initialState = {
         max: "",
     },
     length: 0,
+    isLoading:false
 };
 
 export const propertiesSlice = createSlice({
@@ -77,6 +78,9 @@ export const propertiesSlice = createSlice({
         addLength: (state, action) => {
             state.length = action.payload;
         },
+        lengthLoad: (state, action) => {
+            state.isLoading = action.payload;
+        },
     },
 });
 
@@ -95,5 +99,6 @@ export const {
     addAreaMax,
     addLength,
     resetAmenities,
+    lengthLoad
 } = propertiesSlice.actions;
 export default propertiesSlice.reducer;

@@ -9,7 +9,7 @@ import {
 } from "../../../features/filter/filterSlice";
 
 const FilterTopBar = () => {
-  const { length } = useSelector((state) => state.properties);
+  const { length, isLoading } = useSelector((state) => state.properties);
   const { statusType, featured } = useSelector((state) => state.filter);
   const [getStatus, setStatus] = useState(statusType);
   const [getFeatured, setFeatured] = useState(featured);
@@ -38,12 +38,12 @@ const FilterTopBar = () => {
         <div className="left_area tac-xsd">
           <p>
             <span className={length === 0 ? "text-danger" : undefined}>
-              {length}{" "}
+              {length === 0 ? null : length}{" "}
             </span>
             {length !== 0 ? (
               "Rezultate"
             ) : (
-              <span className="text-danger">Nu au fost gasite rezultate</span>
+              <span className="text-danger">{isLoading ? "Se cauta parteneri" : "Nu au fost gasite rezultate"}</span>
             )}
           </p>
         </div>

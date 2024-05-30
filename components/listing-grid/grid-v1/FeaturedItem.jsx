@@ -4,7 +4,7 @@ import Link from "next/link";
 import Pagination from "../../common/blog/Pagination";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addLength } from "../../../features/properties/propertiesSlice";
+import { addLength, lengthLoad } from "../../../features/properties/propertiesSlice";
 import properties from "../../../data/properties";
 import Image from "next/image";
 import {
@@ -589,6 +589,7 @@ const FeaturedItem = ({ params }) => {
   // add length of filter items
   useEffect(() => {
     dispatch(addLength(content.length));
+    dispatch(lengthLoad(isLoading));
   }, [dispatch, content]);
 
   if (isLoading) {

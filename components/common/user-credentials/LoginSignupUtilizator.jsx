@@ -121,7 +121,8 @@ const LoginSignupUtilizator = () => {
         if (closeButtonRef.current) {
           closeButtonRef.current.click();
         }
-        router.push("/panou-doctor"); // Redirecționează după ce mesajul de succes este afișat și închis
+        // router.push("/panou-doctor"); // Redirecționează după ce mesajul de succes este afișat și închis
+        router.refresh(); // Redirecționează după ce mesajul de succes este afișat și închis
       })
       .catch((error) => {
         const errorMessage = handleFirebaseAuthError(error);

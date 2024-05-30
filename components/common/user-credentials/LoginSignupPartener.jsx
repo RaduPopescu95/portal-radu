@@ -153,7 +153,8 @@ const LoginSignupPartener = () => {
         if (closeButtonRef.current) {
           closeButtonRef.current.click();
         }
-        router.push("/panou-partener");
+        // router.push("/panou-partener");
+        router.refresh();
       })
       .catch((error) => {
         console.error("Error during sign in:", error.message);
