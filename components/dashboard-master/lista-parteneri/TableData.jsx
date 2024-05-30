@@ -88,8 +88,12 @@ const TableData = ({ parteneri: parts }) => {
       console.log("location.....:", location);
       const fileNames = imagesToDelete.map((image) => image.fileName);
 
-      await deleteMultipleImages("ImaginiProfil", fileNames);
-      await deleteImage("ProfileLogo", logoToDelete);
+      if (fileNames.length > 0) {
+        await deleteMultipleImages("ImaginiProfil", fileNames);
+      }
+      if (logoToDelete.length > 0) {
+        await deleteImage("ProfileLogo", logoToDelete);
+      }
       await handleDeleteFirestoreData(
         `${"Users"}/${selectedItemId}`,
         true,
