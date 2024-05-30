@@ -26,19 +26,6 @@ import { useAuth } from "@/context/AuthContext";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
 
 const FeaturedItem = ({ params }) => {
-  const {
-    keyword,
-    location,
-    status,
-    propertyType,
-    price,
-    bathrooms,
-    bedrooms,
-    garages,
-    yearBuilt,
-    area,
-    amenities,
-  } = useSelector((state) => state.properties);
   const { statusType, featured, isGridOrList } = useSelector(
     (state) => state.filter
   );
@@ -47,11 +34,13 @@ const FeaturedItem = ({ params }) => {
 
   const [parteneri, setParteneri] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 6;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setIsLoading(true);
     console.log("test....de query...", searchQueryParteneri);
     navigator.geolocation.getCurrentPosition(
       async function (position) {
@@ -150,12 +139,14 @@ const FeaturedItem = ({ params }) => {
                 );
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
+                  setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
                     parteneriFiltrati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
+                  setIsLoading(false);
                 }
 
                 // Execută codul dorit aici
@@ -178,12 +169,14 @@ const FeaturedItem = ({ params }) => {
                 console.log("Test here judet....", parteneriFiltrati);
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
+                  setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
                     parteneriFiltrati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
+                  setIsLoading(false);
                 }
               }
             } else {
@@ -207,12 +200,14 @@ const FeaturedItem = ({ params }) => {
 
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
+                  setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
                     parteneriFiltrati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
+                  setIsLoading(false);
                 }
               } else if (params.length === 2) {
                 console.log("params does not contains parteneri length 2....");
@@ -245,12 +240,14 @@ const FeaturedItem = ({ params }) => {
                   console.log("Test here localitate....", parteneriFiltrati);
                   if (!searchQueryParteneri) {
                     setParteneri([...parteneriFiltrati]);
+                    setIsLoading(false);
                   } else {
                     const rezultatFiltrare = filtrareParteneri(
                       parteneriFiltrati,
                       searchQueryParteneri
                     );
                     setParteneri([...rezultatFiltrare]);
+                    setIsLoading(false);
                   }
                 } else {
                   let judetDorit =
@@ -277,35 +274,41 @@ const FeaturedItem = ({ params }) => {
 
                   if (!searchQueryParteneri) {
                     setParteneri([...parteneriFiltrati]);
+                    setIsLoading(false);
                   } else {
                     const rezultatFiltrare = filtrareParteneri(
                       parteneriFiltrati,
                       searchQueryParteneri
                     );
                     setParteneri([...rezultatFiltrare]);
+                    setIsLoading(false);
                   }
                 }
               } else {
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriOrdonati]);
+                  setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
                     parteneriOrdonati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
+                  setIsLoading(false);
                 }
               }
             }
           } else {
             if (!searchQueryParteneri) {
               setParteneri([...parteneriOrdonati]);
+              setIsLoading(false);
             } else {
               const rezultatFiltrare = filtrareParteneri(
                 parteneriOrdonati,
                 searchQueryParteneri
               );
               setParteneri([...rezultatFiltrare]);
+              setIsLoading(false);
             }
           }
           console.log("parteneri cu distanta...", parteneriOrdonati);
@@ -365,12 +368,14 @@ const FeaturedItem = ({ params }) => {
                 );
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
+                  setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
                     parteneriFiltrati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
+                  setIsLoading(false);
                 }
 
                 // Execută codul dorit aici
@@ -393,12 +398,14 @@ const FeaturedItem = ({ params }) => {
                 console.log("Test here judet....", parteneriFiltrati);
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
+                  setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
                     parteneriFiltrati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
+                  setIsLoading(false);
                 }
               }
             } else {
@@ -422,12 +429,14 @@ const FeaturedItem = ({ params }) => {
 
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
+                  setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
                     parteneriFiltrati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
+                  setIsLoading(false);
                 }
               } else if (params.length === 2) {
                 console.log("params does not contains parteneri length 2....");
@@ -460,12 +469,14 @@ const FeaturedItem = ({ params }) => {
                   console.log("Test here localitate....", parteneriFiltrati);
                   if (!searchQueryParteneri) {
                     setParteneri([...parteneriFiltrati]);
+                    setIsLoading(false);
                   } else {
                     const rezultatFiltrare = filtrareParteneri(
                       parteneriFiltrati,
                       searchQueryParteneri
                     );
                     setParteneri([...rezultatFiltrare]);
+                    setIsLoading(false);
                   }
                 } else {
                   let judetDorit =
@@ -492,35 +503,41 @@ const FeaturedItem = ({ params }) => {
 
                   if (!searchQueryParteneri) {
                     setParteneri([...parteneriFiltrati]);
+                    setIsLoading(false);
                   } else {
                     const rezultatFiltrare = filtrareParteneri(
                       parteneriFiltrati,
                       searchQueryParteneri
                     );
                     setParteneri([...rezultatFiltrare]);
+                    setIsLoading(false);
                   }
                 }
               } else {
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriOrdonati]);
+                  setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
                     parteneriOrdonati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
+                  setIsLoading(false);
                 }
               }
             }
           } else {
             if (!searchQueryParteneri) {
               setParteneri([...parteneriOrdonati]);
+              setIsLoading(false);
             } else {
               const rezultatFiltrare = filtrareParteneri(
                 parteneriOrdonati,
                 searchQueryParteneri
               );
               setParteneri([...rezultatFiltrare]);
+              setIsLoading(false);
             }
           }
           console.log("parteneri cu distanta...", parteneriOrdonati);
@@ -574,7 +591,7 @@ const FeaturedItem = ({ params }) => {
     dispatch(addLength(content.length));
   }, [dispatch, content]);
 
-  if (paginatedParteneri().length === 0) {
+  if (isLoading) {
     return <SkeletonLoader />;
   }
 
