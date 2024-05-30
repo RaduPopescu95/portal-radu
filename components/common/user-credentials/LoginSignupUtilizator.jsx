@@ -152,6 +152,8 @@ const LoginSignupUtilizator = () => {
     if (password.length < 6) {
       setPasswordError("Parola este prea scurta");
       return;
+    } else {
+      setPasswordError("");
     }
 
     if (
@@ -464,7 +466,7 @@ const LoginSignupUtilizator = () => {
                         !numeUtilizator && buttonPressed && "border-danger"
                       }`}
                       id="exampleInputName"
-                      placeholder="Nume utilizator"
+                      placeholder="Nume doctorului"
                       value={numeUtilizator}
                       onChange={(e) => setNumeUtilizator(e.target.value)}
                     />

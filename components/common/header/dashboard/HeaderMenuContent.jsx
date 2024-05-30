@@ -93,7 +93,7 @@ const HeaderMenuContent = ({ float = "" }) => {
           href="/my-dashboard"
           className={pathname === "/my-dashboard" ? "ui-active" : undefined}
         >
-          Cont Utilizator
+          Cont Doctor
         </Link>
       </li> */}
       {/* End .simpleitem */}

@@ -140,7 +140,7 @@ const CreateList = ({ oferta, utilizator }) => {
 
       <div className="col-lg-12">
         <div className="my_profile_setting_textarea">
-          <label htmlFor="propertyDescription">Nume Utilizator</label>
+          <label htmlFor="propertyDescription">Nume Doctor</label>
           <input
             type="text"
             className="form-control"

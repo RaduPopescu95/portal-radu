@@ -177,12 +177,16 @@ const LoginSignupPartener = () => {
       setPasswordError("Parola trebuie să fie de cel puțin 6 caractere.");
       setIsLoading(false);
       return;
+    } else {
+      setPasswordError("");
     }
 
     if (password !== confirmPassword) {
       setIsLoading(false);
       setConfirmPasswordError("Parolele nu corespund.");
       return;
+    } else {
+      setConfirmPasswordError("");
     }
 
     let utilizator = await handleQueryFirestoreSubcollection(
@@ -270,7 +274,7 @@ const LoginSignupPartener = () => {
       }, 3000);
     } catch (error) {
       setIsLoading(false);
-      console.error("Eroare la crearea utilizatorului: ", error);
+      console.error("Eroare la crearea doctorului: ", error);
       const message = handleFirebaseAuthError(error);
       showAlert(`Eroare la înregistrare: ${message}`, "danger");
     }

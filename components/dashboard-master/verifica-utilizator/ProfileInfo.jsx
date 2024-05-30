@@ -53,7 +53,7 @@ const ProfileInfo = ({ doctor: doc }) => {
 
       <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput1">Nume utilizator</label>
+          <label htmlFor="formGroupExampleInput1">Nume Doctor</label>
           <input
             type="text"
             className="form-control"

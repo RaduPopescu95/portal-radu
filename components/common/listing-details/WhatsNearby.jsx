@@ -92,7 +92,7 @@ const WhatsNearby = ({ oferte }) => {
                       Obține Oferta
                     </button>
                   ) : (
-                    <p className="text-muted">{`Oferta valabilă pentru utilizatori ${activeTab}`}</p>
+                    <p className="text-muted">{`Oferta valabilă pentru doctori ${activeTab}`}</p>
                   )}
                 </div>
               </div>
