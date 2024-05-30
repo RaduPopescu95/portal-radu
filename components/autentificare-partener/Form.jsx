@@ -2,14 +2,15 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { authentication } from "@/firebase";
-import { handleSignIn } from "@/utils/authUtils";
+import { handleLogout, handleSignIn } from "@/utils/authUtils";
 import { handleQueryFirestoreSubcollection } from "@/utils/firestoreUtils";
 import { useRouter } from "next/navigation"; // Aici ar trebui să fie "next/router", nu "next/navigation"
 import React, { useState } from "react"; // Importăm useState din React
 import { AlertModal } from "../common/AlertModal";
 import CommonLoader from "../common/CommonLoader";
+import { signOut } from "firebase/auth";
 
-const Form = () => {
+const Form = ({ partenerId }) => {
   // Stări locale pentru email și parolă
   const [cui, setCui] = useState("");
   const [password, setPassword] = useState("");
@@ -49,16 +50,26 @@ const Form = () => {
     // setUserData(utilizator[0]);
     console.log(utilizator);
     console.log(cui);
-    if (!utilizator) {
+    if (utilizator?.length === 0) {
       setIsLoading(false);
-      showAlert(`Nu a fost gasit nici un utilizator cu acest CUI`, "danger");
+      showAlert(`Nu a fost gasit nici un cont cu acest CUI`, "danger");
       return;
     }
+
     handleSignIn(utilizator[0].email, password)
       .then((userCredentials) => {
         setIsLoading(false);
         showAlert(`Autentificare cu succes!`, "succes");
         console.log("user credentials...", userCredentials);
+        if (utilizator[0].user_uid !== partenerId) {
+          setIsLoading(false);
+          showAlert(
+            `Contul de partener nu corespunde tranzactiei! Va rugam sa va înregistrați cu contul de partener asociat tranzacției respective`,
+            "danger"
+          );
+          handleLogout();
+          return;
+        }
         setCurrentUser(userCredentials); // Aici trebuie să asiguri că userCredentials este gestionat corect
       })
       .catch((error) => {

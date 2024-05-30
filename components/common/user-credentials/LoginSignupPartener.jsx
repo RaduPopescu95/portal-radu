@@ -142,7 +142,7 @@ const LoginSignupPartener = () => {
     // setUserData(utilizator[0]);
     console.log(utilizator);
     console.log(cui);
-    if (!utilizator || utilizator?.length === 0) {
+    if (utilizator?.length === 0) {
       showAlert(`Nu a fost gasit nici un cont cu acest CUI`, "danger");
       return;
     }
@@ -480,7 +480,6 @@ const LoginSignupPartener = () => {
             role="tabpanel"
             aria-labelledby="partener-tab"
           >
-            
             <form onSubmit={handleSignUp} action="#" className="row">
               <div className="col-lg-6 col-xl-6">
                 <div className="sign_up_form">

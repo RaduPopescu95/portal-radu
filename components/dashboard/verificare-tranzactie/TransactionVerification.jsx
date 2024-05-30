@@ -9,6 +9,7 @@ const TransactionVerification = ({
   utilizator,
 
   isVerified,
+  partenerId,
 }) => {
   return (
     <div className="col-lg-12 mb10">
@@ -22,9 +23,10 @@ const TransactionVerification = ({
           <div className="container">
             <div className="row">
               {/* <div className="col-sm-12 col-lg-6 offset-lg-3"> */}
-              <div className="col-sm-12 col-lg-6 offset-lg-2">
-                <div className="login_form  inner_page">
-                  <Form />
+              {/* <div className="col-sm-12 col-lg-6 offset-lg-2"> */}
+              <div className="col-sm-12 col-lg-6 offset-lg-1">
+                <div className="login_form inner_page">
+                  <Form partenerId={partenerId} />
                 </div>
               </div>
             </div>

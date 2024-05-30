@@ -102,6 +102,7 @@ const Tranzactie = ({ partenerId, utilizator, oferta }) => {
                   isVerified={isVerified}
                   utilizator={utilizator}
                   oferta={oferta}
+                  partenerId={partenerId}
                 />
               </div>
               {/* End .row */}
