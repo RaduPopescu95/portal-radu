@@ -65,8 +65,16 @@ const TableData = ({ parteneri: parts }) => {
 
   const handleDeleteClick = (partener) => {
     console.log(partener);
-    setImagesToDelete([...partener.images.imgs]);
-    setLogoToDelete(partener.logo.fileName);
+    if (partener?.images) {
+      setImagesToDelete([...partener?.images?.imgs]);
+    } else {
+      setImagesToDelete([]);
+    }
+    if (partener?.logo) {
+      setLogoToDelete(partener?.logo?.fileName);
+    } else {
+      setLogoToDelete("");
+    }
     setSelectedItemId(partener.user_uid); // Salvează ID-ul elementului selectat
     setShowModal(true); // Afișează modalul
   };
