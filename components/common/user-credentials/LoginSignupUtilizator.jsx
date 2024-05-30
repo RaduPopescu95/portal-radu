@@ -282,7 +282,7 @@ const LoginSignupUtilizator = () => {
             role="tabpanel"
             aria-labelledby="home-tab"
           >
-            <div className="col-lg-6 col-xl-6">
+            <div className="col-lg-6 col-xl-6 d-none d-lg-block">
               <div className="login_thumb">
                 <Image
                   width={357}
@@ -426,7 +426,7 @@ const LoginSignupUtilizator = () => {
           {/* End .tab-pane */}
 
           <div
-            className="row mt25 tab-pane fade"
+            className="row mt25 tab-pane fade justify-content-center"
             id="profile"
             role="tabpanel"
             aria-labelledby="profile-tab"

@@ -1,6 +1,7 @@
 "use client";
 
 import { AlertModal } from "@/components/common/AlertModal";
+import CommonLoader from "@/components/common/CommonLoader";
 import { useAuth } from "@/context/AuthContext";
 import {
   handleQueryFirestoreSubcollection,
@@ -35,6 +36,8 @@ const ProfileInfo = () => {
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
   const [isCateogireSelected, setIsCategorieSelected] = useState(true);
+  const [buttonPressed, setButtonPressed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Setează starea inițială
   useEffect(() => {
@@ -76,9 +79,14 @@ const ProfileInfo = () => {
   };
 
   const handleUpdateProfile = async (event) => {
+    setButtonPressed(true);
+    setIsLoading(true);
     event.preventDefault();
     const emailNew = emailWithoutSpace(email);
     // Verifică dacă parola este confirmată corect și apoi creează utilizatorul
+    if (titulatura === "Asistent Medical") {
+      setSpecializare("");
+    }
     try {
       let user_uid = currentUser.uid;
       let data = {
@@ -95,6 +103,20 @@ const ProfileInfo = () => {
         userType: "Doctor",
         numeUtilizator,
       };
+      if (
+        !email ||
+        !numeUtilizator ||
+        !titulatura ||
+        titulatura === "Titulatura" ||
+        !telefon ||
+        !judet ||
+        !localitate ||
+        !dataNasterii ||
+        !cuim
+      ) {
+        setIsLoading(false);
+        return;
+      }
       setUserData(data);
 
       const actionText = describeChanges();
@@ -102,11 +124,13 @@ const ProfileInfo = () => {
       await handleUpdateFirestore(`Users/${user_uid}`, data, actionText).then(
         () => {
           console.log("update succesfully....");
+          setIsLoading(false);
           showAlert("Actualizare cu succes!", "success");
         }
       );
     } catch (error) {
       showAlert(`Eroare la Actualizare: ${error.message}`, "danger");
+      setIsLoading(false);
       console.error("Error signing up: ", error);
     }
   };
@@ -214,7 +238,9 @@ const ProfileInfo = () => {
           <label htmlFor="formGroupExampleInput1">Nume utilizator</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${
+              !numeUtilizator && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleInput1"
             placeholder="Nume Utilizator"
             value={numeUtilizator}
@@ -229,7 +255,9 @@ const ProfileInfo = () => {
           <label htmlFor="formGroupExampleEmail">Email</label>
           <input
             type="email"
-            className="form-control"
+            className={`form-control ${
+              !email && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleEmail"
             placeholder="Email"
             value={email}
@@ -258,7 +286,12 @@ const ProfileInfo = () => {
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Titulatura</label>
           <select
-            className="selectpicker form-select"
+            className={`selectpicker form-select ${
+              (!titulatura && buttonPressed) ||
+              (titulatura === "Titulatura" && buttonPressed)
+                ? "border-danger"
+                : null
+            }`}
             data-live-search="true"
             data-width="100%"
             value={titulatura}
@@ -278,106 +311,124 @@ const ProfileInfo = () => {
       </div>
       {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Specializare</label>
-          <select
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-            value={specializare}
-            onChange={(e) => setSpecializare(e.target.value)}
-          >
-            <option data-tokens="SelectRole">Specializare</option>
-            <option data-tokens="Agent/Agency">
-              Alergologie si imunologie
-            </option>
-            <option data-tokens="SingleUser">Anatomie Patologica</option>
-            <option data-tokens="SingleUser">
-              Anestezie si terapie intensiva (ATI)
-            </option>
-            <option data-tokens="SingleUser">Boli Infectioase</option>
-            <option data-tokens="SingleUser">Cardiologie</option>
-            <option data-tokens="SingleUser">Cardiologie pediatrica</option>
-            <option data-tokens="SingleUser">Chirurgie cardiovasculara</option>
-            <option data-tokens="SingleUser">Chirurgie generala</option>
-            <option data-tokens="SingleUser">
-              Chirurgie orala si maxilofaciala
-            </option>
-            <option data-tokens="SingleUser">Chirurgie pediatrica</option>
-            <option data-tokens="SingleUser">
-              Chirurgie plastica, reconstructiva si microchirurgie
-            </option>
-            <option data-tokens="SingleUser">Chirurgie toracica</option>
-            <option data-tokens="SingleUser">Chirurgie vasculara</option>
-            <option data-tokens="SingleUser">Dermatovenerologie</option>
-            <option data-tokens="SingleUser">
-              Diabet zaharat, nutritie si boli metabolice
-            </option>
-            <option data-tokens="SingleUser">Endocrinologie</option>
-            <option data-tokens="SingleUser">Epidemiologie</option>
-            <option data-tokens="SingleUser">Expertiza medicala</option>
-            <option data-tokens="SingleUser">Farmacist</option>
-            <option data-tokens="SingleUser">Farmacologie clinica</option>
-            <option data-tokens="SingleUser">Gastroenterologie</option>
-            <option data-tokens="SingleUser">
-              Gastroenterologie Pediatrica
-            </option>
-            <option data-tokens="SingleUser">Genetica medicala</option>
-            <option data-tokens="SingleUser">Geriatrie si gerontologie</option>
-            <option data-tokens="SingleUser">Hematologie</option>
-            <option data-tokens="SingleUser">Igiena</option>
-            <option data-tokens="SingleUser">Medicina muncii</option>
-            <option data-tokens="SingleUser">Medicina de familie</option>
-            <option data-tokens="SingleUser">Medicina de laborator</option>
-            <option data-tokens="SingleUser">Medicina de urgenta</option>
-            <option data-tokens="SingleUser">
-              Medicina fizica si balneologie
-            </option>
-            <option data-tokens="SingleUser">Medicina interna</option>
-            <option data-tokens="SingleUser">Medicina legala</option>
-            <option data-tokens="SingleUser">Medicina nucleara</option>
-            <option data-tokens="SingleUser">Medicina sportiva</option>
-            <option data-tokens="SingleUser">Microbiologie medicala</option>
-            <option data-tokens="SingleUser">Nefrologie</option>
-            <option data-tokens="SingleUser">Nefrologie pediatrica</option>
-            <option data-tokens="SingleUser">Neonatologie</option>
-            <option data-tokens="SingleUser">Neurochirurgie</option>
-            <option data-tokens="SingleUser">Neurologie</option>
-            <option data-tokens="SingleUser">Neurologie pediatrica</option>
-            <option data-tokens="SingleUser">Obstetrica ginecologie</option>
-            <option data-tokens="SingleUser">Oftalmologie</option>
-            <option data-tokens="SingleUser">Oncologie medicala</option>
-            <option data-tokens="SingleUser">Oncologie si hematologie</option>
-            <option data-tokens="SingleUser">Oncologie pediatrica</option>
-            <option data-tokens="SingleUser">Oncologie si traumatologie</option>
-            <option data-tokens="SingleUser">Otorinolaringologie ORL</option>
-            <option data-tokens="SingleUser">Pediatrie</option>
-            <option data-tokens="SingleUser">Pneumologie</option>
-            <option data-tokens="SingleUser">Pneumologie pediatrica</option>
-            <option data-tokens="SingleUser">Psihiatrie</option>
-            <option data-tokens="SingleUser">Psihiatrie pediatrica</option>
-            <option data-tokens="SingleUser">
-              Radiologie si Imagistica medicala
-            </option>
-            <option data-tokens="SingleUser">Radioterapie</option>
-            <option data-tokens="SingleUser">Reumatologie</option>
-            <option data-tokens="SingleUser">
-              Sanatate publica si management
-            </option>
-            <option data-tokens="SingleUser">Urologie</option>
-            <option data-tokens="SingleUser">Medicina generala</option>
-            <option data-tokens="SingleUser">Altele</option>
-          </select>
+      {titulatura !== "Asistent Medical" ? (
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Specializare</label>
+            <select
+              className={`selectpicker form-select ${
+                (!specializare && buttonPressed) ||
+                (specializare === "Specializare" && buttonPressed)
+                  ? "border-danger"
+                  : null
+              }`}
+              data-live-search="true"
+              data-width="100%"
+              value={specializare}
+              onChange={(e) => setSpecializare(e.target.value)}
+            >
+              <option data-tokens="SelectRole">Specializare</option>
+              <option data-tokens="Agent/Agency">
+                Alergologie si imunologie
+              </option>
+              <option data-tokens="SingleUser">Anatomie Patologica</option>
+              <option data-tokens="SingleUser">
+                Anestezie si terapie intensiva (ATI)
+              </option>
+              <option data-tokens="SingleUser">Boli Infectioase</option>
+              <option data-tokens="SingleUser">Cardiologie</option>
+              <option data-tokens="SingleUser">Cardiologie pediatrica</option>
+              <option data-tokens="SingleUser">
+                Chirurgie cardiovasculara
+              </option>
+              <option data-tokens="SingleUser">Chirurgie generala</option>
+              <option data-tokens="SingleUser">
+                Chirurgie orala si maxilofaciala
+              </option>
+              <option data-tokens="SingleUser">Chirurgie pediatrica</option>
+              <option data-tokens="SingleUser">
+                Chirurgie plastica, reconstructiva si microchirurgie
+              </option>
+              <option data-tokens="SingleUser">Chirurgie toracica</option>
+              <option data-tokens="SingleUser">Chirurgie vasculara</option>
+              <option data-tokens="SingleUser">Dermatovenerologie</option>
+              <option data-tokens="SingleUser">
+                Diabet zaharat, nutritie si boli metabolice
+              </option>
+              <option data-tokens="SingleUser">Endocrinologie</option>
+              <option data-tokens="SingleUser">Epidemiologie</option>
+              <option data-tokens="SingleUser">Expertiza medicala</option>
+              <option data-tokens="SingleUser">Farmacist</option>
+              <option data-tokens="SingleUser">Farmacologie clinica</option>
+              <option data-tokens="SingleUser">Gastroenterologie</option>
+              <option data-tokens="SingleUser">
+                Gastroenterologie Pediatrica
+              </option>
+              <option data-tokens="SingleUser">Genetica medicala</option>
+              <option data-tokens="SingleUser">
+                Geriatrie si gerontologie
+              </option>
+              <option data-tokens="SingleUser">Hematologie</option>
+              <option data-tokens="SingleUser">Igiena</option>
+              <option data-tokens="SingleUser">Medicina muncii</option>
+              <option data-tokens="SingleUser">Medicina de familie</option>
+              <option data-tokens="SingleUser">Medicina de laborator</option>
+              <option data-tokens="SingleUser">Medicina de urgenta</option>
+              <option data-tokens="SingleUser">
+                Medicina fizica si balneologie
+              </option>
+              <option data-tokens="SingleUser">Medicina interna</option>
+              <option data-tokens="SingleUser">Medicina legala</option>
+              <option data-tokens="SingleUser">Medicina nucleara</option>
+              <option data-tokens="SingleUser">Medicina sportiva</option>
+              <option data-tokens="SingleUser">Microbiologie medicala</option>
+              <option data-tokens="SingleUser">Nefrologie</option>
+              <option data-tokens="SingleUser">Nefrologie pediatrica</option>
+              <option data-tokens="SingleUser">Neonatologie</option>
+              <option data-tokens="SingleUser">Neurochirurgie</option>
+              <option data-tokens="SingleUser">Neurologie</option>
+              <option data-tokens="SingleUser">Neurologie pediatrica</option>
+              <option data-tokens="SingleUser">Obstetrica ginecologie</option>
+              <option data-tokens="SingleUser">Oftalmologie</option>
+              <option data-tokens="SingleUser">Oncologie medicala</option>
+              <option data-tokens="SingleUser">Oncologie si hematologie</option>
+              <option data-tokens="SingleUser">Oncologie pediatrica</option>
+              <option data-tokens="SingleUser">
+                Oncologie si traumatologie
+              </option>
+              <option data-tokens="SingleUser">Otorinolaringologie ORL</option>
+              <option data-tokens="SingleUser">Pediatrie</option>
+              <option data-tokens="SingleUser">Pneumologie</option>
+              <option data-tokens="SingleUser">Pneumologie pediatrica</option>
+              <option data-tokens="SingleUser">Psihiatrie</option>
+              <option data-tokens="SingleUser">Psihiatrie pediatrica</option>
+              <option data-tokens="SingleUser">
+                Radiologie si Imagistica medicala
+              </option>
+              <option data-tokens="SingleUser">Radioterapie</option>
+              <option data-tokens="SingleUser">Reumatologie</option>
+              <option data-tokens="SingleUser">
+                Sanatate publica si management
+              </option>
+              <option data-tokens="SingleUser">Urologie</option>
+              <option data-tokens="SingleUser">Medicina generala</option>
+              <option data-tokens="SingleUser">Altele</option>
+            </select>
+          </div>
         </div>
-      </div>
+      ) : null}
+
       {/* End .col */}
 
       <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Judet</label>
           <select
-            className="selectpicker form-select"
+            className={`selectpicker form-select ${
+              (!judet && buttonPressed) || (judet === "Judet" && buttonPressed)
+                ? "border-danger"
+                : null
+            }`}
             data-live-search="true"
             data-width="100%"
             value={judet}
@@ -399,7 +450,12 @@ const ProfileInfo = () => {
         <div className="my_profile_setting_input ui_kit_select_search form-group">
           <label>Localitate</label>
           <select
-            className="selectpicker form-select"
+            className={`selectpicker form-select ${
+              (!localitate && buttonPressed) ||
+              (localitate === "Localitate" && buttonPressed)
+                ? "border-danger"
+                : null
+            }`}
             data-live-search="true"
             data-width="100%"
             value={localitate}
@@ -420,7 +476,9 @@ const ProfileInfo = () => {
           <label htmlFor="formGroupExampleInput5">Telefon</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${
+              !telefon && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleInput5"
             placeholder="Telefon"
             value={telefon}
@@ -435,7 +493,9 @@ const ProfileInfo = () => {
           <label htmlFor="formGroupExampleInput7">Data nașterii</label>
           <input
             type="date"
-            className="form-control"
+            className={`form-control ${
+              !dataNasterii && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleInput7"
             placeholder="Data Nasterii"
             value={dataNasterii}
@@ -450,7 +510,9 @@ const ProfileInfo = () => {
           <label htmlFor="formGroupExampleInput9">CUIM</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${
+              !cuim && buttonPressed && "border-danger"
+            }`}
             id="formGroupExampleInput9"
             placeholder="CUIM"
             value={cuim}
@@ -490,7 +552,7 @@ const ProfileInfo = () => {
         <div className="my_profile_setting_input">
           {/* <button className="btn btn1">View Public Profile</button> */}
           <button className="btn btn2" onClick={handleUpdateProfile}>
-            Actualizeaza Profil
+            {isLoading ? <CommonLoader /> : "Actualizeaza Profil"}
           </button>
         </div>
       </div>

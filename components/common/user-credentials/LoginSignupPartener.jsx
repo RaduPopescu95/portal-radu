@@ -336,7 +336,7 @@ const LoginSignupPartener = () => {
             role="tabpanel"
             aria-labelledby="authpartener-tab"
           >
-            <div className="col-lg-6 col-xl-6">
+            <div className="col-lg-6 col-xl-6 d-none d-lg-block">
               <div className="login_thumb">
                 <Image
                   width={357}
@@ -475,11 +475,12 @@ const LoginSignupPartener = () => {
           {/* End .tab-pane */}
 
           <div
-            className="row mt25 tab-pane fade"
+            className="row mt25 tab-pane fade justify-content-center"
             id="partener"
             role="tabpanel"
             aria-labelledby="partener-tab"
           >
+            
             <form onSubmit={handleSignUp} action="#" className="row">
               <div className="col-lg-6 col-xl-6">
                 <div className="sign_up_form">
