@@ -4,7 +4,10 @@ import Link from "next/link";
 import Pagination from "../../common/blog/Pagination";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addLength, lengthLoad } from "../../../features/properties/propertiesSlice";
+import {
+  addLength,
+  lengthLoad,
+} from "../../../features/properties/propertiesSlice";
 import properties from "../../../data/properties";
 import Image from "next/image";
 import {

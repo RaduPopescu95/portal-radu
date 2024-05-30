@@ -195,7 +195,7 @@ const LoginSignupPartener = () => {
       cui
     );
 
-    if (utilizator || utilizator?.length > 0) {
+    if (utilizator?.length > 0) {
       setCuiAlready(true);
       showAlert(
         `Acest CUI este deja înregistrat în baza noastră de date!`,
