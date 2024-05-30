@@ -200,7 +200,7 @@ const FeaturedItemHome = ({ params }) => {
           </p>
         </div>
       )}
-      {paginatedParteneri().length === 0 && (
+      {(paginatedParteneri().length === 0 && !isLoading) && (
         <div className="d-flex justify-content-center align-items-center">
           <p>Nu sunt parteneri în apropiere.</p>
         </div>
