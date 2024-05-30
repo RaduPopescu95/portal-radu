@@ -563,6 +563,8 @@ const FilteringItem = ({ params }) => {
             onClick={submitHandler}
             type="button"
             className="btn btn-block btn-thm w-100"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
           >
             Cauta
           </button>
