@@ -18,7 +18,7 @@ import { doc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { use, useRef, useState } from "react";
 import { AlertModal } from "../AlertModal";
 
 const LoginSignupUtilizator = () => {
@@ -243,6 +243,13 @@ const LoginSignupUtilizator = () => {
       const message = handleFirebaseAuthError(error);
       showAlert(`Eroare la înregistrare: ${message}`, "danger");
     }
+  };
+
+  const [an, setAn] = useState("");
+  const handleYearChange = (e) => {
+    const newDate = new Date(an);
+    newDate.setFullYear(e.target.value);
+    setDataNasterii(newDate.toISOString().substr(0, 10));
   };
 
   return (
@@ -630,6 +637,19 @@ const LoginSignupUtilizator = () => {
                       onFocus={() => setInputType("date")}
                       onBlur={() => dataNasterii || setInputType("text")}
                     />
+                    <select
+                      onChange={handleYearChange}
+                      value={
+                        new Date(dataNasterii).getFullYear() ||
+                        new Date().getFullYear()
+                      }
+                    >
+                      {Array.from({ length: 120 }, (_, i) => (
+                        <option key={i} value={new Date().getFullYear() - i}>
+                          {new Date().getFullYear() - i}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   {/* End .row */}
                   <div className="form-group ui_kit_select_search mb-3">

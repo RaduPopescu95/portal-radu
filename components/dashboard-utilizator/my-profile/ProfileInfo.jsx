@@ -9,6 +9,7 @@ import {
 } from "@/utils/firestoreUtils";
 import { emailWithoutSpace } from "@/utils/strintText";
 import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
 
 const ProfileInfo = () => {
   const [initialData, setInitialData] = useState({});
@@ -509,7 +510,13 @@ const ProfileInfo = () => {
       <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExampleInput7">Data nașterii</label>
-          <input
+          <DatePicker
+            selected={dataNasterii}
+            onChange={(date) => setDataNasterii(date)}
+            showYearDropdown
+            dateFormat="dd/MM/yyyy"
+          />
+          {/* <input
             type="date"
             className={`form-control ${
               !dataNasterii && buttonPressed && "border-danger"
@@ -518,9 +525,10 @@ const ProfileInfo = () => {
             placeholder="Data Nasterii"
             value={dataNasterii}
             onChange={(e) => setDataNasterii(e.target.value)}
-          />
+          /> */}
         </div>
       </div>
+
       {/* End .col */}
 
       <div className="col-lg-6 col-xl-6">
