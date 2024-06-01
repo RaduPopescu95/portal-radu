@@ -83,3 +83,7 @@
   left: 25%; /* Centrarea se face ajustând left la jumătate din diferența până la 100% */
   right: 25%; /* Asigură-te că marginile dreapta și stânga sunt egale */
 }
+
+.form-data-nasterii {
+  margin-right: 10px;
+}

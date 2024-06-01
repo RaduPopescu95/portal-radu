@@ -20,10 +20,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { use, useRef, useState } from "react";
 import { AlertModal } from "../AlertModal";
+import useDataNasterii from "@/hooks/useDataNasterii";
 
 const LoginSignupUtilizator = () => {
   const { userData, currentUser, setCurrentUser, setUserData, judete } =
     useAuth();
+  const {
+    dataNasterii,
+    handleDayChange,
+    handleMonthChange,
+    handleYearChange,
+    setDataNasterii,
+  } = useDataNasterii("");
   const closeButtonRef = useRef(null); // Referință pentru butonul de închidere
   const [localitati, setLocalitati] = useState([]);
   const [judet, setJudet] = useState("");
@@ -37,7 +45,7 @@ const LoginSignupUtilizator = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [numeUtilizator, setNumeUtilizator] = useState("");
   const [telefon, setTelefon] = useState("");
-  const [dataNasterii, setDataNasterii] = useState("");
+  // const [dataNasterii, setDataNasterii] = useState("");
   const [titulatura, setTitulatura] = useState("");
   const [tipEnitate, setTipEnitate] = useState("");
   const [specializare, setSpecializare] = useState("");
@@ -243,13 +251,6 @@ const LoginSignupUtilizator = () => {
       const message = handleFirebaseAuthError(error);
       showAlert(`Eroare la înregistrare: ${message}`, "danger");
     }
-  };
-
-  const [an, setAn] = useState("");
-  const handleYearChange = (e) => {
-    const newDate = new Date(an);
-    newDate.setFullYear(e.target.value);
-    setDataNasterii(newDate.toISOString().substr(0, 10));
   };
 
   return (
@@ -625,31 +626,48 @@ const LoginSignupUtilizator = () => {
                   {/* End .row */}
 
                   <div className="form-group input-group mb-3">
-                    <input
-                      type={inputType}
-                      className={`form-control ${
-                        !dataNasterii && buttonPressed && "border-danger"
+                    <div
+                      className={`form-control d-flex align-items-center ${
+                        !telefon && buttonPressed && "border-danger"
                       }`}
-                      id="exampleInputName"
-                      placeholder="Data nașterii"
-                      value={dataNasterii}
-                      onChange={(e) => setDataNasterii(e.target.value)}
-                      onFocus={() => setInputType("date")}
-                      onBlur={() => dataNasterii || setInputType("text")}
-                    />
-                    <select
-                      onChange={handleYearChange}
-                      value={
-                        new Date(dataNasterii).getFullYear() ||
-                        new Date().getFullYear()
-                      }
                     >
-                      {Array.from({ length: 120 }, (_, i) => (
-                        <option key={i} value={new Date().getFullYear() - i}>
-                          {new Date().getFullYear() - i}
-                        </option>
-                      ))}
-                    </select>
+                      <label
+                        className="form-data-nasterii"
+                        // htmlFor="terms"
+                      >
+                        Data nașterii
+                      </label>
+                      <select
+                        value={new Date(dataNasterii).getDate()}
+                        onChange={handleDayChange}
+                      >
+                        {Array.from({ length: 31 }, (_, i) => (
+                          <option key={i} value={i + 1}>
+                            {i + 1}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        value={new Date(dataNasterii).getMonth()}
+                        onChange={handleMonthChange}
+                      >
+                        {Array.from({ length: 12 }, (_, i) => (
+                          <option key={i} value={i}>
+                            {i + 1}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        value={new Date(dataNasterii).getFullYear()}
+                        onChange={handleYearChange}
+                      >
+                        {Array.from({ length: 120 }, (_, i) => (
+                          <option key={i} value={new Date().getFullYear() - i}>
+                            {new Date().getFullYear() - i}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   {/* End .row */}
                   <div className="form-group ui_kit_select_search mb-3">

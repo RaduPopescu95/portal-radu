@@ -3,6 +3,7 @@
 import { AlertModal } from "@/components/common/AlertModal";
 import CommonLoader from "@/components/common/CommonLoader";
 import { useAuth } from "@/context/AuthContext";
+import useDataNasterii from "@/hooks/useDataNasterii";
 import {
   handleQueryFirestoreSubcollection,
   handleUpdateFirestore,
@@ -15,7 +16,13 @@ const ProfileInfo = () => {
   const [initialData, setInitialData] = useState({});
   const { userData, currentUser, setCurrentUser, setUserData, judete } =
     useAuth();
-
+  const {
+    dataNasterii,
+    handleDayChange,
+    handleMonthChange,
+    handleYearChange,
+    setDataNasterii,
+  } = useDataNasterii(userData?.dataNasterii || "");
   const [email, setEmail] = useState(userData?.email || "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,9 +30,7 @@ const ProfileInfo = () => {
     userData?.numeUtilizator || ""
   );
   const [telefon, setTelefon] = useState(userData?.telefon || "");
-  const [dataNasterii, setDataNasterii] = useState(
-    userData?.dataNasterii || ""
-  );
+
   const [judet, setJudet] = useState(userData?.judet || "");
   const [localitate, setLocalitate] = useState(userData?.localitate || "");
   const [titulatura, setTitulatura] = useState(userData?.titulatura || "");
@@ -510,22 +515,52 @@ const ProfileInfo = () => {
       <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExampleInput7">Data nașterii</label>
-          <DatePicker
-            selected={dataNasterii}
-            onChange={(date) => setDataNasterii(date)}
-            showYearDropdown
-            dateFormat="dd/MM/yyyy"
-          />
           {/* <input
-            type="date"
+            type="text"
             className={`form-control ${
               !dataNasterii && buttonPressed && "border-danger"
             }`}
             id="formGroupExampleInput7"
             placeholder="Data Nasterii"
             value={dataNasterii}
-            onChange={(e) => setDataNasterii(e.target.value)}
+            readOnly
           /> */}
+          <div
+            className={`form-control d-flex align-items-center ${
+              !telefon && buttonPressed && "border-danger"
+            }`}
+          >
+            <select
+              value={new Date(dataNasterii).getDate()}
+              onChange={handleDayChange}
+            >
+              {Array.from({ length: 31 }, (_, i) => (
+                <option key={i} value={i + 1}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
+            <select
+              value={new Date(dataNasterii).getMonth()}
+              onChange={handleMonthChange}
+            >
+              {Array.from({ length: 12 }, (_, i) => (
+                <option key={i} value={i}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
+            <select
+              value={new Date(dataNasterii).getFullYear()}
+              onChange={handleYearChange}
+            >
+              {Array.from({ length: 120 }, (_, i) => (
+                <option key={i} value={new Date().getFullYear() - i}>
+                  {new Date().getFullYear() - i}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -572,7 +607,7 @@ const ProfileInfo = () => {
       {/* End .col */}
       <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput9">CUIM</label>
+          <label htmlFor="formGroupExampleInput9">CIF</label>
           <input
             type="text"
             className={`form-control ${
@@ -588,7 +623,7 @@ const ProfileInfo = () => {
       {/* End .col */}
       <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput9">CUIM</label>
+          <label htmlFor="formGroupExampleInput9">Cod Parafa</label>
           <input
             type="text"
             className={`form-control ${
