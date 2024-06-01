@@ -8,22 +8,28 @@ import carduriFidelitate from "@/data/carduriFidelitate";
 
 const predefinedGradients = [
   "linear-gradient(to right, rgb(62, 62, 165), rgb(72, 61, 163))",
-  "linear-gradient(to right, rgb(72, 61, 163), rgb(84, 59, 161))",
-  "linear-gradient(to right, rgb(84, 59, 161), rgb(95, 58, 159))",
-  "linear-gradient(to right, rgb(95, 58, 159), rgb(107, 56, 156))",
-  "linear-gradient(to right, rgb(107, 56, 156), rgb(119, 55, 154))",
   "linear-gradient(to right, rgb(119, 55, 154), rgb(131, 53, 151))",
-  "linear-gradient(to right, rgb(131, 53, 151), rgb(142, 52, 149))",
-  "linear-gradient(to right, rgb(142, 52, 149), rgb(154, 50, 146))",
-  "linear-gradient(to right, rgb(154, 50, 146), rgb(166, 49, 144))",
-  "linear-gradient(to right, rgb(166, 49, 144), rgb(178, 47, 141))",
   "linear-gradient(to right, rgb(178, 47, 141), rgb(189, 46, 139))",
-  "linear-gradient(to right, rgb(189, 46, 139), rgb(201, 44, 136))",
-  "linear-gradient(to right, rgb(201, 44, 136), rgb(213, 43, 134))",
-  "linear-gradient(to right, rgb(213, 43, 134), rgb(224, 41, 132))",
-  "linear-gradient(to right, rgb(224, 41, 132), rgb(236, 40, 129))",
   "linear-gradient(to right, rgb(236, 40, 129), rgb(255, 90, 95))",
 ];
+// const predefinedGradients = [
+//   // "linear-gradient(to right, rgb(62, 62, 165), rgb(72, 61, 163))",
+//   "linear-gradient(to right, rgb(72, 61, 163), rgb(84, 59, 161))",
+//   "linear-gradient(to right, rgb(84, 59, 161), rgb(95, 58, 159))",
+//   "linear-gradient(to right, rgb(95, 58, 159), rgb(107, 56, 156))",
+//   "linear-gradient(to right, rgb(107, 56, 156), rgb(119, 55, 154))",
+//   // "linear-gradient(to right, rgb(119, 55, 154), rgb(131, 53, 151))",
+//   "linear-gradient(to right, rgb(131, 53, 151), rgb(142, 52, 149))",
+//   "linear-gradient(to right, rgb(142, 52, 149), rgb(154, 50, 146))",
+//   "linear-gradient(to right, rgb(154, 50, 146), rgb(166, 49, 144))",
+//   "linear-gradient(to right, rgb(166, 49, 144), rgb(178, 47, 141))",
+//   // "linear-gradient(to right, rgb(178, 47, 141), rgb(189, 46, 139))",
+//   "linear-gradient(to right, rgb(189, 46, 139), rgb(201, 44, 136))",
+//   "linear-gradient(to right, rgb(201, 44, 136), rgb(213, 43, 134))",
+//   "linear-gradient(to right, rgb(213, 43, 134), rgb(224, 41, 132))",
+//   "linear-gradient(to right, rgb(224, 41, 132), rgb(236, 40, 129))",
+//   // "linear-gradient(to right, rgb(236, 40, 129), rgb(255, 90, 95))",
+// ];
 
 const GradientSelect = ({
   selectedId,
@@ -36,7 +42,7 @@ const GradientSelect = ({
   useEffect(() => {
     // Adaugă un gradient fiecărei proprietăți la încărcarea componentei
     const propertiesWithGradient = carduriFidelitate
-      .slice(0, 12)
+      .slice(0, 4)
       .map((item, index) => ({
         ...item,
         gradient: predefinedGradients[index % predefinedGradients.length],

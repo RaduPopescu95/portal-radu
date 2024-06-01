@@ -13,6 +13,7 @@ import DeleteDialog from "@/components/common/dialogs/DeleteDialog";
 import { deleteImage } from "@/utils/storageUtils";
 import { useCollectionPagination } from "@/hooks/useCollectionPagination";
 import { useRouter } from "next/navigation";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 // CSS in JS pentru simbolurile tick și close
 const styles = {
@@ -30,6 +31,7 @@ const TableData = ({ oferte }) => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const isMobile = useIsMobile();
 
   const handleDeleteClick = (item) => {
     setSelectedItem(item); // Salvează ID-ul elementului selectat
@@ -85,13 +87,19 @@ const TableData = ({ oferte }) => {
     return <p>Nu exista oferte adăugate.</p>; // Show a message if no data
   }
 
-  let theadConent = ["Oferta", "Data", "Status", "Fidelitate", "Actiune"];
+  let theadConent = [];
+
+  if (isMobile) {
+    theadConent = ["Oferta", "Actiune"];
+  } else {
+    theadConent = ["Oferta", "Data", "Status", "Fidelitate", "Actiune"];
+  }
 
   let tbodyContent = oferte?.map((item) => (
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">
-          {item?.tipOferta === "Oferta specifică" && (
+          {item?.tipOferta === "Oferta specifică" && !isMobile && (
             <div className="thumb">
               <Image
                 width={150}
@@ -111,29 +119,31 @@ const TableData = ({ oferte }) => {
       </td>
       {/* End td */}
 
-      <td>{item.firstUploadDate}</td>
+      {!isMobile && <td>{item.firstUploadDate}</td>}
       {/* End td */}
 
-      <td>
-        {(() => {
-          const today = new Date();
-          const startDate = new Date(item.dataActivare);
-          const endDate = new Date(item.dataDezactivare);
+      {!isMobile && (
+        <td>
+          {(() => {
+            const today = new Date();
+            const startDate = new Date(item.dataActivare);
+            const endDate = new Date(item.dataDezactivare);
 
-          const isActive =
-            isSameOrAfter(today, startDate) && isSameOrBefore(today, endDate);
+            const isActive =
+              isSameOrAfter(today, startDate) && isSameOrBefore(today, endDate);
 
-          if (isActive) {
-            return <span className="status_tag badge">Activa</span>;
-          } else {
-            return <span className="status_tag redbadge">Inactiva</span>;
-          }
-        })()}
-      </td>
+            if (isActive) {
+              return <span className="status_tag badge">Activa</span>;
+            } else {
+              return <span className="status_tag redbadge">Inactiva</span>;
+            }
+          })()}
+        </td>
+      )}
 
       {/* End td */}
 
-      <GradeFidelitate grades={item.gradeFidelitate} />
+      {!isMobile && <GradeFidelitate grades={item.gradeFidelitate} />}
 
       {/* End td */}
 

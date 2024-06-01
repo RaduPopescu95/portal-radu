@@ -633,6 +633,7 @@ const ProfileInfo = () => {
 
       <div className="col-lg-12 col-xl-12">
         <div className="my_profile_setting_input ui_kit_select_search form-group">
+          <label>Alege o culoare pentru cardul de fidelitate</label>
           <GradientSelect
             options={options}
             selectedId={selectedId}

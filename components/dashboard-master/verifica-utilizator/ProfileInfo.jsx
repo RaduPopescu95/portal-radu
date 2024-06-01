@@ -327,7 +327,7 @@ const ProfileInfo = ({ doctor: doc }) => {
             type="text"
             className="form-control"
             id="formGroupExampleInput9"
-            placeholder="CIF"
+            placeholder="Tip Enitate"
             readOnly
             value={doc?.tipEnitate}
           />
@@ -357,7 +357,7 @@ const ProfileInfo = ({ doctor: doc }) => {
             type="text"
             className="form-control"
             id="formGroupExampleInput9"
-            placeholder="CIF"
+            placeholder="Cod Parafa"
             readOnly
             value={doc?.codParafa}
           />
