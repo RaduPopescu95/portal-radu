@@ -32,6 +32,9 @@ const ProfileInfo = () => {
     userData?.specializare || ""
   );
   const [cuim, setCuim] = useState(userData?.cuim || "");
+  const [cif, setCIF] = useState(userData?.cif || "");
+  const [tipEnitate, setTipEnitate] = useState(userData?.tipEnitate || "");
+  const [codParafa, setCodParafa] = useState(userData?.codParafa || "");
   const [localitati, setLocalitati] = useState([]);
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
@@ -92,6 +95,8 @@ const ProfileInfo = () => {
       let data = {
         ...userData,
         cuim,
+        cif,
+        codParafa,
         specializare,
         titulatura,
         localitate,
@@ -102,6 +107,7 @@ const ProfileInfo = () => {
         user_uid,
         userType: "Doctor",
         numeUtilizator,
+        tipEnitate,
       };
       if (
         !email ||
@@ -112,7 +118,11 @@ const ProfileInfo = () => {
         !judet ||
         !localitate ||
         !dataNasterii ||
-        !cuim
+        !cuim ||
+        !cif ||
+        !codParafa ||
+        !tipEnitate ||
+        tipEnitate === "Tip de entitate"
       ) {
         setIsLoading(false);
         return;
@@ -305,6 +315,9 @@ const ProfileInfo = () => {
             <option data-tokens="Agent/Agency">Medic Primar</option>
             <option data-tokens="Agent/Agency">Farmacist</option>
             <option data-tokens="Agent/Agency">Asistent Medical</option>
+            <option data-tokens="Agent/Agency">Biolog</option>
+            <option data-tokens="Agent/Agency">Biochimist</option>
+            <option data-tokens="Agent/Agency">Chimist</option>
             <option data-tokens="SingleUser">Altele</option>
           </select>
         </div>
@@ -412,6 +425,11 @@ const ProfileInfo = () => {
               </option>
               <option data-tokens="SingleUser">Urologie</option>
               <option data-tokens="SingleUser">Medicina generala</option>
+              <option data-tokens="SingleUser">Biochimie medicala</option>
+              <option data-tokens="SingleUser">Imunologie medicala</option>
+              <option data-tokens="SingleUser">Hematologie</option>
+              <option data-tokens="SingleUser">Hemostaza</option>
+              <option data-tokens="SingleUser">Bacteriologice</option>
               <option data-tokens="SingleUser">Altele</option>
             </select>
           </div>
@@ -506,6 +524,29 @@ const ProfileInfo = () => {
       {/* End .col */}
 
       <div className="col-lg-6 col-xl-6">
+        <div className="my_profile_setting_input ui_kit_select_search form-group">
+          <label>Titulatura</label>
+          <select
+            className={`selectpicker form-select ${
+              (!tipEnitate && buttonPressed) ||
+              (tipEnitate === "Tip de entitate" && buttonPressed)
+                ? "border-danger"
+                : null
+            }`}
+            data-live-search="true"
+            data-width="100%"
+            value={tipEnitate}
+            onChange={(e) => setTipEnitate(e.target.value)}
+          >
+            <option data-tokens="SelectRole">Tip de entitate</option>
+            <option data-tokens="Agent/Agency">PFA</option>
+            <option data-tokens="Agent/Agency">PFI</option>
+          </select>
+        </div>
+      </div>
+      {/* End .col */}
+
+      <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExampleInput9">CUIM</label>
           <input
@@ -517,6 +558,38 @@ const ProfileInfo = () => {
             placeholder="CUIM"
             value={cuim}
             onChange={(e) => setCuim(e.target.value)}
+          />
+        </div>
+      </div>
+      {/* End .col */}
+      <div className="col-lg-6 col-xl-6">
+        <div className="my_profile_setting_input form-group">
+          <label htmlFor="formGroupExampleInput9">CUIM</label>
+          <input
+            type="text"
+            className={`form-control ${
+              !cif && buttonPressed && "border-danger"
+            }`}
+            id="formGroupExampleInput9"
+            placeholder="CIF"
+            value={cif}
+            onChange={(e) => setCIF(e.target.value)}
+          />
+        </div>
+      </div>
+      {/* End .col */}
+      <div className="col-lg-6 col-xl-6">
+        <div className="my_profile_setting_input form-group">
+          <label htmlFor="formGroupExampleInput9">CUIM</label>
+          <input
+            type="text"
+            className={`form-control ${
+              !codParafa && buttonPressed && "border-danger"
+            }`}
+            id="formGroupExampleInput9"
+            placeholder="Cod Parafa"
+            value={codParafa}
+            onChange={(e) => setCodParafa(e.target.value)}
           />
         </div>
       </div>

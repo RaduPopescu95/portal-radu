@@ -322,6 +322,51 @@ const ProfileInfo = ({ doctor: doc }) => {
 
       <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
+          <label htmlFor="formGroupExampleInput9">Tip Entitate</label>
+          <input
+            type="text"
+            className="form-control"
+            id="formGroupExampleInput9"
+            placeholder="CIF"
+            readOnly
+            value={doc?.tipEnitate}
+          />
+        </div>
+      </div>
+      {/* End .col */}
+
+      <div className="col-lg-6 col-xl-6">
+        <div className="my_profile_setting_input form-group">
+          <label htmlFor="formGroupExampleInput9">CIF</label>
+          <input
+            type="text"
+            className="form-control"
+            id="formGroupExampleInput9"
+            placeholder="CIF"
+            readOnly
+            value={doc?.cif}
+          />
+        </div>
+      </div>
+      {/* End .col */}
+
+      <div className="col-lg-6 col-xl-6">
+        <div className="my_profile_setting_input form-group">
+          <label htmlFor="formGroupExampleInput9">Cod Parafa</label>
+          <input
+            type="text"
+            className="form-control"
+            id="formGroupExampleInput9"
+            placeholder="CIF"
+            readOnly
+            value={doc?.codParafa}
+          />
+        </div>
+      </div>
+      {/* End .col */}
+
+      <div className="col-lg-6 col-xl-6">
+        <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExampleInput9">CUIM</label>
           <input
             type="text"

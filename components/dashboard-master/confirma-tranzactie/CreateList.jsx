@@ -103,7 +103,7 @@ const CreateList = ({ oferta }) => {
               style={{ cursor: "pointer" }}
             />
           ) : (
-            <p>Doctorul nu a adaugat imagine pentru bon/factura</p>
+            <p>Cadrul medical nu a adaugat imagine pentru bon/factura</p>
           )}
         </div>
       </div>
@@ -126,7 +126,7 @@ const CreateList = ({ oferta }) => {
       {/* End .col */}
       <div className="col-lg-12">
         <div className="my_profile_setting_input form-group">
-          <label htmlFor="propertyTitle">Nume doctor</label>
+          <label htmlFor="propertyTitle">Nume Cadru Medical</label>
           <input
             type="text"
             className="form-control"

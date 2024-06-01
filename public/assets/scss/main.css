@@ -357,7 +357,7 @@ address {
   bottom: 0;
   content: "";
   left: 0;
-  position: absolute;
+  position: fixed; /* Schimbă din absolute în fixed */
   right: 0;
   top: 0;
   width: 100%;
@@ -17217,8 +17217,6 @@ legend span {
   border-color: var(--color-primary);
   color: var(--color-primary);
 }
-
-
 
 .btn-thm.white:hover,
 .btn-thm.white:active,

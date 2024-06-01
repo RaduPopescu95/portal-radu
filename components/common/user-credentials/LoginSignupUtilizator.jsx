@@ -39,8 +39,11 @@ const LoginSignupUtilizator = () => {
   const [telefon, setTelefon] = useState("");
   const [dataNasterii, setDataNasterii] = useState("");
   const [titulatura, setTitulatura] = useState("");
+  const [tipEnitate, setTipEnitate] = useState("");
   const [specializare, setSpecializare] = useState("");
   const [cuim, setCuim] = useState("");
+  const [cif, setCIF] = useState("");
+  const [codParafa, setCodParafa] = useState("");
   const [titulaturaSelectata, setTitulaturaSelectata] = useState("");
   const [alert, setAlert] = useState({ message: "", type: "" });
   const [buttonPressed, setButtonPressed] = useState(false);
@@ -164,7 +167,11 @@ const LoginSignupUtilizator = () => {
       !judet ||
       !localitate ||
       !titulatura ||
-      !password
+      !password ||
+      !cuim ||
+      !cif ||
+      !codParafa ||
+      !tipEnitate
     ) {
       console.log("noo...", email);
       console.log("noo...", numeUtilizator);
@@ -172,7 +179,10 @@ const LoginSignupUtilizator = () => {
       console.log("noo...", judet);
       console.log("noo...", localitate);
       console.log("noo...", titulatura);
+      console.log("noo...", tipEnitate);
       console.log("noo...", cuim);
+      console.log("noo...", cif);
+      console.log("noo...", codParafa);
       console.log("noo...", password);
       console.log("noo...", confirmPassword);
       return;
@@ -195,8 +205,11 @@ const LoginSignupUtilizator = () => {
       let data = {
         id,
         cuim,
+        codParafa,
+        cif,
         specializare,
         titulatura,
+        tipEnitate,
         localitate,
         judet,
         dataNasterii,
@@ -474,7 +487,7 @@ const LoginSignupUtilizator = () => {
                         !numeUtilizator && buttonPressed && "border-danger"
                       }`}
                       id="exampleInputName"
-                      placeholder="Nume doctorului"
+                      placeholder="Nume cadru medical"
                       value={numeUtilizator}
                       onChange={(e) => setNumeUtilizator(e.target.value)}
                     />
@@ -604,13 +617,6 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End .row */}
 
-                  {/* End .form */}
-                </div>
-              </div>
-              {/* End . left side image for register */}
-
-              <div className="col-lg-6 col-xl-6">
-                <div className="sign_up_form">
                   <div className="form-group input-group mb-3">
                     <input
                       type={inputType}
@@ -626,7 +632,6 @@ const LoginSignupUtilizator = () => {
                     />
                   </div>
                   {/* End .row */}
-
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className={`form-select ${
@@ -648,6 +653,13 @@ const LoginSignupUtilizator = () => {
                   </div>
                   {/* End from-group */}
 
+                  {/* End .form */}
+                </div>
+              </div>
+              {/* End . left side image for register */}
+
+              <div className="col-lg-6 col-xl-6">
+                <div className="sign_up_form">
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className={`form-select ${
@@ -692,6 +704,9 @@ const LoginSignupUtilizator = () => {
                       <option data-tokens="Agent/Agency">
                         Asistent Medical
                       </option>
+                      <option data-tokens="Agent/Agency">Biolog</option>
+                      <option data-tokens="Agent/Agency">Biochimist</option>
+                      <option data-tokens="Agent/Agency">Chimist</option>
                       <option data-tokens="SingleUser">Altele</option>
                     </select>
                   </div>
@@ -861,9 +876,39 @@ const LoginSignupUtilizator = () => {
                           <option data-tokens="SingleUser">
                             Medicina generala
                           </option>
+                          <option data-tokens="SingleUser">
+                            Biochimie medicala
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Imunologie medicala
+                          </option>
+                          <option data-tokens="SingleUser">Hematologie</option>
+                          <option data-tokens="SingleUser">Hemostaza</option>
+                          <option data-tokens="SingleUser">
+                            Bacteriologice
+                          </option>
                           <option data-tokens="SingleUser">Altele</option>
                         </select>
                       </div>
+
+                      <div className="form-group ui_kit_select_search mb-3">
+                        <select
+                          className={`form-select ${
+                            !tipEnitate && buttonPressed && "border-danger"
+                          }`}
+                          data-live-search="true"
+                          data-width="100%"
+                          value={tipEnitate}
+                          onChange={(e) => setTipEnitate(e.target.value)}
+                        >
+                          <option data-tokens="SelectRole">
+                            Tip de entitate
+                          </option>
+                          <option data-tokens="Agent/Agency">PFA</option>
+                          <option data-tokens="Agent/Agency">PFI</option>
+                        </select>
+                      </div>
+                      {/* End .row */}
 
                       <div className="form-group input-group mb-3">
                         <input
@@ -875,6 +920,40 @@ const LoginSignupUtilizator = () => {
                           placeholder="CUIM"
                           value={cuim}
                           onChange={(e) => setCuim(e.target.value)}
+                        />
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="flaticon-user"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-group input-group mb-3">
+                        <input
+                          type="text"
+                          className={`form-control ${
+                            !cif && buttonPressed && "border-danger"
+                          }`}
+                          id="exampleInputName"
+                          placeholder="CIF"
+                          value={cif}
+                          onChange={(e) => setCIF(e.target.value)}
+                        />
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="flaticon-user"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-group input-group mb-3">
+                        <input
+                          type="text"
+                          className={`form-control ${
+                            !codParafa && buttonPressed && "border-danger"
+                          }`}
+                          id="exampleInputName"
+                          placeholder="Cod Parafa"
+                          value={codParafa}
+                          onChange={(e) => setCodParafa(e.target.value)}
                         />
                         <div className="input-group-prepend">
                           <div className="input-group-text">
