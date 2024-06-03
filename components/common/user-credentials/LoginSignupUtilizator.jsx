@@ -55,6 +55,7 @@ const LoginSignupUtilizator = () => {
   const [titulaturaSelectata, setTitulaturaSelectata] = useState("");
   const [alert, setAlert] = useState({ message: "", type: "" });
   const [buttonPressed, setButtonPressed] = useState(false);
+  const [isNoCuimCifCodParafa, setIsNoCuimCifCodParafa] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -167,6 +168,13 @@ const LoginSignupUtilizator = () => {
       setPasswordError("");
     }
 
+    if (!cuim && !cif && !codParafa) {
+      showAlert("Introduceti cuim/cif/cod parafa!", "danger");
+      setIsNoCuimCifCodParafa(true);
+    } else {
+      setIsNoCuimCifCodParafa(false);
+    }
+
     if (
       !email ||
       !numeUtilizator ||
@@ -176,9 +184,6 @@ const LoginSignupUtilizator = () => {
       !localitate ||
       !titulatura ||
       !password ||
-      !cuim ||
-      !cif ||
-      !codParafa ||
       !tipEnitate
     ) {
       console.log("noo...", email);
@@ -188,12 +193,21 @@ const LoginSignupUtilizator = () => {
       console.log("noo...", localitate);
       console.log("noo...", titulatura);
       console.log("noo...", tipEnitate);
-      console.log("noo...", cuim);
-      console.log("noo...", cif);
-      console.log("noo...", codParafa);
+
       console.log("noo...", password);
       console.log("noo...", confirmPassword);
       return;
+    }
+
+    if (!cuim && !cif && !codParafa) {
+      console.log("noo...", cuim);
+      console.log("noo...", cif);
+      console.log("noo...", codParafa);
+      showAlert("Introduceti cuim/cif/cod parafa!", "danger");
+      setIsNoCuimCifCodParafa(true);
+      return;
+    } else {
+      setIsNoCuimCifCodParafa(false);
     }
 
     try {
@@ -729,22 +743,22 @@ const LoginSignupUtilizator = () => {
                       onChange={(e) => setTitulatura(e.target.value)}
                     >
                       <option data-tokens="SelectRole">Titulatura</option>
-                      <option data-tokens="Agent/Agency">Medic Rezident</option>
-                      <option data-tokens="Agent/Agency">
-                        Medic Generalist
-                      </option>
-                      <option data-tokens="Agent/Agency">Medic</option>
-                      <option data-tokens="Agent/Agency">
-                        Medic Specialist
-                      </option>
-                      <option data-tokens="Agent/Agency">Medic Primar</option>
-                      <option data-tokens="Agent/Agency">Farmacist</option>
                       <option data-tokens="Agent/Agency">
                         Asistent Medical
                       </option>
                       <option data-tokens="Agent/Agency">Biolog</option>
                       <option data-tokens="Agent/Agency">Biochimist</option>
                       <option data-tokens="Agent/Agency">Chimist</option>
+                      <option data-tokens="Agent/Agency">Farmacist</option>
+                      <option data-tokens="Agent/Agency">Medic</option>
+                      <option data-tokens="Agent/Agency">
+                        Medic Generalist
+                      </option>
+                      <option data-tokens="Agent/Agency">Medic Primar</option>
+                      <option data-tokens="Agent/Agency">Medic Rezident</option>
+                      <option data-tokens="Agent/Agency">
+                        Medic Specialist
+                      </option>
                       <option data-tokens="SingleUser">Altele</option>
                     </select>
                   </div>
@@ -770,6 +784,12 @@ const LoginSignupUtilizator = () => {
                           </option>
                           <option data-tokens="SingleUser">
                             Anestezie si terapie intensiva (ATI)
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Bacteriologice
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Biochimie medicala
                           </option>
                           <option data-tokens="SingleUser">
                             Boli Infectioase
@@ -831,9 +851,10 @@ const LoginSignupUtilizator = () => {
                             Geriatrie si gerontologie
                           </option>
                           <option data-tokens="SingleUser">Hematologie</option>
+                          <option data-tokens="SingleUser">Hemostaza</option>
                           <option data-tokens="SingleUser">Igiena</option>
                           <option data-tokens="SingleUser">
-                            Medicina muncii
+                            Imunologie medicala
                           </option>
                           <option data-tokens="SingleUser">
                             Medicina de familie
@@ -848,10 +869,16 @@ const LoginSignupUtilizator = () => {
                             Medicina fizica si balneologie
                           </option>
                           <option data-tokens="SingleUser">
+                            Medicina generala
+                          </option>
+                          <option data-tokens="SingleUser">
                             Medicina interna
                           </option>
                           <option data-tokens="SingleUser">
                             Medicina legala
+                          </option>
+                          <option data-tokens="SingleUser">
+                            Medicina muncii
                           </option>
                           <option data-tokens="SingleUser">
                             Medicina nucleara
@@ -882,10 +909,10 @@ const LoginSignupUtilizator = () => {
                             Oncologie medicala
                           </option>
                           <option data-tokens="SingleUser">
-                            Oncologie si hematologie
+                            Oncologie pediatrica
                           </option>
                           <option data-tokens="SingleUser">
-                            Oncologie pediatrica
+                            Oncologie si hematologie
                           </option>
                           <option data-tokens="SingleUser">
                             Oncologie si traumatologie
@@ -911,20 +938,7 @@ const LoginSignupUtilizator = () => {
                             Sanatate publica si management
                           </option>
                           <option data-tokens="SingleUser">Urologie</option>
-                          <option data-tokens="SingleUser">
-                            Medicina generala
-                          </option>
-                          <option data-tokens="SingleUser">
-                            Biochimie medicala
-                          </option>
-                          <option data-tokens="SingleUser">
-                            Imunologie medicala
-                          </option>
-                          <option data-tokens="SingleUser">Hematologie</option>
-                          <option data-tokens="SingleUser">Hemostaza</option>
-                          <option data-tokens="SingleUser">
-                            Bacteriologice
-                          </option>
+
                           <option data-tokens="SingleUser">Altele</option>
                         </select>
                       </div>
@@ -952,7 +966,9 @@ const LoginSignupUtilizator = () => {
                         <input
                           type="text"
                           className={`form-control ${
-                            !cuim && buttonPressed && "border-danger"
+                            isNoCuimCifCodParafa &&
+                            buttonPressed &&
+                            "border-danger"
                           }`}
                           id="exampleInputName"
                           placeholder="CUIM"
@@ -969,7 +985,9 @@ const LoginSignupUtilizator = () => {
                         <input
                           type="text"
                           className={`form-control ${
-                            !cif && buttonPressed && "border-danger"
+                            isNoCuimCifCodParafa &&
+                            buttonPressed &&
+                            "border-danger"
                           }`}
                           id="exampleInputName"
                           placeholder="CIF"
@@ -986,7 +1004,9 @@ const LoginSignupUtilizator = () => {
                         <input
                           type="text"
                           className={`form-control ${
-                            !codParafa && buttonPressed && "border-danger"
+                            isNoCuimCifCodParafa &&
+                            buttonPressed &&
+                            "border-danger"
                           }`}
                           id="exampleInputName"
                           placeholder="Cod Parafa"

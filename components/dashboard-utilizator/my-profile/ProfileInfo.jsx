@@ -29,6 +29,7 @@ const ProfileInfo = () => {
   const [numeUtilizator, setNumeUtilizator] = useState(
     userData?.numeUtilizator || ""
   );
+  const [isNoCuimCifCodParafa, setIsNoCuimCifCodParafa] = useState(false);
   const [telefon, setTelefon] = useState(userData?.telefon || "");
 
   const [judet, setJudet] = useState(userData?.judet || "");
@@ -124,14 +125,22 @@ const ProfileInfo = () => {
         !judet ||
         !localitate ||
         !dataNasterii ||
-        !cuim ||
-        !cif ||
-        !codParafa ||
         !tipEnitate ||
         tipEnitate === "Tip de entitate"
       ) {
         setIsLoading(false);
         return;
+      }
+      if (!cuim && !cif && !codParafa) {
+        console.log("noo...", cuim);
+        console.log("noo...", cif);
+        console.log("noo...", codParafa);
+        showAlert("Introduceti cuim/cif/cod parafa!", "danger");
+        setIsLoading(false);
+        setIsNoCuimCifCodParafa(true);
+        return;
+      } else {
+        setIsNoCuimCifCodParafa(false);
       }
       setUserData(data);
 
@@ -314,16 +323,17 @@ const ProfileInfo = () => {
             onChange={(e) => setTitulatura(e.target.value)}
           >
             <option data-tokens="SelectRole">Titulatura</option>
-            <option data-tokens="Agent/Agency">Medic Rezident</option>
-            <option data-tokens="Agent/Agency">Medic Generalist</option>
-            <option data-tokens="Agent/Agency">Medic</option>
-            <option data-tokens="Agent/Agency">Medic Specialist</option>
-            <option data-tokens="Agent/Agency">Medic Primar</option>
-            <option data-tokens="Agent/Agency">Farmacist</option>
             <option data-tokens="Agent/Agency">Asistent Medical</option>
             <option data-tokens="Agent/Agency">Biolog</option>
             <option data-tokens="Agent/Agency">Biochimist</option>
             <option data-tokens="Agent/Agency">Chimist</option>
+            <option data-tokens="Agent/Agency">Farmacist</option>
+            <option data-tokens="Agent/Agency">Medic</option>
+            <option data-tokens="Agent/Agency">Medic Generalist</option>
+            <option data-tokens="Agent/Agency">Medic Primar</option>
+            <option data-tokens="Agent/Agency">Medic Rezident</option>
+            <option data-tokens="Agent/Agency">Medic Specialist</option>
+
             <option data-tokens="SingleUser">Altele</option>
           </select>
         </div>
@@ -354,6 +364,8 @@ const ProfileInfo = () => {
               <option data-tokens="SingleUser">
                 Anestezie si terapie intensiva (ATI)
               </option>
+              <option data-tokens="SingleUser">Bacteriologice</option>
+              <option data-tokens="SingleUser">Biochimie medicala</option>
               <option data-tokens="SingleUser">Boli Infectioase</option>
               <option data-tokens="SingleUser">Cardiologie</option>
               <option data-tokens="SingleUser">Cardiologie pediatrica</option>
@@ -388,16 +400,19 @@ const ProfileInfo = () => {
                 Geriatrie si gerontologie
               </option>
               <option data-tokens="SingleUser">Hematologie</option>
+              <option data-tokens="SingleUser">Hemostaza</option>
               <option data-tokens="SingleUser">Igiena</option>
-              <option data-tokens="SingleUser">Medicina muncii</option>
+              <option data-tokens="SingleUser">Imunologie medicala</option>
               <option data-tokens="SingleUser">Medicina de familie</option>
               <option data-tokens="SingleUser">Medicina de laborator</option>
               <option data-tokens="SingleUser">Medicina de urgenta</option>
               <option data-tokens="SingleUser">
                 Medicina fizica si balneologie
               </option>
+              <option data-tokens="SingleUser">Medicina generala</option>
               <option data-tokens="SingleUser">Medicina interna</option>
               <option data-tokens="SingleUser">Medicina legala</option>
+              <option data-tokens="SingleUser">Medicina muncii</option>
               <option data-tokens="SingleUser">Medicina nucleara</option>
               <option data-tokens="SingleUser">Medicina sportiva</option>
               <option data-tokens="SingleUser">Microbiologie medicala</option>
@@ -410,8 +425,8 @@ const ProfileInfo = () => {
               <option data-tokens="SingleUser">Obstetrica ginecologie</option>
               <option data-tokens="SingleUser">Oftalmologie</option>
               <option data-tokens="SingleUser">Oncologie medicala</option>
-              <option data-tokens="SingleUser">Oncologie si hematologie</option>
               <option data-tokens="SingleUser">Oncologie pediatrica</option>
+              <option data-tokens="SingleUser">Oncologie si hematologie</option>
               <option data-tokens="SingleUser">
                 Oncologie si traumatologie
               </option>
@@ -430,12 +445,6 @@ const ProfileInfo = () => {
                 Sanatate publica si management
               </option>
               <option data-tokens="SingleUser">Urologie</option>
-              <option data-tokens="SingleUser">Medicina generala</option>
-              <option data-tokens="SingleUser">Biochimie medicala</option>
-              <option data-tokens="SingleUser">Imunologie medicala</option>
-              <option data-tokens="SingleUser">Hematologie</option>
-              <option data-tokens="SingleUser">Hemostaza</option>
-              <option data-tokens="SingleUser">Bacteriologice</option>
               <option data-tokens="SingleUser">Altele</option>
             </select>
           </div>
@@ -595,7 +604,7 @@ const ProfileInfo = () => {
           <input
             type="text"
             className={`form-control ${
-              !cuim && buttonPressed && "border-danger"
+              isNoCuimCifCodParafa && buttonPressed && "border-danger"
             }`}
             id="formGroupExampleInput9"
             placeholder="CUIM"
@@ -611,7 +620,7 @@ const ProfileInfo = () => {
           <input
             type="text"
             className={`form-control ${
-              !cif && buttonPressed && "border-danger"
+              isNoCuimCifCodParafa && buttonPressed && "border-danger"
             }`}
             id="formGroupExampleInput9"
             placeholder="CIF"
@@ -627,7 +636,7 @@ const ProfileInfo = () => {
           <input
             type="text"
             className={`form-control ${
-              !codParafa && buttonPressed && "border-danger"
+              isNoCuimCifCodParafa && buttonPressed && "border-danger"
             }`}
             id="formGroupExampleInput9"
             placeholder="Cod Parafa"

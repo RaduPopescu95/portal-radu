@@ -165,7 +165,7 @@ const CreateList = ({ oferta }) => {
       dataActivare,
       tipOferta,
       gradeFidelitate,
-      descriereOferta,
+    descriereOferta,
       titluOferta,
       procentReducere,
       pretRedus,

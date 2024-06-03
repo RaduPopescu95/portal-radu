@@ -16,6 +16,11 @@ import PropertyVideo from "../common/listing-details/PropertyVideo";
 import WalkScore from "../common/listing-details/WalkScore";
 import WhatsNearby from "../common/listing-details/WhatsNearby";
 
+const isMobile =
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+
 const DetailsContent = ({ partener, oferte }) => {
   const handleNavigare = () => {
     if (partener && partener.coordonate) {
@@ -26,10 +31,6 @@ const DetailsContent = ({ partener, oferte }) => {
       const wazeUrl = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
 
       // Detectăm dacă dispozitivul este mobil
-      const isMobile =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        );
 
       if (isMobile) {
         // Încercăm să deschidem Waze, dacă nu este instalat, browserul va reveni la Google Maps
@@ -98,7 +99,10 @@ const DetailsContent = ({ partener, oferte }) => {
 
       <div className="application_statics mt30">
         <h4 className="mb30">
-          Locatie <small className="float-end">{partener?.adresaSediu}</small>
+          Locatie{" "}
+          <small className={`${!isMobile ? "float-end" : null}`}>
+            {partener?.adresaSediu}
+          </small>
         </h4>
         <div className="property_video p0">
           <PropertyLocation coordonate={partener?.coordonate} />
@@ -134,7 +138,7 @@ const DetailsContent = ({ partener, oferte }) => {
       {/* End walkscore_area */}
 
       <div className="whats_nearby mt30 row">
-        <WhatsNearby oferte={oferte} />
+        <WhatsNearby oferte={oferte} isMobile={isMobile} />
       </div>
 
       {/* End what's nearby area */}

@@ -5,6 +5,11 @@ import QRCode from "react-qr-code";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 
+const isMobile =
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+
 const WhatsNearby = ({ oferte }) => {
   const [activeTab, setActiveTab] = useState("Silver"); // Default tab
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -72,7 +77,7 @@ const WhatsNearby = ({ oferte }) => {
               fidelityLevels[userData?.gradFidelitate].includes(level);
             return (
               <div key={index} className={`offer ${index > 0 ? "mt10" : ""}`}>
-                <div className="single_line">
+                <div className={isMobile ? null : "single_line"}>
                   <div
                     className={`${
                       !isAvailable ? "grey-out" : ""
