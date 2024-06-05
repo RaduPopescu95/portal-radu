@@ -19,9 +19,9 @@ export default async function sitemap() {
   const seenUrls = new Set();
 
   console.log("Processing 'judeteCategorii'...");
-  const judeteCategorii = parteneri.reduce((acc, { partener, _updatedAt }) => {
-    console.log("partener...sitemap", partener);
-    if (partener?.categorie && partener?.judet) {
+  const judeteCategorii = parteneri.reduce((acc, partener) => {
+    console.log("partener...sitemap", partener); // pentru verificare
+    if (partener.categorie && partener.judet) {
       const url = `${URL}/${partener.categorie.toLowerCase()}/${partener.categorie.toLowerCase()}-${partener.judet.toLowerCase()}`;
       if (!seenUrls.has(url)) {
         seenUrls.add(url);
@@ -37,26 +37,31 @@ export default async function sitemap() {
   console.log("Finished processing 'judeteCategorii'.", judeteCategorii);
 
   console.log("Processing 'parteners'...");
-  const parteners = parteneri.reduce((acc, { item, _updatedAt }) => {
-    if (item?.id && item?.denumireBrand) {
-      const url = `${URL}/partener/${item.id}-${toUrlSlug(item.denumireBrand)}`;
+  const parteners = parteneri.reduce((acc, partener) => {
+    console.log("partener for URL generation:", partener); // pentru verificare
+    if (partener.id && partener.denumireBrand) {
+      const url = `${URL}/partener/${partener.id}-${toUrlSlug(
+        partener.denumireBrand
+      )}`;
       acc.push({
         url: url,
-        lastModified: parseDateToISO(item.firstUploadDate),
+        lastModified: parseDateToISO(partener.firstUploadDate),
       });
       console.log(`Added partner URL: ${url}`);
     }
     return acc;
   }, []);
+
   console.log("Finished processing 'parteners'.", parteners);
 
   console.log("Processing 'judete'...");
-  const judete = judeteData.reduce((acc, { judet, _updatedAt }) => {
+  const judete = judeteData.reduce((acc, judet) => {
     if (judet?.judet) {
       const url = `${URL}/${judet.judet.toLowerCase()}`;
+      const lastModifiedDate = new Date().toISOString();
       acc.push({
         url: url,
-        lastModified: _updatedAt,
+        lastModified: lastModifiedDate,
       });
       console.log(`Added judet URL: ${url}`);
     }

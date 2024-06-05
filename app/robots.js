@@ -1,0 +1,47 @@
+import { MetadataRoute } from "next";
+
+export default function robots() {
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: [
+        "/autentificare-cont-partener",
+        "/creaza-oferta",
+        "/creaza-produs-serviciu",
+        "lista-oferte",
+        "panou-partener",
+        "partener-favourites",
+        "partener-message",
+        "partener-package",
+        "partener-review",
+        "profil-partener",
+        "verificare-tranzactie",
+        "admin",
+        "confirma-tranzactie",
+        "favorites-master",
+        "lista-doctori",
+        "lista-parteneri",
+        "lista-tranzactii",
+        "master-package",
+        "master-review",
+        "plangeri-admin",
+        "signin",
+        "verifica-oferita",
+        "verificare-doctor",
+        "verificare-partener",
+        "cardurile-mele",
+        "create-listing",
+        "discounturi",
+        "favorite",
+        "lista-tranzactii-oferte",
+        "mesaje-utile",
+        "panou-doctor",
+        "profil",
+        "recenzii",
+        "salvate",
+      ],
+    },
+    sitemap: "https://exclusivmd.ro/sitemap.xml",
+  };
+}
