@@ -13,7 +13,7 @@ const OurMission = () => {
       id: 2,
       icon: "flaticon-home",
       number: "1,000",
-      meta: "Clinici înregistrate",
+      meta: "Parteneri înregistrați",
     },
     {
       id: 3,
@@ -25,13 +25,21 @@ const OurMission = () => {
 
   return (
     <>
-      <div className="col-lg-8 col-xl-7">
+      <div className="col-lg-12 col-xl-12">
         <div className="about_content">
           <p className="large">
-            Mauris ac consectetur ante, dapibus gravida tellus. Nullam aliquet
-            eleifend dapibus. Cras sagittis, ex euismod lacinia tempor.
+            Suntem o echipă de IT ce s-a remarcat prin compania Credite
+            Medicale, respectiv site-ul www.creditemedicale.ro, ajungând astfel
+            să ne clasăm printre primii 3 din țară în categoria activităților
+            desfășurate pentru cadrele medicale de pretutindeni. Fiindcă ne
+            desfășurăm activitatea în acest domeniu, știm și înțelegem foarte
+            bine dificultatea pe care o reprezintă timpul pentru cadrele
+            medicale, iar astfel ne dorim să sărim în ajutorul lor. Punem la
+            dispoziție o platformă adresată exclusiv lor prin care pot găsi ușor
+            oferte, discount-uri, beneficii în diferite locații aflate în
+            împrejurimea lor.
           </p>
-          <p>
+          {/* <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
             quis ligula eu lectus vulputate porttitor sed feugiat nunc. Mauris
             ac consectetur ante, dapibus gravida tellus. Nullam aliquet eleifend
@@ -46,7 +54,7 @@ const OurMission = () => {
             ligula. Vivamus semper at orci at placerat.Placeat Lorem ipsum dolor
             sit amet, consectetur adipisicing elit. Quod libero amet, laborum
             qui nulla quae alias tempora.
-          </p>
+          </p> */}
 
           <ul className="ab_counting">
             {missionContent.map((item) => (
@@ -68,7 +76,7 @@ const OurMission = () => {
       </div>
       {/* End .col */}
 
-      <div className="col-lg-4 col-xl-5">
+      {/* <div className="col-lg-4 col-xl-5">
         <div className="about_thumb">
           <Image
             width={461}
@@ -80,7 +88,7 @@ const OurMission = () => {
           />
           <PopupVideo />
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

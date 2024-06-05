@@ -4,26 +4,26 @@ const WhyChoose = ({ style = "" }) => {
       id: 1,
       icon: "flaticon-high-five",
       title: "Încrederea a Mii de Clienti",
-      descriptions: `Platforma noastră este locul unde mii de doctori găsesc clinicile potrivite pentru nevoile lor medicale, grație unei selecții riguroase a partenerilor noștri. Prioritizăm încrederea și satisfacția pacienților, asigurându-ne că fiecare clinică înregistrată îndeplinește standarde înalte de calitate și profesionalism.`,
+      descriptions: `Platforma noastră este locul unde mii de doctori găsesc parteneri economici potriviți pentru nevoile lor , graţie unei selecții riguroase . Prioritizăm încrederea şi satisfacția fiecarui cadru medical, asigurându-ne că fiecare partener înregistrat îndeplinește standarde înalte de calitate.`,
     },
-    {
-      id: 2,
-      icon: "flaticon-home-1",
-      title: "O Gamă Variată de Clinici",
-      descriptions: `Cu o diversitate impresionantă de clinici înregistrate, hub-ul nostru asigură accesul pacienților la o varietate largă de specialități medicale și tratamente. Indiferent de complexitatea nevoilor lor de sănătate, pacienții pot găsi cu ușurință opțiuni de îngrijire medicală adecvate, oferite de echipe de specialiști dedicați.`,
-    },
+    // {
+    //   id: 2,
+    //   icon: "flaticon-home-1",
+    //   title: "O Gamă Variată de Clinici",
+    //   descriptions: `Cu o diversitate impresionantă de clinici înregistrate, hub-ul nostru asigură accesul pacienților la o varietate largă de specialități medicale și tratamente. Indiferent de complexitatea nevoilor lor de sănătate, pacienții pot găsi cu ușurință opțiuni de îngrijire medicală adecvate, oferite de echipe de specialiști dedicați.`,
+    // },
     {
       id: 3,
       icon: "flaticon-profit",
       title: "Creștere Profit prin Discounturi Exclusiviste",
-      descriptions: `Oferiți pacienților acces la îngrijire medicală de calitate la prețuri accesibile, participând la sistemul nostru de discount. Aceasta nu doar încurajează vizitele repetate, dar și vă extinde baza de clienți, maximizând astfel profiturile clinicii. Beneficiați de o soluție simplă pentru a vă construi o reputație puternică și a crește loialitatea pacienților.`,
+      descriptions: `Cadrele medicale beneficiază de acces exclusiv la discounturi, în timp ce partenerii noștri au la dispoziție o soluție simplă pentru a construi loialitatea clienților viitori. Prin participarea la sistemul nostru de discounturi, partenerii pot atrage și fideliza beneficiarii serviciilor lor, maximizând astfel profitul și consolidând relațiile de afaceri.`,
     },
   ];
 
   return (
     <>
       {whyCooseContent.map((item) => (
-        <div className="col-md-6 col-lg-4 col-xl-4" key={item.id}>
+        <div className="col-md-6 col-lg-6 col-xl-6" key={item.id}>
           <div className={`why_chose_us ${style}`}>
             <div className="icon">
               <span className={item.icon}></span>

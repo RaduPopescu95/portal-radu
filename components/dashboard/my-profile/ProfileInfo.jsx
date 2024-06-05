@@ -625,6 +625,7 @@ const ProfileInfo = () => {
             <option data-tokens="Cafenele">Cafenele</option>
             <option data-tokens="Restaurante">Restaurante</option>
             <option data-tokens="Hoteluri">Hoteluri</option>
+            <option data-tokens="Imobiliare">Imobiliare</option>
             <option data-tokens="Altele">Altele</option>
           </select>
         </div>
