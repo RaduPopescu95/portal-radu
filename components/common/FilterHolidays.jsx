@@ -327,6 +327,18 @@ const FilterHolidays = ({ className = "", partener }) => {
             </div>
           </li>
 
+          <div className="col-lg-6 col-xl-6">
+            <div className="my_profile_setting_input form-group">
+              <input
+                type="date"
+                className="form-control"
+                id="activationDate"
+                value={selectedDate}
+                onChange={handleDateChange}
+              />
+            </div>
+          </div>
+
           {/* End li */}
           <li className="list-inline-item">
             <div className="search_option_two">

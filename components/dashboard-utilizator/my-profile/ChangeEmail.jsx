@@ -29,7 +29,7 @@ const ChangeEmail = () => {
     setAlert({ message: "", type: "" });
   };
 
-  const handleChangeEmail = async () => {
+  const handleChangeE = async () => {
     if (!emailNew || !oldPassword) {
       showAlert(
         `Campurile e-mail si parolă actuală trebuie sa fie completate.`,
@@ -91,7 +91,7 @@ const ChangeEmail = () => {
 
         <div className="col-xl-12">
           <div className="my_profile_setting_input float-start fn-520">
-            <button className="btn btn3 btn-dark" onClick={handleChangeEmail}>
+            <button className="btn btn3 btn-dark" onClick={handleChangeE}>
               Actualizează E-mail
             </button>
           </div>
