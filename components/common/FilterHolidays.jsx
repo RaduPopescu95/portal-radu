@@ -458,7 +458,7 @@ const FilterHolidays = ({ className = "", partener }) => {
 
           {/* End li */}
         </ul>
-        <ul className="h1ads_1st_list mb-10">
+        {/* <ul className="h1ads_1st_list mb-10">
           <li className="list-inline-item">
             <div className="search_option_button">
               <button
@@ -470,7 +470,7 @@ const FilterHolidays = ({ className = "", partener }) => {
               </button>
             </div>
           </li>
-        </ul>
+        </ul> */}
       </div>
       <AlertModal
         message={alert.message}
