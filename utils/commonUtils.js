@@ -68,15 +68,20 @@ export const closeSignupModal = (modalId) => {
 };
 
 export const filtrareParteneri = (parteneriFiltrati, searchQueryParteneri) => {
-  // Împărțim query-ul de căutare în cuvinte individuale
-  const searchTerms = searchQueryParteneri
-    .split(/\s+/)
-    .map((term) => term.toLowerCase());
+  // Functie pentru eliminarea diacriticelor
+  const normalizeText = (text) =>
+    text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  // Împărțim query-ul de căutare în cuvinte individuale, eliminăm diacriticele și transformăm în litere mici
+  const searchTerms = searchQueryParteneri.split(/\s+/).map(normalizeText);
 
   // Funcție care verifică dacă toate cuvintele de căutare apar în text
   const matchesSearch = (text) => {
-    const lowercasedText = text.toLowerCase();
-    return searchTerms.every((term) => lowercasedText.includes(term));
+    const normalizedText = normalizeText(text);
+    return searchTerms.every((term) => normalizedText.includes(term));
   };
 
   // Filtrăm partenerii pe baza denumirii brandului, categoriilor, adresei, descrierii, telefonului și emailului

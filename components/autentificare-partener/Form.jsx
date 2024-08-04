@@ -59,7 +59,7 @@ const Form = ({ partenerId }) => {
     handleSignIn(utilizator[0].email, password)
       .then((userCredentials) => {
         setIsLoading(false);
-        showAlert(`Autentificare cu succes!`, "succes");
+        showAlert(`Autentificare cu succes!`, "success");
         console.log("user credentials...", userCredentials);
         if (utilizator[0].user_uid !== partenerId) {
           setIsLoading(false);

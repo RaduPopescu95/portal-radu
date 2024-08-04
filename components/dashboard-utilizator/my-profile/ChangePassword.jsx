@@ -1,4 +1,34 @@
+"use client";
+
+import { authentication } from "@/firebase";
+import { handleChangePassword } from "@/utils/authUtils";
+import { updatePassword } from "firebase/auth";
+import { useState } from "react";
+
 const ChangePassword = () => {
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleChangePass = async () => {
+    setError("");
+    setSuccess("");
+    const auth = authentication;
+
+    if (newPassword !== confirmPassword) {
+      setError("Parola nouă și confirmarea parolei nu se potrivesc.");
+      return;
+    }
+
+    const user = auth.currentUser;
+
+    await handleChangePassword(oldPassword, newPassword).then(() => {
+      setSuccess("Parola nouă a fost actualizata.");
+    });
+  };
+
   return (
     <>
       <div className="row">
@@ -6,9 +36,11 @@ const ChangePassword = () => {
           <div className="my_profile_setting_input form-group">
             <label htmlFor="formGroupExampleOldPass">Parola veche</label>
             <input
-              type="text"
+              type="password"
               className="form-control"
               id="formGroupExampleOldPass"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
             />
           </div>
         </div>
@@ -18,11 +50,13 @@ const ChangePassword = () => {
       <div className="row">
         <div className="col-lg-6 col-xl-6">
           <div className="my_profile_setting_input form-group">
-            <label htmlFor="formGroupExampleNewPass">Parola noua</label>
+            <label htmlFor="formGroupExampleNewPass">Parola nouă</label>
             <input
-              type="text"
+              type="password"
               className="form-control"
               id="formGroupExampleNewPass"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
             />
           </div>
         </div>
@@ -31,12 +65,14 @@ const ChangePassword = () => {
         <div className="col-lg-6 col-xl-6">
           <div className="my_profile_setting_input form-group">
             <label htmlFor="formGroupExampleConfPass">
-              Confirma parola noua
+              Confirmă parola nouă
             </label>
             <input
-              type="text"
+              type="password"
               className="form-control"
               id="formGroupExampleConfPass"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
         </div>
@@ -44,14 +80,16 @@ const ChangePassword = () => {
 
         <div className="col-xl-12">
           <div className="my_profile_setting_input float-start fn-520">
-            <button className="btn btn3 btn-dark">Actualizare Parola</button>
+            <button className="btn btn3 btn-dark" onClick={handleChangePass}>
+              Actualizează Parola
+            </button>
           </div>
-          {/* <div className="my_profile_setting_input float-end fn-520">
-            <button className="btn btn2">Update Profile</button>
-          </div> */}
         </div>
         {/* End .col */}
       </div>
+      {/* End .row */}
+      {error && <div className="alert alert-danger">{error}</div>}
+      {success && <div className="alert alert-success">{success}</div>}
     </>
   );
 };
