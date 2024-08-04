@@ -87,3 +87,71 @@
 .form-data-nasterii {
   margin-right: 10px;
 }
+
+.camere {
+  display: flex;
+  align-items: center; /* Aliniază vertical elementele */
+  justify-content: flex-start; /* Alinează elementele la stânga */
+  width: 100%; /* Asigură că ocupă întreaga lățime disponibilă */
+  flex-direction: row;
+  width: auto;
+}
+
+.room-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Ajustează spațierea între elemente după necesitate */
+}
+
+.select-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Spațiere între selecturi */
+}
+
+.custom-select {
+  flex: 1 1 45%; /* Ajustează lățimea selecturilor după necesitate */
+}
+
+.custom-button-container {
+  width: 100%;
+  margin-top: 10px; /* Spațiu între selecturi și buton */
+}
+
+.toggle-button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center; /* Centrare verticală */
+  margin-left: 10px; /* Spațiu între iconiță și text */
+}
+
+.buton_selectare_camere {
+  border-radius: 8px;
+  background-color: var(--color-primary);
+  -webkit-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
+  -moz-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
+  -o-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
+  box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 1.2;
+  height: 50px;
+  width: 215px !important;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.container_drop_copil {
+  display: flex !important;
+  flex-wrap: wrap !important; /* Permite elementelor să se alinizeze pe rânduri multiple */
+  gap: 10px; /* Ajustează spațierea între elemente după necesitate */
+}
+
+.container_drop_copil > * {
+  flex: 1 1 calc(50% - 10px); /* Asigură că fiecare element ocupă aproximativ 50% din lățime, minus spațierea */
+  box-sizing: border-box; /* Include padding și border în dimensiunile elementului */
+}

@@ -21,6 +21,7 @@ import SidebarListing from "../common/listing/SidebarListing";
 import BreadCrumb2 from "../listing-grid/grid-v1/BreadCrumb2";
 import FeaturedItem from "../listing-grid/grid-v1/FeaturedItem";
 import FeaturedItemHome from "../listing-grid/grid-v1/FeaturedItemHome";
+import FilterHelloHolidays from "../common/FilterHelloHolidays";
 
 const FindProperties = lazy(() => import("./FindProperties"));
 

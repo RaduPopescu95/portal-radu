@@ -168,7 +168,7 @@ const LoginSignupUtilizator = () => {
       setPasswordError("");
     }
 
-    if (!cuim && !cif && !codParafa) {
+    if (!cuim && !cif && !codParafa && titulatura !== "Asistent Medical") {
       showAlert("Introduceti cuim/cif/cod parafa!", "danger");
       setIsNoCuimCifCodParafa(true);
     } else {
@@ -184,7 +184,7 @@ const LoginSignupUtilizator = () => {
       !localitate ||
       !titulatura ||
       !password ||
-      !tipEnitate
+      (!tipEnitate && titulatura !== "Asistent Medical")
     ) {
       console.log("noo...", email);
       console.log("noo...", numeUtilizator);
@@ -199,7 +199,7 @@ const LoginSignupUtilizator = () => {
       return;
     }
 
-    if (!cuim && !cif && !codParafa) {
+    if (!cuim && !cif && !codParafa && titulatura !== "Asistent Medical") {
       console.log("noo...", cuim);
       console.log("noo...", cif);
       console.log("noo...", codParafa);

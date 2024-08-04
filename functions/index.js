@@ -14,6 +14,36 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+exports.sendEmailOnNewRequest = functions.firestore
+    .document("Users/{userId}/CereriHelloHolidays/{docId}")
+    .onCreate((snap, context) => {
+      const data = snap.data();
+
+      const emailContent = `
+      Nume Utilizator: ${data.infoDoctor.numeUtilizator}
+      Nopți: ${data.numberOfNights}
+      Dată: ${data.selectedDate}
+      Localitate: ${data.selectedCity}
+      Destinație: ${data.selectedDestinatie}
+      Țară: ${data.selectedCountry}
+      Transport: ${data.tipTransport}
+      Tip Sejur: ${data.tipSejur}
+      Detalii camere: ${data.roomDetails}
+    `;
+
+      const mailOptions = {
+        from: "exclusivmd@creditemedicale.ro",
+        to: data.helloHolidaysInfo.email,
+        subject: "Nouă cerere HelloHolidays",
+        text: emailContent,
+      };
+
+      return transporter
+          .sendMail(mailOptions)
+          .then(() => console.log("Email sent successfully"))
+          .catch((error) => console.error("Error sending email:", error));
+    });
+
 exports.sendConfirmationEmails = functions.firestore
     .document("Users/{userId}/OferteInregistrate/{offerId}")
     .onUpdate(async (change, context) => {
@@ -61,7 +91,6 @@ exports.sendConfirmationEmails = functions.firestore
       return null;
     });
 
-
 exports.sendDeactivationEmails = functions.pubsub
     .schedule("every 24 hours")
     .timeZone("Europe/Bucharest")
@@ -107,4 +136,3 @@ exports.sendDeactivationEmails = functions.pubsub
 
       return null;
     });
-

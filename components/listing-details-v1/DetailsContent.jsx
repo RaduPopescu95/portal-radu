@@ -4,6 +4,8 @@ import TabDetailsContent from "../agency-details/TabDetailsContent";
 import Comments from "../blog-details/Comments";
 import Ratings from "../blog-details/Ratings";
 import ReviewBox from "../blog-details/ReviewBox";
+import FilterHelloHolidays from "../common/FilterHelloHolidays";
+import GlobalHeroFilter from "../common/GlobalHeroFilter";
 import AdditionalDetails from "../common/listing-details/AdditionalDetails";
 import Attachments from "../common/listing-details/Attachments";
 import FloorPlans from "../common/listing-details/FloorPlans";
@@ -46,6 +48,21 @@ const DetailsContent = ({ partener, oferte }) => {
 
   return (
     <>
+      {partener.id === 13 ? (
+        <div
+          className="listing_single_description mb30"
+          style={{ borderTopWidth: "5px", borderTopColor: "#0000ff" }}
+        >
+          {/* <div className="lsd_list">
+        <PropertyItem />
+      </div> */}
+          {/* End .lsd_list */}
+
+          <h2 className="mb0">Caută-ți vacanța</h2>
+          <FilterHelloHolidays className="home4" partener={partener} />
+        </div>
+      ) : null}
+
       <div className="listing_single_description">
         {/* <div className="lsd_list">
           <PropertyItem />

@@ -5,7 +5,7 @@ const AllStatistics = ({ numarParteneri, numarDoctori }) => {
       blockStyle: "",
       icon: "flaticon-user-1",
       timer: numarDoctori,
-      name: numarDoctori === 1 ? "Doctor" : "Doctori",
+      name: numarDoctori === 1 ? "Cadru medical" : "Cadre medicale",
     },
     {
       id: 2,

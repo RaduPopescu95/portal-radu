@@ -143,6 +143,7 @@ const GlobalFilter = ({ className = "" }) => {
                 <option data-tokens="Restaurante">Restaurante</option>
                 <option data-tokens="Hoteluri">Hoteluri</option>
                 <option data-tokens="Imobiliare">Imobiliare</option>
+                <option data-tokens="Turism">Turism</option>
                 <option data-tokens="Altele">Altele</option>
               </select>
             </div>

@@ -125,13 +125,12 @@ const ProfileInfo = () => {
         !judet ||
         !localitate ||
         !dataNasterii ||
-        !tipEnitate ||
-        tipEnitate === "Tip de entitate"
+        (!tipEnitate && titulatura !== "Asistent Medical")
       ) {
         setIsLoading(false);
         return;
       }
-      if (!cuim && !cif && !codParafa) {
+      if (!cuim && !cif && !codParafa && titulatura !== "Asistent Medical") {
         console.log("noo...", cuim);
         console.log("noo...", cif);
         console.log("noo...", codParafa);
