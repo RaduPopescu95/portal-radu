@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertModal } from "@/components/common/AlertModal";
 import { authentication } from "@/firebase";
 import { handleChangePassword } from "@/utils/authUtils";
 import { updatePassword } from "firebase/auth";
@@ -11,22 +12,41 @@ const ChangePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [alert, setAlert] = useState({ message: "", type: "" });
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type });
+  };
+
+  const closeAlert = () => {
+    setAlert({ message: "", type: "" });
+  };
 
   const handleChangePass = async () => {
-    setError("");
-    setSuccess("");
     const auth = authentication;
 
     if (newPassword !== confirmPassword) {
-      setError("Parola nouă și confirmarea parolei nu se potrivesc.");
+      showAlert(
+        `Parola nouă și confirmarea parolei nu se potrivesc.`,
+        "danger"
+      );
       return;
     }
 
     const user = auth.currentUser;
 
-    await handleChangePassword(oldPassword, newPassword).then(() => {
-      setSuccess("Parola nouă a fost actualizata.");
-    });
+    try {
+      await handleChangePassword(oldPassword, newPassword);
+      showAlert(`Parola nouă a fost actualizată.`, "success");
+      // Resetează câmpurile după actualizarea cu succes
+      setOldPassword("");
+      setConfirmPassword("");
+      setNewPassword("");
+    } catch (error) {
+      // Afișează eroarea prinsă din handleChangePassword
+      console.error("Error updating password:", error);
+      showAlert(error, "danger"); // Asumăm că showAlert acceptă un al doilea parametru pentru tipul alertei
+    }
   };
 
   return (
@@ -88,8 +108,11 @@ const ChangePassword = () => {
         {/* End .col */}
       </div>
       {/* End .row */}
-      {error && <div className="alert alert-danger">{error}</div>}
-      {success && <div className="alert alert-success">{success}</div>}
+      <AlertModal
+        message={alert.message}
+        type={alert.type}
+        onClose={closeAlert}
+      />
     </>
   );
 };

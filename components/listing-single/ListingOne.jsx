@@ -3,6 +3,13 @@
 import Image from "next/image";
 
 export default function ListingOne({ partener }) {
+  // Calculate columns based on the number of images, with a maximum of 4 columns
+  const calcColumns = (count) => {
+    if (count === 1) return 6; // Folosește o coloană mai mică pentru o singură imagine
+    if (count > 4) return 3; // Folosește 4 coloane dacă sunt mai mult de 4 imagini
+    return 12 / count; // Altfel, distribuie imaginile uniform
+  };
+
   return (
     <section className="listing-title-area mt85 md-mt0">
       <div className="container">
@@ -17,23 +24,26 @@ export default function ListingOne({ partener }) {
             {/* Placeholder for social share buttons */}
           </div>
         </div>
-        {/* Images rendering based on count */}
         <div className="row">
           {partener?.images?.imgs.map((val, i) => (
             <div
               key={i}
-              className={`col-lg-${
-                12 / Math.min(partener.images.imgs.length, 3)
-              } col-md-4 col-sm-4 mb-4`}
+              className={`col-lg-${calcColumns(
+                partener.images.imgs.length
+              )} col-md-4 col-sm-6 mb-4`}
+              style={{
+                maxWidth: partener.images.imgs.length === 1 ? "50%" : "100%", // Limitați lățimea containerului la 50% pentru o singură imagine
+                margin: "auto", // Centrează containerul când este mai mic
+              }}
             >
               <Image
-                width={752} // Fixed width
-                height={450} // Fixed height
+                width={752}
+                height={450}
                 src={val.finalUri}
                 alt={`Property Image ${i + 1}`}
-                layout="responsive" // Makes the image scale responsively within the fixed dimensions
-                objectFit="cover" // Covers the area without distorting the image, may crop
-              className="img-fluid"
+                layout="responsive"
+                objectFit="cover"
+                className="img-fluid"
               />
             </div>
           ))}

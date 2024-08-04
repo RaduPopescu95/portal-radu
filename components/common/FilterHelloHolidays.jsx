@@ -42,7 +42,7 @@ const FilterHelloHolidays = ({ className = "", partener }) => {
           role="tabpanel"
           aria-labelledby="pills-home-tab"
         >
-          <FilterHolidays partener={partener} />
+          <FilterHolidays partener={partener} className="filter_holidays" />
         </div>
         <div
           className="tab-pane fade"

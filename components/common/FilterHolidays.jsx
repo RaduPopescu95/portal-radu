@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { locatii, transportCircuit, transportSejur } from "@/utils/constants";
 import { AlertModal } from "./AlertModal";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const FilterHolidays = ({ className = "", partener }) => {
   const router = useRouter();
@@ -34,12 +35,16 @@ const FilterHolidays = ({ className = "", partener }) => {
   const [cities, setCities] = useState([]);
   const [selectedDestinatie, setSelectedDestinatie] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
+  const isMobile = useIsMobile(); // Utilizează direct valoarea returnată
+
   const [numberOfNights, setNumberOfNights] = useState("");
   const [rooms, setRooms] = useState([
     {
-      adults: 4,
-      children: [{ age: 12 }, { age: 10 }, { age: 5 }],
+      adults: 1,
+      children: [{ age: 12 }],
       isVisible: false,
     },
   ]);
@@ -200,8 +205,9 @@ const FilterHolidays = ({ className = "", partener }) => {
 
   return (
     <>
-      <div className={`home1-advnc-search ${className}`}>
-        <ul className="h1ads_1st_list mb-10">
+      {/* <div className={`home1-advnc-search ${className}`}> */}
+      <div className={`home1-advnc-search`}>
+        <ul className=" mb-10">
           <li className="list-inline-item mb10">
             <div className="search_option_two">
               <div className="candidate_revew_select">
@@ -327,18 +333,6 @@ const FilterHolidays = ({ className = "", partener }) => {
             </div>
           </li>
 
-          <div className="col-lg-6 col-xl-6">
-            <div className="my_profile_setting_input form-group">
-              <input
-                type="date"
-                className="form-control"
-                id="activationDate"
-                value={selectedDate}
-                onChange={handleDateChange}
-              />
-            </div>
-          </div>
-
           {/* End li */}
           <li className="list-inline-item">
             <div className="search_option_two">
@@ -449,6 +443,19 @@ const FilterHolidays = ({ className = "", partener }) => {
                       </div>
                     </>
                   ) : null}
+                  {isMobile && (
+                    <li className="list-inline-item">
+                      <div className="search_option_button">
+                        <button
+                          onClick={handleSubmit}
+                          type="submit"
+                          className="btn btn-thm"
+                        >
+                          Trimite formular
+                        </button>
+                      </div>
+                    </li>
+                  )}
                 </div>
               </div>
             </li>
@@ -458,19 +465,21 @@ const FilterHolidays = ({ className = "", partener }) => {
 
           {/* End li */}
         </ul>
-        {/* <ul className="h1ads_1st_list mb-10">
-          <li className="list-inline-item">
-            <div className="search_option_button">
-              <button
-                onClick={handleSubmit}
-                type="submit"
-                className="btn btn-thm"
-              >
-                Trimite formular
-              </button>
-            </div>
-          </li>
-        </ul> */}
+        {!isMobile && (
+          <ul className="h1ads_1st_list mb-10">
+            <li className="list-inline-item">
+              <div className="search_option_button">
+                <button
+                  onClick={handleSubmit}
+                  type="submit"
+                  className="btn btn-thm"
+                >
+                  Trimite formular
+                </button>
+              </div>
+            </li>
+          </ul>
+        )}
       </div>
       <AlertModal
         message={alert.message}

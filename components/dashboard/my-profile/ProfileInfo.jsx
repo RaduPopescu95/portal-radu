@@ -18,6 +18,8 @@ import { uploadImage, uploadMultipleImages } from "@/utils/storageUtils";
 import CommonLoader from "@/components/common/CommonLoader";
 import LogoUpload from "./LogoUpload";
 import PasswordDialog from "@/components/common/dialogs/PasswordDialog";
+import ChangeEmail from "@/components/dashboard-utilizator/my-profile/ChangeEmail";
+import ChangePassword from "./ChangePassword";
 
 const ProfileInfo = () => {
   const { userData, currentUser, setCurrentUser, setUserData, judete } =
@@ -418,237 +420,225 @@ const ProfileInfo = () => {
   }, []);
 
   return (
-    <div className="row">
+    <>
       <div className="row">
+        <div className="row">
+          <div className="col-lg-12">
+            <h3 className="mb30">Adauga imagini aici</h3>
+          </div>
+          {/* End .col */}
+
+          <GalerieFotoSection
+            // handleInputChange={handleInputChange}
+            // formValues={formValues}
+            deleteImage={deleteImage}
+            multipleImage={multipleImage}
+            propertySelectedImgs={propertySelectedImgs}
+            isEdit={isEdit}
+            isNewImage={isNewImage}
+          />
+          {/* End .col */}
+        </div>
         <div className="col-lg-12">
-          <h3 className="mb30">Adauga imagini aici</h3>
+          <h3 className="mb30">Logo partener</h3>
         </div>
         {/* End .col */}
-
-        <GalerieFotoSection
-          // handleInputChange={handleInputChange}
-          // formValues={formValues}
-          deleteImage={deleteImage}
-          multipleImage={multipleImage}
-          propertySelectedImgs={propertySelectedImgs}
+        <LogoUpload
+          singleImage={singleImage}
+          deleteLogo={deleteLogo}
+          logoImg={logo}
           isEdit={isEdit}
-          isNewImage={isNewImage}
+          isNewImage={isNewLogo}
+          text={"Drag and drop Logo"}
         />
         {/* End .col */}
-      </div>
-
-      <div className="col-lg-12">
-        <h3 className="mb30">Logo partener</h3>
-      </div>
-      {/* End .col */}
-
-      <LogoUpload
-        singleImage={singleImage}
-        deleteLogo={deleteLogo}
-        logoImg={logo}
-        isEdit={isEdit}
-        isNewImage={isNewLogo}
-        text={"Drag and drop Logo"}
-      />
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput1">Denumire Brand</label>
-          <input
-            type="text"
-            className={`form-control ${
-              !denumireBrand && buttonPressed && "border-danger"
-            }`}
-            id="formGroupExampleInput1"
-            value={denumireBrand}
-            onChange={(e) => setDenumireBrand(e.target.value)}
-          />
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleInput1">Denumire Brand</label>
+            <input
+              type="text"
+              className={`form-control ${
+                !denumireBrand && buttonPressed && "border-danger"
+              }`}
+              id="formGroupExampleInput1"
+              value={denumireBrand}
+              onChange={(e) => setDenumireBrand(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleEmail">Email</label>
-          <input
-            type="email"
-            className={`form-control ${
-              !email && buttonPressed && "border-danger"
-            }`}
-            id="formGroupExampleEmail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        {/* End .col */}
+        {/* <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleEmail">Email</label>
+            <input
+              type="email"
+              className={`form-control ${
+                !email && buttonPressed && "border-danger"
+              }`}
+              id="formGroupExampleEmail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-xl-12">
-        <div className="my_profile_setting_textarea">
-          <label htmlFor="exampleFormControlTextarea1">
-            Descriere partener
-          </label>
-          <textarea
-            className={`form-control ${
-              !descriere && buttonPressed && "border-danger"
-            }`}
-            id="exampleFormControlTextarea1"
-            rows="7"
-            value={descriere}
-            onChange={(e) => setDescriere(e.target.value)}
-          ></textarea>
+        End .col */}
+        <div className="col-xl-12">
+          <div className="my_profile_setting_textarea">
+            <label htmlFor="exampleFormControlTextarea1">
+              Descriere partener
+            </label>
+            <textarea
+              className={`form-control ${
+                !descriere && buttonPressed && "border-danger"
+              }`}
+              id="exampleFormControlTextarea1"
+              rows="7"
+              value={descriere}
+              onChange={(e) => setDescriere(e.target.value)}
+            ></textarea>
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput3">
-            Nume si prenume persoana de contact
-          </label>
-          <input
-            type="text"
-            className={`form-control ${
-              !numeContact && buttonPressed && "border-danger"
-            }`}
-            id="formGroupExampleInput3"
-            value={numeContact}
-            onChange={(e) => setNumeContact(e.target.value)}
-          />
+        {/* End .col */}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleInput3">
+              Nume si prenume persoana de contact
+            </label>
+            <input
+              type="text"
+              className={`form-control ${
+                !numeContact && buttonPressed && "border-danger"
+              }`}
+              id="formGroupExampleInput3"
+              value={numeContact}
+              onChange={(e) => setNumeContact(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput4">
-            Numar de telefon persoana de contact
-          </label>
-          <input
-            type="text"
-            className={`form-control ${
-              !telefonContact && buttonPressed && "border-danger"
-            }`}
-            id="formGroupExampleInput4"
-            value={telefonContact}
-            onChange={(e) => setTelefonContact(e.target.value)}
-          />
+        {/* End .col */}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleInput4">
+              Numar de telefon persoana de contact
+            </label>
+            <input
+              type="text"
+              className={`form-control ${
+                !telefonContact && buttonPressed && "border-danger"
+              }`}
+              id="formGroupExampleInput4"
+              value={telefonContact}
+              onChange={(e) => setTelefonContact(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Judet</label>
-          <select
-            className={`selectpicker form-select ${
-              !judet && buttonPressed && "border-danger"
-            }`}
-            data-live-search="true"
-            data-width="100%"
-            value={judet}
-            onChange={handleJudetChange}
-          >
-            {judete &&
-              judete.map((judet, index) => (
-                <option key={index} value={judet.judet}>
-                  {judet.judet}
+        {/* End .col */}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Judet</label>
+            <select
+              className={`selectpicker form-select ${
+                !judet && buttonPressed && "border-danger"
+              }`}
+              data-live-search="true"
+              data-width="100%"
+              value={judet}
+              onChange={handleJudetChange}
+            >
+              {judete &&
+                judete.map((judet, index) => (
+                  <option key={index} value={judet.judet}>
+                    {judet.judet}
+                  </option>
+                ))}
+            </select>
+          </div>
+        </div>
+        {/* End .col */}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Localitate</label>
+            <select
+              className={`selectpicker form-select ${
+                !localitate && buttonPressed && "border-danger"
+              }`}
+              data-live-search="true"
+              data-width="100%"
+              value={localitate}
+              onChange={(e) => {
+                console.log("Test...");
+                if (e.target.value.includes("Sector")) {
+                  setLocalitate(e.target.value);
+                  setSector(e.target.value);
+                } else {
+                  setLocalitate(e.target.value);
+                }
+              }}
+            >
+              {localitati.map((location, index) => (
+                <option key={index} value={location.localitate}>
+                  {location.localitate}
                 </option>
               ))}
-          </select>
+            </select>
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Localitate</label>
-          <select
-            className={`selectpicker form-select ${
-              !localitate && buttonPressed && "border-danger"
-            }`}
-            data-live-search="true"
-            data-width="100%"
-            value={localitate}
-            onChange={(e) => {
-              console.log("Test...");
-              if (e.target.value.includes("Sector")) {
-                setLocalitate(e.target.value);
-                setSector(e.target.value);
-              } else {
-                setLocalitate(e.target.value);
-              }
-            }}
-          >
-            {localitati.map((location, index) => (
-              <option key={index} value={location.localitate}>
-                {location.localitate}
-              </option>
-            ))}
-          </select>
+        {/* End .col */}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleInput7">CUI</label>
+            <input
+              type="text"
+              className={`form-control ${
+                (!cui && buttonPressed) || (cuiAlready && buttonPressed)
+                  ? "border-danger"
+                  : null
+              }`}
+              id="formGroupExampleInput7"
+              value={cui}
+              onChange={(e) => setCui(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput7">CUI</label>
-          <input
-            type="text"
-            className={`form-control ${
-              (!cui && buttonPressed) || (cuiAlready && buttonPressed)
-                ? "border-danger"
-                : null
-            }`}
-            id="formGroupExampleInput7"
-            value={cui}
-            onChange={(e) => setCui(e.target.value)}
-          />
+        {/* End .col */}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Categorie</label>
+            <select
+              className={`selectpicker form-select ${
+                !categorie && buttonPressed && "border-danger"
+              }`}
+              data-live-search="true"
+              data-width="100%"
+              value={categorie}
+              onChange={(e) => setCategorie(e.target.value)}
+            >
+              <option data-tokens="Autovehicule">Autovehicule</option>
+              <option data-tokens="Servicii">Servicii</option>
+              <option data-tokens="Cafenele">Cafenele</option>
+              <option data-tokens="Restaurante">Restaurante</option>
+              <option data-tokens="Hoteluri">Hoteluri</option>
+              <option data-tokens="Imobiliare">Imobiliare</option>
+              <option data-tokens="Turism">Turism</option>
+              <option data-tokens="Altele">Altele</option>
+            </select>
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Categorie</label>
-          <select
-            className={`selectpicker form-select ${
-              !categorie && buttonPressed && "border-danger"
-            }`}
-            data-live-search="true"
-            data-width="100%"
-            value={categorie}
-            onChange={(e) => setCategorie(e.target.value)}
-          >
-            <option data-tokens="Autovehicule">Autovehicule</option>
-            <option data-tokens="Servicii">Servicii</option>
-            <option data-tokens="Cafenele">Cafenele</option>
-            <option data-tokens="Restaurante">Restaurante</option>
-            <option data-tokens="Hoteluri">Hoteluri</option>
-            <option data-tokens="Imobiliare">Imobiliare</option>
-            <option data-tokens="Turism">Turism</option>
-            <option data-tokens="Altele">Altele</option>
-          </select>
+        {/* End .col */}
+        <div className="col-lg-12 col-xl-12">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Alege o culoare pentru cardul de fidelitate</label>
+            <GradientSelect
+              options={options}
+              selectedId={selectedId}
+              gradientSelected={gradientSelected}
+              setSelectedGradient={setGradientSelected}
+              setSelectedId={setSelectedId}
+            />
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-12 col-xl-12">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Alege o culoare pentru cardul de fidelitate</label>
-          <GradientSelect
-            options={options}
-            selectedId={selectedId}
-            gradientSelected={gradientSelected}
-            setSelectedGradient={setGradientSelected}
-            setSelectedId={setSelectedId}
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      {/* <div className="col-lg-6 col-xl-6">
+        {/* End .col */}
+        {/* <div className="col-lg-6 col-xl-6">
                 <div className="my_profile_setting_input form-group">
                     <label htmlFor="formGroupExampleInput11">Language</label>
                     <input
@@ -658,9 +648,8 @@ const ProfileInfo = () => {
                     />
                 </div>
             </div> */}
-      {/* End .col */}
-
-      {/* <div className="col-lg-6 col-xl-6">
+        {/* End .col */}
+        {/* <div className="col-lg-6 col-xl-6">
                 <div className="my_profile_setting_input form-group">
                     <label htmlFor="formGroupExampleInput12">
                         Company Name
@@ -672,37 +661,35 @@ const ProfileInfo = () => {
                     />
                 </div>
             </div> */}
-      {/* End .col */}
-
-      <AutocompleteInput
-        onPlaceChanged={handleLocationSelect}
-        adresa={adresaSediu}
-        buttonPressed={buttonPressed}
-      />
-      {/* End .col */}
-
-      <div className="col-xl-12 text-right mt-4">
-        <div className="my_profile_setting_input">
-          {/* <button className="btn btn1">Actualizeaza Profil</button> */}
-          <button className="btn btn2" onClick={handleUpdateProfile}>
-            {isLoading ? <CommonLoader /> : "Actualizeaza Profil"}
-          </button>
-        </div>
-      </div>
-      {/* End .col */}
-
-      <AlertModal
-        message={alert.message}
-        type={alert.type}
-        onClose={closeAlert}
-      />
-      {showModal ? (
-        <PasswordDialog
-          handleCloseModal={handleCloseModal}
-          handleConfirm={handleConfirm}
+        {/* End .col */}
+        <AutocompleteInput
+          onPlaceChanged={handleLocationSelect}
+          adresa={adresaSediu}
+          buttonPressed={buttonPressed}
         />
-      ) : null}
-    </div>
+        {/* End .col */}
+        <div className="col-xl-12 text-right mt-4">
+          <div className="my_profile_setting_input">
+            {/* <button className="btn btn1">Actualizeaza Profil</button> */}
+            <button className="btn btn2" onClick={handleUpdateProfile}>
+              {isLoading ? <CommonLoader /> : "Actualizeaza Profil"}
+            </button>
+          </div>
+        </div>
+        {/* End .col */}
+        <AlertModal
+          message={alert.message}
+          type={alert.type}
+          onClose={closeAlert}
+        />
+        {showModal ? (
+          <PasswordDialog
+            handleCloseModal={handleCloseModal}
+            handleConfirm={handleConfirm}
+          />
+        ) : null}
+      </div>
+    </>
   );
 };
 

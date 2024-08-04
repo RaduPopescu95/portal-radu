@@ -274,7 +274,7 @@ const ProfileInfo = () => {
       </div>
       {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
+      {/* <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExampleEmail">Email</label>
           <input
@@ -288,7 +288,7 @@ const ProfileInfo = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-      </div>
+      </div> */}
       {/* End .col */}
 
       {/* <div className="col-lg-6 col-xl-6">

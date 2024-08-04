@@ -155,3 +155,46 @@
   flex: 1 1 calc(50% - 10px); /* Asigură că fiecare element ocupă aproximativ 50% din lățime, minus spațierea */
   box-sizing: border-box; /* Include padding și border în dimensiunile elementului */
 }
+
+.filter_holidays {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Permite elementelor să se așeze pe mai multe rânduri dacă este necesar */
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  /* Stiluri pentru dispozitive mobile */
+  .filter_holidays {
+    flex-direction: column; /* Așează elementele vertical pentru mobil */
+  }
+}
+
+@media (min-width: 769px) {
+  /* Stiluri pentru desktop */
+  .filter_holidays {
+    flex-direction: row; /* Așează elementele orizontal pentru desktop */
+    justify-content: space-between; /* Distribuie spațiu între elemente pe orizontală */
+  }
+}
+
+.imagini_profil {
+  max-width: 300px !important;
+  max-height: 300px !important;
+}
+
+.imagini_partener {
+  border-radius: 8px;
+  background-color: #ffffff;
+  height: 200px;
+  margin-bottom: 30px;
+  overflow: hidden;
+  position: relative;
+  width: 200px;
+}
+
+.imagini_partener img {
+  height: 300px;
+  width: 300px;
+}

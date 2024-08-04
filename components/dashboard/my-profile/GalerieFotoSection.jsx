@@ -19,17 +19,16 @@ const GalerieFotoSection = ({
           {propertySelectedImgs.length > 0
             ? propertySelectedImgs?.map((item, index) => (
                 <li key={index} className="list-inline-item">
-                  <div className="portfolio_item">
+                  <div className="portfolio_item imagini_partener">
                     <Image
-                      width={200}
-                      height={200}
-                      className="img-fluid cover"
+                      layout="fill" // Utilizează layout fill pentru a completa spațiul containerului
+                      objectFit="contain" // Asigură că întreaga imagine este vizibilă                      className="img-fluid"
                       src={
                         item instanceof File
                           ? URL.createObjectURL(item)
                           : item.finalUri
                       }
-                      alt="fp1.jpg"
+                      alt="Imagine"
                     />
 
                     <div

@@ -1,3 +1,4 @@
+import ChangeEmail from "@/components/dashboard-utilizator/my-profile/ChangeEmail";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -80,17 +81,26 @@ const index = () => {
                   </div> */}
                   {/* End .SocialMedia */}
 
-                  {/* DE FINALIZAT SCHIMBA PAROLA !!!!!!*/}
-                  {/* <div className="my_dashboard_review mt30">
+                  <div className="my_dashboard_review mt30">
                     <div className="row">
-                      <div className="col-xl-12">
+                      <div className="col-xl-2">
+                        <h4>Schimba e-mail</h4>
+                      </div>
+                      <div className="col-xl-10">
+                        <ChangeEmail />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="my_dashboard_review mt30">
+                    <div className="row">
+                      <div className="col-xl-2">
                         <h4>Schimba parola</h4>
                       </div>
-                      <div className="col-xl-12">
+                      <div className="col-xl-10">
                         <ChangePassword />
                       </div>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
               </div>
               {/* End .row */}

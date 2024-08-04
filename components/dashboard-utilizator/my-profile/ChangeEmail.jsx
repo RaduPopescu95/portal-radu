@@ -3,7 +3,11 @@
 import { AlertModal } from "@/components/common/AlertModal";
 import { useAuth } from "@/context/AuthContext";
 import { authentication } from "@/firebase";
-import { handleChangeEmail, handleChangePassword } from "@/utils/authUtils";
+import {
+  handleChangeEmail,
+  handleChangePassword,
+  handleFirebaseAuthError,
+} from "@/utils/authUtils";
 import {
   handleUpdateFirestore,
   handleUploadFirestore,
@@ -43,17 +47,27 @@ const ChangeEmail = () => {
       email: emailNew,
     };
 
-    await handleChangeEmail(oldPassword, emailNew).then(() => {
+    console.log("aici inainte de actualizare email");
+    try {
+      // Încercăm să actualizăm adresa de email
+      await handleChangeEmail(oldPassword, emailNew);
       showAlert(`E-mailul a fost actualizat.`, "success");
-    });
 
-    await handleUpdateFirestore(
-      `Users/${userData.user_uid}`,
-      data,
-      `${userData.numeUtilizator} a schimbat adresa de e-mail la ${emailNew}`
-    ).then(() => {
-      console.log("update succesfully....");
-    });
+      // Dacă actualizarea emailului a reușit, încercăm să actualizăm și Firestore
+      await handleUpdateFirestore(
+        `Users/${userData.user_uid}`,
+        data,
+        `${userData.numeUtilizator} a schimbat adresa de e-mail la ${emailNew}`
+      );
+      console.log("Update successfully.");
+      setUserData(data);
+      setOldPassword("");
+    } catch (error) {
+      // Aici gestionăm erorile care ar putea să apară în oricare dintre apelurile await
+      // const errorMessage = handleFirebaseAuthError(error); // Utilizează funcția pentru a procesa eroarea
+      console.error("A apărut o eroare:", error);
+      showAlert(`${error.message}`, "danger");
+    }
   };
 
   return (

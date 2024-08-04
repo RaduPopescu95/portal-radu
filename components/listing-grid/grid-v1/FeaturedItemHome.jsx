@@ -16,6 +16,7 @@ import {
 import { fetchLocation } from "@/app/services/geocoding";
 import { handleDiacrtice } from "@/utils/strintText";
 import {
+  handleGetFirestore,
   handleQueryDoubleParam,
   handleQueryFirestore,
   handleQueryPatruParam,
@@ -104,6 +105,14 @@ const FeaturedItemHome = ({ params }) => {
       (a, b) => a.distanta - b.distanta
     );
 
+    if (parteneriOrdonati.length === 0) {
+      console.log("is no length....");
+      parteneriOrdonati = await handleQueryFirestore(
+        "Users",
+        "userType",
+        "Partener"
+      );
+    }
     setParteneri(parteneriOrdonati);
     setIsLoading(false);
   }
@@ -200,7 +209,7 @@ const FeaturedItemHome = ({ params }) => {
           </p>
         </div>
       )}
-      {(paginatedParteneri().length === 0 && !isLoading) && (
+      {paginatedParteneri().length === 0 && !isLoading && (
         <div className="d-flex justify-content-center align-items-center">
           <p>Nu sunt parteneri în apropiere.</p>
         </div>

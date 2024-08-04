@@ -21,6 +21,7 @@ const auth = authentication;
 
 export const handleChangeEmail = async (currentPassword, newEmail) => {
   try {
+    console.log("currentPassword...", currentPassword);
     const user = auth.currentUser;
     const credential = EmailAuthProvider.credential(
       user.email,
@@ -32,47 +33,39 @@ export const handleChangeEmail = async (currentPassword, newEmail) => {
     console.log("Reautentificare reușită.");
 
     // Dacă reautentificarea a reușit, încercăm să actualizăm emailul
-    try {
-      await verifyBeforeUpdateEmail(user, newEmail);
-      console.log("Actualizarea emailului reușită.");
-      return ""; // Returnăm un șir gol pentru a indica succesul
-    } catch (error) {
-      // Prindem orice eroare care apare la actualizarea emailului
-      console.error("Eroare la actualizarea emailului:", error);
-      return handleFirebaseAuthError(error); // Returnăm mesajul de eroare
-    }
+
+    // await verifyBeforeUpdateEmail(user, newEmail);
+    await updateEmail(user, newEmail);
+    console.log("Actualizarea emailului reușită.");
+
+    // Prindem orice eroare care apare la actualizarea emailului
   } catch (error) {
     // Prindem orice eroare care apare la reautentificare
-    console.error("Eroare la reautentificare:", error);
-    return handleFirebaseAuthError(error); // Returnăm mesajul de eroare
+    console.log("Eroare la reautentificare:", error);
+    alert(handleFirebaseAuthError(error));
+    throw new Error(handleFirebaseAuthError(error));
   }
 };
 
 export const handleChangePassword = async (currentPassword, newPassword) => {
-  console.log("change passowrd...");
+  console.log("Change password...");
+  const user = auth.currentUser;
+  const credential = EmailAuthProvider.credential(user.email, currentPassword);
+
   try {
-    const user = auth.currentUser;
-    const credential = EmailAuthProvider.credential(
-      user.email,
-      currentPassword
-    );
-    await reauthenticateWithCredential(user, credential)
-      .then(async () => {
-        await updatePassword(user, newPassword)
-          .then(() => {
-            console.log("password succesfuly changed");
-          })
-          .catch((error) => {
-            console.log("password error changed", error);
-          });
-      })
-      .catch((err) => {
-        if (err.code == "auth/wrong-password") {
-        } else if (err.code == "auth/too-many-requests") {
-        }
-      });
+    // Reautentificarea utilizatorului
+    await reauthenticateWithCredential(user, credential);
+    console.log("Reauthentication successful.");
+
+    // Schimbarea parolei
+    await updatePassword(user, newPassword);
+    console.log("Password successfully changed.");
   } catch (err) {
-    console.log("error on handlechange pass", err);
+    console.log("Error on handleChangePassword", err);
+    // Apelăm handleFirebaseAuthError pentru a obține un mesaj de eroare specific
+    const errorMessage = handleFirebaseAuthError(err);
+    // Aruncăm o nouă eroare cu mesajul specific
+    throw new Error(errorMessage);
   }
 };
 
@@ -112,7 +105,7 @@ export const handleResetPassword = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
   } catch (error) {
-    console.error(error);
+    throw new Error(handleFirebaseAuthError(error));
   }
 };
 
@@ -124,37 +117,38 @@ export const handleFirebaseAuthError = (error) => {
   console.log("test...", error.code);
   switch (error.code) {
     case "auth/invalid-email":
-      message = "Error Invalid Email";
+      message = "E-mail invalid";
       break;
     case "auth/email-already-in-use":
-      message = "Error Email Already In Use";
+      message = "E-mail deja folosit";
       break;
     case "auth/weak-password":
-      message = "Error Weak Password";
+      message = "Parola slaba";
       break;
     case "auth/user-not-found":
-      message = "Error User Not Found";
+      message = "Utilizatorul nu a fost gasit";
       break;
     case "auth/user-disabled":
-      message = "Error User Disabled";
+      message = "Utilizator dezactivat";
       break;
     case "auth/wrong-password":
-      message = "Error Wrong Password";
+      message = "Parola gresita";
       break;
     case "auth/too-many-requests":
-      message = "Error Too Many Requests";
+      message = "Prea multe incercari gresite";
       break;
     case "auth/operation-not-allowed":
       message = "Error Operation Not Allowed";
       break;
     case "auth/network-request-failed":
-      message = "Error Network Request Failed. Check network connection and try again.";
+      message =
+        "Error Network Request Failed. Check network connection and try again.";
       break;
     case "auth/invalid-credential":
-      message = "Error Invalid Credentials";
+      message = "Credentiale invalide";
       break;
     default:
-      message = "Error Unknown";
+      message = "Eroare necunoscuta";
   }
   return message;
 };
