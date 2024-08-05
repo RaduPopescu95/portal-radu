@@ -168,7 +168,9 @@ const FilterHolidays = ({ className = "", partener }) => {
           room.children.length > 0
             ? `${room.children.length} copii, vârstele ${childrenAges}`
             : "";
-        const adultsText = `${room.adults} adulți`;
+        const adultsText = `${room.adults} ${
+          room.adults === 1 ? "adult" : "adulți"
+        }`;
 
         // Construim textul final eliminând spațiile suplimentare și virgulele dacă nu sunt copii
         return `Cameră ${index + 1}: ${adultsText}${
