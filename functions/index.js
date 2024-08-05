@@ -20,7 +20,8 @@ exports.sendEmailOnNewRequest = functions.firestore
       const data = snap.data();
 
       const emailContent = `
-      Nume Utilizator: ${data.infoDoctor.numeUtilizator}
+      Nume: ${data.infoDoctor.numeUtilizator}
+      numar telefon: ${data.infoDoctor.telefon}
       Nopți: ${data.numberOfNights}
       Dată: ${data.selectedDate}
       Localitate: ${data.selectedCity}

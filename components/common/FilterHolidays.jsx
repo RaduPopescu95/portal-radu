@@ -164,9 +164,16 @@ const FilterHolidays = ({ className = "", partener }) => {
     const roomDetails = rooms
       .map((room, index) => {
         const childrenAges = room.children.map((child) => child.age).join(", ");
-        return `Cameră ${index + 1}: ${room.adults} adulți, ${
-          room.children.length
-        } copii , varstele ${childrenAges}`;
+        const childrenText =
+          room.children.length > 0
+            ? `${room.children.length} copii, vârstele ${childrenAges}`
+            : "";
+        const adultsText = `${room.adults} adulți`;
+
+        // Construim textul final eliminând spațiile suplimentare și virgulele dacă nu sunt copii
+        return `Cameră ${index + 1}: ${adultsText}${
+          childrenText ? `, ${childrenText}` : ""
+        }`;
       })
       .join(" | ");
 
