@@ -316,11 +316,17 @@ const FilterHolidays = ({ className = "", partener }) => {
                   value={selectedDestinatie}
                 >
                   <option value="">Destinatie</option>
-                  {cities.map((city, index) => (
-                    <option key={index} value={city}>
-                      {city}
-                    </option>
-                  ))}
+                  {tipSejur === "Turism intern"
+                    ? deUndes.map((city, index) => (
+                        <option key={index} value={city}>
+                          {city}
+                        </option>
+                      ))
+                    : cities.map((city, index) => (
+                        <option key={index} value={city}>
+                          {city}
+                        </option>
+                      ))}
                 </select>
               </div>
             </div>
