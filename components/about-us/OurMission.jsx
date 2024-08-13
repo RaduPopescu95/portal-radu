@@ -39,23 +39,27 @@ const OurMission = () => {
             oferte, discount-uri, beneficii în diferite locații aflate în
             împrejurimea lor.
           </p>
-          {/* <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            quis ligula eu lectus vulputate porttitor sed feugiat nunc. Mauris
-            ac consectetur ante, dapibus gravida tellus. Nullam aliquet eleifend
-            dapibus. Cras sagittis, ex euismod lacinia tempor, lectus orci
-            elementum augue, eget auctor metus ante sit amet velit.
+          <p>
+            ExclusivMD.ro este un portal dedicat exclusiv cadrelor medicale,
+            creat pentru a aduce în atenția acestora cele mai bune oferte de la
+            parteneri economici din diverse domenii. Scopul nostru este de a
+            economisi timp și de a oferi soluții eficiente, menite să sprijine
+            activitatea zilnică a medicilor.
           </p>
           <p>
-            Maecenas quis viverra metus, et efficitur ligula. Nam congue augue
-            et ex congue, sed luctus lectus congue. Integer convallis
-            condimentum sem. Duis elementum tortor eget condimentum tempor.
-            Praesent sollicitudin lectus ut pharetra pulvinar. Donec et libero
-            ligula. Vivamus semper at orci at placerat.Placeat Lorem ipsum dolor
-            sit amet, consectetur adipisicing elit. Quod libero amet, laborum
-            qui nulla quae alias tempora.
-          </p> */}
-
+            Pentru a adăuga anunțuri pe site-ul nostru, este necesar să vă
+            creați un cont. Înscrierea ca membru constă în completarea unui
+            formular cu informații minime despre dumneavoastră. Aceasta este o
+            măsură necesară pentru a ne asigura că serviciile noastre sunt
+            adresate exclusiv cadrelor medicale și pentru a menține standarde
+            ridicate de calitate și siguranță.
+          </p>
+          <p>
+            Prin intermediul ExclusivMD.ro, medicii pot accesa rapid și eficient
+            cele mai bune oferte disponibile, economisind timp prețios și
+            beneficiind de soluții care să le sprijine activitatea profesională.
+          </p>
+          {/* 
           <ul className="ab_counting">
             {missionContent.map((item) => (
               <li className="list-inline-item" key={item.id}>
@@ -70,7 +74,7 @@ const OurMission = () => {
                 </div>
               </li>
             ))}
-          </ul>
+          </ul> */}
           {/* End .ab_counting */}
         </div>
       </div>
