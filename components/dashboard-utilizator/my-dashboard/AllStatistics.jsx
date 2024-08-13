@@ -51,7 +51,7 @@ const AllStatistics = () => {
       <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3">
         <div className={`ff_one style2`}>
           <div className="detais">
-            <div className="timer">{userData?.rulajCont}</div>
+            <div className="timer">{userData?.rulajCont} RON</div>
             <p>Rulaj Cont</p>
           </div>
           <div className="icon">
