@@ -119,7 +119,9 @@ const TableData = ({ doctori: docs }) => {
           </div> */}
           <div className="details">
             <div className="tc_content">
-              <h4>{item.numeUtilizator}</h4>
+              <h4>
+                {item.id}.{item.numeUtilizator}
+              </h4>
               {/* <p>
                 <span className="flaticon-placeholder"></span>
                 {item.location}
