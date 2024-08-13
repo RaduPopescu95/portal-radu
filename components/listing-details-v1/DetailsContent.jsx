@@ -48,7 +48,7 @@ const DetailsContent = ({ partener, oferte }) => {
 
   return (
     <>
-      {partener.id === 13 ? (
+      {partener.id === 5 || partener.id === 10 ? (
         <div
           className="listing_single_description mb30"
           style={{ borderTopWidth: "5px", borderTopColor: "#0000ff" }}
