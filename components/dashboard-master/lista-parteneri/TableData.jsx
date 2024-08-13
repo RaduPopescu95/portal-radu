@@ -141,7 +141,9 @@ const TableData = ({ parteneri: parts }) => {
           </div> */}
           <div className="details">
             <div className="tc_content">
-              <h4>{item.denumireBrand}</h4>
+              <h4>
+                {item.id}.{item.denumireBrand}
+              </h4>
               {/* <p>
                 <span className="flaticon-placeholder"></span>
                 {item.location}

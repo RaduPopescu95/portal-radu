@@ -39,6 +39,10 @@ const GlobalFilter = ({ className = "" }) => {
       (judet) => judet.judet === judetSelectedName
     );
 
+    if (judetSelected != "Bucuresti") {
+      setSelectedLocalitate("");
+    }
+
     if (judetSelected) {
       try {
         // Utilizăm judet pentru a interoga Firestore
