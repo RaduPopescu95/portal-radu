@@ -43,8 +43,7 @@ const FeaturedItemHome = ({ params }) => {
   const { statusType, featured, isGridOrList } = useSelector(
     (state) => state.filter
   );
-  const { currentUser, setSearchQueryPateneri, searchQueryParteneri } =
-    useAuth();
+  const { currentUser, userData } = useAuth();
 
   const [parteneri, setParteneri] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -174,13 +173,20 @@ const FeaturedItemHome = ({ params }) => {
         key={item?.id}
       >
         {currentUser ? (
-          <Link
-            href={`/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`}
-            key={item?.id}
-            passHref
-          >
-            <FeaturedProperty item={item} isGridOrList={isGridOrList} />
-          </Link>
+          userData?.userType === "Partener" &&
+          userData?.user_uid !== item?.user_uid ? (
+            <a key={item?.id}>
+              <FeaturedProperty item={item} isGridOrList={isGridOrList} />
+            </a>
+          ) : (
+            <Link
+              href={`/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`}
+              key={item?.id}
+              passHref
+            >
+              <FeaturedProperty item={item} isGridOrList={isGridOrList} />
+            </Link>
+          )
         ) : (
           <a
             key={item?.id}

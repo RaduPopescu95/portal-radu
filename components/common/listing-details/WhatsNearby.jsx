@@ -47,7 +47,7 @@ const WhatsNearby = ({ oferte }) => {
   const renderContent = (level) => {
     if (
       (userData?.userType === "Partener" &&
-        userData?.user_uid !== oferte[0].collectionId) ||
+        userData?.user_uid !== oferte[0]?.collectionId) ||
       !userData
     ) {
       return null;

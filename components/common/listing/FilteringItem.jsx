@@ -29,7 +29,7 @@ import { handleQueryFirestoreSubcollection } from "@/utils/firestoreUtils";
 import { useAuth } from "@/context/AuthContext";
 
 const FilteringItem = ({ params }) => {
-  const { judete, searchQueryParteneri, setSearchQueryPateneri } = useAuth();
+  const { judete } = useAuth();
   const router = useRouter();
   const [selectedJudet, setSelectedJudet] = useState("");
   const [selectedLocalitate, setSelectedLocalitate] = useState("");
@@ -38,6 +38,7 @@ const FilteringItem = ({ params }) => {
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
   const [isCateogireSelected, setIsCategorieSelected] = useState(true);
+  const [searchQueryParteneri, setSearchQueryPateneri] = useState("");
 
   // Handler pentru schimbarea selectiei de judete
   const handleJudetChange = async (e) => {
@@ -86,41 +87,65 @@ const FilteringItem = ({ params }) => {
 
   // submit handler
   const submitHandler = () => {
+    let query = "";
+    let path = "";
     if (!selectedCategorie && !selectedLocalitate && !selectedJudet) {
-      router.push(`/parteneri`);
+      if (searchQueryParteneri)
+        query += `?searchQueryParteneri=${searchQueryParteneri}`;
+      path = "/parteneri";
+      const fullUrl = `${path}${query}`;
+      router.push(fullUrl);
+
       return;
     }
 
     if (selectedJudet && selectedCategorie) {
-      router.push(
-        `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedJudet.toLocaleLowerCase()}`
-      );
+      if (searchQueryParteneri)
+        query += `?searchQueryParteneri=${searchQueryParteneri}`;
+      path = `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedJudet.toLocaleLowerCase()}`;
+      const fullUrl = `${path}${query}`;
+      router.push(fullUrl);
+
       return;
     }
 
     if (selectedJudet && !selectedLocalitate) {
-      // setIsLocalitateSelected(!!selectedLocalitate);
-      // return;
-      router.push(`/parteneri/parteneri-${selectedJudet.toLocaleLowerCase()}`);
+      if (searchQueryParteneri)
+        query += `?searchQueryParteneri=${searchQueryParteneri}`;
+      path = `/parteneri/parteneri-${selectedJudet.toLocaleLowerCase()}`;
+      const fullUrl = `${path}${query}`;
+      router.push(fullUrl);
+
       return;
     }
 
     if (selectedLocalitate && selectedCategorie) {
-      router.push(
-        `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedLocalitate.toLocaleLowerCase()}`
-      );
+      if (searchQueryParteneri)
+        query += `?searchQueryParteneri=${searchQueryParteneri}`;
+      path = `/${selectedCategorie.toLocaleLowerCase()}/${selectedCategorie.toLocaleLowerCase()}-${selectedLocalitate.toLocaleLowerCase()}`;
+      const fullUrl = `${path}${query}`;
+      router.push(fullUrl);
+
       return;
     }
 
     if (selectedLocalitate) {
-      router.push(
-        `/parteneri/parteneri-${selectedLocalitate.toLocaleLowerCase()}`
-      );
+      if (searchQueryParteneri)
+        query += `?searchQueryParteneri=${searchQueryParteneri}`;
+      path = `/parteneri/parteneri-${selectedLocalitate.toLocaleLowerCase()}`;
+      const fullUrl = `${path}${query}`;
+      router.push(fullUrl);
+
       return;
     }
 
     if (selectedCategorie) {
-      router.push(`/${selectedCategorie.toLocaleLowerCase()}`);
+      if (searchQueryParteneri)
+        query += `?searchQueryParteneri=${searchQueryParteneri}`;
+      path = `/${selectedCategorie.toLocaleLowerCase()}`;
+      const fullUrl = `${path}${query}`;
+      router.push(fullUrl);
+
       return;
     }
   };

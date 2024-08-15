@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isGuestUser, setIsGuestUser] = useState(false); // Inițializat ca false
   const [searchQueryParteneri, setSearchQueryPateneri] = useState("");
+  const [finalSearchQuery, setFinalSearchQuery] = useState("");
 
   // Funcția pentru a seta utilizatorul ca guest user
   const setAsGuestUser = (isGuest) => {
@@ -118,6 +119,8 @@ export const AuthProvider = ({ children }) => {
     judete,
     searchQueryParteneri,
     setSearchQueryPateneri,
+    setFinalSearchQuery,
+    finalSearchQuery,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

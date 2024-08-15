@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import TabDetailsContent from "../agency-details/TabDetailsContent";
 import Comments from "../blog-details/Comments";
 import Ratings from "../blog-details/Ratings";
@@ -17,6 +18,8 @@ import PropertyLocation from "../common/listing-details/PropertyLocation";
 import PropertyVideo from "../common/listing-details/PropertyVideo";
 import WalkScore from "../common/listing-details/WalkScore";
 import WhatsNearby from "../common/listing-details/WhatsNearby";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 const isMobile =
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -24,6 +27,8 @@ const isMobile =
   );
 
 const DetailsContent = ({ partener, oferte }) => {
+  const { userData, currentUser } = useAuth();
+  const router = useRouter();
   const handleNavigare = () => {
     if (partener && partener.coordonate) {
       const { lat, lng } = partener.coordonate;
@@ -45,6 +50,15 @@ const DetailsContent = ({ partener, oferte }) => {
       console.log("Coordonatele nu sunt disponibile");
     }
   };
+
+  useEffect(() => {
+    if (
+      userData?.userType === "Partener" &&
+      userData?.user_uid !== partener?.user_uid
+    ) {
+      router.push("/");
+    }
+  }, [userData]);
 
   return (
     <>

@@ -27,29 +27,31 @@ import {
 import FeaturedProperty from "./Item";
 import { useAuth } from "@/context/AuthContext";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
+import { useSearchParams } from "next/navigation";
 
 const FeaturedItem = ({ params }) => {
   const { statusType, featured, isGridOrList } = useSelector(
     (state) => state.filter
   );
-  const { currentUser, setSearchQueryPateneri, searchQueryParteneri } =
-    useAuth();
+  const { currentUser, userData } = useAuth();
 
   const [parteneri, setParteneri] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const itemsPerPage = 6;
+  const searchParams = useSearchParams();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
-    console.log("test....de query...", searchQueryParteneri);
     navigator.geolocation.getCurrentPosition(
       async function (position) {
         const { latitude, longitude } = position.coords;
 
         try {
+          let searchQueryParteneri = searchParams.get("searchQueryParteneri");
+          console.log("test....de query...", searchQueryParteneri);
           let localitate;
           let res = await fetchLocation(latitude, longitude);
           if (res && res.results && res.results.length > 0) {
@@ -550,7 +552,7 @@ const FeaturedItem = ({ params }) => {
         // ....
       }
     );
-  }, []);
+  }, [searchParams]);
 
   // Funcție pentru schimbarea paginilor
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -570,13 +572,20 @@ const FeaturedItem = ({ params }) => {
       key={item?.id}
     >
       {currentUser ? (
-        <Link
-          href={`/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`}
-          key={item?.id}
-          passHref
-        >
-          <FeaturedProperty item={item} isGridOrList={isGridOrList} />
-        </Link>
+        userData?.userType === "Partener" &&
+        userData?.user_uid !== item?.user_uid ? (
+          <a key={item?.id}>
+            <FeaturedProperty item={item} isGridOrList={isGridOrList} />
+          </a>
+        ) : (
+          <Link
+            href={`/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`}
+            key={item?.id}
+            passHref
+          >
+            <FeaturedProperty item={item} isGridOrList={isGridOrList} />
+          </Link>
+        )
       ) : (
         <a
           key={item?.id}
