@@ -143,6 +143,14 @@ const LoginSignupPartener = () => {
     console.log(utilizator);
     console.log(cui);
     if (utilizator?.length === 0) {
+      console.log("nu a fost gasit cui in Users...se cauta in UsersJobs....");
+      utilizator = await handleQueryFirestoreSubcollection(
+        "UsersJobs",
+        "cui",
+        cui
+      );
+    }
+    if (utilizator?.length === 0) {
       showAlert(`Nu a fost gasit nici un cont cu acest CUI`, "danger");
       return;
     }

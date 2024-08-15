@@ -79,6 +79,76 @@ const ProfileInfo = () => {
   const params = useParams();
   const router = useRouter();
 
+  const [puncteDeLucru, setPuncteDeLucru] = useState(
+    userData.puncteDeLucru || []
+  );
+
+  const addPunctDeLucru = () => {
+    setPuncteDeLucru([
+      ...puncteDeLucru,
+      {
+        judet: "",
+        localitate: "",
+        adresa: "",
+        numePunctDeLucru: "",
+        localitati: [],
+      },
+    ]);
+  };
+
+  const handleJudetChangePunctDeLucru = async (index, judetSelectedName) => {
+    const updatedPuncteDeLucru = [...puncteDeLucru];
+    updatedPuncteDeLucru[index].judet = judetSelectedName;
+
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    if (judetSelected) {
+      try {
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        updatedPuncteDeLucru[index].localitati = localitatiFromFirestore;
+
+        // Setează prima localitate din listă ca preselectată
+        if (localitatiFromFirestore.length > 0) {
+          updatedPuncteDeLucru[index].localitate =
+            localitatiFromFirestore[0].localitate;
+        }
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        updatedPuncteDeLucru[index].localitati = [];
+        updatedPuncteDeLucru[index].localitate = ""; // Resetează localitatea dacă nu se pot încărca localitățile
+      }
+    } else {
+      updatedPuncteDeLucru[index].localitati = [];
+      updatedPuncteDeLucru[index].localitate = ""; // Resetează localitatea dacă județul nu este găsit
+    }
+
+    setPuncteDeLucru(updatedPuncteDeLucru);
+  };
+
+  const deletePunctDeLucru = (index) => {
+    setPuncteDeLucru((prevPuncte) => prevPuncte.filter((_, i) => i !== index));
+  };
+
+  const handlePunctDeLucruChange = (index, field, value) => {
+    const updatedPuncteDeLucru = [...puncteDeLucru];
+    updatedPuncteDeLucru[index][field] = value;
+    setPuncteDeLucru(updatedPuncteDeLucru);
+  };
+
+  const handleAutocompleteChange = (index, lat, lng, adresa, urlMaps) => {
+    const updatedPuncteDeLucru = [...puncteDeLucru];
+    updatedPuncteDeLucru[index].adresa = adresa;
+    updatedPuncteDeLucru[index].googleMapsLink = urlMaps;
+    updatedPuncteDeLucru[index].coordonate = { lat, lng };
+    setPuncteDeLucru(updatedPuncteDeLucru);
+  };
+
   // Setează starea inițială
   useEffect(() => {
     setInitialData({
@@ -283,6 +353,7 @@ const ProfileInfo = () => {
         logo: lg,
         images,
         descriere,
+        puncteDeLucru,
       };
       setUserData(data);
       const actionText = describeChanges();
@@ -533,57 +604,7 @@ const ProfileInfo = () => {
           </div>
         </div>
         {/* End .col */}
-        <div className="col-lg-6 col-xl-6">
-          <div className="my_profile_setting_input ui_kit_select_search form-group">
-            <label>Judet</label>
-            <select
-              className={`selectpicker form-select ${
-                !judet && buttonPressed && "border-danger"
-              }`}
-              data-live-search="true"
-              data-width="100%"
-              value={judet}
-              onChange={handleJudetChange}
-            >
-              {judete &&
-                judete.map((judet, index) => (
-                  <option key={index} value={judet.judet}>
-                    {judet.judet}
-                  </option>
-                ))}
-            </select>
-          </div>
-        </div>
-        {/* End .col */}
-        <div className="col-lg-6 col-xl-6">
-          <div className="my_profile_setting_input ui_kit_select_search form-group">
-            <label>Localitate</label>
-            <select
-              className={`selectpicker form-select ${
-                !localitate && buttonPressed && "border-danger"
-              }`}
-              data-live-search="true"
-              data-width="100%"
-              value={localitate}
-              onChange={(e) => {
-                console.log("Test...");
-                if (e.target.value.includes("Sector")) {
-                  setLocalitate(e.target.value);
-                  setSector(e.target.value);
-                } else {
-                  setLocalitate(e.target.value);
-                }
-              }}
-            >
-              {localitati.map((location, index) => (
-                <option key={index} value={location.localitate}>
-                  {location.localitate}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {/* End .col */}
+
         <div className="col-lg-6 col-xl-6">
           <div className="my_profile_setting_input form-group">
             <label htmlFor="formGroupExampleInput7">CUI</label>
@@ -601,6 +622,7 @@ const ProfileInfo = () => {
           </div>
         </div>
         {/* End .col */}
+
         <div className="col-lg-6 col-xl-6">
           <div className="my_profile_setting_input ui_kit_select_search form-group">
             <label>Categorie</label>
@@ -662,12 +684,181 @@ const ProfileInfo = () => {
                 </div>
             </div> */}
         {/* End .col */}
+
+        <div className="col-lg-12 col-xl-12">
+          <h3 className="mb30 mt30">Sediu Principal</h3>
+        </div>
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Judet</label>
+            <select
+              className={`selectpicker form-select ${
+                !judet && buttonPressed && "border-danger"
+              }`}
+              data-live-search="true"
+              data-width="100%"
+              value={judet}
+              onChange={handleJudetChange}
+            >
+              {judete &&
+                judete.map((judet, index) => (
+                  <option key={index} value={judet.judet}>
+                    {judet.judet}
+                  </option>
+                ))}
+            </select>
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Localitate</label>
+            <select
+              className={`selectpicker form-select ${
+                !localitate && buttonPressed && "border-danger"
+              }`}
+              data-live-search="true"
+              data-width="100%"
+              value={localitate}
+              onChange={(e) => {
+                console.log("Test...");
+                if (e.target.value.includes("Sector")) {
+                  setLocalitate(e.target.value);
+                  setSector(e.target.value);
+                } else {
+                  setLocalitate(e.target.value);
+                }
+              }}
+            >
+              {localitati.map((location, index) => (
+                <option key={index} value={location.localitate}>
+                  {location.localitate}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        {/* End .col */}
+
         <AutocompleteInput
           onPlaceChanged={handleLocationSelect}
           adresa={adresaSediu}
           buttonPressed={buttonPressed}
         />
         {/* End .col */}
+
+        <div className="col-xl-12">
+          <h3 className="mb30 mt30">Puncte de lucru</h3>
+          {puncteDeLucru.map((punct, index) => (
+            <div
+              key={index}
+              className={`row ${
+                index === 0 ? "mt0" : "mt40"
+              } align-items-center`}
+            >
+              <div
+                className="col-lg-1"
+                style={{ flex: "0 0 4.16667%", maxWidth: "4.16667%" }}
+              >
+                <span>{index + 1}.</span>
+              </div>
+              <div className="col-lg-3">
+                <div className="my_profile_setting_input form-group">
+                  <label>Nume punct de lucru</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={punct.numePunctDeLucru}
+                    onChange={(e) =>
+                      handlePunctDeLucruChange(
+                        index,
+                        "numePunctDeLucru",
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="col-lg-4">
+                <div className="my_profile_setting_input ui_kit_select_search form-group">
+                  <label>Județ</label>
+                  <select
+                    className="selectpicker form-select"
+                    data-live-search="true"
+                    value={punct.judet}
+                    onChange={(e) =>
+                      handleJudetChangePunctDeLucru(index, e.target.value)
+                    }
+                  >
+                    {judete &&
+                      judete.map((judet, idx) => (
+                        <option key={idx} value={judet.judet}>
+                          {judet.judet}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="col-lg-4">
+                <div className="my_profile_setting_input ui_kit_select_search form-group">
+                  <label>Localitate</label>
+                  <select
+                    className="selectpicker form-select"
+                    data-live-search="true"
+                    value={punct.localitate}
+                    onChange={(e) =>
+                      handlePunctDeLucruChange(
+                        index,
+                        "localitate",
+                        e.target.value
+                      )
+                    }
+                  >
+                    {punct.localitati.map((location, idx) => (
+                      <option key={idx} value={location.localitate}>
+                        {location.localitate}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div
+                className="col-lg-1 text-center"
+                style={{ flex: "0 0 4.16667%", maxWidth: "4.16667%" }}
+              >
+                <div className="icon" onClick={() => deletePunctDeLucru(index)}>
+                  <span
+                    className="flaticon-garbage delete-buton-garbage"
+                    style={{ color: "red", fontSize: "1.5rem" }}
+                  ></span>
+                </div>
+              </div>
+
+              <div className="col-lg-12">
+                <AutocompleteInput
+                  onPlaceChanged={(lat, lng, adresa, urlMaps) =>
+                    handleAutocompleteChange(index, lat, lng, adresa, urlMaps)
+                  }
+                  adresa={punct.adresa}
+                  buttonPressed={buttonPressed}
+                />
+              </div>
+            </div>
+          ))}
+
+          <div className="text-right mt-3">
+            <button className="btn btn-primary" onClick={addPunctDeLucru}>
+              + Adaugă Punct de lucru
+            </button>
+          </div>
+        </div>
+
+        {/* End .col */}
+
         <div className="col-xl-12 text-right mt-4">
           <div className="my_profile_setting_input">
             {/* <button className="btn btn1">Actualizeaza Profil</button> */}
@@ -677,6 +868,7 @@ const ProfileInfo = () => {
           </div>
         </div>
         {/* End .col */}
+
         <AlertModal
           message={alert.message}
           type={alert.type}

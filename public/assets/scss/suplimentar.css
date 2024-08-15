@@ -198,3 +198,7 @@
   height: 300px;
   width: 300px;
 }
+
+.delete-buton-garbage {
+  cursor: pointer;
+}
