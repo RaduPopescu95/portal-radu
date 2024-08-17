@@ -12,6 +12,7 @@ import properties from "../../../data/properties";
 import Image from "next/image";
 import {
   calculateDistance,
+  calculeazaSiOrdoneazaParteneriDupaDistanta,
   filtrareParteneri,
   generateRandomGradient,
   toUrlSlug,
@@ -19,6 +20,7 @@ import {
 import { fetchLocation } from "@/app/services/geocoding";
 import { handleDiacrtice } from "@/utils/strintText";
 import {
+  handleGetFirestore,
   handleQueryDoubleParam,
   handleQueryFirestore,
   handleQueryPatruParam,
@@ -69,46 +71,71 @@ const FeaturedItem = ({ params }) => {
             console.error("Invalid response or results missing:", res);
           }
 
-          let parteneri;
+          let parteneri = await handleGetFirestore("Users");
           let parteneriCuDistanta;
           let parteneriOrdonati;
 
           if (!params && searchQueryParteneri) {
-            parteneri = await handleQueryDoubleParam(
-              "Users",
-              "userType",
-              "Partener",
-              "statusCont",
-              "Activ"
-            );
-            parteneriOrdonati = parteneri;
-          } else {
-            parteneri = await handleQueryTripleParam(
-              "Users",
-              "localitate",
-              localitate,
-              "userType",
-              "Partener",
-              "statusCont",
-              "Activ"
-            );
-
-            // Adaugă distanța ca o proprietate pentru fiecare partener
-            parteneriCuDistanta = parteneri.map((partener) => {
-              const distanta = calculateDistance(
-                latitude,
-                longitude,
-                partener.coordonate.lat,
-                partener.coordonate.lng
-              );
-
-              return { ...partener, distanta: Math.floor(distanta) };
+            // parteneri = await handleQueryDoubleParam(
+            //   "Users",
+            //   "userType",
+            //   "Partener",
+            //   "statusCont",
+            //   "Activ"
+            // );
+            parteneri = parteneri.filter((partener) => {
+              return partener.userType === "Partener" && partener.statusCont === "Activ";
             });
+         
+            parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneri, latitude, longitude);
 
-            // Sortează partenerii după distanță
-            parteneriOrdonati = parteneriCuDistanta.sort(
-              (a, b) => a.distanta - b.distanta
-            );
+          } else {
+            // parteneri = await handleQueryTripleParam(
+            //   "Users",
+            //   "localitate",
+            //   localitate,
+            //   "userType",
+            //   "Partener",
+            //   "statusCont",
+            //   "Activ"
+            // );
+
+                // Filtrare inițială după localitate, userType și statusCont, inclusiv verificarea punctelor de lucru
+             let parts = parteneri.filter((partener) => {
+                const inLocalitate = partener.localitate === localitate;
+                const inPunctDeLucru = partener.puncteDeLucru?.some(
+                  (punct) => punct.localitate === localitate
+                );
+            
+                return (
+                  (inLocalitate || inPunctDeLucru) &&
+                  partener.userType === "Partener" &&
+                  partener.statusCont === "Activ"
+                );
+              });
+            
+              // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
+              parteneri = parts.map((partener) => {
+                const punctDeLucruApropiat = partener.puncteDeLucru?.find(
+                  (punct) => punct.localitate === localitate
+                );
+            
+                if (punctDeLucruApropiat) {
+                  partener.coordonate = punctDeLucruApropiat.coordonate;
+                  partener.adresaSediu = punctDeLucruApropiat.adresa;
+                  partener.localitate = punctDeLucruApropiat.localitate;
+                  partener.judet = punctDeLucruApropiat.judet;
+                  partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+                }
+            
+                return partener;
+              });
+            
+      
+
+           // Exemplu de utilizare a funcției calculeazaSiOrdoneazaParteneriDupaDistanta
+            parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneri, latitude, longitude);
+
           }
 
           let parteneriFiltrati = [];
@@ -128,26 +155,61 @@ const FeaturedItem = ({ params }) => {
                   decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
                 console.log("Test here sector dorit....", sectorDorit);
 
-                let parteneriFiltrati = await handleQueryTripleParam(
-                  "Users",
-                  "sector",
-                  sectorDorit,
-                  "userType",
-                  "Partener",
-                  "statusCont",
-                  "Activ"
-                );
+                // let parteneriFiltrati = await handleQueryTripleParam(
+                //   "Users",
+                //   "sector",
+                //   sectorDorit,
+                //   "userType",
+                //   "Partener",
+                //   "statusCont",
+                //   "Activ"
+                // );
+
+                
+                let parteneriFiltrati = parteneri.filter((partener) => {
+                  const inLocalitate = partener.sector === sectorDorit;
+                  const inPunctDeLucru = partener.puncteDeLucru?.some(
+                    (punct) => punct.sector === sectorDorit
+                  );
+              
+                  return (
+                    (inLocalitate || inPunctDeLucru) &&
+                    partener.userType === "Partener" &&
+                    partener.statusCont === "Activ"
+                  );
+                });
+              
+                // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
+                parteneriFiltrati = parteneriFiltrati.map((partener) => {
+                  const punctDeLucruApropiat = partener.puncteDeLucru?.find(
+                    (punct) => punct.sector === sectorDorit
+                  );
+              
+                  if (punctDeLucruApropiat) {
+                    partener.coordonate = punctDeLucruApropiat.coordonate;
+                    partener.adresaSediu = punctDeLucruApropiat.adresa;
+                    partener.localitate = punctDeLucruApropiat.localitate;
+                    partener.judet = punctDeLucruApropiat.judet;
+                    partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+                    partener.sector = punctDeLucruApropiat.sector;
+                  }
+              
+                  return partener;
+                });
+
+                parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneriFiltrati, latitude, longitude);
+
 
                 console.log(
-                  "Test here parteneriFiltrati....",
-                  parteneriFiltrati
+                  "Test here parteneriOrdonati la gasire sector....",
+                  parteneriOrdonati
                 );
                 if (!searchQueryParteneri) {
-                  setParteneri([...parteneriFiltrati]);
+                  setParteneri([...parteneriOrdonati]);
                   setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
-                    parteneriFiltrati,
+                    parteneriOrdonati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
@@ -161,23 +223,57 @@ const FeaturedItem = ({ params }) => {
                   parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
                 console.log("Test here judet....", judetDorit);
 
-                let parteneriFiltrati = await handleQueryTripleParam(
-                  "Users",
-                  "judet",
-                  judetDorit,
-                  "userType",
-                  "Partener",
-                  "statusCont",
-                  "Activ"
-                );
+                // let parteneriFiltrati = await handleQueryTripleParam(
+                //   "Users",
+                //   "judet",
+                //   judetDorit,
+                //   "userType",
+                //   "Partener",
+                //   "statusCont",
+                //   "Activ"
+                // );
 
-                console.log("Test here judet....", parteneriFiltrati);
+                    // Filtrare inițială după sector, userType și statusCont, inclusiv verificarea punctelor de lucru
+                let parteneriFiltrati = parteneri.filter((partener) => {
+                  const inJudet = partener.judet === judetDorit;
+                  const inPunctDeLucru = partener.puncteDeLucru?.some(
+                    (punct) => punct.judet === judetDorit
+                  );
+              
+                  return (
+                    (inJudet || inPunctDeLucru) &&
+                    partener.userType === "Partener" &&
+                    partener.statusCont === "Activ"
+                  );
+                });
+              
+                // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
+                parteneriFiltrati = parteneriFiltrati.map((partener) => {
+                  const punctDeLucruApropiat = partener.puncteDeLucru?.find(
+                    (punct) => punct.judet === judetDorit
+                  );
+              
+                  if (punctDeLucruApropiat) {
+                    partener.coordonate = punctDeLucruApropiat.coordonate;
+                    partener.adresaSediu = punctDeLucruApropiat.adresa;
+                    partener.localitate = punctDeLucruApropiat.localitate;
+                    partener.judet = punctDeLucruApropiat.judet;
+                    partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+                  }
+              
+                  return partener;
+                });
+
+                parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneriFiltrati, latitude, longitude);
+
+
+                console.log("Test here judet....", parteneriOrdonati);
                 if (!searchQueryParteneri) {
-                  setParteneri([...parteneriFiltrati]);
+                  setParteneri([...parteneriOrdonati]);
                   setIsLoading(false);
                 } else {
                   const rezultatFiltrare = filtrareParteneri(
-                    parteneriFiltrati,
+                    parteneriOrdonati,
                     searchQueryParteneri
                   );
                   setParteneri([...rezultatFiltrare]);
@@ -193,15 +289,23 @@ const FeaturedItem = ({ params }) => {
                 let categorieDorita =
                   string.charAt(0).toUpperCase() + string.slice(1);
 
-                let parteneriFiltrati = await handleQueryTripleParam(
-                  "Users",
-                  "categorie",
-                  categorieDorita,
-                  "userType",
-                  "Partener",
-                  "statusCont",
-                  "Activ"
-                );
+                // let parteneriFiltrati = await handleQueryTripleParam(
+                //   "Users",
+                //   "categorie",
+                //   categorieDorita,
+                //   "userType",
+                //   "Partener",
+                //   "statusCont",
+                //   "Activ"
+                // );
+
+                let parteneriFiltrati = parteneri.filter((partener) => {
+                  return (
+                    partener.categorie === categorieDorita &&
+                    partener.userType === "Partener" &&
+                    partener.statusCont === "Activ"
+                  );
+                });
 
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
@@ -227,28 +331,64 @@ const FeaturedItem = ({ params }) => {
                 if (decodedPart.includes("sector")) {
                   let sectorDorit =
                     decodedPart.charAt(0).toUpperCase() + decodedPart.slice(1);
-                  console.log("Test here localitate....", categorieDorita);
+                  console.log("Test here categorieDorita....", categorieDorita);
                   console.log("Test here sector....", sectorDorit);
 
-                  let parteneriFiltrati = await handleQueryPatruParam(
-                    "Users",
-                    "categorie",
-                    categorieDorita,
-                    "sector",
-                    sectorDorit,
-                    "userType",
-                    "Partener",
-                    "statusCont",
-                    "Activ"
-                  );
+                  // let parteneriFiltrati = await handleQueryPatruParam(
+                  //   "Users",
+                  //   "categorie",
+                  //   categorieDorita,
+                  //   "sector",
+                  //   sectorDorit,
+                  //   "userType",
+                  //   "Partener",
+                  //   "statusCont",
+                  //   "Activ"
+                  // );
 
-                  console.log("Test here localitate....", parteneriFiltrati);
+                  let parteneriFiltrati = parteneri.filter((partener) => {
+                    const inLocalitate = partener.sector === sectorDorit;
+                    const inPunctDeLucru = partener.puncteDeLucru?.some(
+                      (punct) => punct.sector === sectorDorit
+                    );
+                
+                    return (
+                      (inLocalitate || inPunctDeLucru) &&
+                      partener.userType === "Partener" &&
+                      partener.statusCont === "Activ" &&
+                      partener.categorie === categorieDorita
+                    );
+                  });
+                
+                  // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
+                  parteneriFiltrati = parteneriFiltrati.map((partener) => {
+                    const punctDeLucruApropiat = partener.puncteDeLucru?.find(
+                      (punct) => punct.sector === sectorDorit
+                    );
+                
+                    if (punctDeLucruApropiat) {
+                      partener.coordonate = punctDeLucruApropiat.coordonate;
+                      partener.adresaSediu = punctDeLucruApropiat.adresa;
+                      partener.localitate = punctDeLucruApropiat.localitate;
+                      partener.judet = punctDeLucruApropiat.judet;
+                      partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+                      partener.sector = punctDeLucruApropiat.sector;
+                    }
+                
+                    return partener;
+                  });
+  
+                  parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneriFiltrati, latitude, longitude);
+  
+                  
+
+                  console.log("Test here parteneriOrdonati....cautare categorie si sector", parteneriOrdonati);
                   if (!searchQueryParteneri) {
-                    setParteneri([...parteneriFiltrati]);
+                    setParteneri([...parteneriOrdonati]);
                     setIsLoading(false);
                   } else {
                     const rezultatFiltrare = filtrareParteneri(
-                      parteneriFiltrati,
+                      parteneriOrdonati,
                       searchQueryParteneri
                     );
                     setParteneri([...rezultatFiltrare]);
@@ -260,29 +400,63 @@ const FeaturedItem = ({ params }) => {
                   console.log("Test here categorie....", categorieDorita);
                   console.log("Test here judet....", judetDorit);
 
-                  let parteneriFiltrati = await handleQueryPatruParam(
-                    "Users",
-                    "categorie",
-                    categorieDorita,
-                    "judet",
-                    judetDorit,
-                    "userType",
-                    "Partener",
-                    "statusCont",
-                    "Activ"
-                  );
+                  // let parteneriFiltrati = await handleQueryPatruParam(
+                  //   "Users",
+                  //   "categorie",
+                  //   categorieDorita,
+                  //   "judet",
+                  //   judetDorit,
+                  //   "userType",
+                  //   "Partener",
+                  //   "statusCont",
+                  //   "Activ"
+                  // );
+
+                  let parteneriFiltrati = parteneri.filter((partener) => {
+                    const inJudet = partener.judet === judetDorit;
+                    const inPunctDeLucru = partener.puncteDeLucru?.some(
+                      (punct) => punct.judet === judetDorit
+                    );
+                
+                    return (
+                      (inJudet || inPunctDeLucru) &&
+                      partener.userType === "Partener" &&
+                      partener.statusCont === "Activ" &&
+                      partener.categorie === categorieDorita 
+                    );
+                  });
+                
+                  // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
+                  parteneriFiltrati = parteneriFiltrati.map((partener) => {
+                    const punctDeLucruApropiat = partener.puncteDeLucru?.find(
+                      (punct) => punct.judet === judetDorit
+                    );
+                
+                    if (punctDeLucruApropiat) {
+                      partener.coordonate = punctDeLucruApropiat.coordonate;
+                      partener.adresaSediu = punctDeLucruApropiat.adresa;
+                      partener.localitate = punctDeLucruApropiat.localitate;
+                      partener.judet = punctDeLucruApropiat.judet;
+                      partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+                    }
+                
+                    return partener;
+                  });
+  
+                  parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneriFiltrati, latitude, longitude);
+  
 
                   console.log(
-                    "Test here parteneriFiltrati....",
-                    parteneriFiltrati
+                    "Test here parteneriOrdonati....",
+                    parteneriOrdonati
                   );
 
                   if (!searchQueryParteneri) {
-                    setParteneri([...parteneriFiltrati]);
+                    setParteneri([...parteneriOrdonati]);
                     setIsLoading(false);
                   } else {
                     const rezultatFiltrare = filtrareParteneri(
-                      parteneriFiltrati,
+                      parteneriOrdonati,
                       searchQueryParteneri
                     );
                     setParteneri([...rezultatFiltrare]);
