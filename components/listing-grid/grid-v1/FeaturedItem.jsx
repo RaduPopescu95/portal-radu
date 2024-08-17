@@ -71,7 +71,7 @@ const FeaturedItem = ({ params }) => {
             console.error("Invalid response or results missing:", res);
           }
 
-          let parteneri = await handleGetFirestore("Users");
+   
           let parteneriCuDistanta;
           let parteneriOrdonati;
 
@@ -83,6 +83,7 @@ const FeaturedItem = ({ params }) => {
             //   "statusCont",
             //   "Activ"
             // );
+            let parteneri = await handleGetFirestore("Users");
             parteneri = parteneri.filter((partener) => {
               return partener.userType === "Partener" && partener.statusCont === "Activ";
             });
@@ -99,7 +100,7 @@ const FeaturedItem = ({ params }) => {
             //   "statusCont",
             //   "Activ"
             // );
-
+            let parteneri = await handleGetFirestore("Users");
                 // Filtrare inițială după localitate, userType și statusCont, inclusiv verificarea punctelor de lucru
              let parts = parteneri.filter((partener) => {
                 const inLocalitate = partener.localitate === localitate;
@@ -165,7 +166,7 @@ const FeaturedItem = ({ params }) => {
                 //   "Activ"
                 // );
 
-                
+                let parteneri = await handleGetFirestore("Users");
                 let parteneriFiltrati = parteneri.filter((partener) => {
                   const inLocalitate = partener.sector === sectorDorit;
                   const inPunctDeLucru = partener.puncteDeLucru?.some(
@@ -178,7 +179,14 @@ const FeaturedItem = ({ params }) => {
                     partener.statusCont === "Activ"
                   );
                 });
-              
+                console.log(
+                  "Test here parteneriOrdonati la gasire sector....",
+                  parteneri
+                );
+                console.log(
+                  "Test here parteneriOrdonati la gasire sector....",
+                  parteneriFiltrati
+                );
                 // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
                 parteneriFiltrati = parteneriFiltrati.map((partener) => {
                   const punctDeLucruApropiat = partener.puncteDeLucru?.find(
@@ -196,14 +204,12 @@ const FeaturedItem = ({ params }) => {
               
                   return partener;
                 });
-
+                
+               
                 parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneriFiltrati, latitude, longitude);
 
 
-                console.log(
-                  "Test here parteneriOrdonati la gasire sector....",
-                  parteneriOrdonati
-                );
+             
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriOrdonati]);
                   setIsLoading(false);
@@ -232,7 +238,7 @@ const FeaturedItem = ({ params }) => {
                 //   "statusCont",
                 //   "Activ"
                 // );
-
+                let parteneri = await handleGetFirestore("Users");
                     // Filtrare inițială după sector, userType și statusCont, inclusiv verificarea punctelor de lucru
                 let parteneriFiltrati = parteneri.filter((partener) => {
                   const inJudet = partener.judet === judetDorit;
@@ -298,7 +304,7 @@ const FeaturedItem = ({ params }) => {
                 //   "statusCont",
                 //   "Activ"
                 // );
-
+                let parteneri = await handleGetFirestore("Users");
                 let parteneriFiltrati = parteneri.filter((partener) => {
                   return (
                     partener.categorie === categorieDorita &&
@@ -345,7 +351,7 @@ const FeaturedItem = ({ params }) => {
                   //   "statusCont",
                   //   "Activ"
                   // );
-
+                  let parteneri = await handleGetFirestore("Users");
                   let parteneriFiltrati = parteneri.filter((partener) => {
                     const inLocalitate = partener.sector === sectorDorit;
                     const inPunctDeLucru = partener.puncteDeLucru?.some(
@@ -411,7 +417,7 @@ const FeaturedItem = ({ params }) => {
                   //   "statusCont",
                   //   "Activ"
                   // );
-
+                  let parteneri = await handleGetFirestore("Users");
                   let parteneriFiltrati = parteneri.filter((partener) => {
                     const inJudet = partener.judet === judetDorit;
                     const inPunctDeLucru = partener.puncteDeLucru?.some(
