@@ -18,7 +18,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const GlobalFilter = ({ className = "" }) => {
   const router = useRouter();
-  const { judete } = useAuth();
+  const { judete, localitate, judet, categorie, setCategorie, setJudet, setLocalitate } = useAuth();
   const [selectedJudet, setSelectedJudet] = useState("");
   const [selectedLocalitate, setSelectedLocalitate] = useState("");
   const [searchQueryParteneri, setSearchQueryPateneri] = useState("");
@@ -73,11 +73,17 @@ const GlobalFilter = ({ className = "" }) => {
     setSelectedCategorie(e.target.value);
     setIsCategorieSelected(!!e.target.value);
   };
-
+  const handleFilteringItems = (categorie,judet,localitate) => {
+    setCategorie(categorie);
+    setJudet(judet);
+    setLocalitate(localitate)
+  }
   // submit handler
   const submitHandler = () => {
     let query = "";
     let path = "";
+    handleFilteringItems(selectedCategorie,selectedJudet, selectedLocalitate)
+
     if (!selectedCategorie && !selectedLocalitate && !selectedJudet) {
       if (searchQueryParteneri)
         query += `?searchQueryParteneri=${searchQueryParteneri}`;

@@ -24,25 +24,26 @@ import {
 } from "../../../features/properties/propertiesSlice";
 import PricingRangeSlider from "../../common/PricingRangeSlider";
 import { v4 as uuidv4 } from "uuid";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { handleQueryFirestoreSubcollection } from "@/utils/firestoreUtils";
 import { useAuth } from "@/context/AuthContext";
 
 const FilteringItem = ({ params }) => {
-  const { judete } = useAuth();
+  const { judete, localitate, judet, categorie, setCategorie, setJudet, setLocalitate } = useAuth();
   const router = useRouter();
-  const [selectedJudet, setSelectedJudet] = useState("");
+  const searchParams = useSearchParams();
+  const [selectedJudet, setSelectedJudet] = useState(judet || "");
   const [selectedLocalitate, setSelectedLocalitate] = useState("");
-  const [selectedCategorie, setSelectedCategorie] = useState("");
+  const [selectedCategorie, setSelectedCategorie] = useState(categorie || "");
   const [localitati, setLocalitati] = useState([]);
   const [isJudetSelected, setIsJudetSelected] = useState(true);
   const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
   const [isCateogireSelected, setIsCategorieSelected] = useState(true);
-  const [searchQueryParteneri, setSearchQueryPateneri] = useState("");
+  const [searchQueryParteneri, setSearchQueryPateneri] = useState(searchParams.get("searchQueryParteneri") || "");
 
   // Handler pentru schimbarea selectiei de judete
   const handleJudetChange = async (e) => {
-    const judetSelectedName = e.target.value; // Numele județului selectat, un string
+    const judetSelectedName = e; // Numele județului selectat, un string
     setSelectedJudet(judetSelectedName);
     setIsJudetSelected(!!judetSelectedName);
 
@@ -85,10 +86,17 @@ const FilteringItem = ({ params }) => {
     setIsCategorieSelected(!!e.target.value);
   };
 
+  const handleFilteringItems = (categorie,judet,localitate) => {
+    setCategorie(categorie);
+    setJudet(judet);
+    setLocalitate(localitate)
+  }
+
   // submit handler
   const submitHandler = () => {
     let query = "";
     let path = "";
+    handleFilteringItems(selectedCategorie,selectedJudet, selectedLocalitate)
     if (!selectedCategorie && !selectedLocalitate && !selectedJudet) {
       if (searchQueryParteneri)
         query += `?searchQueryParteneri=${searchQueryParteneri}`;
@@ -295,6 +303,19 @@ const FilteringItem = ({ params }) => {
     setAdvanced(data);
   };
 
+  useEffect(() => {
+    const handleAsyncChange = async () => {
+      try {
+        await handleJudetChange(judet);
+        setSelectedLocalitate(localitate);
+      } catch (error) {
+        console.error('Eroare la schimbarea județului:', error);
+      }
+    };
+  
+    handleAsyncChange();
+  }, []); 
+  
   return (
     <ul className="sasw_list mb0">
       <li className="search_area">
@@ -362,7 +383,7 @@ const FilteringItem = ({ params }) => {
               className={`selectpicker w100 form-select show-tick ${
                 !isJudetSelected ? "border-danger" : ""
               }`}
-              onChange={handleJudetChange}
+              onChange={(e) => handleJudetChange(e.target.value)}
               value={selectedJudet}
             >
               <option value="">Judete</option>

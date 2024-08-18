@@ -35,7 +35,7 @@ const FeaturedItem = ({ params }) => {
   const { statusType, featured, isGridOrList } = useSelector(
     (state) => state.filter
   );
-  const { currentUser, userData } = useAuth();
+  const { currentUser, userData, localitate, setLocalitate, judet,setJudet, categorie,setCategorie } = useAuth();
 
   const [parteneri, setParteneri] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,6 +44,12 @@ const FeaturedItem = ({ params }) => {
   const searchParams = useSearchParams();
 
   const dispatch = useDispatch();
+
+  const handleFilteringItems = (categorie,judet,localitate) => {
+    setCategorie(categorie);
+    setJudet(judet);
+    setLocalitate(localitate)
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -83,6 +89,7 @@ const FeaturedItem = ({ params }) => {
             //   "statusCont",
             //   "Activ"
             // );
+            handleFilteringItems("","","")
             let parteneri = await handleGetFirestore("Users");
             parteneri = parteneri.filter((partener) => {
               return partener.userType === "Partener" && partener.statusCont === "Activ";
@@ -100,6 +107,7 @@ const FeaturedItem = ({ params }) => {
             //   "statusCont",
             //   "Activ"
             // );
+            handleFilteringItems("","","")
             let parteneri = await handleGetFirestore("Users");
                 // Filtrare inițială după localitate, userType și statusCont, inclusiv verificarea punctelor de lucru
              let parts = parteneri.filter((partener) => {
@@ -165,7 +173,7 @@ const FeaturedItem = ({ params }) => {
                 //   "statusCont",
                 //   "Activ"
                 // );
-
+                handleFilteringItems("","Bucuresti",sectorDorit)
                 let parteneri = await handleGetFirestore("Users");
                 let parteneriFiltrati = parteneri.filter((partener) => {
                   const inLocalitate = partener.sector === sectorDorit;
@@ -238,6 +246,7 @@ const FeaturedItem = ({ params }) => {
                 //   "statusCont",
                 //   "Activ"
                 // );
+                handleFilteringItems("",judetDorit,"")
                 let parteneri = await handleGetFirestore("Users");
                     // Filtrare inițială după sector, userType și statusCont, inclusiv verificarea punctelor de lucru
                 let parteneriFiltrati = parteneri.filter((partener) => {
@@ -304,6 +313,7 @@ const FeaturedItem = ({ params }) => {
                 //   "statusCont",
                 //   "Activ"
                 // );
+                handleFilteringItems(categorieDorita,"","")
                 let parteneri = await handleGetFirestore("Users");
                 let parteneriFiltrati = parteneri.filter((partener) => {
                   return (
@@ -351,6 +361,7 @@ const FeaturedItem = ({ params }) => {
                   //   "statusCont",
                   //   "Activ"
                   // );
+                  handleFilteringItems(categorieDorita,"Bucuresti",sectorDorit)
                   let parteneri = await handleGetFirestore("Users");
                   let parteneriFiltrati = parteneri.filter((partener) => {
                     const inLocalitate = partener.sector === sectorDorit;
@@ -417,6 +428,8 @@ const FeaturedItem = ({ params }) => {
                   //   "statusCont",
                   //   "Activ"
                   // );
+                  handleFilteringItems(categorieDorita,"Bucuresti","")
+
                   let parteneri = await handleGetFirestore("Users");
                   let parteneriFiltrati = parteneri.filter((partener) => {
                     const inJudet = partener.judet === judetDorit;
@@ -501,6 +514,7 @@ const FeaturedItem = ({ params }) => {
           console.error("Error fetching location data: ", error);
         }
       },
+      //DACA EXISTA EROARE LA GEOLOCATIE, CUM AR FI PERMISSION DENIED
       async function (error) {
         console.error("Geolocation error: ", error);
         // ....
@@ -546,6 +560,7 @@ const FeaturedItem = ({ params }) => {
                   "statusCont",
                   "Activ"
                 );
+                handleFilteringItems("","Bucuresti",sectorDorit)
 
                 console.log(
                   "Test here parteneriFiltrati....",
@@ -579,6 +594,7 @@ const FeaturedItem = ({ params }) => {
                   "statusCont",
                   "Activ"
                 );
+                handleFilteringItems("",judetDorit,"")
 
                 console.log("Test here judet....", parteneriFiltrati);
                 if (!searchQueryParteneri) {
@@ -611,6 +627,7 @@ const FeaturedItem = ({ params }) => {
                   "statusCont",
                   "Activ"
                 );
+                handleFilteringItems(categorieDorita,"","")
 
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
@@ -650,7 +667,7 @@ const FeaturedItem = ({ params }) => {
                     "statusCont",
                     "Activ"
                   );
-
+                  handleFilteringItems(categorieDorita,"Bucuresti",sectorDorit)
                   console.log("Test here localitate....", parteneriFiltrati);
                   if (!searchQueryParteneri) {
                     setParteneri([...parteneriFiltrati]);
@@ -680,7 +697,7 @@ const FeaturedItem = ({ params }) => {
                     "statusCont",
                     "Activ"
                   );
-
+                  handleFilteringItems(categorieDorita,judetDorit,"")
                   console.log(
                     "Test here parteneriFiltrati....",
                     parteneriFiltrati

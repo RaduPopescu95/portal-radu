@@ -22,6 +22,7 @@ import BreadCrumb2 from "../listing-grid/grid-v1/BreadCrumb2";
 import FeaturedItem from "../listing-grid/grid-v1/FeaturedItem";
 import FeaturedItemHome from "../listing-grid/grid-v1/FeaturedItemHome";
 import FilterHelloHolidays from "../common/FilterHelloHolidays";
+import Partners from "../common/Partners";
 
 const FindProperties = lazy(() => import("./FindProperties"));
 
@@ -227,6 +228,23 @@ const index = ({ params }) => {
           </div>
         </div>
       </section> */}
+
+      {/* <!-- Our Partners --> */}
+      <section id="our-partners" className="our-partners">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 offset-lg-3">
+              <div className="main-title text-center">
+                <h2>Parteneri</h2>
+                <p>Rețeaua noastră de elită</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <Partners />
+          </div>
+        </div>
+      </section>
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one">

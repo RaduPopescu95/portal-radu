@@ -136,13 +136,13 @@ const index = () => {
       </section> */}
 
       {/* <!-- Our Partners --> */}
-      {/* <section id="our-partners" className="our-partners">
+      <section id="our-partners" className="our-partners">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
                 <h2>Parteneri</h2>
-                <p>We only work with the best companies around the globe</p>
+                <p>Rețeaua noastră de elită</p>
               </div>
             </div>
           </div>
@@ -150,7 +150,7 @@ const index = () => {
             <Partners />
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* <!-- Start Call to Action --> */}
       <section className="start-partners bgc-thm pt50 pb50">
