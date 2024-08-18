@@ -202,3 +202,47 @@
 .delete-buton-garbage {
   cursor: pointer;
 }
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.partner-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.logo-wrapper {
+  width: 100%;
+  max-width: 106px;
+  aspect-ratio: 106 / 71; /* Aspect ratio for consistent sizing */
+  margin-bottom: 8px;
+}
+
+.main-title p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.partner_image_container {
+  position: relative;
+  width: 106px; /* sau orice dimensiune fixa dorești */
+  height: 71px; /* sau orice dimensiune fixa dorești */
+  margin: 0 auto; /* centru */
+}
+
+.partner_image {
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  /* Pentru ecrane mobile (lățime maximă de 768px) */
+  .partner_image_container {
+    width: 160px; /* Dimensiune mai mare pentru mobil */
+    height: 107px; /* Ajustează proporțional înălțimea */
+  }
+}

@@ -25,13 +25,15 @@ const Partners = () => {
       {parteneri.map((val, i) => (
         <div className="col-sm-6 col-md-4 col-lg" key={i}>
           <div className="our_partner">
-            <Image
-              width={106}
-              height={71}
-              className="contain"
-              src={val?.logo?.finalUri}
-              alt={val?.denumireBrand}
-            />
+            <div className="partner_image_container">
+              <Image
+                src={val?.logo?.finalUri}
+                alt={val?.denumireBrand}
+                layout="fill"
+                objectFit="contain"
+                className="partner_image"
+              />
+            </div>
 
             <div className="main-title text-center mt-1">
               <p>{val?.denumireBrand}</p>

@@ -232,9 +232,9 @@ const index = ({ params }) => {
       {/* <!-- Our Partners --> */}
       <section id="our-partners" className="our-partners">
         <div className="container">
-          <div className="row">
+          <div className="row pt30">
             <div className="col-lg-6 offset-lg-3">
-              <div className="main-title text-center">
+              <div className="main-title text-center mb40">
                 <h2>Parteneri</h2>
                 <p>Rețeaua noastră de elită</p>
               </div>
