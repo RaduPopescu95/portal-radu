@@ -1297,8 +1297,24 @@
   .home_adv_srch_opt.home4 .home1_adsrchfrm {
     display: table;
   }
+  .home4_iconbox {
+    display: block; /* sau flex, dacă preferi să menții flexbox */
+    overflow-x: scroll; /* Schimbă în scroll pentru a păstra funcționalitatea de scroll */
+    white-space: nowrap; /* Previne elementele copil să treacă la linia următoare */
+    -ms-overflow-style: none; /* Ascunde scrollbar pentru Internet Explorer/Edge */
+    scrollbar-width: none; /* Ascunde scrollbar pentru Firefox */
+  }
+
+  .home4_iconbox::-webkit-scrollbar {
+    display: none; /* Ascunde scrollbar pentru Chrome, Safari și Opera */
+  }
+
   .home4_iconbox li {
-    margin-bottom: 10px;
+    display: inline-flex; /* Utilizează inline-flex pentru a menține elementele flexibile */
+    justify-content: center; /* Centrează conținutul pe orizontală */
+    align-items: center; /* Centrează conținutul pe verticală */
+    min-width: 130px; /* Setează o lățime minimă fixă pentru fiecare element */
+    margin-right: 20px; /* Ajustează în funcție de spațiul dorit între elemente */
   }
   ul.apeartment_area_list.home5 {
     margin-top: -35px;
@@ -2504,9 +2520,7 @@
   .home_content.home4 {
     padding: 120px 0 30px !important;
   }
-  .home4_iconbox {
-    display: none;
-  }
+
   .banner-style-one .owl-dots {
     bottom: 20px;
     display: block !important;

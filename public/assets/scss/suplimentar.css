@@ -230,9 +230,10 @@
 
 .partner_image_container {
   position: relative;
-  width: 106px; /* sau orice dimensiune fixa dorești */
-  height: 71px; /* sau orice dimensiune fixa dorești */
-  margin: 0 auto; /* centru */
+  width: 106px; /* Dimensiune fixă */
+  height: 71px; /* Dimensiune fixă */
+  margin: 0 auto; /* Centrare */
+  overflow: hidden; /* Ascunde marginile excesive ale imaginii */
 }
 
 .partner_image {
@@ -245,4 +246,11 @@
     width: 160px; /* Dimensiune mai mare pentru mobil */
     height: 107px; /* Ajustează proporțional înălțimea */
   }
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

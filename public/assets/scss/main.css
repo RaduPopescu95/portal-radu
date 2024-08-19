@@ -5308,6 +5308,7 @@ form.home5_advanced_search_form
 }
 
 /*== Home Icon Box ==*/
+
 .home4_iconbox {
   cursor: pointer;
   position: relative;
@@ -5317,10 +5318,11 @@ form.home5_advanced_search_form
 .home4_iconbox li {
   background-color: rgba(255, 255, 255, 0.149);
   border-radius: 22.5px;
-  height: 45px;
+  height: 10rem;
   padding: 0 20px;
   text-align: center;
-  width: 180px;
+  width: 14rem !important;
+  margin-bottom: 10px;
 }
 
 .home4_iconbox .icon {
@@ -5343,10 +5345,16 @@ form.home5_advanced_search_form
 
 .home4_iconbox .icon p {
   font-size: 16px;
-  font-family: "Nunito";
   color: #ffffff;
-  line-height: 3;
+  line-height: 1.5;
   margin-bottom: 0;
+  max-width: 200px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 /*== Home Five Overlay Slider ==*/

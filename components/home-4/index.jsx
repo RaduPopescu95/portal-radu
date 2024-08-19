@@ -66,16 +66,17 @@ const index = ({ params }) => {
               </div>
             </div>
           </div>
-          {/* <div className="row">
+          <div className="row">
             <div className="col-lg-12">
               <h4 className="text-center color-white fw600 mb25 mb0-520">
-                What are you looking for?
+                Rețeaua noastră de elită
               </h4>
+
               <ul className="home4_iconbox mb0">
                 <LookingItem />
               </ul>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
 
@@ -230,7 +231,7 @@ const index = ({ params }) => {
       </section> */}
 
       {/* <!-- Our Partners --> */}
-      <section id="our-partners" className="our-partners">
+      {/* <section id="our-partners" className="our-partners">
         <div className="container">
           <div className="row pt30">
             <div className="col-lg-6 offset-lg-3">
@@ -244,7 +245,7 @@ const index = ({ params }) => {
             <Partners />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one">
