@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import MobileMenuContent from "./MobileMenuContent";
 import Image from "next/image";
+import HeaderLogos from "@/components/home-4/HeaderLogos";
+import HeaderLogosMobil from "@/components/home-4/HeaderLogosMobil";
 
 const MobileMenu = () => {
   return (
@@ -8,6 +12,9 @@ const MobileMenu = () => {
     <div className="stylehome1 h0 mega-menu-wrapper">
       <div className="mobile-menu">
         <div className="header stylehome1">
+          <HeaderLogosMobil />
+          {/* <p>asdasds</p> */}
+          {/* <HeaderLogosMobil /> */}
           {/* <div className="main_logo_home2 text-center">
             <Image
               width={40}
@@ -24,7 +31,6 @@ const MobileMenu = () => {
             <li className="list-inline-item list_s">
               <Link href="/">
                 {/* <span className="flaticon-user"></span> */}
-                
               </Link>
             </li>
             <li

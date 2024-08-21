@@ -50,7 +50,7 @@ const index = ({ params }) => {
         </div>
         {/* End .container-fluid */}
 
-        <div className="container home_iconbox_container">
+        {/* <div className="container home_iconbox_container">
           <div className="row posr">
             <div className="col-lg-12">
               <div className="home_content home4">
@@ -77,7 +77,7 @@ const index = ({ params }) => {
               </ul>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <section className="our-listing bgc-f7 pb30-991 md-mt0 pt-0 ">

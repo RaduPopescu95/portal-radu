@@ -11,7 +11,20 @@ const LogoUpload = ({
   isVerifica,
   isNewImage,
   text,
+  isAdmin,
 }) => {
+  const handleDownloadImage = (imageUrl) => {
+    const a = document.createElement("a");
+    a.href = imageUrl;
+
+    // Setează numele fișierului cu extensia .jpeg
+    a.download = "downloaded-image.jpeg"; // Schimbă extensia dacă este necesar (de exemplu, .png, .jpg etc.)
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   return (
     <div className="row">
       <div className="col-lg-12">
@@ -22,38 +35,51 @@ const LogoUpload = ({
                   <div className="portfolio_item">
                     {!isNewImage ? (
                       <Image
-                        width={200}
-                        height={200}
+                        width={300}
+                        height={300}
                         className="img-fluid cover"
                         src={item.finalUri}
                         alt="fp1.jpg"
                       />
                     ) : (
                       <Image
-                        width={200}
-                        height={200}
+                        width={300}
+                        height={300}
                         className="img-fluid cover"
                         src={URL.createObjectURL(item)}
                         alt="fp1.jpg"
                       />
                     )}
-                    {
-                    isVerifica
-                    ?
-                    null
-                    :
-                    <div
-                      className="edu_stats_list"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Delete"
-                      data-original-title="Delete"
-                    >
-                      <a onClick={() => deleteLogo()}>
-                        <span className="flaticon-garbage"></span>
-                      </a>
-                    </div>
-                    }
+                    {isVerifica ? null : (
+                      <div
+                        className="edu_stats_list"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                        data-original-title="Delete"
+                      >
+                        <a onClick={() => deleteLogo()}>
+                          <span className="flaticon-garbage"></span>
+                        </a>
+                      </div>
+                    )}
+                    {!isAdmin ? null : (
+                      <div
+                        className="edu_stats_download mr-10"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                        data-original-title="Delete"
+                      >
+                        <a
+                          onClick={() =>
+                            handleDownloadImage(logoImg[0].finalUri)
+                          }
+                        >
+                          <span className="flaticon-download"></span>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </li>
               ))

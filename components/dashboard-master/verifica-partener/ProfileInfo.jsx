@@ -1,20 +1,29 @@
 "use client";
 
-import CommonLoader from "@/components/common/CommonLoader";
+import { generateRandomGradient } from "@/utils/commonUtils";
+import { useEffect, useState } from "react";
+
 import { useAuth } from "@/context/AuthContext";
 import {
   handleQueryFirestoreSubcollection,
   handleUpdateFirestore,
 } from "@/utils/firestoreUtils";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { emailWithoutSpace } from "@/utils/strintText";
+import AutocompleteInput from "@/components/common/AutocompleteInput";
+import { AlertModal } from "@/components/common/AlertModal";
+
+import { useParams, useRouter } from "next/navigation";
+import selectedFiles from "@/utils/selectedFiles";
+import { uploadImage, uploadMultipleImages } from "@/utils/storageUtils";
+import CommonLoader from "@/components/common/CommonLoader";
+
+import PasswordDialog from "@/components/common/dialogs/PasswordDialog";
+import GalerieFotoSection from "@/components/dashboard/my-profile/GalerieFotoSection";
+import GradientSelect from "../my-profile/GradientSelect";
+import LogoUpload from "@/components/dashboard/my-profile/LogoUpload";
 
 const ProfileInfo = ({ partener: part }) => {
-  const [profile, setProfile] = useState(null);
-  const [localitati, setLocalitati] = useState([]);
   const { judete } = useAuth();
-  const router = useRouter();
-
   const handleToggle = async () => {
     console.log(part);
 
@@ -27,17 +36,427 @@ const ProfileInfo = ({ partener: part }) => {
     });
   };
 
-  const handleGetLocalitatiJudet = async () => {
-    const judetSelectedName = part?.judet; // Numele județului selectat, un string
-    console.log("judetSelectedName...", judetSelectedName);
+  const [denumireBrand, setDenumireBrand] = useState(part?.denumireBrand || "");
+  const [descriere, setDescriere] = useState(part?.descriere || "");
+  const [email, setEmail] = useState(part?.email || "");
+  const [oldEmail, setOldEmail] = useState(part?.email || "");
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [numeContact, setNumeContact] = useState(part?.numeContact || "");
+  const [telefonContact, setTelefonContact] = useState(
+    part?.telefonContact || ""
+  );
+  const [judet, setJudet] = useState(part?.judet || "");
+  const [localitate, setLocalitate] = useState(part?.localitate || "");
+  const [sector, setSector] = useState(part?.sector || "");
+  const [categorie, setCategorie] = useState(part?.categorie || "");
+  const [cui, setCui] = useState(part?.cui || "");
+  const [oldCui, setOldCui] = useState(part?.cui || "");
+  const [adresaSediu, setAdresaSediu] = useState(part?.adresaSediu || "");
+  const [deletedLogo, setDeletedLogo] = useState(null);
+  const [isNewLogo, setIsNewLogo] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-    // Găsește obiectul județului selectat bazat pe `judet`
-    console.log("judete...", judete);
+  const [googleMapsLink, setGoogleMapsLink] = useState(
+    part?.googleMapsLink || ""
+  );
+  const [coordonate, setCoordonate] = useState(part?.coordonate || {});
+
+  const [selectedId, setSelectedId] = useState(
+    part?.gradient?.selectedId || null
+  ); // Acum stocăm un singur ID
+  const [gradientSelected, setGradientSelected] = useState(
+    part?.gradient?.gradientSelected || ""
+  );
+
+  const [logo, setLogo] = useState(part?.logo ? [part?.logo] : []);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [propertySelectedImgs, setPropertySelectedImgs] = useState(
+    part?.images?.imgs || []
+  );
+  const [deletedImages, setDeletedImages] = useState([]);
+  const [localitati, setLocalitati] = useState([]);
+  const [isNewImage, setIsNewImage] = useState(false);
+  const [initialData, setInitialData] = useState({});
+  const [buttonPressed, setButtonPressed] = useState(false);
+  const [cuiAlready, setCuiAlready] = useState(false);
+
+  const [isJudetSelected, setIsJudetSelected] = useState(true);
+  const [isLocalitateSelected, setIsLocalitateSelected] = useState(true);
+  const [isCateogireSelected, setIsCategorieSelected] = useState(true);
+
+  const params = useParams();
+  const router = useRouter();
+
+  const [puncteDeLucru, setPuncteDeLucru] = useState(part?.puncteDeLucru || []);
+
+  const addPunctDeLucru = () => {
+    setPuncteDeLucru([
+      ...puncteDeLucru,
+      {
+        judet: "",
+        localitate: "",
+        adresa: "",
+        numePunctDeLucru: "",
+        localitati: [],
+      },
+    ]);
+  };
+
+  const handleJudetChangePunctDeLucru = async (index, judetSelectedName) => {
+    const updatedPuncteDeLucru = [...puncteDeLucru];
+    updatedPuncteDeLucru[index].judet = judetSelectedName;
+
     const judetSelected = judete.find(
       (judet) => judet.judet === judetSelectedName
     );
 
-    console.log("judetSelected...", judetSelected);
+    if (judetSelected) {
+      try {
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
+        updatedPuncteDeLucru[index].localitati = localitatiFromFirestore;
+
+        // Setează prima localitate din listă ca preselectată
+        if (localitatiFromFirestore.length > 0) {
+          updatedPuncteDeLucru[index].localitate =
+            localitatiFromFirestore[0].localitate;
+        }
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        updatedPuncteDeLucru[index].localitati = [];
+        updatedPuncteDeLucru[index].localitate = ""; // Resetează localitatea dacă nu se pot încărca localitățile
+      }
+    } else {
+      updatedPuncteDeLucru[index].localitati = [];
+      updatedPuncteDeLucru[index].localitate = ""; // Resetează localitatea dacă județul nu este găsit
+    }
+
+    setPuncteDeLucru(updatedPuncteDeLucru);
+  };
+
+  const deletePunctDeLucru = (index) => {
+    setPuncteDeLucru((prevPuncte) => prevPuncte.filter((_, i) => i !== index));
+  };
+
+  const handlePunctDeLucruChange = (index, field, value) => {
+    const updatedPuncteDeLucru = [...puncteDeLucru];
+
+    // Expresie regulată pentru a verifica dacă valoarea conține "sector"
+    const containsSector = /sector\s*\d+/i.test(value);
+
+    // Dacă valoarea pentru "localitate" este "București" și conține "sector", setează "localitate" și "sector"
+    if (field === "localitate" && containsSector) {
+      console.log("contine...sector....");
+      updatedPuncteDeLucru[index].localitate = "Bucuresti";
+      updatedPuncteDeLucru[index].sector = value; // Asigură-te că sectorul există sau este setat la un șir gol
+    } else if (field === "localitate" && !containsSector) {
+      console.log("nu....contine...sector....");
+      // Dacă județul este altul decât București și nu conține "sector", resetează sectorul și permite localității să fie setată de utilizator
+      updatedPuncteDeLucru[index].localitate = value;
+      updatedPuncteDeLucru[index].sector = ""; // Asigură-te că sectorul există sau este setat la un șir gol
+    } else {
+      updatedPuncteDeLucru[index][field] = value;
+    }
+
+    setPuncteDeLucru(updatedPuncteDeLucru);
+  };
+
+  const handleAutocompleteChange = (index, lat, lng, adresa, urlMaps) => {
+    const updatedPuncteDeLucru = [...puncteDeLucru];
+    updatedPuncteDeLucru[index].adresa = adresa;
+    updatedPuncteDeLucru[index].googleMapsLink = urlMaps;
+    updatedPuncteDeLucru[index].coordonate = { lat, lng };
+    setPuncteDeLucru(updatedPuncteDeLucru);
+  };
+
+  // Setează starea inițială
+  useEffect(() => {
+    setInitialData({
+      denumireBrand: part?.denumireBrand || "",
+      descriere: part?.descriere || "",
+      email: part?.email || "",
+      numeContact: part?.numeContact || "",
+      telefonContact: part?.telefonContact || "",
+      judet: part?.judet || "",
+      localitate: part?.localitate || "",
+      sector: part?.sector || "",
+      categorie: part?.categorie || "",
+      cui: part?.cui || "",
+      adresaSediu: part?.adresaSediu || "",
+    });
+  }, [part]);
+
+  const describeChanges = () => {
+    let changes = [];
+    Object.entries(initialData).forEach(([key, value]) => {
+      let currentValue = eval(key);
+      if (value !== currentValue) {
+        changes.push(`${key} de la '${value}' la '${currentValue}'`);
+      }
+    });
+    if (changes.length > 0) {
+      return `${part.denumireBrand} a actualizat: ${changes.join(", ")}`;
+    }
+    return null;
+  };
+
+  let isEdit = part?.logo?.finalUri ? true : false;
+
+  const [alert, setAlert] = useState({ message: "", type: "" });
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type });
+  };
+
+  const closeAlert = () => {
+    setAlert({ message: "", type: "" });
+  };
+
+  const options = ["Opțiunea 1", "Opțiunea 2", "Opțiunea 3"];
+
+  // upload Logo
+  // Handle single image selection
+  const singleImage = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    console.log("test..here...", file.name);
+    if (file) {
+      // Check if the file is already selected
+      const isExist = logo.some(
+        (existingFile) => existingFile.name === file.name
+      );
+
+      if (!isExist) {
+        setLogo([file]); // Replace the current file
+        setIsNewLogo(true);
+      } else {
+        alert("This image is already selected!");
+      }
+    }
+  };
+
+  const handleLocationSelect = (lat, lng, adresa, urlMaps) => {
+    console.log(`Selected location - Lat: ${lat}, Lng: ${lng}`);
+    setAdresaSediu(adresa);
+    setGoogleMapsLink(urlMaps);
+    setCoordonate({ lat, lng });
+    // Aici poți actualiza starea sau trimite aceste date către backend
+  };
+
+  // Închide modalul fără a șterge
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  // Logica de ștergere a elementului
+
+  const handleConfirm = async () => {
+    // setIsLoading(true);
+
+    try {
+      // Dacă dorești să aștepți până când router-ul se reîmprospătează înainte de a seta loading-ul la false
+    } catch (error) {
+      console.error("Error confirm:", error);
+      // Aici poți adăuga logica de afișare a unui mesaj de eroare pentru utilizator, dacă este cazul
+    } finally {
+      // window.location.reload();
+      // setIsLoading(false); // Setează isLoading la false indiferent dacă ștergerea a reușit sau a eșuat
+      handleCloseModal();
+    }
+  };
+
+  const handleUpdateProfile = async (event) => {
+    setButtonPressed(true);
+    setIsLoading(true);
+    event.preventDefault();
+    const emailNew = emailWithoutSpace(email);
+    // Verifică dacă parola este confirmată corect și apoi creează utilizatorul
+    try {
+      let user_uid = part.user_uid;
+      let lg = {};
+      let images = {};
+      console.log("this is the user uid....", user_uid);
+
+      if (propertySelectedImgs.length === 0) {
+        setIsLoading(false);
+        setButtonPressed(false);
+        showAlert("Selelctati cel putin o imagine în galeria foto", "danger");
+        return;
+      }
+
+      if (logo.length === 0) {
+        setIsLoading(false);
+        setButtonPressed(false);
+        showAlert("Selelctati logo", "danger");
+        return;
+      }
+
+      if (
+        !email ||
+        !denumireBrand ||
+        !numeContact ||
+        !telefonContact ||
+        !judet ||
+        !localitate ||
+        !categorie ||
+        !cui ||
+        !adresaSediu
+      ) {
+        setIsLoading(false);
+        return;
+      }
+
+      let utilizator = await handleQueryFirestoreSubcollection(
+        "Users",
+        "cui",
+        cui
+      );
+
+      console.log(utilizator);
+      console.log(cui);
+      console.log(oldCui);
+      if (utilizator?.length > 0 && cui !== oldCui) {
+        setIsLoading(false);
+        setCuiAlready(true);
+        showAlert(
+          `Acest CUI este deja înregistrat în baza noastră de date!`,
+          "danger"
+        );
+        return;
+      } else {
+        setCuiAlready(false);
+      }
+
+      console.log("test....", isNewLogo);
+      console.log("test....", isNewImage);
+      if (isNewLogo) {
+        lg = await uploadImage(logo, true, "ProfileLogo", deletedLogo);
+      } else {
+        if (!logo[0].fileName) {
+          lg = await uploadImage(logo, false, "ProfileLogo");
+        } else {
+          lg = logo[0];
+        }
+      }
+
+      if (isNewImage) {
+        images = await uploadMultipleImages(
+          propertySelectedImgs,
+          true,
+          "ImaginiProfil",
+          deletedImages
+        );
+      } else {
+        if (!images?.img) {
+          images = await uploadMultipleImages(
+            propertySelectedImgs,
+            false,
+            "ImaginiProfil"
+          );
+        }
+      }
+
+      let data = {
+        cui,
+        categorie,
+        localitate: judet === "Bucuresti" ? "Bucuresti" : localitate,
+        sector: judet === "Bucuresti" ? sector : "",
+        judet,
+        telefonContact,
+        numeContact,
+        email: emailNew,
+        denumireBrand,
+        user_uid,
+        userType: "Partener",
+        adresaSediu,
+        gradient: { selectedId, gradientSelected },
+        googleMapsLink,
+        coordonate,
+        logo: lg,
+        images,
+        descriere,
+        puncteDeLucru,
+      };
+
+      await handleUpdateFirestore(`Users/${user_uid}`, data).then(() => {
+        setIsLoading(false);
+        setButtonPressed(false);
+        showAlert("Actualizare cu succes!", "success");
+      });
+    } catch (error) {
+      setIsLoading(false);
+      setButtonPressed(false);
+      showAlert(`Eroare la Actualizare: ${error.message}`, "danger");
+      console.error("Error actualizare profil partener: ", error);
+    }
+  };
+
+  //select multiple images
+  const multipleImage = (e) => {
+    // checking is same file matched with old stored array
+    const isExist = propertySelectedImgs?.some((file1) =>
+      selectedFiles(e)?.some((file2) => file1.name === file2.name)
+    );
+
+    if (!isExist) {
+      setPropertySelectedImgs((old) => [...old, ...selectedFiles(e)]);
+      setIsNewImage(true);
+    } else {
+      alert("You have selected one image already!");
+    }
+  };
+
+  // delete logo
+  const deleteLogo = (name) => {
+    if (logo[0].fileName) {
+      setLogo([]); // Clear the selection when deleting
+      setDeletedLogo(logo[0].fileName);
+    } else {
+      setLogo([]); // Clear the selection when deleting
+    }
+  };
+
+  // delete image
+  const deleteImage = (item) => {
+    console.log("itemmm....", item);
+    console.log(item);
+    // Filtrăm imaginile rămase
+    const deleted = propertySelectedImgs?.filter((file) =>
+      file instanceof File ? file.name !== item.name : file !== item
+    );
+
+    // Setăm imaginile rămase
+    setPropertySelectedImgs(deleted);
+
+    // Verificăm dacă elementul șters nu este o instanță a clasei File și, în caz afirmativ, îl adăugăm la setDeletedImages
+    const isDeletedNotFile = propertySelectedImgs?.find(
+      (file) =>
+        (file instanceof File ? file.name === item.name : file === item) &&
+        !(item instanceof File)
+    );
+
+    if (isDeletedNotFile) {
+      setDeletedImages((prevDeletedImages) => [...prevDeletedImages, item]);
+      setIsNewImage(true);
+    }
+  };
+
+  // Handler pentru schimbarea selectiei de judete
+  const handleJudetChange = async (e) => {
+    const judetSelectedName = e.target.value; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+    setJudet(judetSelectedName);
+    setIsJudetSelected(!!judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
     if (judetSelected) {
       try {
         // Utilizăm judet pentru a interoga Firestore
@@ -46,7 +465,36 @@ const ProfileInfo = ({ partener: part }) => {
           "judet",
           judetSelected.judet
         );
-        console.log("localitatiFromFirestore...", localitatiFromFirestore);
+        // Presupunem că localitatiFromFirestore este array-ul corect al localităților
+        setLocalitati(localitatiFromFirestore);
+      } catch (error) {
+        console.error("Failed to fetch locations:", error);
+        setLocalitati([]); // Resetează localitățile în caz de eroare
+      }
+    } else {
+      // Dacă nu găsim județul selectat, resetăm localitățile
+      setLocalitati([]);
+    }
+  };
+  const handleGetLocalitatiJudet = async () => {
+    const judetSelectedName = judet; // Numele județului selectat, un string
+    console.log("judetSelectedName...", judetSelectedName);
+    setJudet(judetSelectedName);
+    setIsJudetSelected(!!judetSelectedName);
+
+    // Găsește obiectul județului selectat bazat pe `judet`
+    const judetSelected = judete.find(
+      (judet) => judet.judet === judetSelectedName
+    );
+
+    if (judetSelected) {
+      try {
+        // Utilizăm judet pentru a interoga Firestore
+        const localitatiFromFirestore = await handleQueryFirestoreSubcollection(
+          "Localitati",
+          "judet",
+          judetSelected.judet
+        );
         // Presupunem că localitatiFromFirestore este array-ul corect al localităților
         setLocalitati(localitatiFromFirestore);
       } catch (error) {
@@ -60,243 +508,419 @@ const ProfileInfo = ({ partener: part }) => {
   };
 
   useEffect(() => {
-    handleGetLocalitatiJudet();
+    if (judet.length > 0) {
+      handleGetLocalitatiJudet();
+    }
   }, []);
 
   return (
-    <div className="row">
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput1">Denumire Brand</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleInput1"
-            value={part?.denumireBrand}
-            readOnly
-          />
-        </div>
-      </div>
-      {/* End .col */}
+    <>
+      <div className="row">
+        <div className="row">
+          <div className="col-lg-12">
+            <h3 className="mb30">Adauga imagini aici</h3>
+          </div>
+          {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleEmail">Email</label>
-          <input
-            type="email"
-            className="form-control"
-            id="formGroupExampleEmail"
-            value={part?.email}
-            readOnly
+          <GalerieFotoSection
+            // handleInputChange={handleInputChange}
+            // formValues={formValues}
+            deleteImage={deleteImage}
+            multipleImage={multipleImage}
+            propertySelectedImgs={propertySelectedImgs}
+            isEdit={isEdit}
+            isNewImage={isNewImage}
           />
+          {/* End .col */}
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput3">
-            Nume si prenume persoana de contact
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleInput3"
-            value={part?.numeContact}
-            readOnly
-          />
+        <div className="col-lg-12">
+          <h3 className="mb30">Logo partener</h3>
         </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput4">
-            Numar de telefon persoana de contact
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleInput4"
-            value={part?.telefonContact}
-            onChange={(e) => setTelefonContact(e.target.value)}
-            readOnly
-          />
+        {/* End .col */}
+        <LogoUpload
+          singleImage={singleImage}
+          deleteLogo={deleteLogo}
+          logoImg={logo}
+          isEdit={isEdit}
+          isNewImage={isNewLogo}
+          text={"Drag and drop Logo"}
+          isAdmin={true}
+        />
+        {/* End .col */}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleInput1">Denumire Brand</label>
+            <input
+              type="text"
+              className={`form-control ${
+                !denumireBrand && buttonPressed && "border-danger"
+              }`}
+              id="formGroupExampleInput1"
+              value={denumireBrand}
+              onChange={(e) => setDenumireBrand(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
-      {/* End .col */}
+        {/* End .col */}
+        {/* <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleEmail">Email</label>
+            <input
+              type="email"
+              className={`form-control ${
+                !email && buttonPressed && "border-danger"
+              }`}
+              id="formGroupExampleEmail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+        </div>
+        End .col */}
+        <div className="col-xl-12">
+          <div className="my_profile_setting_textarea">
+            <label htmlFor="exampleFormControlTextarea1">
+              Descriere partener
+            </label>
+            <textarea
+              className={`form-control ${
+                !descriere && buttonPressed && "border-danger"
+              }`}
+              id="exampleFormControlTextarea1"
+              rows="7"
+              value={descriere}
+              onChange={(e) => setDescriere(e.target.value)}
+            ></textarea>
+          </div>
+        </div>
+        {/* End .col */}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleInput3">
+              Nume si prenume persoana de contact
+            </label>
+            <input
+              type="text"
+              className={`form-control ${
+                !numeContact && buttonPressed && "border-danger"
+              }`}
+              id="formGroupExampleInput3"
+              value={numeContact}
+              onChange={(e) => setNumeContact(e.target.value)}
+            />
+          </div>
+        </div>
+        {/* End .col */}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleInput4">
+              Numar de telefon persoana de contact
+            </label>
+            <input
+              type="text"
+              className={`form-control ${
+                !telefonContact && buttonPressed && "border-danger"
+              }`}
+              id="formGroupExampleInput4"
+              value={telefonContact}
+              onChange={(e) => setTelefonContact(e.target.value)}
+            />
+          </div>
+        </div>
+        {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Judet</label>
-          <select
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-            value={part?.judet}
-            disabled
-          >
-            {judete &&
-              judete.map((judet, index) => (
-                <option key={index} value={judet.judet}>
-                  {judet.judet}
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input form-group">
+            <label htmlFor="formGroupExampleInput7">CUI</label>
+            <input
+              type="text"
+              className={`form-control ${
+                (!cui && buttonPressed) || (cuiAlready && buttonPressed)
+                  ? "border-danger"
+                  : null
+              }`}
+              id="formGroupExampleInput7"
+              value={cui}
+              onChange={(e) => setCui(e.target.value)}
+            />
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Categorie</label>
+            <select
+              className={`selectpicker form-select ${
+                !categorie && buttonPressed && "border-danger"
+              }`}
+              data-live-search="true"
+              data-width="100%"
+              value={categorie}
+              onChange={(e) => setCategorie(e.target.value)}
+            >
+              <option data-tokens="Autovehicule">Autovehicule</option>
+              <option data-tokens="Servicii">Servicii</option>
+              <option data-tokens="Cafenele">Cafenele</option>
+              <option data-tokens="Restaurante">Restaurante</option>
+              <option data-tokens="Hoteluri">Hoteluri</option>
+              <option data-tokens="Imobiliare">Imobiliare</option>
+              <option data-tokens="Turism">Turism</option>
+              <option data-tokens="Altele">Altele</option>
+            </select>
+          </div>
+        </div>
+        {/* End .col */}
+        <div className="col-lg-12 col-xl-12">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Alege o culoare pentru cardul de fidelitate</label>
+            <GradientSelect
+              options={options}
+              selectedId={selectedId}
+              gradientSelected={gradientSelected}
+              setSelectedGradient={setGradientSelected}
+              setSelectedId={setSelectedId}
+            />
+          </div>
+        </div>
+        {/* End .col */}
+        {/* <div className="col-lg-6 col-xl-6">
+                <div className="my_profile_setting_input form-group">
+                    <label htmlFor="formGroupExampleInput11">Language</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput11"
+                    />
+                </div>
+            </div> */}
+        {/* End .col */}
+        {/* <div className="col-lg-6 col-xl-6">
+                <div className="my_profile_setting_input form-group">
+                    <label htmlFor="formGroupExampleInput12">
+                        Company Name
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput12"
+                    />
+                </div>
+            </div> */}
+        {/* End .col */}
+
+        <div className="col-lg-12 col-xl-12">
+          <h3 className="mb30 mt30">Sediu Principal</h3>
+        </div>
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Judet</label>
+            <select
+              className={`selectpicker form-select ${
+                !judet && buttonPressed && "border-danger"
+              }`}
+              data-live-search="true"
+              data-width="100%"
+              value={judet}
+              onChange={handleJudetChange}
+            >
+              {judete &&
+                judete.map((judet, index) => (
+                  <option key={index} value={judet.judet}>
+                    {judet.judet}
+                  </option>
+                ))}
+            </select>
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-lg-6 col-xl-6">
+          <div className="my_profile_setting_input ui_kit_select_search form-group">
+            <label>Localitate</label>
+            <select
+              className={`selectpicker form-select ${
+                !localitate && buttonPressed && "border-danger"
+              }`}
+              data-live-search="true"
+              data-width="100%"
+              value={localitate}
+              onChange={(e) => {
+                console.log("Test...");
+                if (e.target.value.includes("Sector")) {
+                  setLocalitate(e.target.value);
+                  setSector(e.target.value);
+                } else {
+                  setLocalitate(e.target.value);
+                }
+              }}
+            >
+              {localitati.map((location, index) => (
+                <option key={index} value={location.localitate}>
+                  {location.localitate}
                 </option>
               ))}
-          </select>
+            </select>
+          </div>
         </div>
-      </div>
-      {/* End .col */}
+        {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Localitate</label>
-          <select
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-            value={part?.localitate}
-            disabled
-          >
-            {localitati.map((location, index) => (
-              <option key={index} value={location.localitate}>
-                {location.localitate}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      {/* End .col */}
+        <AutocompleteInput
+          onPlaceChanged={handleLocationSelect}
+          adresa={adresaSediu}
+          buttonPressed={buttonPressed}
+        />
+        {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput7">CUI</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleInput7"
-            value={part?.cui}
-            readOnly
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Categorie</label>
-          <select
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-            value={part?.categorie}
-            disabled
-          >
-            <option data-tokens="Autovehicule">Autovehicule</option>
-            <option data-tokens="Servicii">Servicii</option>
-            <option data-tokens="Cafenele">Cafenele</option>
-            <option data-tokens="Restaurante">Restaurante</option>
-            <option data-tokens="Hoteluri">Hoteluri</option>
-            <option data-tokens="Imobiliare">Imobiliare</option>
-            <option data-tokens="Turism">Turism</option>
-            <option data-tokens="Altele">Altele</option>
-          </select>
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-xl-12">
-        <div className="my_profile_setting_textarea">
-          <label htmlFor="exampleFormControlTextarea1">
-            Descriere partener
-          </label>
-          <textarea
-            className="form-control"
-            id="exampleFormControlTextarea1"
-            rows="7"
-            value={part?.descriere}
-            readOnly
-          ></textarea>
-        </div>
-      </div>
-      {/* End .col */}
-
-      {/* <div className="col-lg-6 col-xl-6">
-              <div className="my_profile_setting_input form-group">
-                  <label htmlFor="formGroupExampleInput11">Language</label>
+        <div className="col-xl-12">
+          <h3 className="mb30 mt30">Puncte de lucru</h3>
+          {puncteDeLucru.map((punct, index) => (
+            <div
+              key={index}
+              className={`row ${
+                index === 0 ? "mt0" : "mt40"
+              } align-items-center`}
+            >
+              <div
+                className="col-lg-1"
+                style={{ flex: "0 0 4.16667%", maxWidth: "4.16667%" }}
+              >
+                <span>{index + 1}.</span>
+              </div>
+              <div className="col-lg-3">
+                <div className="my_profile_setting_input form-group">
+                  <label>Nume punct de lucru</label>
                   <input
-                      type="text"
-                      className="form-control"
-                      id="formGroupExampleInput11"
+                    type="text"
+                    className="form-control"
+                    value={punct.numePunctDeLucru}
+                    onChange={(e) =>
+                      handlePunctDeLucruChange(
+                        index,
+                        "numePunctDeLucru",
+                        e.target.value
+                      )
+                    }
                   />
+                </div>
               </div>
-          </div> */}
-      {/* End .col */}
 
-      {/* <div className="col-lg-6 col-xl-6">
-              <div className="my_profile_setting_input form-group">
-                  <label htmlFor="formGroupExampleInput12">
-                      Company Name
-                  </label>
-                  <input
-                      type="text"
-                      className="form-control"
-                      id="formGroupExampleInput12"
-                  />
+              <div className="col-lg-4">
+                <div className="my_profile_setting_input ui_kit_select_search form-group">
+                  <label>Județ</label>
+                  <select
+                    className="selectpicker form-select"
+                    data-live-search="true"
+                    value={punct.judet}
+                    onChange={(e) =>
+                      handleJudetChangePunctDeLucru(index, e.target.value)
+                    }
+                  >
+                    {judete &&
+                      judete.map((judet, idx) => (
+                        <option key={idx} value={judet.judet}>
+                          {judet.judet}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </div>
-          </div> */}
-      {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInput7">Adresa Sediu</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleInput7"
-            value={part?.adresaSediu}
-            readOnly
+              <div className="col-lg-4">
+                <div className="my_profile_setting_input ui_kit_select_search form-group">
+                  <label>Localitate</label>
+                  <select
+                    className="selectpicker form-select"
+                    data-live-search="true"
+                    value={
+                      punct.localitate === "Bucuresti"
+                        ? punct.sector
+                        : punct.localitate
+                    }
+                    onChange={(e) =>
+                      handlePunctDeLucruChange(
+                        index,
+                        "localitate",
+                        e.target.value
+                      )
+                    }
+                  >
+                    {punct.localitati.map((location, idx) => (
+                      <option key={idx} value={location.localitate}>
+                        {location.localitate}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div
+                className="col-lg-1 text-center"
+                style={{ flex: "0 0 4.16667%", maxWidth: "4.16667%" }}
+              >
+                <div className="icon" onClick={() => deletePunctDeLucru(index)}>
+                  <span
+                    className="flaticon-garbage delete-buton-garbage"
+                    style={{ color: "red", fontSize: "1.5rem" }}
+                  ></span>
+                </div>
+              </div>
+
+              <div className="col-lg-12">
+                <AutocompleteInput
+                  onPlaceChanged={(lat, lng, adresa, urlMaps) =>
+                    handleAutocompleteChange(index, lat, lng, adresa, urlMaps)
+                  }
+                  adresa={punct.adresa}
+                  buttonPressed={buttonPressed}
+                />
+              </div>
+            </div>
+          ))}
+
+          <div className="text-right mt-3">
+            <button className="btn btn-primary" onClick={addPunctDeLucru}>
+              + Adaugă Punct de lucru
+            </button>
+          </div>
+        </div>
+
+        {/* End .col */}
+
+        <div className="col-xl-6 text-right mt-4">
+          <div className="my_profile_setting_input">
+            {/* <button className="btn btn1">Actualizeaza Profil</button> */}
+            <button className="btn btn2" onClick={handleUpdateProfile}>
+              {isLoading ? <CommonLoader /> : "Actualizeaza Profil"}
+            </button>
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-xl-6 text-right mt-4">
+          <div className="my_profile_setting_input">
+            {/* <button className="btn btn1">Actualizeaza Profil</button> */}
+            <button className="btn btn2" onClick={handleToggle}>
+              {part.statusCont === "Activ"
+                ? "Dezactiveaza Cont"
+                : "Activeaza Cont"}
+            </button>
+          </div>
+        </div>
+
+        <AlertModal
+          message={alert.message}
+          type={alert.type}
+          onClose={closeAlert}
+        />
+        {showModal ? (
+          <PasswordDialog
+            handleCloseModal={handleCloseModal}
+            handleConfirm={handleConfirm}
           />
-        </div>
+        ) : null}
       </div>
-      {/* End .col */}
-
-      <div className="col-xl-12 text-right mt-4">
-        <div className="my_profile_setting_input">
-          {/* <button className="btn btn1">Actualizeaza Profil</button> */}
-          <button className="btn btn2" onClick={handleToggle}>
-            {part.statusCont === "Activ"
-              ? "Dezactiveaza Cont"
-              : "Activeaza Cont"}
-          </button>
-        </div>
-      </div>
-
-      {/* End .col */}
-
-      {/* <div className="col-xl-12">
-              <div className="my_profile_setting_textarea">
-                  <label htmlFor="exampleFormControlTextarea1">
-                      About me
-                  </label>
-                  <textarea
-                      className="form-control"
-                      id="exampleFormControlTextarea1"
-                      rows="7"
-                  ></textarea>
-              </div>
-          </div> */}
-      {/* End .col */}
-
-      {/* <div className="col-xl-12 text-right mt-4">
-        <div className="my_profile_setting_input">
-          <button className="btn btn1">Actualizeaza Profil</button>
-          <button className="btn btn2" onClick={handleUpdateProfile}>
-            Actualizeaza Profil
-          </button>
-        </div>
-      </div> */}
-      {/* End .col */}
-    </div>
+    </>
   );
 };
 

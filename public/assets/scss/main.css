@@ -16231,17 +16231,18 @@ legend span {
 .portfolio_item {
   border-radius: 8px;
   background-color: rgb(247, 247, 247);
-  height: 200px;
+  height: 300px;
   margin-bottom: 30px;
   overflow: hidden;
   position: relative;
-  width: 200px;
+  width: 300px;
 }
 
 .portfolio_item img {
   height: 300px;
   width: 300px;
 }
+
 
 .portfolio_item .edu_stats_list {
   border-radius: 8px;
@@ -16251,6 +16252,19 @@ legend span {
   line-height: 35px;
   position: absolute;
   right: 10px;
+  text-align: center;
+  top: 10px;
+  width: 35px;
+}
+
+.portfolio_item .edu_stats_download {
+  border-radius: 8px;
+  background-color: var(--color-primary);
+  cursor: pointer;
+  height: 35px;
+  line-height: 35px;
+  position: absolute;
+  left: 10px;
   text-align: center;
   top: 10px;
   width: 35px;

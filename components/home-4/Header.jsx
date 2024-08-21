@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import HeaderMenuContent from "../common/header/HeaderMenuContent";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
+import HeaderLogos from "./HeaderLogos";
 
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
@@ -47,6 +48,9 @@ const Header = () => {
           />
           {/* <span>ExclusivMD</span> */}
         </Link>
+
+        <HeaderLogos />
+        {/* <span>ExclusivMD</span> */}
         {/* site logo brand */}
 
         <nav>

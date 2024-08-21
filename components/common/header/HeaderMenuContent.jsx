@@ -1,4 +1,5 @@
 "use client";
+import HeaderLogos from "@/components/home-4/HeaderLogos";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
