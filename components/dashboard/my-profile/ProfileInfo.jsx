@@ -140,26 +140,23 @@ const ProfileInfo = () => {
 
     // Expresie regulată pentru a verifica dacă valoarea conține "sector"
     const containsSector = /sector\s*\d+/i.test(value);
-  
+
     // Dacă valoarea pentru "localitate" este "București" și conține "sector", setează "localitate" și "sector"
     if (field === "localitate" && containsSector) {
-      console.log("contine...sector....")
+      console.log("contine...sector....");
       updatedPuncteDeLucru[index].localitate = "Bucuresti";
       updatedPuncteDeLucru[index].sector = value; // Asigură-te că sectorul există sau este setat la un șir gol
     } else if (field === "localitate" && !containsSector) {
-      console.log("nu....contine...sector....")
+      console.log("nu....contine...sector....");
       // Dacă județul este altul decât București și nu conține "sector", resetează sectorul și permite localității să fie setată de utilizator
       updatedPuncteDeLucru[index].localitate = value;
       updatedPuncteDeLucru[index].sector = ""; // Asigură-te că sectorul există sau este setat la un șir gol
-   
-    }else{
+    } else {
       updatedPuncteDeLucru[index][field] = value;
     }
-  
+
     setPuncteDeLucru(updatedPuncteDeLucru);
   };
-  
-  
 
   const handleAutocompleteChange = (index, lat, lng, adresa, urlMaps) => {
     const updatedPuncteDeLucru = [...puncteDeLucru];
@@ -219,6 +216,7 @@ const ProfileInfo = () => {
   const singleImage = (e) => {
     const file = e.target.files[0]; // Get the selected file
     console.log("test..here...", file.name);
+
     if (file) {
       // Check if the file is already selected
       const isExist = logo.some(
@@ -226,8 +224,55 @@ const ProfileInfo = () => {
       );
 
       if (!isExist) {
-        setLogo([file]); // Replace the current file
-        setIsNewLogo(true);
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          const img = new Image();
+          img.src = event.target.result;
+
+          img.onload = () => {
+            // Create a canvas element to crop and resize the image
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            // Set canvas dimensions to 300x300px
+            canvas.width = 300;
+            canvas.height = 300;
+
+            // Calculate the dimensions and position to crop the image
+            const aspectRatio = img.width / img.height;
+            let drawWidth, drawHeight;
+            let offsetX = 0,
+              offsetY = 0;
+
+            if (aspectRatio > 1) {
+              drawWidth = 300;
+              drawHeight = 300 / aspectRatio;
+              offsetY = (300 - drawHeight) / 2;
+            } else {
+              drawHeight = 300;
+              drawWidth = 300 * aspectRatio;
+              offsetX = (300 - drawWidth) / 2;
+            }
+
+            // Draw the image on the canvas, cropping and resizing it
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+
+            // Convert the canvas to a blob
+            canvas.toBlob((blob) => {
+              const croppedFile = new File([blob], file.name, {
+                type: file.type,
+                lastModified: Date.now(),
+              });
+
+              // Replace the current file with the cropped one
+              setLogo([croppedFile]);
+              setIsNewLogo(true);
+            }, file.type);
+          };
+        };
+
+        reader.readAsDataURL(file);
       } else {
         alert("This image is already selected!");
       }
@@ -828,7 +873,11 @@ const ProfileInfo = () => {
                   <select
                     className="selectpicker form-select"
                     data-live-search="true"
-                    value={punct.localitate === "Bucuresti" ? punct.sector : punct.localitate}
+                    value={
+                      punct.localitate === "Bucuresti"
+                        ? punct.sector
+                        : punct.localitate
+                    }
                     onChange={(e) =>
                       handlePunctDeLucruChange(
                         index,

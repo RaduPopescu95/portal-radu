@@ -66,7 +66,7 @@ const index = ({ params }) => {
               </div>
             </div>
           </div>
-          {/* <div className="row">
+          <div className="row">
             <div className="col-lg-12">
               <h4 className="text-center color-white fw600 mb25 mb0-520">
                 Rețeaua noastră de elită
@@ -76,7 +76,7 @@ const index = ({ params }) => {
                 <LookingItem />
               </ul>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
 
