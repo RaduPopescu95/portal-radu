@@ -22,7 +22,9 @@ const Form = () => {
       .then((userCredentials) => {
         console.log("user credentials...", userCredentials);
         setCurrentUser(userCredentials); // Aici trebuie să asiguri că userCredentials este gestionat corect
-        router.push("/admin");
+        setTimeout(() => {
+          router.push("/admin");
+        }, 1000); // 1000 milisecunde reprezintă o secundă
       })
       .catch((error) => {
         console.error("Error during sign in:", error.message);

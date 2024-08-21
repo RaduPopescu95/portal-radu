@@ -224,6 +224,7 @@ const ProfileInfo = ({ partener: part }) => {
   const singleImage = (e) => {
     const file = e.target.files[0]; // Get the selected file
     console.log("test..here...", file.name);
+
     if (file) {
       // Check if the file is already selected
       const isExist = logo.some(
@@ -231,8 +232,55 @@ const ProfileInfo = ({ partener: part }) => {
       );
 
       if (!isExist) {
-        setLogo([file]); // Replace the current file
-        setIsNewLogo(true);
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          const img = new Image();
+          img.src = event.target.result;
+
+          img.onload = () => {
+            // Create a canvas element to crop and resize the image
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            // Set canvas dimensions to 300x300px
+            canvas.width = 300;
+            canvas.height = 300;
+
+            // Calculate the dimensions and position to crop the image
+            const aspectRatio = img.width / img.height;
+            let drawWidth, drawHeight;
+            let offsetX = 0,
+              offsetY = 0;
+
+            if (aspectRatio > 1) {
+              drawWidth = 300;
+              drawHeight = 300 / aspectRatio;
+              offsetY = (300 - drawHeight) / 2;
+            } else {
+              drawHeight = 300;
+              drawWidth = 300 * aspectRatio;
+              offsetX = (300 - drawWidth) / 2;
+            }
+
+            // Draw the image on the canvas, cropping and resizing it
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+
+            // Convert the canvas to a blob
+            canvas.toBlob((blob) => {
+              const croppedFile = new File([blob], file.name, {
+                type: file.type,
+                lastModified: Date.now(),
+              });
+
+              // Replace the current file with the cropped one
+              setLogo([croppedFile]);
+              setIsNewLogo(true);
+            }, file.type);
+          };
+        };
+
+        reader.readAsDataURL(file);
       } else {
         alert("This image is already selected!");
       }
