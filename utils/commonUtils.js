@@ -132,7 +132,8 @@ export function calculeazaSiOrdoneazaParteneriDupaDistanta(
     if (!partener.coordonate) {
       return { ...partener };
     } else {
-      distanta = calculateDistance(
+      // Declară distanta folosind let sau const
+      const distanta = calculateDistance(
         latitude,
         longitude,
         partener.coordonate.lat,
@@ -144,9 +145,12 @@ export function calculeazaSiOrdoneazaParteneriDupaDistanta(
   });
 
   // Sortează partenerii după distanță
-  const parteneriOrdonati = parteneriCuDistanta.sort(
-    (a, b) => a.distanta - b.distanta
-  );
+  const parteneriOrdonati = parteneriCuDistanta.sort((a, b) => {
+    const distantaA = a.distanta !== undefined ? a.distanta : Infinity;
+    const distantaB = b.distanta !== undefined ? b.distanta : Infinity;
 
-  return parteneriOrdonati;
+    return distantaA - distantaB;
+  });
+
+  return parteneriOrdonati; // Asigură-te că returnezi lista ordonată, nu cea neordonată
 }

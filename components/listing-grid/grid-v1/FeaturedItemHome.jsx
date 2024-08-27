@@ -130,9 +130,13 @@ const FeaturedItemHome = ({ params }) => {
       }
     });
 
-    let parteneriOrdonati = parteneriCuDistanta.sort(
-      (a, b) => a.distanta - b.distanta
-    );
+    let parteneriOrdonati = parteneriCuDistanta.sort((a, b) => {
+      // Folosește Infinity ca valoare implicită pentru partenerii fără distanță definită
+      const distantaA = a.distanta !== undefined ? a.distanta : Infinity;
+      const distantaB = b.distanta !== undefined ? b.distanta : Infinity;
+
+      return distantaA - distantaB;
+    });
 
     if (parteneriOrdonati.length === 0) {
       console.log("is no length....");
