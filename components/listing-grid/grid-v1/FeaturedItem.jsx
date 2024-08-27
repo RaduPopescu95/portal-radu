@@ -35,7 +35,16 @@ const FeaturedItem = ({ params }) => {
   const { statusType, featured, isGridOrList } = useSelector(
     (state) => state.filter
   );
-  const { currentUser, userData, localitate, setLocalitate, judet,setJudet, categorie,setCategorie } = useAuth();
+  const {
+    currentUser,
+    userData,
+    localitate,
+    setLocalitate,
+    judet,
+    setJudet,
+    categorie,
+    setCategorie,
+  } = useAuth();
 
   const [parteneri, setParteneri] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,11 +54,11 @@ const FeaturedItem = ({ params }) => {
 
   const dispatch = useDispatch();
 
-  const handleFilteringItems = (categorie,judet,localitate) => {
+  const handleFilteringItems = (categorie, judet, localitate) => {
     setCategorie(categorie);
     setJudet(judet);
-    setLocalitate(localitate)
-  }
+    setLocalitate(localitate);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -77,7 +86,6 @@ const FeaturedItem = ({ params }) => {
             console.error("Invalid response or results missing:", res);
           }
 
-   
           let parteneriCuDistanta;
           let parteneriOrdonati;
 
@@ -89,14 +97,20 @@ const FeaturedItem = ({ params }) => {
             //   "statusCont",
             //   "Activ"
             // );
-            handleFilteringItems("","","")
+            handleFilteringItems("", "", "");
             let parteneri = await handleGetFirestore("Users");
             parteneri = parteneri.filter((partener) => {
-              return partener.userType === "Partener" && partener.statusCont === "Activ";
+              return (
+                partener.userType === "Partener" &&
+                partener.statusCont === "Activ"
+              );
             });
-         
-            parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneri, latitude, longitude);
 
+            parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(
+              parteneri,
+              latitude,
+              longitude
+            );
           } else {
             // parteneri = await handleQueryTripleParam(
             //   "Users",
@@ -107,44 +121,45 @@ const FeaturedItem = ({ params }) => {
             //   "statusCont",
             //   "Activ"
             // );
-            handleFilteringItems("","","")
+            handleFilteringItems("", "", "");
             let parteneri = await handleGetFirestore("Users");
-                // Filtrare inițială după localitate, userType și statusCont, inclusiv verificarea punctelor de lucru
-             let parts = parteneri.filter((partener) => {
-                const inLocalitate = partener.localitate === localitate;
-                const inPunctDeLucru = partener.puncteDeLucru?.some(
-                  (punct) => punct.localitate === localitate
-                );
-            
-                return (
-                  (inLocalitate || inPunctDeLucru) &&
-                  partener.userType === "Partener" &&
-                  partener.statusCont === "Activ"
-                );
-              });
-            
-              // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
-              parteneri = parts.map((partener) => {
-                const punctDeLucruApropiat = partener.puncteDeLucru?.find(
-                  (punct) => punct.localitate === localitate
-                );
-            
-                if (punctDeLucruApropiat) {
-                  partener.coordonate = punctDeLucruApropiat.coordonate;
-                  partener.adresaSediu = punctDeLucruApropiat.adresa;
-                  partener.localitate = punctDeLucruApropiat.localitate;
-                  partener.judet = punctDeLucruApropiat.judet;
-                  partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
-                }
-            
-                return partener;
-              });
-            
-      
+            // Filtrare inițială după localitate, userType și statusCont, inclusiv verificarea punctelor de lucru
+            let parts = parteneri.filter((partener) => {
+              const inLocalitate = partener.localitate === localitate;
+              const inPunctDeLucru = partener.puncteDeLucru?.some(
+                (punct) => punct.localitate === localitate
+              );
 
-           // Exemplu de utilizare a funcției calculeazaSiOrdoneazaParteneriDupaDistanta
-            parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneri, latitude, longitude);
+              return (
+                (inLocalitate || inPunctDeLucru) &&
+                partener.userType === "Partener" &&
+                partener.statusCont === "Activ"
+              );
+            });
 
+            // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
+            parteneri = parts.map((partener) => {
+              const punctDeLucruApropiat = partener.puncteDeLucru?.find(
+                (punct) => punct.localitate === localitate
+              );
+
+              if (punctDeLucruApropiat) {
+                partener.coordonate = punctDeLucruApropiat.coordonate;
+                partener.adresaSediu = punctDeLucruApropiat.adresa;
+                partener.localitate = punctDeLucruApropiat.localitate;
+                partener.judet = punctDeLucruApropiat.judet;
+                partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+              }
+
+              return partener;
+            });
+
+            // Exemplu de utilizare a funcției calculeazaSiOrdoneazaParteneriDupaDistanta
+            parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(
+              parteneri,
+              latitude,
+              longitude
+            );
           }
 
           let parteneriFiltrati = [];
@@ -173,14 +188,14 @@ const FeaturedItem = ({ params }) => {
                 //   "statusCont",
                 //   "Activ"
                 // );
-                handleFilteringItems("","Bucuresti",sectorDorit)
+                handleFilteringItems("", "Bucuresti", sectorDorit);
                 let parteneri = await handleGetFirestore("Users");
                 let parteneriFiltrati = parteneri.filter((partener) => {
                   const inLocalitate = partener.sector === sectorDorit;
                   const inPunctDeLucru = partener.puncteDeLucru?.some(
                     (punct) => punct.sector === sectorDorit
                   );
-              
+
                   return (
                     (inLocalitate || inPunctDeLucru) &&
                     partener.userType === "Partener" &&
@@ -200,24 +215,26 @@ const FeaturedItem = ({ params }) => {
                   const punctDeLucruApropiat = partener.puncteDeLucru?.find(
                     (punct) => punct.sector === sectorDorit
                   );
-              
+
                   if (punctDeLucruApropiat) {
                     partener.coordonate = punctDeLucruApropiat.coordonate;
                     partener.adresaSediu = punctDeLucruApropiat.adresa;
                     partener.localitate = punctDeLucruApropiat.localitate;
                     partener.judet = punctDeLucruApropiat.judet;
-                    partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+                    partener.googleMapsLink =
+                      punctDeLucruApropiat.googleMapsLink;
                     partener.sector = punctDeLucruApropiat.sector;
                   }
-              
+
                   return partener;
                 });
-                
-               
-                parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneriFiltrati, latitude, longitude);
 
+                parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(
+                  parteneriFiltrati,
+                  latitude,
+                  longitude
+                );
 
-             
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriOrdonati]);
                   setIsLoading(false);
@@ -246,41 +263,45 @@ const FeaturedItem = ({ params }) => {
                 //   "statusCont",
                 //   "Activ"
                 // );
-                handleFilteringItems("",judetDorit,"")
+                handleFilteringItems("", judetDorit, "");
                 let parteneri = await handleGetFirestore("Users");
-                    // Filtrare inițială după sector, userType și statusCont, inclusiv verificarea punctelor de lucru
+                // Filtrare inițială după sector, userType și statusCont, inclusiv verificarea punctelor de lucru
                 let parteneriFiltrati = parteneri.filter((partener) => {
                   const inJudet = partener.judet === judetDorit;
                   const inPunctDeLucru = partener.puncteDeLucru?.some(
                     (punct) => punct.judet === judetDorit
                   );
-              
+
                   return (
                     (inJudet || inPunctDeLucru) &&
                     partener.userType === "Partener" &&
                     partener.statusCont === "Activ"
                   );
                 });
-              
+
                 // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
                 parteneriFiltrati = parteneriFiltrati.map((partener) => {
                   const punctDeLucruApropiat = partener.puncteDeLucru?.find(
                     (punct) => punct.judet === judetDorit
                   );
-              
+
                   if (punctDeLucruApropiat) {
                     partener.coordonate = punctDeLucruApropiat.coordonate;
                     partener.adresaSediu = punctDeLucruApropiat.adresa;
                     partener.localitate = punctDeLucruApropiat.localitate;
                     partener.judet = punctDeLucruApropiat.judet;
-                    partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+                    partener.googleMapsLink =
+                      punctDeLucruApropiat.googleMapsLink;
                   }
-              
+
                   return partener;
                 });
 
-                parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneriFiltrati, latitude, longitude);
-
+                parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(
+                  parteneriFiltrati,
+                  latitude,
+                  longitude
+                );
 
                 console.log("Test here judet....", parteneriOrdonati);
                 if (!searchQueryParteneri) {
@@ -313,7 +334,7 @@ const FeaturedItem = ({ params }) => {
                 //   "statusCont",
                 //   "Activ"
                 // );
-                handleFilteringItems(categorieDorita,"","")
+                handleFilteringItems(categorieDorita, "", "");
                 let parteneri = await handleGetFirestore("Users");
                 let parteneriFiltrati = parteneri.filter((partener) => {
                   return (
@@ -361,14 +382,18 @@ const FeaturedItem = ({ params }) => {
                   //   "statusCont",
                   //   "Activ"
                   // );
-                  handleFilteringItems(categorieDorita,"Bucuresti",sectorDorit)
+                  handleFilteringItems(
+                    categorieDorita,
+                    "Bucuresti",
+                    sectorDorit
+                  );
                   let parteneri = await handleGetFirestore("Users");
                   let parteneriFiltrati = parteneri.filter((partener) => {
                     const inLocalitate = partener.sector === sectorDorit;
                     const inPunctDeLucru = partener.puncteDeLucru?.some(
                       (punct) => punct.sector === sectorDorit
                     );
-                
+
                     return (
                       (inLocalitate || inPunctDeLucru) &&
                       partener.userType === "Partener" &&
@@ -376,30 +401,37 @@ const FeaturedItem = ({ params }) => {
                       partener.categorie === categorieDorita
                     );
                   });
-                
+
                   // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
                   parteneriFiltrati = parteneriFiltrati.map((partener) => {
                     const punctDeLucruApropiat = partener.puncteDeLucru?.find(
                       (punct) => punct.sector === sectorDorit
                     );
-                
+
                     if (punctDeLucruApropiat) {
                       partener.coordonate = punctDeLucruApropiat.coordonate;
                       partener.adresaSediu = punctDeLucruApropiat.adresa;
                       partener.localitate = punctDeLucruApropiat.localitate;
                       partener.judet = punctDeLucruApropiat.judet;
-                      partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+                      partener.googleMapsLink =
+                        punctDeLucruApropiat.googleMapsLink;
                       partener.sector = punctDeLucruApropiat.sector;
                     }
-                
+
                     return partener;
                   });
-  
-                  parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneriFiltrati, latitude, longitude);
-  
-                  
 
-                  console.log("Test here parteneriOrdonati....cautare categorie si sector", parteneriOrdonati);
+                  parteneriOrdonati =
+                    calculeazaSiOrdoneazaParteneriDupaDistanta(
+                      parteneriFiltrati,
+                      latitude,
+                      longitude
+                    );
+
+                  console.log(
+                    "Test here parteneriOrdonati....cautare categorie si sector",
+                    parteneriOrdonati
+                  );
                   if (!searchQueryParteneri) {
                     setParteneri([...parteneriOrdonati]);
                     setIsLoading(false);
@@ -428,7 +460,7 @@ const FeaturedItem = ({ params }) => {
                   //   "statusCont",
                   //   "Activ"
                   // );
-                  handleFilteringItems(categorieDorita,"Bucuresti","")
+                  handleFilteringItems(categorieDorita, "Bucuresti", "");
 
                   let parteneri = await handleGetFirestore("Users");
                   let parteneriFiltrati = parteneri.filter((partener) => {
@@ -436,34 +468,39 @@ const FeaturedItem = ({ params }) => {
                     const inPunctDeLucru = partener.puncteDeLucru?.some(
                       (punct) => punct.judet === judetDorit
                     );
-                
+
                     return (
                       (inJudet || inPunctDeLucru) &&
                       partener.userType === "Partener" &&
                       partener.statusCont === "Activ" &&
-                      partener.categorie === categorieDorita 
+                      partener.categorie === categorieDorita
                     );
                   });
-                
+
                   // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
                   parteneriFiltrati = parteneriFiltrati.map((partener) => {
                     const punctDeLucruApropiat = partener.puncteDeLucru?.find(
                       (punct) => punct.judet === judetDorit
                     );
-                
+
                     if (punctDeLucruApropiat) {
                       partener.coordonate = punctDeLucruApropiat.coordonate;
                       partener.adresaSediu = punctDeLucruApropiat.adresa;
                       partener.localitate = punctDeLucruApropiat.localitate;
                       partener.judet = punctDeLucruApropiat.judet;
-                      partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+                      partener.googleMapsLink =
+                        punctDeLucruApropiat.googleMapsLink;
                     }
-                
+
                     return partener;
                   });
-  
-                  parteneriOrdonati = calculeazaSiOrdoneazaParteneriDupaDistanta(parteneriFiltrati, latitude, longitude);
-  
+
+                  parteneriOrdonati =
+                    calculeazaSiOrdoneazaParteneriDupaDistanta(
+                      parteneriFiltrati,
+                      latitude,
+                      longitude
+                    );
 
                   console.log(
                     "Test here parteneriOrdonati....",
@@ -560,7 +597,7 @@ const FeaturedItem = ({ params }) => {
                   "statusCont",
                   "Activ"
                 );
-                handleFilteringItems("","Bucuresti",sectorDorit)
+                handleFilteringItems("", "Bucuresti", sectorDorit);
 
                 console.log(
                   "Test here parteneriFiltrati....",
@@ -594,7 +631,7 @@ const FeaturedItem = ({ params }) => {
                   "statusCont",
                   "Activ"
                 );
-                handleFilteringItems("",judetDorit,"")
+                handleFilteringItems("", judetDorit, "");
 
                 console.log("Test here judet....", parteneriFiltrati);
                 if (!searchQueryParteneri) {
@@ -627,7 +664,7 @@ const FeaturedItem = ({ params }) => {
                   "statusCont",
                   "Activ"
                 );
-                handleFilteringItems(categorieDorita,"","")
+                handleFilteringItems(categorieDorita, "", "");
 
                 if (!searchQueryParteneri) {
                   setParteneri([...parteneriFiltrati]);
@@ -667,7 +704,11 @@ const FeaturedItem = ({ params }) => {
                     "statusCont",
                     "Activ"
                   );
-                  handleFilteringItems(categorieDorita,"Bucuresti",sectorDorit)
+                  handleFilteringItems(
+                    categorieDorita,
+                    "Bucuresti",
+                    sectorDorit
+                  );
                   console.log("Test here localitate....", parteneriFiltrati);
                   if (!searchQueryParteneri) {
                     setParteneri([...parteneriFiltrati]);
@@ -697,7 +738,7 @@ const FeaturedItem = ({ params }) => {
                     "statusCont",
                     "Activ"
                   );
-                  handleFilteringItems(categorieDorita,judetDorit,"")
+                  handleFilteringItems(categorieDorita, judetDorit, "");
                   console.log(
                     "Test here parteneriFiltrati....",
                     parteneriFiltrati
@@ -776,7 +817,9 @@ const FeaturedItem = ({ params }) => {
           </a>
         ) : (
           <Link
-            href={`/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`}
+            href={`/partener/${item?.id}-${toUrlSlug(
+              item?.denumireBrand
+            )}?localitate=${item?.localitate}`}
             key={item?.id}
             passHref
           >
