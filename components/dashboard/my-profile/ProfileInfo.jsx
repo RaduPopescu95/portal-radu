@@ -346,7 +346,31 @@ const ProfileInfo = () => {
         !adresaSediu
       ) {
         setIsLoading(false);
+        // setButtonPressed(false);
+        showAlert(
+          "Asigurați-vă că toate câmpurile obligatorii sunt completate",
+          "danger"
+        );
         return;
+      }
+
+      // Check if all necessary fields in each `punct` are filled
+      for (let i = 0; i < puncteDeLucru.length; i++) {
+        const punct = puncteDeLucru[i];
+        if (
+          !punct.judet ||
+          !punct.localitate ||
+          !punct.numePunctDeLucru ||
+          !punct.adresa
+        ) {
+          setIsLoading(false);
+          // setButtonPressed(false);
+          showAlert(
+            "Asigurați-vă că toate câmpurile punctelor de lucru sunt completate",
+            "danger"
+          );
+          return;
+        }
       }
 
       let utilizator = await handleQueryFirestoreSubcollection(
@@ -833,7 +857,11 @@ const ProfileInfo = () => {
                   <label>Nume punct de lucru</label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${
+                      !punct.numePunctDeLucru &&
+                      buttonPressed &&
+                      "border-danger"
+                    }`}
                     value={punct.numePunctDeLucru}
                     onChange={(e) =>
                       handlePunctDeLucruChange(
@@ -850,7 +878,9 @@ const ProfileInfo = () => {
                 <div className="my_profile_setting_input ui_kit_select_search form-group">
                   <label>Județ</label>
                   <select
-                    className="selectpicker form-select"
+                    className={`selectpicker form-select ${
+                      !punct.judet && buttonPressed && "border-danger"
+                    }`}
                     data-live-search="true"
                     value={punct.judet}
                     onChange={(e) =>
@@ -871,7 +901,9 @@ const ProfileInfo = () => {
                 <div className="my_profile_setting_input ui_kit_select_search form-group">
                   <label>Localitate</label>
                   <select
-                    className="selectpicker form-select"
+                    className={`selectpicker form-select ${
+                      !punct.localitate && buttonPressed && "border-danger"
+                    }`}
                     data-live-search="true"
                     value={
                       punct.localitate === "Bucuresti"
