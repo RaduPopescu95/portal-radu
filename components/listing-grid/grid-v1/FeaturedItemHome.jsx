@@ -80,28 +80,28 @@ const FeaturedItemHome = ({ params }) => {
   }
 
   async function updatePartnersByLocation(localitate, latitude, longitude) {
-      let parteneri = await handleGetFirestore("Users");
-  
+    let parteneri = await handleQueryFirestore("Users", "userType", "Partener");
+
     // Filtrare inițială după localitate, userType și statusCont, inclusiv verificarea punctelor de lucru
     let parteneriFiltrati = parteneri.filter((partener) => {
       const inLocalitate = partener.localitate === localitate;
       const inPunctDeLucru = partener.puncteDeLucru?.some(
         (punct) => punct.localitate === localitate
       );
-  
+
       return (
         (inLocalitate || inPunctDeLucru) &&
         partener.userType === "Partener" &&
         partener.statusCont === "Activ"
       );
     });
-  
+
     // După filtrare, înlocuiește proprietățile partenerului cu cele ale punctului de lucru, dacă este cazul
     parteneriFiltrati = parteneriFiltrati.map((partener) => {
       const punctDeLucruApropiat = partener.puncteDeLucru?.find(
         (punct) => punct.localitate === localitate
       );
-  
+
       if (punctDeLucruApropiat) {
         partener.coordonate = punctDeLucruApropiat.coordonate;
         partener.adresaSediu = punctDeLucruApropiat.adresa;
@@ -109,21 +109,25 @@ const FeaturedItemHome = ({ params }) => {
         partener.judet = punctDeLucruApropiat.judet;
         partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
       }
-  
+
       return partener;
     });
 
     let parteneriCuDistanta = parteneriFiltrati.map((partener) => {
       let distanta;
- 
+      console.log("partener....", partener);
+      if (!partener.coordonate) {
+        return { ...partener };
+      } else {
         distanta = calculateDistance(
           latitude,
           longitude,
           partener.coordonate.lat,
           partener.coordonate.lng
         );
-  
-      return { ...partener, distanta: Math.floor(distanta) };
+
+        return { ...partener, distanta: Math.floor(distanta) };
+      }
     });
 
     let parteneriOrdonati = parteneriCuDistanta.sort(
@@ -132,13 +136,11 @@ const FeaturedItemHome = ({ params }) => {
 
     if (parteneriOrdonati.length === 0) {
       console.log("is no length....");
-      parteneriOrdonati = parteneriFiltrati.filter((partener) => {
+      parteneriOrdonati = parteneri.filter((partener) => {
         return (
-          partener.userType === "Partener" &&
-          partener.statusCont === "Activ"
+          partener.userType === "Partener" && partener.statusCont === "Activ"
         );
       });
-    
     }
     setParteneri(parteneriOrdonati);
     setIsLoading(false);
