@@ -49,7 +49,7 @@ const Header = () => {
           {/* <span>ExclusivMD</span> */}
         </Link>
 
-        <HeaderLogos />
+        {/* <HeaderLogos /> */}
         {/* <span>ExclusivMD</span> */}
         {/* site logo brand */}
 
