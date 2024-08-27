@@ -122,22 +122,31 @@ export const verifyCurrentUser = async (partenerId, userData, loading) => {
   }
 };
 
-
-export function calculeazaSiOrdoneazaParteneriDupaDistanta(parteneri, latitude, longitude) {
+export function calculeazaSiOrdoneazaParteneriDupaDistanta(
+  parteneri,
+  latitude,
+  longitude
+) {
   // Adaugă distanța ca o proprietate pentru fiecare partener
   const parteneriCuDistanta = parteneri.map((partener) => {
-    const distanta = calculateDistance(
-      latitude,
-      longitude,
-      partener.coordonate.lat,
-      partener.coordonate.lng
-    );
+    if (!partener.coordonate) {
+      return { ...partener };
+    } else {
+      distanta = calculateDistance(
+        latitude,
+        longitude,
+        partener.coordonate.lat,
+        partener.coordonate.lng
+      );
 
-    return { ...partener, distanta: Math.floor(distanta) };
+      return { ...partener, distanta: Math.floor(distanta) };
+    }
   });
 
   // Sortează partenerii după distanță
-  const parteneriOrdonati = parteneriCuDistanta.sort((a, b) => a.distanta - b.distanta);
+  const parteneriOrdonati = parteneriCuDistanta.sort(
+    (a, b) => a.distanta - b.distanta
+  );
 
   return parteneriOrdonati;
 }
