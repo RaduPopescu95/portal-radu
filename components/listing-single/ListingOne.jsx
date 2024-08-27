@@ -17,7 +17,7 @@ export default function ListingOne({ partener }) {
           <div className="col-lg-7 col-xl-8">
             <div className="single_property_title mt30-767">
               <h2>{partener?.denumireBrand}</h2>
-              <p>{partener?.adresaSediu}</p>
+              {/* <p>{partener?.adresaSediu}</p> */}
             </div>
           </div>
           <div className="col-lg-5 col-xl-4">

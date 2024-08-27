@@ -14,6 +14,7 @@ import {
   handleQueryFirestore,
   handleQueryFirestoreSubcollection,
 } from "@/utils/firestoreUtils";
+import { useSearchParams } from "next/navigation";
 
 const ListingDynamicDetailsV1 = async ({ params }) => {
   const id = params.id;

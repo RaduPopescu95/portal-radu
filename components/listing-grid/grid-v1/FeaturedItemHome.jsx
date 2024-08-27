@@ -214,7 +214,9 @@ const FeaturedItemHome = ({ params }) => {
             </a>
           ) : (
             <Link
-              href={`/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`}
+              href={`/partener/${item?.id}-${toUrlSlug(
+                item?.denumireBrand
+              )}?localitate=${item?.localitate}`}
               key={item?.id}
               passHref
             >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TabDetailsContent from "../agency-details/TabDetailsContent";
 import Comments from "../blog-details/Comments";
 import Ratings from "../blog-details/Ratings";
@@ -19,7 +19,7 @@ import PropertyVideo from "../common/listing-details/PropertyVideo";
 import WalkScore from "../common/listing-details/WalkScore";
 import WhatsNearby from "../common/listing-details/WhatsNearby";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const isMobile =
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -29,6 +29,9 @@ const isMobile =
 const DetailsContent = ({ partener, oferte }) => {
   const { userData, currentUser } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  let localitate = searchParams.get("localitate");
+  const [part, setPart] = useState({});
   const handleNavigare = () => {
     if (partener && partener.coordonate) {
       const { lat, lng } = partener.coordonate;
@@ -54,15 +57,32 @@ const DetailsContent = ({ partener, oferte }) => {
   useEffect(() => {
     if (
       userData?.userType === "Partener" &&
-      userData?.user_uid !== partener?.user_uid
+      userData?.user_uid !== part?.user_uid
     ) {
       router.push("/");
     }
   }, [userData]);
 
+  useEffect(() => {
+    const punctDeLucruApropiat = partener.puncteDeLucru?.find(
+      (punct) => punct.localitate === localitate
+    );
+    if (punctDeLucruApropiat) {
+      console.log("este punct de lucru....", punctDeLucruApropiat);
+      partener.coordonate = punctDeLucruApropiat.coordonate;
+      partener.adresaSediu = punctDeLucruApropiat.adresa;
+      partener.localitate = punctDeLucruApropiat.localitate;
+      partener.judet = punctDeLucruApropiat.judet;
+      partener.googleMapsLink = punctDeLucruApropiat.googleMapsLink;
+      partener.sector = punctDeLucruApropiat.sector;
+    }
+    console.log("este punct de lucru....", partener);
+    setPart(partener);
+  }, []);
+
   return (
     <>
-      {partener.id === 5 || partener.id === 10 ? (
+      {part.id === 5 || part.id === 10 ? (
         <div
           className="listing_single_description mb30"
           style={{ borderTopWidth: "5px", borderTopColor: "#0000ff" }}
@@ -73,7 +93,7 @@ const DetailsContent = ({ partener, oferte }) => {
           {/* End .lsd_list */}
 
           <h2 className="mb0">Caută-ți vacanța</h2>
-          <FilterHelloHolidays className="home4" partener={partener} />
+          <FilterHelloHolidays className="home4" partener={part} />
         </div>
       ) : null}
 
@@ -84,7 +104,7 @@ const DetailsContent = ({ partener, oferte }) => {
         {/* End .lsd_list */}
 
         <h4 className="mb30">Desriere</h4>
-        <PropertyDescriptions partener={partener} />
+        <PropertyDescriptions partener={part} />
       </div>
       {/* End .listing_single_description */}
 
@@ -132,11 +152,11 @@ const DetailsContent = ({ partener, oferte }) => {
         <h4 className="mb30">
           Locatie{" "}
           <small className={`${!isMobile ? "float-end" : null}`}>
-            {partener?.adresaSediu}
+            {part?.adresaSediu}
           </small>
         </h4>
         <div className="property_video p0">
-          <PropertyLocation coordonate={partener?.coordonate} />
+          <PropertyLocation coordonate={part?.coordonate} />
         </div>
         <div className="search_option_button mt20">
           <button
