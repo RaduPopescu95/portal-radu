@@ -160,7 +160,8 @@ const FilterHolidays = ({ className = "", partener }) => {
   };
 
   // submit handler
-  const handleSubmit = async () => {
+const handleSubmit = async () => {
+  try {
     const roomDetails = rooms
       .map((room, index) => {
         const childrenAges = room.children.map((child) => child.age).join(", ");
@@ -202,15 +203,21 @@ const FilterHolidays = ({ className = "", partener }) => {
       infoDoctor: userData,
       helloHolidaysInfo: partener,
     };
+
     await handleUploadFirestoreSubcollection(
       data,
       `Users/${partener.user_uid}/CereriHelloHolidays`,
       partener.user_uid,
       `${userData.numeUtilizator} a trimis catre Hello Holidays cerere pentru un numar de ${numberOfNights} nopti în data de ${selectedDate} pentru destinatia ${selectedDestinatie}`
-    ).then(() => {
-      showAlert(message, "success");
-    });
-  };
+    );
+
+    showAlert(message, "success");
+  } catch (error) {
+    console.error("A apărut o eroare la trimiterea datelor:", error);
+    showAlert("A apărut o eroare, vă rugăm să încercați din nou.", "error");
+  }
+};
+
 
   return (
     <>

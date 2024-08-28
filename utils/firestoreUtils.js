@@ -133,6 +133,22 @@ export const handleUploadFirestore = async (data, location, actionText) => {
 };
 
 //ADD A DOCUMENT IN THE SUBCOLLECTION
+function cleanData(obj) {
+  const result = Array.isArray(obj) ? [] : {}; // Determină dacă trebuie să returneze un array sau un obiect
+  Object.keys(obj).forEach((key) => {
+    const value = obj[key];
+    if (typeof value === "object" && value !== null) {
+      const cleanedSubData = cleanData(value); // Apel recursiv pentru sub-obiecte
+      if (Object.keys(cleanedSubData).length !== 0) {
+        // Asigură-te că sub-obiectele goale nu sunt adăugate
+        result[key] = cleanedSubData;
+      }
+    } else if (value !== undefined) {
+      result[key] = value; // Copiază valoarea dacă nu este undefined
+    }
+  });
+  return result;
+}
 export const handleUploadFirestoreSubcollection = async (
   data,
   location,
@@ -148,9 +164,12 @@ export const handleUploadFirestoreSubcollection = async (
     const docRef = doc(collection(db, location));
     const dateTime = getCurrentDateTime();
 
+    // Curățare date: elimină orice câmpuri cu valori undefined la orice nivel
+    const cleanedData = cleanData(data);
+
     // Actualizarea datelor cu ID-ul documentului generat
     const newData = {
-      ...data,
+      ...cleanedData,
       documentId: docRef.id,
       id,
       firstUploadDate: dateTime.date,
