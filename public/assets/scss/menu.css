@@ -755,6 +755,7 @@ header.stylehome1.home4 a {
   .stylehome1:before,
   .header.stylehome1 {
     background-color: #ffffff !important;
+    /* z-index: 3000; */
   }
   .stylehome1.home2,
   .stylehome1.home2:before {

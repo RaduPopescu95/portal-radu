@@ -12,7 +12,7 @@ const MobileMenu = () => {
     <div className="stylehome1 h0 mega-menu-wrapper">
       <div className="mobile-menu">
         <div className="header stylehome1">
-          {/* <HeaderLogosMobil /> */}
+          <HeaderLogosMobil />
           {/* <p>asdasds</p> */}
           {/* <HeaderLogosMobil /> */}
           {/* <div className="main_logo_home2 text-center">

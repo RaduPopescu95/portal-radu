@@ -257,105 +257,147 @@
 
 /* LOGO HEADER */
 /* Suprascrierea stilurilor Slider-ului pentru HeaderLogos */
-.navbar_brand .slick-slide {
-  padding: 0;
-  width: calc(100% / 5); /* 5 slide-uri vizibile pe ecran mare */
+.slider-container {
+  position: absolute; /* Position relative to its nearest positioned ancestor */
+  top: 0; /* Position at the top of the parent container */
+  left: 20%; /* Start 20% from the left of the parent container */
+  width: 40%; /* Width adjusted to ensure it uses the space effectively */
+  height: 90px; /* Height of the slider container */
+  z-index: 1000; /* Stack order, to make sure it's on top of other elements if needed */
+  overflow: hidden; /* Hide the overflowed parts of the children elements */
+}
+
+.slider {
+  display: flex;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  transition: transform 0.5s ease; /* Folosește transform pentru tranziții liniștite */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.slide-logos {
+  flex: 0 0 20%; /* Each logo takes 20% of the slider width, showing 5 items at a time */
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0px; /* Padding removed */
+  max-height: 100px; /* Max height to maintain consistency */
+  box-sizing: border-box; /* Include padding in width calculation */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Semi-transparent black background for better contrast */
+  border-radius: 10px; /* Rounded borders */
+  margin: 5px; /* Small margin around each logo to separate them visually */
 }
 
+.logo {
+  max-width: 100%; /* Max width to fit container */
+  max-height: 70px; /* Max height defined */
+  object-fit: contain; /* Ensures the image is scaled properly */
+}
+
+@media (max-width: 576px) {
+  .slider-container {
+    display: none;
+  }
+}
+
+/* Media Queries to adjust the visibility of logos based on the screen size */
 @media (max-width: 1024px) {
-  .navbar_brand .slick-slide {
-    width: calc(100% / 3); /* 3 slide-uri vizibile pe ecrane medii */
+  .slide-logos {
+    flex: 0 0 33.33%; /* 3 items visible at lower resolutions */
   }
 }
 
 @media (max-width: 768px) {
-  .navbar_brand .slick-slide {
-    width: calc(100% / 2); /* 2 slide-uri vizibile pe ecrane mici */
+  .slide-logos {
+    flex: 0 0 50%; /* 2 items visible on tablets */
   }
 }
 
 @media (max-width: 576px) {
-  .navbar_brand .slick-slide {
-    width: 100%; /* 1 slide vizibil pe ecrane foarte mici */
+  .slide-logos {
+    flex: 0 0 100%; /* 1 item visible on mobile devices */
   }
-}
-
-.navbar_brand .slick-list {
-  margin: 0; /* Ajustează sau elimină marginile */
-  width: 35rem; /* Lățimea totală vizibilă a slider-ului */
-  height: 100px; /* Înălțimea slider-ului */
-}
-
-.navbar_brand .slick-track {
-  width: 100%; /* Asigură că track-ul nu depășește lungimea listei */
-  position: relative; /* Poziționare relativă față de lista părinte */
-  left: 50%; /* Ajustează la mijlocul listei */
-  transform: translateX(-50%); /* Centrarea precisă prin transform */
-  display: flex;
-  align-items: center; /* Menținerea alinierii verticale */
-  top: 25%;
-}
-
-.navbar_brand .logo1 {
-  width: 100%; /* Lățimea dorită pentru fiecare imagine */
-  height: 60px; /* Înălțimea dorită pentru fiecare imagine */
-  object-fit: contain; /* Menține proporțiile imaginilor fără a le tăia */
 }
 
 /* HEADER LOGOS MOBIL */
-.navbar_brand_mobil .slick-slide {
-  padding: 0;
-  width: calc(100% / 15.2); /* 5 slide-uri vizibile pe ecran mare */
+.slider-container-mobil {
+  position: absolute; /* Position relative to its nearest positioned ancestor */
+  top: 0; /* Position at the top of the parent container */
+  left: 15%; /* Start 20% from the left of the parent container */
+  width: 88%; /* Width adjusted to ensure it uses the space effectively */
+  height: 90px; /* Height of the slider container */
+  z-index: 1000; /* Stack order, to make sure it's on top of other elements if needed */
+  overflow: hidden; /* Hide the overflowed parts of the children elements */
+}
+
+.slider-mobil {
+  display: flex;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  transition: transform 0.5s ease; /* Folosește transform pentru tranziții liniștite */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.slide-logos-mobil {
+  flex: 0 0 20%; /* Each logo takes 20% of the slider width, showing 5 items at a time */
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0px; /* Padding removed */
+  max-height: 100px; /* Max height to maintain consistency */
+  box-sizing: border-box; /* Include padding in width calculation */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Semi-transparent black background for better contrast */
+  border-radius: 10px; /* Rounded borders */
+  margin: 5px; /* Small margin around each logo to separate them visually */
 }
 
+.logo-mobil {
+  max-width: 100%; /* Max width to fit container */
+  max-height: 70px; /* Max height defined */
+  object-fit: contain; /* Ensures the image is scaled properly */
+}
+
+/* Media Queries to adjust the visibility of logos based on the screen size */
 @media (max-width: 1024px) {
-  .navbar_brand_mobil .slick-slide {
-    width: calc(100% / 3.2); /* 3 slide-uri vizibile pe ecrane medii */
+  .slide-logos-mobil {
+    flex: 0 0 33.33%; /* 3 items visible at lower resolutions */
   }
 }
 
 @media (max-width: 768px) {
-  .navbar_brand_mobil .slick-slide {
-    width: calc(100% / 2.2); /* 2 slide-uri vizibile pe ecrane mici */
+  .slide-logos-mobil {
+    flex: 0 0 50%; /* 2 items visible on tablets */
   }
 }
 
 @media (max-width: 576px) {
-  .navbar_brand_mobil .slick-slide {
-    width: 0rem; /* 1 slide vizibil pe ecrane foarte mici */
+  .slide-logos-mobil {
+    flex: 0 0 33.33%; /* 1 item visible on mobile devices */
   }
-}
-
-.navbar_brand_mobil .slick-list {
-  margin-left: 2.3rem; /* Ajustează sau elimină marginile */
-  width: 19rem; /* Lățimea totală vizibilă a slider-ului */
-  height: 5.43rem; /* Înălțimea slider-ului */
-  background-image: linear-gradient(
-    to right,
-    rgb(62, 62, 165) 0%,
-    rgb(255, 90, 95) 100%
-  );
-  /* border-radius: 2px; */
-}
-
-.navbar_brand_mobil .slick-track {
-  width: 100%; /* Asigură că track-ul nu depășește lungimea listei */
-  position: relative; /* Poziționare relativă față de lista părinte */
-  left: 50%; /* Ajustează la mijlocul listei */
-  transform: translateX(-50%); /* Centrarea precisă prin transform */
-  display: flex;
-  align-items: center; /* Menținerea alinierii verticale */
-  top: 25%;
-}
-
-.navbar_brand_mobil .logo1 {
-  width: 100%; /* Lățimea dorită pentru fiecare imagine */
-  height: 50px; /* Înălțimea dorită pentru fiecare imagine */
-  object-fit: contain; /* Menține proporțiile imaginilor fără a le tăia */
 }
