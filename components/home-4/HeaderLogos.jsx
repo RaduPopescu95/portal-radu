@@ -4,6 +4,7 @@ import { handleQueryFirestore } from "@/utils/firestoreUtils";
 
 const HeaderLogos = () => {
   const [parteneri, setParteneri] = useState([]);
+  const [navbar, setNavbar] = useState(false);
   const sliderRef = useRef(null);
 
   const slide = () => {
@@ -42,11 +43,26 @@ const HeaderLogos = () => {
     handleGetParteners();
   }, []);
 
+  const changeBackground = () => {
+    if (window.scrollY >= 95) {
+      setNavbar(true);
+    } else {
+      setNavbar(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", changeBackground);
+  }, []);
+
   return (
     <div className="slider-container">
       <div className="slider" ref={sliderRef}>
         {parteneri.map((val, index) => (
-          <div className="slide-logos" key={index}>
+          <div
+            className={`slide-logos ${navbar ? "logos-fundal" : ""}`}
+            key={index}
+          >
             <Image
               src={val?.logo?.finalUri}
               alt={val?.denumireBrand}
