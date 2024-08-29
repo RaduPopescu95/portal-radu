@@ -48,11 +48,11 @@ const SearchData = ({ oferteInregistrate }) => {
         )
           .then(() => {
             showAlert("Modificare cu success!", "success");
-            setIsLoading(false)
+            setIsLoading(false);
           })
           .catch((error) => {
             showAlert(`A apărut o eroare: ${error.message}`, "danger");
-            setIsLoading(false)
+            setIsLoading(false);
           });
       } else {
         console.log(
@@ -77,11 +77,11 @@ const SearchData = ({ oferteInregistrate }) => {
         )
           .then(() => {
             showAlert("Adaugare cu succes!", "success");
-            setIsLoading(false)
+            setIsLoading(false);
           })
           .catch((error) => {
             showAlert(`A apărut o eroare: ${error.message}`, "danger");
-            setIsLoading(false)
+            setIsLoading(false);
           });
       }
     }
@@ -114,10 +114,12 @@ const SearchData = ({ oferteInregistrate }) => {
                   style={{ display: "none" }}
                   id={`file-input-${index}`}
                 />
-                
+
                 <label
                   htmlFor={`file-input-${index}`}
-                  className="btn admore_btn mb30"
+                  className={`btn admore_btn mb30 ${
+                    row.imagineBonFactura?.fileName ? null : "border-danger"
+                  }`}
                 >
                   {row.imagineBonFactura?.fileName
                     ? "Modifica bon/factura"
