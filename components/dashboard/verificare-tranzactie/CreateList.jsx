@@ -46,7 +46,7 @@ const CreateList = ({ oferta, utilizator }) => {
     setAlert({ show: true, message, type });
     setTimeout(() => {
       setAlert({ show: false, message: "", type: "" });
-      router.push("/lista-oferte");
+      // router.push("/lista-oferte");
     }, 3000); // Alerta va dispărea după 3 secunde
   };
 
@@ -326,7 +326,9 @@ const CreateList = ({ oferta, utilizator }) => {
           <label htmlFor="pretFinal">Pret final (RON)</label>
           <input
             type="text"
-            className={`form-control ${noPretFinal && "border-danger"}`}
+            className={`form-control ${
+              pretFinal.length === 0 && "border-danger"
+            }`}
             id="pretFinal"
             value={pretFinal}
             onChange={(e) => setPretFinal(e.target.value)}
