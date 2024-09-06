@@ -6,8 +6,8 @@ const FeaturedListings = () => {
   return (
     <>
       {featureContent.slice(27, 30).map((item) => (
-        <div className="media d-flex" key={item.id}>
-          <Link href={`/partener/${item.id}`}>
+        <div className="media d-flex" key={item.user_uid}>
+          <Link href={`/partener/${item.user_uid}`}>
             <Image
               width={102}
               height={80}
@@ -19,9 +19,9 @@ const FeaturedListings = () => {
 
           <div className="media-body">
             <h5 className="mt-0 post_title">
-              <Link href={`/partener/${item.id}`}>{item.title}</Link>
+              <Link href={`/partener/${item.user_uid}`}>{item.title}</Link>
             </h5>
-            <Link href={`/partener/${item.id}`}>
+            <Link href={`/partener/${item.user_uid}`}>
               ${item.price}/<small>/mo</small>
             </Link>
 

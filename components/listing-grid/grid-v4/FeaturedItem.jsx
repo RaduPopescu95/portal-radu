@@ -1,5 +1,4 @@
-
-'use client'
+"use client";
 
 import Link from "next/link";
 import { useEffect } from "react";
@@ -141,7 +140,7 @@ const FeaturedItem = () => {
         className={`${
           isGridOrList ? "col-12 feature-list" : "col-md-6 col-lg-6"
         } `}
-        key={item.id}
+        key={item.user_uid}
       >
         <div
           className={`feat_property home7 style3 bdrrn ${
@@ -177,10 +176,7 @@ const FeaturedItem = () => {
                 </li>
               </ul>
 
-              <Link
-                href={`/partener/${item.id}`}
-                className="fp_price"
-              >
+              <Link href={`/partener/${item.user_uid}`} className="fp_price">
                 ${item.price}
                 <small>/mo</small>
               </Link>
@@ -190,7 +186,7 @@ const FeaturedItem = () => {
             <div className="tc_content">
               <p className="text-thm">{item.type}</p>
               <h4>
-                <Link href={`/listing-details-v2/${item.id}`}>
+                <Link href={`/listing-details-v2/${item.user_uid}`}>
                   {item.title}
                 </Link>
               </h4>

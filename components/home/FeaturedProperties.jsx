@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import Slider from "react-slick";
@@ -32,7 +32,7 @@ const FeaturedProperties = () => {
   };
 
   let content = properties?.slice(0, 12)?.map((item) => (
-    <div className="item" key={item.id}>
+    <div className="item" key={item.user_uid}>
       <div className="feat_property">
         <div className="thumb">
           <Image
@@ -66,7 +66,7 @@ const FeaturedProperties = () => {
             </ul>
             {/* End .icon */}
 
-            <Link href={`/partener/${item.id}`} className="fp_price">
+            <Link href={`/partener/${item.user_uid}`} className="fp_price">
               ${item.price}
               <small>/mo</small>
             </Link>
@@ -78,7 +78,7 @@ const FeaturedProperties = () => {
           <div className="tc_content">
             <p className="text-thm">{item.type}</p>
             <h4>
-              <Link href={`/partener/${item.id}`}>{item.title}</Link>
+              <Link href={`/partener/${item.user_uid}`}>{item.title}</Link>
             </h4>
             <p>
               <span className="flaticon-placeholder"></span>

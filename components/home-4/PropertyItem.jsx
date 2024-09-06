@@ -5,7 +5,7 @@ import React from "react";
 
 const PropertyItem = ({ item, isActive }) => {
   return (
-    <div className="item" key={item?.id}>
+    <div className="item" key={item?.user_uid}>
       <div className="feat_property home3">
         <div
           className="thumb"
@@ -59,7 +59,9 @@ const PropertyItem = ({ item, isActive }) => {
         </ul> */}
 
             <Link
-              href={`/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`}
+              href={`/partener/${item?.user_uid}-${toUrlSlug(
+                item?.denumireBrand
+              )}`}
               className="fp_price"
             >
               {item?.denumireBrand}
@@ -70,7 +72,7 @@ const PropertyItem = ({ item, isActive }) => {
           <div className="tc_content">
             {/* <p className="text-thm">{item?.type}</p> */}
             {/* <h4>
-            <Link href={`/partener/${item?.id}`}>3 oferte</Link>
+            <Link href={`/partener/${item?.user_uid}`}>3 oferte</Link>
           </h4> */}
             <p>
               <span className="flaticon-placeholder"></span>

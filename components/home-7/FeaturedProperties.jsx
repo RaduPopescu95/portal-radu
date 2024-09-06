@@ -6,7 +6,7 @@ const FeaturedProperties = () => {
   return (
     <>
       {properties.slice(21, 27).map((item) => (
-        <div className="col-md-6 col-lg-4" key={item.id}>
+        <div className="col-md-6 col-lg-4" key={item.user_uid}>
           <div className="item">
             <div className="feat_property">
               <div className="thumb">
@@ -39,7 +39,7 @@ const FeaturedProperties = () => {
                   </ul>
 
                   <Link
-                    href={`/partener/${item.id}`}
+                    href={`/partener/${item.user_uid}`}
                     className="fp_price"
                   >
                     ${item.price}
@@ -52,7 +52,7 @@ const FeaturedProperties = () => {
                 <div className="tc_content">
                   <p className="text-thm">{item.type}</p>
                   <h4>
-                    <Link href={`/partener/${item.id}`}>
+                    <Link href={`/partener/${item.user_uid}`}>
                       {item.title}
                     </Link>
                   </h4>

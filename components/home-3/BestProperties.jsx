@@ -6,7 +6,7 @@ const BestProperties = () => {
   return (
     <>
       {properties.slice(12, 15).map((item) => (
-        <div className="col-sm-6 col-lg-4" key={item.id}>
+        <div className="col-sm-6 col-lg-4" key={item.user_uid}>
           <div className="item">
             <div className="feat_property home3">
               <div className="thumb">
@@ -40,7 +40,7 @@ const BestProperties = () => {
                   </ul>
 
                   <Link
-                    href={`/partener/${item.id}`}
+                    href={`/partener/${item.user_uid}`}
                     className="fp_price"
                   >
                     ${item.price}
@@ -53,7 +53,7 @@ const BestProperties = () => {
                 <div className="tc_content">
                   <p className="text-thm">{item.type}</p>
                   <h4>
-                    <Link href={`/partener/${item.id}`}>
+                    <Link href={`/partener/${item.user_uid}`}>
                       {item.title}
                     </Link>
                   </h4>

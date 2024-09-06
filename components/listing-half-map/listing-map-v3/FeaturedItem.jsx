@@ -1,5 +1,4 @@
-
-'use client'
+"use client";
 
 import Link from "next/link";
 import { useEffect } from "react";
@@ -140,7 +139,7 @@ const FeaturedItem = () => {
             ? "col-12 list_map feature-list"
             : "col-lg-6 col-xl-12 col-md-6"
         } `}
-        key={item.id}
+        key={item.user_uid}
       >
         <div
           className={`feat_property home7 style4 ${
@@ -179,10 +178,7 @@ const FeaturedItem = () => {
                 </li>
               </ul>
 
-              <Link
-                href={`/partener/${item.id}`}
-                className="fp_price"
-              >
+              <Link href={`/partener/${item.user_uid}`} className="fp_price">
                 ${item.price}
                 <small>/mo</small>
               </Link>
@@ -192,9 +188,7 @@ const FeaturedItem = () => {
             <div className="tc_content">
               <p className="text-thm">{item.type}</p>
               <h4>
-                <Link href={`/partener/${item.id}`}>
-                  {item.title}
-                </Link>
+                <Link href={`/partener/${item.user_uid}`}>{item.title}</Link>
               </h4>
               <p>
                 <span className="flaticon-placeholder"></span>

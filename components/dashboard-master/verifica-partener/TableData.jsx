@@ -147,7 +147,9 @@ const TableData = ({ oferte }) => {
             data-placement="top"
             title="Edit"
           >
-            <Link href={`/verifica-oferta/${item.id}-${item.collectionId}`}>
+            <Link
+              href={`/verifica-oferta/${item.documentId}-${item.collectionId}`}
+            >
               <span className="flaticon-view"></span>
             </Link>
           </li>

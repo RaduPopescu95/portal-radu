@@ -15,11 +15,11 @@ import { unstable_noStore as noStore } from "next/cache";
 const index = async ({ params }) => {
   noStore();
   const parts = params.id.split("-");
-  const id = parseFloat(parts[0]);
+  const id = parts[0];
   const partenerId = parts[1];
   const oferta = await handleQueryFirestoreSubcollection(
     "Oferte",
-    "id",
+    "documentId",
     id,
     "collectionId",
     partenerId

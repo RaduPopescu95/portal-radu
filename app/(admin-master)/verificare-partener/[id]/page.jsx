@@ -37,18 +37,17 @@ const fetchItems = async (userId) => {
   return newItems;
 };
 
-
 const index = async ({ params }) => {
   noStore();
   const id = params.id;
-  const userId = parseFloat(id);
-  const partener = await handleQueryFirestore("Users", "id", userId);
+  const userId = id;
+  const partener = await handleQueryFirestore("Users", "user_uid", userId);
   const actiuni = await handleQueryFirestoreSubcollection(
     "Actiuni",
     "collectionId",
-    partener[0].user_uid
+    userId
   );
-  let oferte = await fetchItems(partener[0].user_uid);
+  let oferte = await fetchItems(userId);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -114,7 +113,7 @@ const index = async ({ params }) => {
                   </div>
                   {/* End prifle info wrapper end */}
 
-             <TabelOferte oferte={oferte}/>
+                  <TabelOferte oferte={oferte} />
 
                   <div className="col-lg-12 mt10">
                     <div className="my_dashboard_review">

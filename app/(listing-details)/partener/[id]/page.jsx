@@ -19,11 +19,11 @@ import { useSearchParams } from "next/navigation";
 const ListingDynamicDetailsV1 = async ({ params }) => {
   const id = params.id;
   const parts = id.split("-");
-  const number = parseFloat(parts[0]);
+  const number = parts[0];
 
   let partenerId = number;
-  let partener = await handleQueryFirestore("Users", "id", partenerId);
-  let oferte = await handleGetFirestore(`Users/${partener[0].user_uid}/Oferte`);
+  let partener = await handleQueryFirestore("Users", "user_uid", partenerId);
+  let oferte = await handleGetFirestore(`Users/${partenerId}/Oferte`);
 
   return (
     <>

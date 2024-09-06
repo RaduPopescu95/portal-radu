@@ -179,7 +179,7 @@ const TableData = ({ parteneri: parts }) => {
             data-placement="top"
             title="Edit"
           >
-            <Link href={`/verificare-partener/${item.id}`}>
+            <Link href={`/verificare-partener/${item.user_uid}`}>
               <span className="flaticon-view"></span>
             </Link>
           </li>

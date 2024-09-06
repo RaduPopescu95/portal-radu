@@ -40,7 +40,7 @@ const FeaturedProperty = ({ item, isGridOrList }) => {
           </div>
 
           <Link
-            href={`/partener/${item?.id}-${toUrlSlug(
+            href={`/partener/${item?.user_uid}-${toUrlSlug(
               item?.denumireBrand
             )}?localitate=${item?.localitate}`}
             className="fp_price"

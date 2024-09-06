@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import Slider from "react-slick";
@@ -42,7 +42,7 @@ const FeaturedProperties = () => {
     <>
       <Slider {...settings} arrows={true}>
         {properties.slice(0, 12).map((item) => (
-          <div className="item" key={item.id}>
+          <div className="item" key={item.user_uid}>
             <div className="feat_property home3">
               <div className="thumb">
                 <Image
@@ -75,7 +75,7 @@ const FeaturedProperties = () => {
                   </ul>
 
                   <Link
-                    href={`/partener/${item.id}`}
+                    href={`/partener/${item.user_uid}`}
                     className="fp_price"
                   >
                     ${item.price}
@@ -88,7 +88,7 @@ const FeaturedProperties = () => {
                 <div className="tc_content">
                   <p className="text-thm">{item.type}</p>
                   <h4>
-                    <Link href={`/partener/${item.id}`}>
+                    <Link href={`/partener/${item.user_uid}`}>
                       {item.title}
                     </Link>
                   </h4>

@@ -157,7 +157,7 @@ const TableData = ({ doctori: docs }) => {
             data-placement="top"
             title="Edit"
           >
-            <Link href={`/verificare-doctor/${item.id}`}>
+            <Link href={`/verificare-doctor/${item.user_uid}`}>
               <span className="flaticon-view"></span>
             </Link>
           </li>

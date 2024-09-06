@@ -1,5 +1,4 @@
-
-'use client'
+"use client";
 
 import Link from "next/link";
 import { useEffect } from "react";
@@ -137,7 +136,7 @@ const FeaturedItem = () => {
     ?.sort(statusTypeHandler)
     ?.filter(featuredHandler)
     .map((item) => (
-      <div className="col-md-6 col-lg-6" key={item.id}>
+      <div className="col-md-6 col-lg-6" key={item.user_uid}>
         <div className="properti_city home6">
           <div className="thumb">
             <Image
@@ -159,15 +158,12 @@ const FeaturedItem = () => {
           </div>
           <div className="overlay">
             <div className="details">
-              <Link
-                href={`/partener/${item.id}`}
-                className="fp_price"
-              >
+              <Link href={`/partener/${item.user_uid}`} className="fp_price">
                 ${item.price}
                 <small>/mo</small>
               </Link>
               <h4>
-                <Link href={`/listing-details-v2/${item.id}`}>
+                <Link href={`/listing-details-v2/${item.user_uid}`}>
                   {item.title}
                 </Link>
               </h4>

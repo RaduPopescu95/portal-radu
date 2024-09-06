@@ -125,15 +125,17 @@ const FeaturedProperties = () => {
         {parteneri.map((item) =>
           currentUser ? (
             <Link
-              href={`/partener/${item?.id}-${toUrlSlug(item?.denumireBrand)}`}
-              key={item?.id}
+              href={`/partener/${item?.user_uid}-${toUrlSlug(
+                item?.denumireBrand
+              )}`}
+              key={item?.user_uid}
               passHref
             >
               <PropertyItem item={item} isActive={true} />
             </Link>
           ) : (
             <a
-              key={item?.id}
+              key={item?.user_uid}
               data-bs-toggle="modal"
               data-bs-target=".bd-utilizator-modal-lg"
             >

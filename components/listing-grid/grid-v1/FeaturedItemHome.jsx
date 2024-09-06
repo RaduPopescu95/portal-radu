@@ -81,7 +81,7 @@ const FeaturedItemHome = ({ params }) => {
 
   async function updatePartnersByLocation(localitate, latitude, longitude) {
     let parteneri = await handleQueryFirestore("Users", "userType", "Partener");
-
+    console.log("partenerii....", parteneri)
     // Filtrare inițială după localitate, userType și statusCont, inclusiv verificarea punctelor de lucru
     let parteneriFiltrati = parteneri.filter((partener) => {
       const inLocalitate = partener.localitate === localitate;
@@ -204,20 +204,20 @@ const FeaturedItemHome = ({ params }) => {
         className={`${
           isGridOrList ? "col-12 feature-list" : "col-md-4 col-lg-4"
         } `}
-        key={item?.id}
+        key={item?.user_uid}
       >
         {currentUser ? (
           userData?.userType === "Partener" &&
           userData?.user_uid !== item?.user_uid ? (
-            <a key={item?.id}>
+            <a key={item?.user_uid}>
               <FeaturedProperty item={item} isGridOrList={isGridOrList} />
             </a>
           ) : (
             <Link
-              href={`/partener/${item?.id}-${toUrlSlug(
+              href={`/partener/${item?.user_uid}-${toUrlSlug(
                 item?.denumireBrand
               )}?localitate=${item?.localitate}`}
-              key={item?.id}
+              key={item?.user_uid}
               passHref
             >
               <FeaturedProperty item={item} isGridOrList={isGridOrList} />
@@ -225,7 +225,7 @@ const FeaturedItemHome = ({ params }) => {
           )
         ) : (
           <a
-            key={item?.id}
+            key={item?.user_uid}
             data-bs-toggle="modal"
             data-bs-target=".bd-utilizator-modal-lg"
           >

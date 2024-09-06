@@ -6,7 +6,7 @@ const Listings = () => {
   return (
     <>
       {properties.slice(0, 3).map((item) => (
-        <div className="col-lg-12" key={item.id}>
+        <div className="col-lg-12" key={item.user_uid}>
           <div className="feat_property list style2 hvr-bxshd bdrrn mb10 mt20">
             <div className="thumb">
               <Image
@@ -45,7 +45,7 @@ const Listings = () => {
                   </ul>
 
                   <Link
-                    href={`/partener/${item.id}`}
+                    href={`/partener/${item.user_uid}`}
                     className="fp_price"
                   >
                     ${item.price}
@@ -55,9 +55,7 @@ const Listings = () => {
                 <p className="text-thm">{item.type}</p>
                 <h4>
                   {" "}
-                  <Link href={`/partener/${item.id}`}>
-                    {item.title}
-                  </Link>
+                  <Link href={`/partener/${item.user_uid}`}>{item.title}</Link>
                 </h4>
                 <p>
                   <span className="flaticon-placeholder"></span>

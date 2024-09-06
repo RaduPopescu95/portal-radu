@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const FavouritProducts = () => {
   let content = properties?.slice(0, 4)?.map((item) => (
-    <div className="feat_property list favorite_page" key={item.id}>
+    <div className="feat_property list favorite_page" key={item.user_uid}>
       <div className="thumb">
         <Image
           width={150}
@@ -27,7 +27,7 @@ const FavouritProducts = () => {
       <div className="details">
         <div className="tc_content">
           <h4>
-            <Link href={`/partener/${item.id}`}>{item.title}</Link>
+            <Link href={`/partener/${item.user_uid}`}>{item.title}</Link>
           </h4>
           <p>
             <span className="flaticon-placeholder"></span> {item.location}

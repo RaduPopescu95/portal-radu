@@ -29,7 +29,7 @@ const WhatsNearby = ({ oferte }) => {
 
   const handleOfferSelect = (offer) => {
     setSelectedOffer(
-      `https://www.exclusivmd.ro/verificare-tranzactie/${userData?.id}-${offer?.documentId}UIDD${offer?.collectionId}`
+      `https://www.exclusivmd.ro/verificare-tranzactie/${userData?.user_uid}-${offer?.documentId}UIDD${offer?.collectionId}`
     );
     setIsModalVisible(true);
   };

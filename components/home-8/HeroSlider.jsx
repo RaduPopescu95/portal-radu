@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -162,7 +162,7 @@ const HeroSlider = () => {
                               </ul>
 
                               <Link
-                                href={`/partener/${item.id}`}
+                                href={`/partener/${item.user_uid}`}
                                 className="fp_price"
                               >
                                 ${item.price}

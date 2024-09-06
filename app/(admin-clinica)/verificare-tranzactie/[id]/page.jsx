@@ -17,7 +17,7 @@ const index = async ({ params }) => {
   }
   console.log("parms...", id);
   const parts = id.split("-");
-  const userId = parseFloat(parts[0]);
+  const userId = parts[0];
   const cod = parts[1];
   const codParts = cod.split("UIDD");
   const offerId = codParts[0];
@@ -25,7 +25,7 @@ const index = async ({ params }) => {
   let ofertaData = [];
   let utilizatorData = [];
   if (userId) {
-    utilizatorData = await handleQueryFirestore("Users", "id", userId);
+    utilizatorData = await handleQueryFirestore("Users", "user_uid", userId);
     ofertaData = await handleQueryFirestoreSubcollection(
       "Oferte",
       "documentId",
