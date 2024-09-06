@@ -1,5 +1,4 @@
 "use client";
-
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { authentication, db } from "../firebase";
 import {
@@ -16,18 +15,28 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [judete, setJudete] = useState([]);
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("currentUser")) || null
+  );
+  const [userData, setUserData] = useState(
+    JSON.parse(localStorage.getItem("userData")) || null
+  );
+  const [judete, setJudete] = useState(
+    JSON.parse(localStorage.getItem("judete")) || [] // Inițializează judete din localStorage
+  );
   const [loading, setLoading] = useState(true);
-  const [isGuestUser, setIsGuestUser] = useState(false); // Inițializat ca false
+  const [isGuestUser, setIsGuestUser] = useState(
+    localStorage.getItem("isGuestUser") === "true"
+  );
   const [searchQueryParteneri, setSearchQueryPateneri] = useState("");
-  const [finalSearchQuery, setFinalSearchQuery] = useState("");
-  const [categorie, setCategorie] = useState("");
-  const [judet, setJudet] = useState("");
-  const [localitate, setLocalitate] = useState("");
+  const [tipAnunt, setTipAnunt] = useState("Clinica");
+  const [tipProgram, setTipProgram] = useState(undefined);
 
-  // Funcția pentru a seta utilizatorul ca guest user
+  const [titulatura, setSelectedCategory] = useState(undefined);
+  const [specialitate, setSelectedSpecialty] = useState(undefined);
+  const [localitate, setSelectedLocalitate] = useState(undefined);
+  const [judet, setSelectedJudet] = useState(undefined);
+
   const setAsGuestUser = (isGuest) => {
     try {
       localStorage.setItem("isGuestUser", isGuest ? "true" : "false");
@@ -42,22 +51,20 @@ export const AuthProvider = ({ children }) => {
       console.log("start use effect from auth context", user);
       if (user) {
         try {
-          // Încearcă să obții datele utilizatorului din handleGetUserInfoJobs
-          let userDataFromFirestore = await handleGetUserInfo();
+          let userDataFromFirestore = await handleGetUserInfoJobs();
           console.log(
-            "User data fetched at onAuthStateChanged from handleGetUserInfo...",
+            "User data fetched at onAuthStateChanged from handleGetUserInfoJobs...",
             userDataFromFirestore
           );
 
-          // Dacă datele sunt undefined sau nu sunt primite date, încearcă handleGetUsersInfo
           if (!userDataFromFirestore) {
             console.log(
-              "No data found in handleGetUserInfo, trying handleGetUsersInfoJobs..."
+              "No data found in handleGetUserInfoJobs, trying handleGetUsersInfo..."
             );
-            userDataFromFirestore = await handleGetUserInfoJobs();
+            userDataFromFirestore = await handleGetUserInfo();
 
             if (userDataFromFirestore) {
-              const collectionId = "Users";
+              const collectionId = "UsersJobs";
               const documentId = user.uid;
               userDataFromFirestore.user_uid = user.uid;
               setDoc(
@@ -70,13 +77,9 @@ export const AuthProvider = ({ children }) => {
                   userDataFromFirestore
                 );
               });
-              console.log(
-                "User data fetched at onAuthStateChanged from handleGetUsersInfoJobs...",
-                userDataFromFirestore
-              );
             } else {
               console.log(
-                "No data found in both handleGetUserInfo and handleGetUsersInfoJobs."
+                "No data found in both handleGetUserInfoJobs and handleGetUsersInfo."
               );
             }
           }
@@ -89,20 +92,15 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(user);
 
       try {
-        const judeteRomania = await handleGetFirestore("Judete");
+        // Verifică dacă județele sunt deja salvate în localStorage
+        let judeteRomania = JSON.parse(localStorage.getItem("judete"));
+        if (!judeteRomania) {
+          judeteRomania = await handleGetFirestore("Judete");
+          localStorage.setItem("judete", JSON.stringify(judeteRomania)); // Salvează județele în localStorage
+        }
         setJudete(judeteRomania);
       } catch (error) {
         console.error("Failed to fetch judete data in context auth:", error);
-      }
-
-      try {
-        const guestUserValue = localStorage.getItem("isGuestUser");
-        // Setează isGuestUser ca true sau false bazat pe valoarea din localStorage
-        // Dacă valoarea nu există, va rămâne setat ca false
-        setIsGuestUser(guestUserValue === "true");
-      } catch (e) {
-        console.error("Failed to fetch isGuestUser from localStorage:", e);
-        setIsGuestUser(false); // Setat ca false în cazul unei erori
       }
 
       setLoading(false);
@@ -111,25 +109,45 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    if (userData) {
+      localStorage.setItem("userData", JSON.stringify(userData));
+    } else {
+      localStorage.removeItem("userData");
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem("currentUser");
+    }
+  }, [currentUser]);
+
   const value = {
     currentUser,
     userData,
     loading,
-    isGuestUser, // Includeți isGuestUser în context
-    setAsGuestUser, // Expuși funcția prin context
+    isGuestUser,
+    setAsGuestUser,
     setUserData,
     setCurrentUser,
     judete,
     searchQueryParteneri,
     setSearchQueryPateneri,
-    setFinalSearchQuery,
-    finalSearchQuery,
-    setJudet,
+    tipAnunt,
+    setTipAnunt,
+    tipProgram,
+    setTipProgram,
     judet,
-    setLocalitate,
+    setSelectedJudet,
     localitate,
-    setCategorie,
-    categorie
+    setSelectedLocalitate,
+    specialitate,
+    setSelectedSpecialty,
+    titulatura,
+    setSelectedCategory,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
