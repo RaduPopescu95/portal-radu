@@ -2,6 +2,7 @@
 
 import CommonLoader from "@/components/common/CommonLoader";
 import ImageModal from "@/components/common/ImageModa";
+import { useAuth } from "@/context/AuthContext";
 import {
   handleQueryFirestore,
   handleUpdateFirestore,
@@ -12,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const CreateList = ({ oferta }) => {
+  const { userData, setUserData } = useAuth();
   const [modalShow, setModalShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
