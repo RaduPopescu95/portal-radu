@@ -49,7 +49,8 @@ const WhatsAppComponent = () => {
           }}
         >
           <p style={{ margin: 0 }}>
-            Ai nevoie de o oferta? Apasa aici pentru a discuta cu noi!
+            Aveți nevoie de ajutor în utilizarea platformei? Apăsați aici pentru
+            a discuta cu noi
           </p>
           <div
             style={{
