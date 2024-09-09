@@ -47,8 +47,6 @@ const ListingDynamicDetailsV1 = async ({ params }) => {
               <DetailsContent partener={partener[0]} oferte={oferte} />
             </div>
 
-            {/* End details content .col-lg-8 */}
-
             {/* <div className="col-lg-4 col-xl-4">
               <Sidebar />
             </div> */}
